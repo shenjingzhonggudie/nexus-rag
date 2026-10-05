@@ -11,6 +11,8 @@ def _require_fields(data: dict[str, Any], required_fields: tuple[str, ...]) -> N
 
 @dataclass
 class Document:
+    """表示一篇原始文档，通常来自 Markdown、PDF 或其他数据源。"""
+
     doc_id: str
     source: str
     text: str
@@ -39,6 +41,8 @@ class Document:
 
 @dataclass
 class Chunk:
+    """表示文档切分后的一个片段，是检索的基本文本单元。"""
+
     chunk_id: str
     doc_id: str
     text: str
@@ -76,6 +80,8 @@ class Chunk:
 
 @dataclass
 class ScoredChunk:
+    """表示一个带有检索分数和处理阶段信息的文档片段。"""
+
     chunk:Chunk
     score: float
     stage: str
@@ -101,6 +107,8 @@ class ScoredChunk:
 
 @dataclass
 class Citation:
+    """表示回答中引用的一条来源证据。"""
+
     index: int
     source: str
     snippet: str
@@ -125,6 +133,8 @@ class Citation:
 
 @dataclass
 class StageTrace:
+    """记录检索流水线中一个阶段的耗时和候选数量。"""
+
     name: str
     latency_ms: float=0.0
     candidate_count: int=0
@@ -146,6 +156,8 @@ class StageTrace:
 
 @dataclass
 class RetrievalTrace:
+    """记录一次检索过程中的全部阶段信息。"""
+
     stages:list[StageTrace]=field(default_factory=list)
     def total_latency_ms(self) -> float:
         return sum(stage.latency_ms for stage in self.stages)
@@ -168,6 +180,8 @@ class RetrievalTrace:
 
 @dataclass
 class Answer:
+    """表示系统对用户问题生成的一次回答及其引用和检索轨迹。"""
+
     """
     拒答时的表示：refused=True 时，answer 为空串、citations 为空列表。
     contexts 是纯字符串列表，不是 Chunk 列表

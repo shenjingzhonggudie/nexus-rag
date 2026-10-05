@@ -8,15 +8,16 @@ from ragkit.errors import ConfigError
 
 
 class RetrievalConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    """检索阶段配置。"""
+    """检索阶段的参数：控制召回、融合和重排流程。"""
 
-    top_k: int = Field(default=20, gt=0)
-    final_k: int = Field(default=5, gt=0)
+    model_config = ConfigDict(extra="forbid")
+
+    top_k: int = Field(default=20, gt=0)  # 初步召回的候选数量。
+    final_k: int = Field(default=5, gt=0)  # 经过融合/重排后最终保留的条数。
     fusion: Literal["rrf", "weighted"] = "rrf"
-    sparse_enabled: bool = True
-    dense_enabled: bool = True
-    rerank_enabled: bool = True
+    sparse_enabled: bool = True  # 是否启用关键词/BM25 等稀疏检索。
+    dense_enabled: bool = True  # 是否启用向量相似度等稠密检索。
+    rerank_enabled: bool = True  # 是否启用对候选结果的二次重排。
 
     @model_validator(mode="after")
     def validate_top_k(self) -> "RetrievalConfig":
@@ -27,12 +28,13 @@ class RetrievalConfig(BaseModel):
 
 
 class ChunkingConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    """文档切分配置。"""
+    """文档切分阶段的参数。"""
 
-    strategy: Literal["fixed", "recursive"] = "fixed"
-    chunk_size: int = Field(default=400, gt=0)
-    overlap: int = Field(default=50, ge=0)
+    model_config = ConfigDict(extra="forbid")
+
+    strategy: Literal["fixed", "recursive"] = "fixed"  # 文档切分策略。
+    chunk_size: int = Field(default=400, gt=0)  # 每个文本片段的目标长度。
+    overlap: int = Field(default=50, ge=0)  # 相邻片段之间重复的字符数。
 
     @model_validator(mode="after")
     def validate_overlap(self) -> "ChunkingConfig":
@@ -43,33 +45,36 @@ class ChunkingConfig(BaseModel):
 
 
 class EmbeddingConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    """向量嵌入配置。"""
+    """文本向量化阶段的参数。"""
 
-    provider: Literal["hashing"] = "hashing"
-    dim: int = Field(default=512, gt=0)
+    model_config = ConfigDict(extra="forbid")
+
+    provider: Literal["hashing"] = "hashing"  # 向量嵌入的实现方式。
+    dim: int = Field(default=512, gt=0)  # 每个文本向量的维度。
 
 
 class LLMConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    """大语言模型配置；api_key 在后续输出时需要脱敏。"""
+    """生成回答所用的大语言模型参数。"""
 
-    provider: Literal["none", "openai_compatible"] = "none"
-    model: str = ""
-    api_key: str = ""
-    base_url: str = ""
+    model_config = ConfigDict(extra="forbid")
+
+    provider: Literal["none", "openai_compatible"] = "none"  # LLM 服务类型。
+    model: str = ""  # 要调用的模型名称。
+    api_key: str = ""  # 服务认证密钥，输出时需要脱敏。
+    base_url: str = ""  # OpenAI 兼容服务的接口地址。
 
 
 class AppConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    """RAGKit 应用总配置。"""
+    """RAGKit 的总配置，组合检索、切分、向量化和 LLM 配置。"""
 
-    retrieval: RetrievalConfig = Field(default_factory=RetrievalConfig)
-    chunking: ChunkingConfig = Field(default_factory=ChunkingConfig)
-    embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)
-    llm: LLMConfig = Field(default_factory=LLMConfig)
-    data_dir: Path = Path("data")
-    index_dir: Path = Path("data/index")
+    model_config = ConfigDict(extra="forbid")
+
+    retrieval: RetrievalConfig = Field(default_factory=RetrievalConfig)  # 检索阶段配置。
+    chunking: ChunkingConfig = Field(default_factory=ChunkingConfig)  # 文档切分配置。
+    embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)  # 向量化配置。
+    llm: LLMConfig = Field(default_factory=LLMConfig)  # 回答生成模型配置。
+    data_dir: Path = Path("data")  # 原始数据和中间文件目录。
+    index_dir: Path = Path("data/index")  # 检索索引保存目录。
 
 
 def load_config(path: str | Path | None = None) -> AppConfig:
