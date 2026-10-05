@@ -1,0 +1,33 @@
+# RAGKit 默认配置
+# 用法：load_config("configs/default.yaml")
+
+# 检索参数
+retrieval:
+  top_k: 20            # 粗排召回候选数
+  final_k: 5           # 最终返回给生成阶段的证据条数（必须 <= top_k）
+  fusion: rrf          # 融合方式：rrf | weighted
+  sparse_enabled: true # 是否启用 BM25 稀疏召回
+  dense_enabled: true  # 是否启用向量稠密召回
+  rerank_enabled: true # 是否启用重排
+
+# 分块参数
+chunking:
+  strategy: fixed      # 分块策略：fixed | recursive
+  chunk_size: 400      # 每块目标字符数
+  overlap: 50          # 相邻块重叠字符数（必须 < chunk_size）
+
+# 向量化参数
+embedding:
+  provider: hashing    # 本阶段仅支持 hashing
+  dim: 512             # 向量维度
+
+# 大模型参数（默认关闭，离线可运行）
+llm:
+  provider: none       # none | openai_compatible
+  model: ""            # 模型名，如 gpt-4o-mini
+  api_key: ""          # 密钥建议放 .env，不要写进这里
+  base_url: ""         # 兼容服务的地址
+
+# 目录
+data_dir: data
+index_dir: data/index
