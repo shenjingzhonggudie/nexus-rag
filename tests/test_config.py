@@ -103,7 +103,7 @@ def test_config_roundtrip(tmp_path: Path):
     assert restored == appconfig
 
 
-def test_env_overrides_yaml(tmp_path: Path):
+def test_env_overrides_yaml(tmp_path: Path, monkeypatch):
     yaml_content = """
     retrieval:
         top_k: 30
@@ -111,9 +111,8 @@ def test_env_overrides_yaml(tmp_path: Path):
     yaml_file = tmp_path / "config.yaml"
     yaml_file.write_text(yaml_content, encoding="utf-8")
     # Set environment variable to override top_k
-    import os
 
-    pytest.MonkeyPatch.setenv("RAG__RETRIEVAL__TOP_K", "40")
+    monkeypatch.setenv("RAG__RETRIEVAL__TOP_K", "40")
     cfg = config.load_config(yaml_file)        # environ=None → 读真实环境
     assert cfg.retrieval.top_k == 40
 
