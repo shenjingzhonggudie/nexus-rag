@@ -8,6 +8,15 @@ _INVISIBLE_RE = re.compile(
 
 
 def normalize_text(text: str) -> str:
+    """规范化文本的换行、不可见字符、兼容字符和空白。
+
+    Args:
+        text: 待处理的原始文本。
+
+    Returns:
+        str: 换行统一为 LF、零宽及控制字符移除、经 NFKC 归一后的文本；
+            保留换行和制表符语义，并将连续三个及以上换行压缩为两个。
+    """
     # 1. 统一换行
     text = text.replace("\r\n", "\n").replace("\r", "\n")
 

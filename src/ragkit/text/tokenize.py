@@ -22,7 +22,14 @@ _CJK_RANGES = (
 
 
 def _is_cjk(ch: str) -> bool:
-    """判断单个字符是否属于上面列出的汉字区间。"""
+    """判断输入是否为已列 Unicode 范围中的单个中日韩统一表意汉字。
+
+    Args:
+        ch: 待检查的字符串。
+
+    Returns:
+        bool: ch 恰有一个字符且其码点落在 _CJK_RANGES 中时为 True。
+    """
     # 先检查长度，避免对空字符串或多字符字符串调用 ord()。
     # ord() 获取字符码点；any() 在任一区间匹配时返回 True。
     return len(ch) == 1 and any(
@@ -31,7 +38,14 @@ def _is_cjk(ch: str) -> bool:
 
 
 def _has_token_content(token: str) -> bool:
-    """判断词元是否含有汉字、ASCII 英文字母或数字。"""
+    """判断词元是否含有至少一个可索引字符。
+
+    Args:
+        token: 待检查的分词结果。
+
+    Returns:
+        bool: 含汉字、ASCII 英文字母或 Unicode 数字时为 True。
+    """
     # 只要含有一个有效字符就保留整个词元；纯空白、纯标点会被过滤。
     # isdigit() 可识别部分非 ASCII 数字，不限于 0 到 9。
     return any(

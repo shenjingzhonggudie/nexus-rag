@@ -1,0 +1,90 @@
+import hashlib
+import re
+from pathlib import Path
+from ragkit.errors import LoadError
+from ragkit.schemas import Document
+
+
+def load_file(path: Path, *, source: str | None = None) -> Document:
+    """读取单个文件并构造 Document。
+
+    Args:
+        path: 待读取的文件路径。
+        source: 结果中的来源标识；省略时取 path.name。批量加载时由调用方传入
+            相对根目录的 POSIX 路径，使 source 与 metadata["path"] 同坐标系。
+
+    Returns:
+        Document: title 取自 Markdown 的首个标题行，找不到时回退为不含扩展名的
+            文件名；metadata 固定包含 path、size、ext、encoding、content_hash
+            五个键，其中 path 与 source 同坐标系、content_hash 取 SHA-256 十六进制
+            摘要的前 16 位（64 bit）。
+
+    Raises:
+        LoadError: 读取、解码或构造 Document 失败。
+
+    编码策略：先按 utf-8-sig 解码（顺带去掉 UTF-8 BOM），失败回退 gbk，两者都
+    失败才抛 LoadError。metadata["encoding"] 记录的是**编码家族**（"utf-8" /
+    "gbk"），而不是具体 codec 名（utf-8-sig）——契约要稳定、实现可变：将来换成
+    别的读法（手动判 BOM、errors="replace" 兜底）时这个值不应跟着变；而"文件有
+    没有 BOM"已经由 size 与 content_hash（两者都基于原始字节）体现，不需要
+    encoding 重复承担。
+    """
+    # 来源标识：调用方未指定时使用文件名；批量加载时可传入相对目录的路径。
+    if source is None:
+        source = path.name
+
+    try:
+        # 一次读取原始字节，供解码、统计文件大小和计算内容哈希共同使用。
+        raw = path.read_bytes()
+        try:
+            # 优先按 UTF-8 解码；utf-8-sig 会自动去掉文件开头的 UTF-8 BOM。
+            content = raw.decode("utf-8-sig")
+            # 记录"编码家族"而非 codec 名（utf-8 而非 utf-8-sig），理由见 docstring。
+            encoding = "utf-8"
+        except UnicodeDecodeError:
+            # UTF-8 解码失败时回退到 GBK；仍失败则交给外层包装为 LoadError。
+            content = raw.decode("gbk")
+            encoding = "gbk"
+
+        # 默认标题使用不含最后一个扩展名的文件名，例如 a.md 的标题为 a。
+        title = path.stem
+        if path.suffix.lower() in {".md", ".markdown"}:
+            # Markdown 按行查找首个匹配的 # 标题：允许 0～3 个前导空格、
+            # 1～6 个 #，且 # 后必须有空格或制表符；未找到时保留默认标题。
+            for line in content.splitlines():
+                heading = re.match(r"^ {0,3}#{1,6}[ \t]+(.+?)\s*$", line)
+                if heading:
+                    # 去掉标题末尾由空白分隔的闭合 #，例如“# 标题 #”得到“标题”。
+                    title = re.sub(r"[ \t]+#+[ \t]*$", "", heading.group(1)).strip()
+                    break
+        # 将正文、标题和元数据组装为 Document；标题存放在独立的 title 字段。
+        # 临时规则：doc_id 取 source，第 3 阶段再重新决定稳定 ID。
+        return Document(
+            doc_id=source,
+            source=source,
+            text=content,
+            title=title,
+            # 元数据固定包含以下五个键，记录文件属性和内容指纹。
+            metadata={
+                # 与 source 同坐标系：批量加载时是相对 root 的 POSIX 路径。
+                # 不能写 str(path)，否则机器相关的绝对路径会泄漏进索引与 manifest。
+                "path": source,
+                "size": len(raw),  # 原始字节数（包含 BOM），不是正文字符数。
+                "ext": path.suffix.lower(),  # 小写扩展名，包含前导点，例如 .md。
+                "encoding": encoding,  # 编码家族（utf-8 / gbk），见 docstring。
+                # 对原始字节计算 SHA-256 并取前 16 位十六进制（64 bit）：
+                # 用途是在同一批文件里判断"内容变没变"，10^2~10^4 量级下碰撞可忽略。
+                "content_hash": hashlib.sha256(raw).hexdigest()[:16],
+            },
+        )
+    except (OSError, UnicodeDecodeError) as e:
+        # 只包装"环境问题"(OSError) 与"数据问题"(UnicodeDecodeError)；TypeError、
+        # AttributeError 这类自身缺陷必须直接抛出，否则会被伪装成坏文件静默跳过。
+        # from e 保留异常因果链，方便定位最初的失败原因。
+        raise LoadError(
+            # 此处保留调用方给的原始路径（便于人类定位）；
+            # 进入 LoadFailure 时由 load_dir 换成 source 坐标系。
+            path=str(path),
+            reason=str(e),
+            error_type=type(e).__name__,
+        ) from e

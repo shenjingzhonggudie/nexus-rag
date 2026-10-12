@@ -7,10 +7,12 @@ from ragkit import __version__
 def main(argv: list[str] | None = None) -> int:
     """RAGKit 命令行入口。
 
-    不传入 argv 时，读取真实的命令行参数；
-    传入列表时，解析列表中的参数。
-    如果没有提供任何参数，则打印帮助信息并返回 0。
-    使用 --version 时，打印当前版本并返回 0。
+    Args:
+        argv: 要解析的参数列表；None 时读取真实命令行参数。
+
+    Returns:
+        int: 正常显示帮助或版本信息时返回 0。argparse 的参数错误和 --help
+            退出行为由 argparse 自身处理。
     """
     parser = argparse.ArgumentParser(
         prog="ragkit",
