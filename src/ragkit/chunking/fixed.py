@@ -1,3 +1,6 @@
+"""固定长度切分：按目标长度和重叠量计算文本的切片区间。"""
+
+
 def iter_spans(text: str, *, chunk_size: int, overlap: int) -> list[tuple[int, int]]:
     """按目标长度和重叠量生成文本的半开切片区间，不规范化文本。
 

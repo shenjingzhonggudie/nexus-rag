@@ -10,7 +10,7 @@ version = "0.0.1"
 description = "From-scratch Chinese technical-doc RAG system"
 requires-python = ">=3.11"
 # 运行时依赖：PyYAML 用于读写 YAML，Pydantic 用于数据校验。
-dependencies = ["pyyaml", "pydantic", "jieba"]
+dependencies = ["pyyaml", "pydantic", "jieba", "numpy"]
 
 # 可选开发依赖：安装 dev 依赖组时引入 pytest，用于运行测试
 [project.optional-dependencies]

@@ -1,3 +1,6 @@
+"""RAGKit 的领域异常定义。"""
+
+
 class RagkitError(Exception):
     """所有 RAGKit 领域异常的共同基类。
 
@@ -37,3 +40,10 @@ class LoadError(RagkitError):
         self.path = path
         self.reason = reason
         self.error_type = error_type
+
+
+class StoreCorruptError(RagkitError):
+    """向量库目录内容损坏或前后不一致。
+
+    例如 manifest 缺失或格式非法、向量维度与 manifest 不符、行数与 ids/metadata 对不上。
+    """

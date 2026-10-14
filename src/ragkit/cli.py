@@ -1,3 +1,5 @@
+"""命令行入口：解析参数，并输出版本号或帮助信息。"""
+
 import argparse
 import sys
 

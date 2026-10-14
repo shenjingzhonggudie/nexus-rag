@@ -1,3 +1,5 @@
+"""文本规范化：统一换行、移除不可见字符、做 NFKC 归一化并压缩空白。"""
+
 import re
 import unicodedata
 

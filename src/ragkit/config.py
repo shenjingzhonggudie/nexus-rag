@@ -1,4 +1,6 @@
-import os                                         
+"""应用配置：定义各阶段的 Pydantic 模型，并合并 YAML 与环境变量后加载。"""
+
+import os
 from collections.abc import Mapping 
 from copy import deepcopy
 from pathlib import Path

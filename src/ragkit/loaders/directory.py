@@ -1,3 +1,5 @@
+"""目录加载：递归扫描目录，批量读取受支持的文件。"""
+
 from pathlib import Path
 
 from ragkit.errors import LoadError

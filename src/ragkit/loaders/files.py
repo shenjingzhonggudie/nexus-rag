@@ -1,3 +1,5 @@
+"""单文件加载：读取 TXT 或 Markdown 文件并构造 Document。"""
+
 import hashlib
 import re
 from pathlib import Path

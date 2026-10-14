@@ -1,3 +1,5 @@
+"""核心数据结构：文档、片段、评分片段、引用、检索轨迹与回答，支持字典互转。"""
+
 from dataclasses import dataclass, field
 from typing import Any
 

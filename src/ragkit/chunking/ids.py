@@ -1,3 +1,6 @@
+"""片段 ID 的生成规则：文档标识、文本指纹与出现序号的组合。"""
+
+
 def make_chunk_id(doc_id: str, text: str, occurrence: int) -> str:
     """按文档标识、文本指纹和出现序号构造片段 ID。
 

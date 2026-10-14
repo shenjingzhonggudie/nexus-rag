@@ -1,3 +1,5 @@
+"""批量加载的结果报告：成功的文档与失败的文件记录。"""
+
 from dataclasses import dataclass, field
 
 from ragkit.schemas import Document
