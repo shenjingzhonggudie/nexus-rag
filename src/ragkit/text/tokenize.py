@@ -1,8 +1,16 @@
 """文本分词：提取词语和相邻汉字双字组合，保留重复结果。"""
 
+import logging
+
 import jieba
 
 from ragkit.text.normalize import normalize_text
+
+# 债务表 9 的噪声治理（第 16 轮决策 3）：jieba 首次加载会向 stderr 打三行自述
+# （Building prefix dict / Loading model / Prefix dict built），污染 CLI / API 输出。
+# 在源头层（所有入口都经过的分词层）压到 WARNING，一次治理所有入口。
+# 实测（2026-10-16）：setLogLevel 后子进程 stderr 完全干净；耗时不变，仍约 1.8s。
+jieba.setLogLevel(logging.WARNING)
 
 
 # 用 Unicode 码点区间识别中日韩统一表意文字，覆盖基本区及下列扩展区。
