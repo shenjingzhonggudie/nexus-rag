@@ -25,3 +25,8 @@ dist/
 # 环境变量与密钥
 .env
 .env.*
+
+# 索引与报告产物（可随时由 build/eval 重建，不进版本库）
+data/index/
+data2/index/
+reports/

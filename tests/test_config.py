@@ -11,7 +11,8 @@ def test_default_config():
     cfg = config.load_config(environ={})
     assert cfg.retrieval.top_k == 20
     assert cfg.retrieval.final_k == 5
-    assert cfg.retrieval.fusion == "rrf"
+    assert cfg.retrieval.fusion == "weighted"
+    assert cfg.retrieval.fusion_alpha == 0.9
     assert cfg.llm.provider == "none"
 
 

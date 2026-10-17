@@ -21,7 +21,8 @@ class RetrievalConfig(BaseModel):
     Attributes:
         top_k: 初步召回的候选数量。
         final_k: 融合或重排后最终保留的条数。
-        fusion: 多路结果的融合策略。
+        fusion: 多路结果的融合策略（rrf = 等权，weighted = 加权排名融合）。
+        fusion_alpha: weighted 融合时第一条腿（BM25）的权重，取值 0~1。
         sparse_enabled: 是否启用关键词或 BM25 等稀疏检索。
         dense_enabled: 是否启用向量相似度等稠密检索。
         rerank_enabled: 是否对召回候选执行二次重排。
@@ -31,10 +32,11 @@ class RetrievalConfig(BaseModel):
 
     top_k: int = Field(default=20, gt=0)  # 初步召回的候选数量。
     final_k: int = Field(default=5, gt=0)  # 经过融合/重排后最终保留的条数。
-    fusion: Literal["rrf", "weighted"] = "rrf"  # 多路结果的融合策略。
+    fusion: Literal["rrf", "weighted"] = "weighted"  # 多路结果的融合策略（默认加权：α=0.9 BM25 为主）。
+    fusion_alpha: float = Field(default=0.9, ge=0.0, le=1.0)  # weighted 融合时 BM25 腿的权重。
     sparse_enabled: bool = True  # 是否启用关键词/BM25 等稀疏检索。
     dense_enabled: bool = True  # 是否启用向量相似度等稠密检索。
-    rerank_enabled: bool = True  # 是否启用对候选结果的二次重排。
+    rerank_enabled: bool = False  # 是否对候选二次重排。默认关：消融证明 hashing dense 余弦精排稳定负贡献（见 PROJECT_LAYOUT 评测契约）
 
     @model_validator(mode="after")
     def validate_top_k(self) -> "RetrievalConfig":
@@ -121,7 +123,7 @@ class AppConfig(BaseModel):
         chunking: 文档切分配置。
         embedding: 文本向量化配置。
         llm: 回答生成模型配置。
-        data_dir: 原始数据和中间文件目录。
+        data_dir: 原始语料目录（build 的语料来源）。
         index_dir: 检索索引保存目录。
     """
 
@@ -131,7 +133,7 @@ class AppConfig(BaseModel):
     chunking: ChunkingConfig = Field(default_factory=ChunkingConfig)  # 文档切分配置。
     embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)  # 向量化配置。
     llm: LLMConfig = Field(default_factory=LLMConfig)  # 回答生成模型配置。
-    data_dir: Path = Path("data")  # 原始数据和中间文件目录。
+    data_dir: Path = Path("data/raw")  # 原始语料目录。
     index_dir: Path = Path("data/index")  # 检索索引保存目录。
 
     def snapshot(self) -> dict:

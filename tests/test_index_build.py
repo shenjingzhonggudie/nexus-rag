@@ -105,8 +105,8 @@ def test_build_supports_search(tmp_path):
         retrieval=cfg.retrieval,
     )
 
-    assert all(r.stage == "rerank" for r in result.results)
-    # 与 query 词面重叠多的 a.txt 应排第一（hashing 余弦 = token 重叠）
+    assert all(r.stage == "rrf" for r in result.results)  # 默认关 rerank，融合后 stage 保持 rrf
+    # 与 query 词面重叠多的 a.txt 应排第一（词面匹配）
     assert result.results[0].chunk.doc_id == "a.txt"
     assert result.trace.stages  # build 出的资源可完整走一遍流水线
 

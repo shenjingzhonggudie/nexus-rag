@@ -43,7 +43,7 @@ def _search(query, bm25, store, id_to_chunk, **cfg):
 
 def test_full_pipeline_returns_final_k():
     bm25, store, id_to_chunk = _fixture()
-    result = _search("容器冷启动", bm25, store, id_to_chunk, top_k=20, final_k=2)
+    result = _search("容器冷启动", bm25, store, id_to_chunk, top_k=20, final_k=2, rerank_enabled=True)
 
     assert isinstance(result, RetrievalResult)
     assert len(result.results) == 2
@@ -61,11 +61,20 @@ def test_rerank_disabled_keeps_rrf_stage():
     assert all(r.stage == "rrf" for r in result.results)
 
 
+def test_rerank_disabled_by_default():
+    # 第 19 轮消融结论：rerank 默认关闭（dense 余弦精排稳定负贡献）
+    bm25, store, id_to_chunk = _fixture()
+    result = _search("容器冷启动", bm25, store, id_to_chunk, top_k=20, final_k=2)
+
+    assert all(r.stage == "rrf" for r in result.results)
+    assert [s.name for s in result.trace.stages] == ["bm25", "dense", "fusion"]
+
+
 def test_sparse_only():
     bm25, store, id_to_chunk = _fixture()
     result = _search(
         "容器冷启动", bm25, store, id_to_chunk,
-        top_k=20, final_k=2, dense_enabled=False,
+        top_k=20, final_k=2, dense_enabled=False, rerank_enabled=True,
     )
 
     assert [s.name for s in result.trace.stages] == ["bm25", "fusion", "rerank"]
@@ -75,7 +84,7 @@ def test_dense_only():
     bm25, store, id_to_chunk = _fixture()
     result = _search(
         "容器冷启动", bm25, store, id_to_chunk,
-        top_k=20, final_k=2, sparse_enabled=False,
+        top_k=20, final_k=2, sparse_enabled=False, rerank_enabled=True,
     )
 
     assert [s.name for s in result.trace.stages] == ["dense", "fusion", "rerank"]
@@ -94,7 +103,7 @@ def test_both_legs_disabled():
 
 def test_trace_stages_and_order():
     bm25, store, id_to_chunk = _fixture()
-    result = _search("容器冷启动", bm25, store, id_to_chunk, top_k=20, final_k=2)
+    result = _search("容器冷启动", bm25, store, id_to_chunk, top_k=20, final_k=2, rerank_enabled=True)
 
     assert [s.name for s in result.trace.stages] == ["bm25", "dense", "fusion", "rerank"]
 
@@ -103,7 +112,7 @@ def test_trace_candidate_counts():
     # 空 query：两条腿都返回 top_k 个全 0 分块（3 个 chunk），
     # 融合去重后 3 个，重排截断到 final_k=2 —— 候选数口径可精确断言
     bm25, store, id_to_chunk = _fixture()
-    result = _search("", bm25, store, id_to_chunk, top_k=20, final_k=2)
+    result = _search("", bm25, store, id_to_chunk, top_k=20, final_k=2, rerank_enabled=True)
 
     counts = {s.name: s.candidate_count for s in result.trace.stages}
     assert counts == {"bm25": 3, "dense": 3, "fusion": 3, "rerank": 2}

@@ -5,10 +5,11 @@
 retrieval:
   top_k: 20            # 粗排召回候选数
   final_k: 5           # 最终返回给生成阶段的证据条数（必须 <= top_k）
-  fusion: rrf          # 融合方式：rrf | weighted
+  fusion: weighted     # 融合方式：rrf（等权）| weighted（加权排名融合）
+  fusion_alpha: 0.9    # weighted 融合时 BM25 腿权重（0~1，0.9=BM25 为主）
   sparse_enabled: true # 是否启用 BM25 稀疏召回
   dense_enabled: true  # 是否启用向量稠密召回
-  rerank_enabled: true # 是否启用重排
+  rerank_enabled: false # 是否启用重排（默认关：dense 余弦精排负贡献，见消融结论）
 
 # 分块参数
 chunking:
@@ -29,5 +30,5 @@ llm:
   base_url: ""         # 兼容服务的地址
 
 # 目录
-data_dir: data
-index_dir: data/index
+data_dir: data/raw     # 原始语料目录（build 的语料来源）
+index_dir: data/index  # 检索索引保存目录

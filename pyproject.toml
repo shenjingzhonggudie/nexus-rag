@@ -6,8 +6,9 @@ build-backend = "setuptools.build_meta"
 # 项目元信息：声明包名、版本、简介，以及支持的最低 Python 版本
 [project]
 name = "ragkit"
-version = "0.0.1"
-description = "From-scratch Chinese technical-doc RAG system"
+version = "1.0.0"
+description = "From-scratch Chinese RAG system: BM25 + dense hybrid retrieval, RRF fusion, rerank, offline-first"
+readme = "README.md"
 requires-python = ">=3.11"
 # 运行时依赖：PyYAML 用于读写 YAML，Pydantic 用于数据校验。
 dependencies = ["pyyaml", "pydantic", "jieba", "numpy"]

@@ -5,7 +5,7 @@ import time
 from ragkit.config import RetrievalConfig
 from ragkit.retrieval.bm25 import BM25Index
 from ragkit.retrieval.dense import dense_search
-from ragkit.retrieval.fusion import rrf_fuse
+from ragkit.retrieval.fusion import rrf_fuse, weighted_fuse
 from ragkit.retrieval.rerank import rerank
 from ragkit.retrieval.result import RetrievalResult
 from ragkit.schemas import Chunk, RetrievalTrace, ScoredChunk, StageTrace
@@ -41,6 +41,15 @@ def search(
     stages: list[StageTrace] = []
 
     def timed(name: str, fn) -> list[ScoredChunk]:
+        """执行一个检索阶段，并把耗时和候选数追加到检索轨迹。
+
+        Args:
+            name: 写入轨迹的阶段名称。
+            fn: 无参执行器，返回该阶段产生的候选块。
+
+        Returns:
+            list[ScoredChunk]: 原样返回执行器产出的候选块。
+        """
         start = time.perf_counter()
         hits = fn()
         elapsed_ms = (time.perf_counter() - start) * 1000.0
@@ -60,7 +69,15 @@ def search(
     if not legs:
         return RetrievalResult(results=[], trace=RetrievalTrace())
 
-    results = timed("fusion", lambda: rrf_fuse(legs, top_k=retrieval.top_k))
+    if retrieval.fusion == "weighted":
+        results = timed(
+            "fusion",
+            lambda: weighted_fuse(
+                legs, alpha=retrieval.fusion_alpha, top_k=retrieval.top_k
+            ),
+        )
+    else:
+        results = timed("fusion", lambda: rrf_fuse(legs, top_k=retrieval.top_k))
     if retrieval.rerank_enabled:
         results = timed(
             "rerank",
