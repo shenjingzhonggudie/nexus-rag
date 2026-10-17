@@ -1,5 +1,6 @@
 """CLI 契约测试：build/ask 的输出与退出码、拒答=0、错误提示、环境变量隔离。"""
 
+import json
 import logging
 
 import jieba
@@ -98,6 +99,41 @@ def test_ask_without_build_returns_one(tmp_path, capsys):
     err = capsys.readouterr().err
     assert rc == 1
     assert "ragkit build" in err         # 提示先建库
+
+
+def test_serve_without_build_returns_one(tmp_path, capsys):
+    # serve 启动时要 load_index，索引缺失 → 提示先 build，退出码 1
+    rc = main(["serve"], _env(tmp_path))
+
+    err = capsys.readouterr().err
+    assert rc == 1
+    assert "ragkit build" in err
+
+
+def test_eval_runs_and_writes_report(tmp_path, capsys):
+    _make_corpus(tmp_path)
+    env = _env(tmp_path)
+    assert main(["build"], env) == 0
+    qrels = tmp_path / "qrels.json"
+    qrels.write_text('[{"query": "容器冷启动", "relevant": ["a.txt"]}]', encoding="utf-8")
+    out = tmp_path / "report.json"
+
+    rc = main(["eval", "--qrels", str(qrels), "--out", str(out)], env)
+
+    assert rc == 0
+    assert out.exists()
+    data = json.loads(out.read_text(encoding="utf-8"))
+    assert set(data) >= {"recall_at", "mrr", "per_query", "latency"}
+    assert "recall@1" in capsys.readouterr().out
+
+
+def test_eval_without_build_returns_one(tmp_path, capsys):
+    _make_corpus(tmp_path)  # 语料在，但没有 build
+    rc = main(["eval"], _env(tmp_path))
+
+    err = capsys.readouterr().err
+    assert rc == 1
+    assert "ragkit build" in err
 
 
 def test_jieba_log_level_suppressed():
