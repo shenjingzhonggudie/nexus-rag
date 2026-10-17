@@ -754,11 +754,11 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | dense_only | 0.833 | 0.899 | **dense 腿 −0.08** |
 | **no_rerank** | **0.910** | **0.948** | **rerank −0.08** |
 
-**结论（手写自然语言 query 下）**：dense 腿与 rerank 都是**负资产（各 −0.08）**，纯 BM25 与 no_rerank 打平最优（recall@1=0.910）。`baseline == dense_only`（0.833）再次印证 rerank 用 dense 余弦一票否决、把 baseline 退化成 dense 主导。
+**结论（手写自然语言 query 下）**：rerank 与**等权 dense** 都是负资产（各 −0.08），纯 BM25 与等权 RRF 打平（recall@1=0.910）。`baseline == dense_only`（0.833）再次印证 rerank 用 dense 余弦一票否决、把 baseline 退化成 dense 主导。**但第 23 轮 α 扫描进一步发现：加权融合 α≈0.8 略优于纯 BM25（0.923 vs 0.913）**——dense 在低权重（0.2）下能贡献少量互补价值。
 
 **关键发现：query 质量影响消融结论**。模板合成 query（词汇与文档高度重叠）会**高估 dense 腿**（短文档时 −0.02，几乎无害）；手写自然语言 query 措辞多样、dense 的字面级哈希重叠变弱，dense 的负贡献回升到 −0.08，而 BM25 的词项匹配（罕见词 idf）持续稳定。这提示：**合成 query 测不出真实检索能力，评测集必须用接近真实提问的自然语言**。
 
-**落点**：上线配置默认**关 rerank**（用 RRF 融合直接取 final_k）；dense 腿保留（长文档下几乎无负贡献，且融合略优于纯 BM25）。rerank 标为“换真 embedding（cross-encoder）后再评估”的扩展。
+**落点**：上线配置默认**关 rerank**、**用加权排名融合 `fusion="weighted"` + `fusion_alpha=0.9`**（BM25 权重 0.9 / dense 权重 0.1）——比纯 BM25 和等权 RRF 都更稳，给 dense 留一个低权重的边角。rerank 标为“换真 embedding（cross-encoder）后再评估”的扩展。
 
 ## 十五、测试覆盖
 
@@ -813,7 +813,7 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | 10 | CLI（`ragkit build` / `ragkit ask`） | ✅ 完成（第 16 轮，239 passed）：全链路暴露成命令；`--json` / REPL 为扩展 |
 | 11 | HTTP API + 请求日志 | ✅ 完成（第 17 轮，252 passed）：`POST /ask` / `GET /healthz`，索引常驻；FastAPI 迁移 / 鉴权为扩展 |
 | 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮，267 passed）：recall@k(1~10) / MRR / 耗时表；100 篇语料 + 300 条手写 query |
-| 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮）：4 组对照——手写 query 下 dense 腿 −0.08、rerank −0.08 负贡献，纯 BM25 最优（recall@1=0.910） |
+| 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮）：4 组对照——dense 腿 −0.08、rerank −0.08 负贡献；第 23 轮 α 扫描发现加权融合 α≈0.8 更优（0.923），落地 α=0.9 |
 | 14 | 交付：README 收尾 + 打包 | ✅ 完成（第 21 轮）：README 重写（四命令/架构/评测结论）、版本升 1.0.0、pyproject 加 readme 字段 |
 | 15 | 总结报告 | ✅ 完成（第 22 轮）：`SUMMARY.md` 沉淀全项目——架构全景、消融结论、设计决策、踩坑规律、演进方向 |
 
