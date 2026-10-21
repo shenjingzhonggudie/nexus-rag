@@ -96,7 +96,7 @@ py -3.12 -m venv .venv
 ### 验收命令
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q          # 预期：291 passed
+.\.venv\Scripts\python.exe -m pytest -q          # 预期：287 passed
 .\.venv\Scripts\ragkit.exe --help                # 预期：列出 build/ask/serve/eval 四子命令
 .\.venv\Scripts\ragkit.exe --version             # 预期：ragkit 1.0.0
 ```
@@ -142,36 +142,37 @@ curl http://localhost:8000/healthz
 
 ### 离线：建库与标注
 
-```mermaid
-flowchart LR
-    A["公开文档<br/>100 篇 / 139.7 万字"] --> B["loaders<br/>剥 front matter、清标题锚点"]
-    B --> C["chunking<br/>按 ## 切 + 超长再切"]
-    C --> D["embeddings<br/>BGE-small-zh 512 维"]
-    D --> E[("data/index<br/>4796 块")]
+```
+语料 → 索引
+  公开文档 100 篇（139.7 万字）
+    → loaders      剥 front matter、清标题锚点
+    → chunking     按小节标题切，超长再用 fixed 切
+    → embeddings   BGE-small-zh，512 维
+    → data/index   4796 块
 
-    F["section_index<br/>列小节与字符区间"] --> G["build_skeleton<br/>挑 221 条候选"]
-    G --> H["内部出题 100 条<br/>读正文写"]
-    G --> I["外部出题 103 条<br/>只看标题写"]
-    H --> J["check_qrels<br/>质检区间与配比"]
-    I --> J
-    J --> K[["qrels.json<br/>221 条"]]
+标注
+  section_index   列出小节与字符区间
+    → build_skeleton   挑 221 条候选
+    → 内部出题 100 条（读正文写） ／ 外部出题 103 条（只看标题写）
+    → check_qrels      质检区间与配比
+    → qrels.json       221 条
 ```
 
 ### 在线：一次查询
 
-```mermaid
-flowchart TD
-    Q["query"] --> BM["BM25<br/>召回 top20"]
-    Q --> DS["dense<br/>召回 top20"]
-    BM --> F["加权排名融合<br/>S = α·S1 + (1−α)·S2"]
-    DS --> F
-    F --> TOP["top 5 块"]
+```
+query
+  ├─→ BM25 召回 top20    （jieba 分词 + idf 词权重）
+  └─→ dense 召回 top20   （BGE 编码 + 点积）
+          ↓
+     加权排名融合   S = α·S1 + (1−α)·S2   （α = 0.9，BM25 为主）
+          ↓
+        top 5 块
 
-    BM -.->|"实词命中情况"| CHK{"拒答判定"}
-    Q -.->|"语料外英文实体"| CHK
-    CHK -->|"覆盖率低于 0.05<br/>或实体未登录"| REJ["拒答"]
-    CHK -->|"通过"| GEN["生成答案 + 编号引用"]
-    TOP --> GEN
+拒答判定（不参与排序，只决定要不要回答）
+  ① query 含语料外英文实体（Kafka / JVM）→ 拒答
+  ② 实词 idf 覆盖率低于 0.05            → 拒答
+  否则 → 生成答案 + 编号引用（抽取式）
 ```
 
 ### 分层职责
@@ -282,7 +283,7 @@ rerank（加权 vs 等权）**+0.039**。
 ├── reports/                # 评测报告落盘（eval.json / ablation.json）
 ├── scripts/                # 数据工具：fetch_docs / section_index / gen_queries / check_qrels
 ├── src/ragkit/             # 唯一被 import 的代码（分层见上）
-└── tests/                  # 契约测试（291 条）
+└── tests/                  # 契约测试（287 条）
 ```
 
 **数据来源与许可证**：语料取自 Kubernetes / Docker / Python / Vue / React 的公开
