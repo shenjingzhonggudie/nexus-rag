@@ -10,11 +10,20 @@ from ragkit.text.normalize import normalize_text
 
 
 def test_variants_contract():
-    # 锁定 4 组单变量对照设计：对照组必须与默认值相反——
+    # 锁定 6 组单变量对照设计：对照组必须与默认值相反——
     # rerank_enabled 默认 True（加权排名融合），所以对照是"关掉它"（等权 RRF）；
-    # 单腿组同时关 rerank，隔离变量。
-    assert list(VARIANTS) == ["baseline", "no_rerank", "bm25_only", "dense_only"]
+    # 单腿组同时关 rerank，隔离变量；alpha_* 组只改融合权重，观察 α 敏感度。
+    assert list(VARIANTS) == [
+        "baseline",
+        "alpha_08",
+        "alpha_07",
+        "no_rerank",
+        "bm25_only",
+        "dense_only",
+    ]
     assert VARIANTS["baseline"] == {}
+    assert VARIANTS["alpha_08"] == {"fusion_alpha": 0.8}
+    assert VARIANTS["alpha_07"] == {"fusion_alpha": 0.7}
     assert VARIANTS["no_rerank"] == {"rerank_enabled": False}
     assert VARIANTS["bm25_only"] == {"dense_enabled": False, "rerank_enabled": False}
     assert VARIANTS["dense_only"] == {"sparse_enabled": False, "rerank_enabled": False}
@@ -33,7 +42,14 @@ def test_run_ablation_structure(tmp_path):
 
     results = run_ablation(built, qrels)
 
-    assert list(results) == ["baseline", "no_rerank", "bm25_only", "dense_only"]
+    assert list(results) == [
+        "baseline",
+        "alpha_08",
+        "alpha_07",
+        "no_rerank",
+        "bm25_only",
+        "dense_only",
+    ]
     for name, r in results.items():
         assert set(r["recall_at"]) == set(range(1, 11))
         assert 0.0 <= r["mrr"] <= 1.0

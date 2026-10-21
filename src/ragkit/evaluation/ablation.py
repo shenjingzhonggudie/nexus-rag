@@ -10,14 +10,17 @@ from ragkit.evaluation.qrels import Qrel
 from ragkit.evaluation.report import evaluate
 from ragkit.index.assets import BuiltIndex
 
-# 4 组对照：组名 -> RetrievalConfig 的覆盖项（其余用默认值）
+# 6 组对照：组名 -> RetrievalConfig 的覆盖项（其余用默认值）
 #
 # 对照组必须与默认值**相反**才有信息量：
 # - `rerank_enabled` 默认 True（加权排名融合 S = α·S1 + (1−α)·S2），
 #   所以"关掉它"（退化为等权 RRF）才是有意义的对照；
-# - 单腿组同时关 rerank：否则 rerank 会把另一条腿也拉进来算加权，就不是纯单腿了。
+# - 单腿组同时关 rerank：否则 rerank 会把另一条腿也拉进来算加权，就不是纯单腿了；
+# - `alpha_08` / `alpha_07` 用来观察 α 的敏感度：0.9 是默认的"BM25 为主"保守值。
 VARIANTS: dict[str, dict] = {
     "baseline": {},                                          # 加权排名融合（默认，α=0.9）
+    "alpha_08": {"fusion_alpha": 0.8},                       # 同一融合方式，权重更均衡
+    "alpha_07": {"fusion_alpha": 0.7},                       # 再往等权靠
     "no_rerank": {"rerank_enabled": False},                  # 等权 RRF（只看名次，不加权）
     "bm25_only": {"dense_enabled": False, "rerank_enabled": False},
     "dense_only": {"sparse_enabled": False, "rerank_enabled": False},
