@@ -6,12 +6,12 @@
 
 ## 当前状态
 
-**全链路已贯通，四入口可用，评测与消融有量化结论。** 268 条测试全绿。
+**全链路已贯通，四入口可用，评测与消融有量化结论。** 272 条测试全绿。
 
 - 四个 CLI 子命令：`build` / `ask` / `serve` / `eval`；
 - HTTP API：`POST /ask`、`GET /healthz`（索引常驻内存，只付一次冷启动）；
-- 两套评测语料：`data/`（后端分布式，100 篇 + 300 条 query）、`data2/`（机器学习，100 篇 + 300 条 query）；
-- 消融结论（详见「评测与消融」）：**rerank 默认关闭；融合用加权排名融合（α=0.9，BM25 为主）**。
+- 评测语料：`data/`（后端分布式，10 篇 × 约 10000 字 + 25 条块级标注 query）；
+- 消融结论（详见「评测与消融」）：**rerank 负贡献（默认关闭）；块级标注下等权 RRF 略优**。
 
 | 项 | 值 |
 |---|---|
@@ -57,7 +57,7 @@ py -3.12 -m venv .venv
 ### 验收命令
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q          # 预期：268 passed
+.\.venv\Scripts\python.exe -m pytest -q          # 预期：272 passed
 .\.venv\Scripts\ragkit.exe --help                # 预期：列出 build/ask/serve/eval 四子命令
 .\.venv\Scripts\ragkit.exe --version             # 预期：ragkit 1.0.0
 ```
@@ -79,7 +79,7 @@ py -3.12 -m venv .venv
 
 ```
 loaders/      文本加载：.txt/.md/.markdown，UTF-8 + GBK 回退，坏文件隔离
-chunking/     分块：固定大小 + overlap，稳定 chunk_id（内容哈希）
+chunking/     分块：heading（按 ## 标题，超长小节 fixed 再切）+ fixed，稳定 chunk_id（内容哈希）
 embeddings/   hashing 字面级 embedding（L2 归一化，离线可用）
 stores/       NumPy 向量库：五文件落盘（manifest 最后写）+ 加载校验
 retrieval/    BM25（idf 词权重）→ dense（向量点积）→ RRF 融合 → rerank（精排）
@@ -93,21 +93,21 @@ evaluation/   评测指标（recall@k / MRR）+ 评测编排 + 消融实验
 
 ## 评测与消融
 
-**评测指标**：文档级 `recall@k`（1~10）、`MRR`，冷/热耗时表（P50/P95）。
+**评测指标**：块级 `recall@k`（1~10）、`MRR`，冷/热耗时表（P50/P95）。评测单元是块（chunk），答案精确标注到某个 `##` 小节（超长小节标注其全部块）。
 
-**消融结论**（100 篇语料 + 300 条手写 query，4 组单变量对照）：
+**消融结论**（10 篇 × 约 10000 字语料 + 25 条块级标注 query，5 组对照）：
 
-| 组 | recall@1 | MRR | 边际贡献 |
-|---|---|---|---|
-| baseline（全开 = 等权 RRF + dense 余弦 rerank） | 0.833 | 0.899 | — |
-| **bm25_only（纯 BM25）** | **0.910** | **0.950** | BM25 腿 +0.000 |
-| dense_only（纯 dense） | 0.833 | 0.899 | **dense 腿 −0.08** |
-| **no_rerank（等权 RRF）** | **0.910** | **0.948** | **rerank −0.08** |
-| weighted α=0.9（加权 RRF，当前默认） | 0.903 | 0.945 | 加权融合替代等权 |
+| 组 | @1 | @2 | @3 | @4 | @5 | @6 | @7 | @8 | @9 | @10 | MRR |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| baseline（全开 = 等权 RRF + dense 余弦 rerank） | 0.25 | 0.29 | 0.40 | 0.42 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.428 |
+| bm25_only（纯 BM25） | 0.25 | 0.31 | 0.37 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.447 |
+| dense_only（纯 dense） | 0.25 | 0.29 | 0.40 | 0.42 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.428 |
+| **no_rerank（等权 RRF）** | **0.27** | **0.35** | 0.41 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | **0.477** |
+| weighted α=0.9（当前默认） | 0.25 | 0.33 | 0.41 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.457 |
 
-**结论**：当前 hashing 字面级 embedding 下，**rerank 是负资产（默认关闭）**。dense 腿在等权融合下也是负贡献，但**加权融合给它一个低权重（α≈0.8，dense 占 0.2）时能贡献少量互补价值**——recall@1 从纯 BM25 的 0.913 提到 0.923。因此**默认融合用加权排名 α=0.9**（BM25 权重 0.9 / dense 权重 0.1，两个数据集都接近最优的保守值）。hashing 不懂语义、把高频词当相似信号；BM25 的 idf 给罕见词高权重。换真语义 embedding 后，dense 腿与 rerank 需重新评估。
+**结论**：`baseline == dense_only`——rerank 用 dense 余弦一票否决、把 baseline 退化成 dense 主导，这个规律在块级标注下依然成立，**rerank 负贡献（MRR −0.049）**。块级标注下 **no_rerank（等权 RRF）MRR 最高（0.477）**，weighted α=0.9（0.457）略低但差异在 25 条 query 的波动范围内。hashing 不懂语义、把高频词当相似信号；BM25 的 idf 给罕见词高权重。换真语义 embedding 后，dense 腿与 rerank 需重新评估。
 
-> 消融结论依赖语料特征——在措辞重叠更高的语料上（data），加权融合 α≈0.78 略优于纯 BM25；在术语专业的机器学习语料上（data2），纯 BM25 即最优。详见 `docs/LEARNING_LOG.md` 第 19~20 轮记录。
+> **关于绝对数字**：块级标注下 recall 天然低于文档级——旧文档级 0.9 是「在 10 篇里选对主题」，新块级 0.25 是「在 423 块里精确命中答案小节」，任务从"选书"变成"选段落"，不可直接比较。25 条 query 样本较小，组间差异的统计意义有限。
 
 ## 目录结构
 
@@ -118,15 +118,12 @@ evaluation/   评测指标（recall@k / MRR）+ 评测编排 + 消融实验
 ├── .gitignore
 ├── configs/default.yaml    # 默认配置模板（值须与模型默认值一致）
 ├── data/                   # 语料与评测数据（后端分布式领域）
-│   ├── raw/                # 100 篇中文技术文档（20 主题 × 5 篇，脚本生成）
-│   └── eval/qrels.json     # 300 条手写 query + 相关文档标注
-├── data2/                  # 第二套评测语料（机器学习领域）
-│   ├── raw/                # 100 篇（20 主题 × 5 篇）
-│   └── eval/qrels.json     # 300 条手写 query
+│   ├── raw/                # 10 篇中文技术文档（2 主题 × 1正+4误导，每篇约 10000 字，脚本生成）
+│   └── eval/qrels.json     # 25 条 query（direct/paraphrase/no_answer）+ 块级标注
 ├── reports/                # 评测报告落盘（eval.json / ablation.json）
 ├── scripts/                # 语料与评测集生成脚本
 ├── src/ragkit/             # 唯一被 import 的代码（分层见上）
-└── tests/                  # 契约测试（268 条）
+└── tests/                  # 契约测试（272 条）
 ```
 
 ## 开发说明

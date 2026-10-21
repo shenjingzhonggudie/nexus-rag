@@ -32,7 +32,12 @@ def build(root: Path, cfg: AppConfig) -> BuiltIndex:
     metadata = []
     all_chunks = []
     for doc in loaded_report.documents:
-        chunks = chunk_document(doc, chunk_size=cfg.chunking.chunk_size, overlap=cfg.chunking.overlap)
+        chunks = chunk_document(
+            doc,
+            strategy=cfg.chunking.strategy,
+            chunk_size=cfg.chunking.chunk_size,
+            overlap=cfg.chunking.overlap,
+        )
         for chunk in chunks:
             vector = embed_text(chunk.text, dim=cfg.embedding.dim)
             ids.append(chunk.chunk_id)

@@ -3,10 +3,8 @@
 from pathlib import Path
 
 from ragkit.config import AppConfig
-from ragkit.evaluation import VARIANTS, load_qrels, run_ablation
+from ragkit.evaluation import Qrel, VARIANTS, run_ablation
 from ragkit.index import build
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_variants_contract():
@@ -19,8 +17,13 @@ def test_variants_contract():
 
 
 def test_run_ablation_structure(tmp_path):
-    qrels = load_qrels(ROOT / "data" / "eval" / "qrels.json")
-    built = build(ROOT / "data" / "raw", AppConfig(index_dir=tmp_path / "idx"))
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    (raw / "a.md").write_text(
+        "# 主题A\n\n## 小节1\n\n内容一\n\n## 小节2\n\n内容二\n", encoding="utf-8"
+    )
+    built = build(raw, AppConfig(index_dir=tmp_path / "idx"))
+    qrels = [Qrel(query="内容一", relevant=frozenset([built.store.ids[0]]))]
 
     results = run_ablation(built, qrels)
 

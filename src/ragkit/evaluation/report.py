@@ -10,20 +10,13 @@ from ragkit.index.assets import BuiltIndex
 from ragkit.retrieval.pipeline import search
 
 
-def _dedup_doc_ids(results) -> list[str]:
-    """从检索结果提取 doc_id 并去重，保持首次出现顺序。
+def _extract_chunk_ids(results) -> list[str]:
+    """从检索结果提取 chunk_id 序列（块级评测单元）。
 
-    评测单元是文档（第 18 轮决策 2）：一个文档的多个块都挤进 top-k 时，
-    只算一次——否则会虚高 recall（同一个文档被自己反复命中）。
+    评测单元是块（chunk，对应文档里的一个 ``##`` 小节）：标注和检索都按
+    chunk_id 对齐。融合已按 chunk_id 去重，直接提取即可。
     """
-    seen = set()
-    out: list[str] = []
-    for sc in results:
-        doc_id = sc.chunk.doc_id
-        if doc_id not in seen:
-            seen.add(doc_id)
-            out.append(doc_id)
-    return out
+    return [sc.chunk.chunk_id for sc in results]
 
 
 @dataclass
@@ -31,7 +24,7 @@ class QueryResult:
     """单条 query 的评测明细，供消融逐条对比。"""
 
     query: str
-    retrieved: list[str]          # 去重后的 doc_id 序列
+    retrieved: list[str]          # 检索返回的 chunk_id 序列
     recall_at: dict[int, float]   # k -> recall
     mrr: float
     total_ms: float               # 检索 trace 总耗时
@@ -133,13 +126,13 @@ def evaluate(
         else:
             warm_ms.append(total)
 
-        docs = _dedup_doc_ids(result.results)
+        chunks = _extract_chunk_ids(result.results)
         per_query.append(
             QueryResult(
                 query=qrel.query,
-                retrieved=docs,
-                recall_at={k: recall_at_k(docs, qrel.relevant, k) for k in ks},
-                mrr=mrr(docs, qrel.relevant),
+                retrieved=chunks,
+                recall_at={k: recall_at_k(chunks, qrel.relevant, k) for k in ks},
+                mrr=mrr(chunks, qrel.relevant),
                 total_ms=total,
             )
         )

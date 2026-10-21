@@ -33,7 +33,7 @@ def test_load_from_yaml_overrides(tmp_path: Path):
     cfg = config.load_config(yaml_file, environ={})
     assert cfg.retrieval.top_k == 30
     assert cfg.retrieval.final_k == 5  # default value
-    assert cfg.chunking.chunk_size == 400
+    assert cfg.chunking.chunk_size == 300
 
 
 def test_empty_file_uses_defaults(tmp_path: Path):
@@ -41,7 +41,7 @@ def test_empty_file_uses_defaults(tmp_path: Path):
     empty_file.write_text("")
     cfg = config.load_config(empty_file, environ={})
     assert cfg.retrieval.top_k == 20
-    assert cfg.chunking.chunk_size == 400
+    assert cfg.chunking.chunk_size == 300
 
 
 def test_non_mapping_top_level_rejected(tmp_path: Path):
@@ -261,7 +261,7 @@ def test_snapshot_keeps_other_fields(tmp_path: Path):
     appconfig = config.load_config(yaml_file, environ={})
     snapshot = appconfig.snapshot()
     assert snapshot["retrieval"]["top_k"] == 40
-    assert snapshot["chunking"]["chunk_size"] == 400  # default value
+    assert snapshot["chunking"]["chunk_size"] == 300  # default value
 
 
 def test_repr_does_not_leak_api_key(tmp_path: Path):

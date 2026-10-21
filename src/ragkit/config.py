@@ -64,8 +64,8 @@ class ChunkingConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    strategy: Literal["fixed", "recursive"] = "fixed"  # 文档切分策略。
-    chunk_size: int = Field(default=400, gt=0)  # 每个文本片段的目标长度。
+    strategy: Literal["fixed", "recursive", "heading"] = "heading"  # 文档切分策略（默认按 ## 标题分块，块级标注用）。
+    chunk_size: int = Field(default=300, gt=0)  # 每个文本片段的目标长度。
     overlap: int = Field(default=50, ge=0)  # 相邻片段之间重复的字符数。
 
     @model_validator(mode="after")
