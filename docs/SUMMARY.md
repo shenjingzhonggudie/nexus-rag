@@ -112,7 +112,6 @@
 
 | 项 | 触发信号 |
 |---|---|
-| 真语义 embedding（dense 腿重估） | 拿到 embedding 模型/API 时 |
 | cross-encoder rerank | 接入真模型后重评 rerank |
 | `openai_compatible` 真实生成 | 拿到 LLM API 密钥 + 网络可用 |
 | 增量更新 | 全量重建实测慢到痛 |

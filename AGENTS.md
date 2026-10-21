@@ -48,7 +48,7 @@ cd "C:\Users\王佳浩\Desktop\项目"
 
 1. **融合 = 加权排名融合，在 `rerank()` 里实现**：`S(d) = α·S1(d) + (1−α)·S2(d)`，`S_i = 1/(60 + rank_i)`，`fusion_alpha = 0.9`（BM25 权重 0.9 / dense 权重 0.1）。**`weighted_fuse` 已删除**——加权融合属于精排阶段职责，与等权 `rrf_fuse` 分开，避免两份几乎相同的实现。
 2. **`rerank_enabled` 默认 `True`**（开启加权融合）：221 条标注上实测比等权 RRF **recall@1 +0.039**。注意这里的 `rerank` 已经不是"用 dense 向量重排"——那个版本（让 dense 分数一票否决 BM25）实测 **−0.039**，已废弃。两种融合的取舍：加权 **@1 更高**（0.38 vs 0.34），等权 **@5 更高**（0.59 vs 0.57）。
-3. **hashing dense 是字面级替身，不懂语义**：这是它的固有限制，不是 bug。接真 embedding（BGE，已实现 `embeddings/bge.py`）后重估 dense 腿与 rerank。
+3. **hashing dense 是字面级替身，不懂语义**：这是它的固有限制，不是 bug。**已接入 BGE**（`embeddings/bge.py`，可选依赖组 `.[embedding]`）：dense 腿的边际贡献从 **+0.004 提升到 +0.039**，`dense_only` 的 MRR 从 0.319 升到 0.421。
 4. **标注绝不绑切分**（本轮最重要的约定）：答案标「文档 + 小节字符区间」，评测用**区间重叠**判定。千万不要改成标 `chunk_id`——切分策略一改就全废。
 5. **拒答是两层判据**：① `unknown_entities`——查询里首字母大写的英文专有名词（Kafka / JVM）若语料中从未出现，**强制 `match_score=0`**；② 实词 idf 加权覆盖率低于阈值（默认 0.05）。稠密腿永远返回 top_k，所以"结果为空"根本不成立；融合分也不能当阈值（排名分 0.012~0.017）。实测：拒答准确率 100%、误拒率 0.8%。**`v-model` / `v-if` 这类小写框架指令不能当外来实体**，否则会稳定误拒正常问题。
 6. **评测必须按来源分组报告**：`internal`（读正文出题，**能力基准**，recall@1=0.390）与 `external`（只看标题出题，**真实用户视角**，recall@1=0.282）**并列报告，不报合计**——合计取决于两组题目比例，不是系统能力。对内外一致：README、`eval` 输出、面试话术都一样。
@@ -95,7 +95,6 @@ cd "C:\Users\王佳浩\Desktop\项目"
 
 | 项 | 触发信号 |
 |---|---|
-| 真语义 embedding 验证（`bge.py` 已实现，待实测） | 装上 `.[embedding]` 并下载 BGE 模型后跑 `build` + `eval` |
 | cross-encoder rerank | 接真模型后重评 rerank |
 | `openai_compatible` 真实生成 | 拿到 LLM API key（`generation/answer.py` 已有 fail-fast 分支，只改函数体） |
 | 增量更新 | 全量重建慢到痛 |
