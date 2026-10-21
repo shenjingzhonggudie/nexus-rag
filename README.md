@@ -2,6 +2,8 @@
 
 [![tests](https://github.com/shenjingzhonggudie/nexus-rag/actions/workflows/tests.yml/badge.svg)](https://github.com/shenjingzhonggudie/nexus-rag/actions/workflows/tests.yml)
 
+> 仓库名为 `nexus-rag`（历史原因），项目与 Python 包名统一为 **RAGKit**（`ragkit`）。
+
 从零手搓的中文 RAG（检索增强生成）系统，覆盖 **加载 → 分块 → 向量化 → 建库 → 混合检索 → 重排 → 生成 → 评测 → 消融** 全链路。核心算法（BM25、RRF 融合、重排、拒答、评测指标）全部自己实现。
 
 **设计前提**：不使用 LangChain、LlamaIndex 等 RAG 框架；默认模式**离线可运行、不需要 API Key、不联网**。真实向量模型与 LLM 只作为可选适配器接入（当前为 hashing 字面级 embedding + 抽取式回答）。
@@ -64,7 +66,7 @@
 
 ```powershell
 # 1. 进入项目目录
-cd "C:\Users\王佳浩\Desktop\项目"
+cd path/to/nexus-rag          # 换成你 clone 下来的目录
 
 # 2. 创建虚拟环境（用 3.12；不要用 3.14，部分依赖可能缺少预编译包）
 py -3.12 -m venv .venv
@@ -114,30 +116,6 @@ py -3.12 -m venv .venv
 **退出码约定**：`0` = 成功（**含拒答**——拒答是业务正常结果，不是错误）；`1` = 运行错误（配置非法 / 索引缺失损坏 / 语料目录不存在）；`2` = 用法错误（argparse 自带）。
 
 **配置优先级**：命令行参数 > 环境变量（`RAG__*` 前缀）> YAML 配置 > 模型默认值。默认 `data_dir = data/raw`、`index_dir = data/index`。
-
-## Docker
-
-镜像**不含语料与索引**——两者都是可再生产物（在 `.gitignore` 里），所以运行时挂载：
-
-```powershell
-# 1. 宿主机先把索引建好（需要 data/raw + 一次 build）
-ragkit build
-
-# 2. 构建并启动（挂载 data/，否则容器里没有索引可查）
-docker build -t ragkit .
-docker run --rm -p 8000:8000 -v "${PWD}/data:/app/data" ragkit
-
-# 3. 验证
-curl http://localhost:8000/healthz
-```
-
-**为什么不在镜像里 build**：`data/raw` 是第三方文档，再分发受各自许可证约束；而且
-100 篇编码要跑几分钟，不适合放进构建阶段。
-
-**为什么默认不装 BGE**：`pip install .` 只装 `pyyaml/pydantic/jieba/numpy`，镜像约 400MB。
-要用语义模型需改 Dockerfile 为 `pip install ".[embedding]"` 并把模型预下载进镜像（再 +1.5GB）。
-
-> 该 Dockerfile **尚未在真实 Docker 环境验证**（开发机未安装 Docker）。
 
 ## 架构分层
 
@@ -312,7 +290,7 @@ evaluation/   覆盖式 recall@k / MRR + 拒答指标 + 小节级标注（区间
 └── tests/                  # 契约测试（287 条）
 ```
 
-**数据来源与许可证**：语料取自 Kubernetes / Docker / Python / Vue / React 的公开
+**数据来源与许可证**：语料取自 Kubernetes / TiDB / Vue / React 的公开
 文档仓库，各自许可证见 `data/SOURCES.md`。仓库只提交**下载脚本与来源清单**，
 不提交第三方正文——既避免体积膨胀，也规避再分发许可风险。
 
@@ -341,7 +319,7 @@ evaluation/   覆盖式 recall@k / MRR + 拒答指标 + 小节级标注（区间
 
 | 状态 | 内容 |
 |---|---|
-| ✅ 已完成 | 骨架 → 领域模型/配置 → 加载/分块 → 向量化/向量库 → BM25/混合检索/融合/重排 → 建库 → 生成 → CLI → HTTP API → 评测 → 消融 → **真实语料（100 篇）+ BGE 语义向量 + 加权排名融合 + 双层拒答 + CI/Docker** |
+| ✅ 已完成 | 骨架 → 领域模型/配置 → 加载/分块 → 向量化/向量库 → BM25/混合检索/融合/重排 → 建库 → 生成 → CLI → HTTP API → 评测 → 消融 → **真实语料（100 篇）+ BGE 语义向量 + 加权排名融合 + 双层拒答 + CI** |
 | ⬜ 扩展（触发信号驱动） | cross-encoder rerank、`openai_compatible` 真实生成、增量更新、HTML/PDF 加载器、FastAPI 迁移、鉴权、盲测集 80/20 |
 
 ## 说明

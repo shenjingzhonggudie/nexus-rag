@@ -20,7 +20,7 @@ hashing 字面级 embedding（离线零依赖）。真语义模型是**可选依
 ## 怎么跑
 
 ```powershell
-cd "C:\Users\王佳浩\Desktop\项目"
+cd path/to/nexus-rag                             # 换成你 clone 下来的目录
 .\.venv\Scripts\python.exe -m pytest -q          # 跑测试（预期 287 passed）
 .\.venv\Scripts\ragkit.exe build                  # 建库（data/raw → data/index）
 .\.venv\Scripts\ragkit.exe ask "问题"             # 问答
@@ -73,7 +73,7 @@ cd "C:\Users\王佳浩\Desktop\项目"
 
 | 路径 | 内容 | 可否再生 |
 |---|---|---|
-| `data/raw/` | 公开技术文档正文（K8s / Docker / Python / Vue / React） | ✅ `python scripts/fetch_docs.py`（需联网） |
+| `data/raw/` | 公开技术文档正文（K8s / TiDB / Vue / React） | ✅ `python scripts/fetch_docs.py`（需联网） |
 | `data/eval/qrels.json` | 小节级标注：文档 + 字符区间（221 条，五类配比） | ❌ 人工筛选的成果，**必须提交** |
 | `data/eval/qrels.example.json` | 五类标注的格式示例 | — |
 | `data/SOURCES.md` | 数据来源与许可证 | ❌ fetch 时生成，**必须提交** |

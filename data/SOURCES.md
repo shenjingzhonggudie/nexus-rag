@@ -6,7 +6,6 @@
 | 技术栈 | 来源 | 仓库 | 许可证 |
 |---|---|---|---|
 | k8s | Kubernetes 中文文档（概念篇） | `kubernetes/website` | CC BY 4.0 |
-| docker | Docker 官方文档（manuals，英文） | `docker/docs` | Apache-2.0 |
 | tidb | TiDB 中文文档（开发指南） | `pingcap/docs-cn` | Apache-2.0 |
 | vue | Vue 3 中文文档 | `vuejs-translations/docs-zh-cn` | MIT |
 | react | React 中文文档 | `reactjs/zh-hans.react.dev` | CC BY 4.0 |
