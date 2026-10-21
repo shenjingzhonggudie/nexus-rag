@@ -15,15 +15,15 @@ def test_variants_contract():
     # 单腿组同时关 rerank，隔离变量；alpha_* 组只改融合权重，观察 α 敏感度。
     assert list(VARIANTS) == [
         "baseline",
-        "alpha_08",
-        "alpha_07",
+        "alpha_09",
+        "alpha_05",
         "no_rerank",
         "bm25_only",
         "dense_only",
     ]
     assert VARIANTS["baseline"] == {}
-    assert VARIANTS["alpha_08"] == {"fusion_alpha": 0.8}
-    assert VARIANTS["alpha_07"] == {"fusion_alpha": 0.7}
+    assert VARIANTS["alpha_09"] == {"fusion_alpha": 0.9}
+    assert VARIANTS["alpha_05"] == {"fusion_alpha": 0.5}
     assert VARIANTS["no_rerank"] == {"rerank_enabled": False}
     assert VARIANTS["bm25_only"] == {"dense_enabled": False, "rerank_enabled": False}
     assert VARIANTS["dense_only"] == {"sparse_enabled": False, "rerank_enabled": False}
@@ -44,8 +44,8 @@ def test_run_ablation_structure(tmp_path):
 
     assert list(results) == [
         "baseline",
-        "alpha_08",
-        "alpha_07",
+        "alpha_09",
+        "alpha_05",
         "no_rerank",
         "bm25_only",
         "dense_only",

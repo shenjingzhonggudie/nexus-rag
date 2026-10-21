@@ -749,8 +749,8 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 
 **耗时口径澄清（本轮实测发现）**：`evaluate` 的“冷启动”是**进程内首查**，**不含 jieba**——因为 `built` 在 build/load_index 时已经加载了 jieba。真正的 jieba 冷启动（~1.8s + BM25 重建分词）发生在 build/load_index 层，不属检索耗时。检索各阶段的热耗时看 `RetrievalTrace`（第 13 轮起就有），本轮把它们汇总成 P50/P95/均值。
 
-**实测基线**（100 篇文档、221 条标注、bge embedding）：`internal recall@1 = 0.390`、
-`MRR = 0.502`；`external recall@1 = 0.282`、`MRR = 0.338`（正式报告按 `internal` /
+**实测基线**（100 篇文档、221 条标注、bge embedding、α=0.7）：`internal recall@1 = 0.375`、
+`MRR = 0.509`；`external recall@1 = 0.282`、`MRR = 0.355`（正式报告按 `internal` /
 `external` 分组，见 README）。拒答准确率 **1.000**、误拒率 **0.005**。
 
 ### 消融实验（`run_ablation`，第 19 轮；2026-10-21 在 221 条标注上重测）
@@ -758,17 +758,18 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 **设计契约（不改）**：单变量对照——每次只改一个开关，其余保持 baseline；
 **单腿组必须同时关 rerank**（否则 rerank 会把另一条腿拉进来算加权，就不是纯单腿）。
 
-`VARIANTS` 固定 6 组：`baseline`（α=0.9）/ `alpha_08` / `alpha_07` /
+`VARIANTS` 固定 6 组：`baseline`（α=0.7，默认）/ `alpha_09` / `alpha_05` /
 `no_rerank`（等权 RRF）/ `bm25_only` / `dense_only`，`test_ablation.py` 锁定。
+**自洽性检查**：`alpha_05` 与 `no_rerank` 每列完全相同——α=0.5 的加权就是等权 RRF。
 
 **完整数字见 README「评测与消融」**（bge 与 hashing 两张表）。结论：
 
 1. **hashing 下 dense 腿是负资产**：`bm25_only` 的 MRR 0.388 高于任何融合组——
    字面哈希把"词面像但无关"的块排上来。这是"必须换真语义向量"的最强证据；
-2. **BGE 下 dense 腿转正（+0.039），但 α=0.9 权重过高**：等权 0.433 > α=0.7/0.8 0.431
-   > α=0.9 0.419。新增的 external 题更口语化、更依赖语义，dense 该有更大话语权；
+2. **BGE 下 dense 腿转正（+0.032）**，加权 α=0.7 的 MRR 0.431 与等权 RRF 0.433
+   基本打平；α=0.9 的 `@1` 最高（0.335）但 MRR 最低（0.419）；
 3. **α 敏感度不大**（MRR 波动 ≤0.014），**embedding 质量才是主要矛盾**
-   （`dense_only` 的 MRR：hashing 0.277 → bge 0.392）。
+   （`dense_only` 的 MRR：hashing 0.277 → bge 0.392，差 0.115）。
 
 **必须警惕**：145 条时曾得出"加权 α=0.9 优于等权 +0.039"，扩到 221 条后被推翻——
 **小样本结论不可靠**，调参与报告要分开（盲测集尚未落地）。
@@ -839,7 +840,7 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | 10 | CLI（`ragkit build` / `ragkit ask`） | ✅ 完成（第 16 轮，239 passed）：全链路暴露成命令；`--json` / REPL 为扩展 |
 | 11 | HTTP API + 请求日志 | ✅ 完成（第 17 轮，252 passed）：`POST /ask` / `GET /healthz`，索引常驻；FastAPI 迁移 / 鉴权为扩展 |
 | 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮起，287 passed）：覆盖式 recall@k / MRR / 拒答指标 / 耗时表；**小节级标注（文档 + 字符区间，不绑切分）** |
-| 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮；第 29 轮扩到 6 组、在 221 条上重测）：hashing 下 dense 腿 **−0.017**（负资产，纯 BM25 最优）、bge 下 **+0.039**；rerank **−0.007 / +0.005** |
+| 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮；在 221 条上重测并扩到 6 组）：hashing 下 dense 腿 **−0.013**（负资产，纯 BM25 最优）、bge 下 **+0.032**；rerank 与等权 RRF 打平（**−0.003 / −0.002**） |
 | 16 | 真实语料 + 人工标注 | ⬜ 待做：`scripts/fetch_docs.py` 拉公开文档 → 人工标注 221 条 → `check_qrels.py` 质检 |
 | 14 | 交付：README 收尾 + 打包 | ✅ 完成（第 21 轮）：README 重写（四命令/架构/评测结论）、版本升 1.0.0、pyproject 加 readme 字段 |
 | 15 | 总结报告 | ✅ 完成（第 22 轮）：`SUMMARY.md` 沉淀全项目——架构全景、消融结论、设计决策、踩坑规律、演进方向 |

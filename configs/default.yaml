@@ -5,7 +5,7 @@
 retrieval:
   top_k: 20            # 粗排召回候选数
   final_k: 5           # 最终返回给生成阶段的证据条数（必须 <= top_k）
-  fusion_alpha: 0.9    # 加权排名融合里 BM25 腿权重（0~1，0.9=BM25 为主）
+  fusion_alpha: 0.7    # 加权排名融合里 BM25 腿权重（0~1）；0.7 在 221 条标注上最优，0.9 偏保守
   sparse_enabled: true # 是否启用 BM25 稀疏召回
   dense_enabled: true  # 是否启用向量稠密召回
   rerank_enabled: false # 是否启用重排（默认关：dense 余弦精排负贡献，见消融结论）

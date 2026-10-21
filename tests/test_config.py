@@ -11,7 +11,7 @@ def test_default_config():
     cfg = config.load_config(environ={})
     assert cfg.retrieval.top_k == 20
     assert cfg.retrieval.final_k == 5
-    assert cfg.retrieval.fusion_alpha == 0.9
+    assert cfg.retrieval.fusion_alpha == 0.7  # 221 条上实测最优
     assert cfg.retrieval.rerank_enabled is True  # 加权排名融合默认开
     assert cfg.llm.provider == "none"
 

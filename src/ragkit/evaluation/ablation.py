@@ -16,12 +16,13 @@ from ragkit.index.assets import BuiltIndex
 # - `rerank_enabled` 默认 True（加权排名融合 S = α·S1 + (1−α)·S2），
 #   所以"关掉它"（退化为等权 RRF）才是有意义的对照；
 # - 单腿组同时关 rerank：否则 rerank 会把另一条腿也拉进来算加权，就不是纯单腿了；
-# - `alpha_08` / `alpha_07` 用来观察 α 的敏感度：0.9 是默认的"BM25 为主"保守值。
+# - `fusion_alpha` 默认 0.7（221 条上最优）。所以 α 扫描点是 **0.5 / 0.7(默认) / 0.9**：
+#   `alpha_05` 应与 `no_rerank` 几乎一致（α=0.5 等价于等权 RRF），可当自洽性检查。
 VARIANTS: dict[str, dict] = {
-    "baseline": {},                                          # 加权排名融合（默认，α=0.9）
-    "alpha_08": {"fusion_alpha": 0.8},                       # 同一融合方式，权重更均衡
-    "alpha_07": {"fusion_alpha": 0.7},                       # 再往等权靠
-    "no_rerank": {"rerank_enabled": False},                  # 等权 RRF（只看名次，不加权）
+    "baseline": {},                                          # 加权排名融合（默认，α=0.7）
+    "alpha_09": {"fusion_alpha": 0.9},                       # 更偏 BM25（旧默认，看差多少）
+    "alpha_05": {"fusion_alpha": 0.5},                       # 等权（应≈no_rerank）
+    "no_rerank": {"rerank_enabled": False},                  # 完全关掉加权，退化为等权 RRF
     "bm25_only": {"dense_enabled": False, "rerank_enabled": False},
     "dense_only": {"sparse_enabled": False, "rerank_enabled": False},
 }

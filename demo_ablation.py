@@ -29,17 +29,17 @@ QRELS = Path("data/eval/qrels.json")
 # 组名 -> 展示标签 / rerank 状态。
 # baseline 是"默认全开"，不是"无处理基线"，表里必须标出来，否则容易被误读。
 LABELS = {
-    "baseline": "baseline (a=0.9)",
-    "alpha_08": "a=0.8",
-    "alpha_07": "a=0.7",
+    "baseline": "baseline (a=0.7)",
+    "alpha_09": "a=0.9",
+    "alpha_05": "a=0.5",
     "no_rerank": "no_rerank (RRF)",
     "bm25_only": "bm25_only",
     "dense_only": "dense_only",
 }
 RERANK_STATE = {
     "baseline": "on(weighted)",
-    "alpha_08": "on(weighted)",
-    "alpha_07": "on(weighted)",
+    "alpha_09": "on(weighted)",
+    "alpha_05": "on(weighted)",
     "no_rerank": "off(even)",
     "bm25_only": "off",
     "dense_only": "off",
@@ -106,12 +106,12 @@ def main() -> None:
         f"（加权 vs 等权 RRF）"
     )
     print(
-        f"  alpha=0.8 = {results['alpha_08']['recall_at'][1] - base['recall_at'][1]:+.3f}"
-        f"（相对 0.9 的变化）"
+        f"  alpha=0.9 = {results['alpha_09']['recall_at'][1] - base['recall_at'][1]:+.3f}"
+        f"（相对默认 0.7 的变化）"
     )
     print(
-        f"  alpha=0.7 = {results['alpha_07']['recall_at'][1] - base['recall_at'][1]:+.3f}"
-        f"（相对 0.9 的变化）"
+        f"  alpha=0.5 = {results['alpha_05']['recall_at'][1] - base['recall_at'][1]:+.3f}"
+        f"（相对默认 0.7 的变化）"
     )
 
     out = Path(args.out)
