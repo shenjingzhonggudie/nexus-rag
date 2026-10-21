@@ -1,12 +1,13 @@
 """建库与索引加载的编排：load → chunk → embed → 落盘 → BM25。"""
 
+import json
 from pathlib import Path
 
 import numpy as np
 
 from ragkit.chunking import chunk_document
 from ragkit.config import AppConfig
-from ragkit.embeddings import embed_text
+from ragkit.embeddings import configure, embed_text
 from ragkit.index.assets import BuiltIndex
 from ragkit.index.chunks_store import read_chunks, write_chunks
 from ragkit.loaders import load_dir
@@ -24,6 +25,10 @@ def build(root: Path, cfg: AppConfig) -> BuiltIndex:
     Returns:
         BuiltIndex: 内存中的 BM25、向量库、块映射；坏文件记录在 failures 中。
     """
+    # 先固定 embedding 实现：建库的文档向量与后续检索的 query 向量必须同源
+    configure(
+        provider=cfg.embedding.provider, model_name=cfg.embedding.model_name
+    )
     # 坏文件只进 failures，不会中断整批加载
     loaded_report = load_dir(root)
     # ids / vectors / metadata 三者按下标对应，all_chunks 保存完整块
@@ -45,7 +50,15 @@ def build(root: Path, cfg: AppConfig) -> BuiltIndex:
             metadata.append(chunk.metadata)
         all_chunks.extend(chunks)
     # write 会创建 index_dir，所以必须先于 write_chunks 调用
-    write(cfg.index_dir, dim=cfg.embedding.dim, ids=ids, vectors=vectors, metadata=metadata)
+    write(
+        cfg.index_dir,
+        dim=cfg.embedding.dim,
+        ids=ids,
+        vectors=vectors,
+        metadata=metadata,
+        provider=cfg.embedding.provider,
+        model_name=cfg.embedding.model_name,
+    )
     write_chunks(cfg.index_dir / "chunks.jsonl", all_chunks)
     # 以下直接用本次结果构造内存对象，不重新读盘
     bm25_index = BM25Index(all_chunks)
@@ -62,15 +75,32 @@ def build(root: Path, cfg: AppConfig) -> BuiltIndex:
                       failures=loaded_report.failures)
 
 
-def load_index(index_dir: Path) -> BuiltIndex:
+def load_index(
+    index_dir: Path,
+    *,
+    provider: str = "hashing",
+    model_name: str = "",
+) -> BuiltIndex:
     """从 build 写出的索引目录加载检索资源，无需原始文档和配置。
 
     Args:
         index_dir: 包含向量库文件和 chunks.jsonl 的索引目录。
+        provider: embedding 实现，**必须与建库时一致**（hashing / bge）；
+            不一致会导致 query 向量与文档向量不在同一空间，检索失效。
+        model_name: bge 的模型名或本地路径；hashing 忽略。
 
     Returns:
         BuiltIndex: 加载得到的检索资源；建库时的坏文件信息不落盘，failures 为空。
     """
+    # 索引自描述的 provider 优先（build 时写入 manifest），避免"建库 bge、加载 hashing"的错配
+    try:
+        manifest = json.loads((index_dir / "manifest.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        manifest = {}  # 交给 store.load 报"索引损坏"
+    configure(
+        provider=manifest.get("provider", provider),
+        model_name=manifest.get("model_name", model_name) or model_name,
+    )
     # 先读 manifest，自带维度与行数校验
     store = load(index_dir)
     chunks = read_chunks(index_dir / "chunks.jsonl")

@@ -11,11 +11,16 @@ from ragkit.evaluation.report import evaluate
 from ragkit.index.assets import BuiltIndex
 
 # 4 组对照：组名 -> RetrievalConfig 的覆盖项（其余用默认值）
+#
+# 对照组必须与默认值**相反**才有信息量：
+# - `rerank_enabled` 默认 True（加权排名融合 S = α·S1 + (1−α)·S2），
+#   所以"关掉它"（退化为等权 RRF）才是有意义的对照；
+# - 单腿组同时关 rerank：否则 rerank 会把另一条腿也拉进来算加权，就不是纯单腿了。
 VARIANTS: dict[str, dict] = {
-    "baseline": {},
+    "baseline": {},                                          # 加权排名融合（默认，α=0.9）
+    "no_rerank": {"rerank_enabled": False},                  # 等权 RRF（只看名次，不加权）
     "bm25_only": {"dense_enabled": False, "rerank_enabled": False},
     "dense_only": {"sparse_enabled": False, "rerank_enabled": False},
-    "no_rerank": {"rerank_enabled": False},
 }
 
 
@@ -33,7 +38,7 @@ def run_ablation(
         ks: recall 截断位置。
 
     Returns:
-        dict[str, dict]: 组名（baseline / bm25_only / dense_only / no_rerank）
+        dict[str, dict]: 组名（baseline / with_rerank / bm25_only / dense_only）
             -> {"recall_at": {k: float}, "mrr": float}。键顺序即 VARIANTS 顺序。
     """
     results: dict[str, dict] = {}

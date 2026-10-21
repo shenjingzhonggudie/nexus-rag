@@ -19,13 +19,15 @@ def _scored(chunk_id, text, score, *, source="a.txt", title="标题"):
     return ScoredChunk(chunk=chunk, score=score, stage="rerank")
 
 
-def _result(items):
-    """items: (chunk_id, text, score) 三元组列表。"""
+def _result(items, match_score=None):
+    """items: (chunk_id, text, score) 三元组列表；match_score 是拒答判据。"""
     trace = RetrievalTrace(
         stages=[StageTrace(name="rerank", latency_ms=1.0, candidate_count=len(items))]
     )
     return RetrievalResult(
-        results=[_scored(cid, text, score) for cid, text, score in items], trace=trace
+        results=[_scored(cid, text, score) for cid, text, score in items],
+        trace=trace,
+        match_score=match_score,
     )
 
 
@@ -64,6 +66,48 @@ def test_refused_when_results_empty():
     assert answer.contexts == []
     assert answer.confidence == 0.0
     assert answer.trace is result.trace             # 拒答也挂：检索确实发生了
+
+
+def test_refused_when_match_score_below_threshold():
+    # 有结果但实词覆盖率低 → 按阈值拒答。稠密腿永远返回 top_k，所以
+    # "结果不为空"不能证明"语料里有答案"，这正是阈值判据要补的洞。
+    result = _result([("a#1@0", "不相关原文", 0.02)], match_score=0.3)
+
+    answer = answer_question(
+        "Redis 的持久化有哪几种方式？", result, llm=LLMConfig(), refuse_threshold=0.5
+    )
+
+    assert answer.refused is True
+    assert answer.answer == ""
+    assert answer.citations == []
+    assert answer.trace is result.trace
+
+
+def test_not_refused_when_match_score_above_threshold():
+    result = _result([("a#1@0", "相关原文", 0.02)], match_score=0.8)
+
+    answer = answer_question("问题？", result, llm=LLMConfig(), refuse_threshold=0.5)
+
+    assert answer.refused is False
+    assert answer.answer == "相关原文"
+
+
+def test_threshold_zero_disables_score_check():
+    # 阈值 0 = 不启用分数判据，只有"结果为空"才拒答（向后兼容的默认）
+    result = _result([("a#1@0", "原文", 0.02)], match_score=0.0)
+
+    answer = answer_question("问题？", result, llm=LLMConfig(), refuse_threshold=0.0)
+
+    assert answer.refused is False
+
+
+def test_none_match_score_does_not_refuse():
+    # match_score=None（稀疏腿关闭、或查询无实词）表示"无判定信号"，不该拒答
+    result = _result([("a#1@0", "原文", 0.02)], match_score=None)
+
+    answer = answer_question("问题？", result, llm=LLMConfig(), refuse_threshold=0.5)
+
+    assert answer.refused is False
 
 
 def test_openai_compatible_raises_not_implemented():

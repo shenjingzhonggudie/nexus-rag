@@ -33,7 +33,16 @@ class VectorStore:
         return len(self.ids)
 
 
-def write(directory: Path, *, dim: int, ids: list[str], vectors: list[list[float]], metadata: list[dict]) -> None:
+def write(
+    directory: Path,
+    *,
+    dim: int,
+    ids: list[str],
+    vectors: list[list[float]],
+    metadata: list[dict],
+    provider: str = "hashing",
+    model_name: str = "",
+) -> None:
     """把向量、ids 和 metadata 写入目录，最后写 manifest 作为提交点。
 
     Args:
@@ -42,6 +51,9 @@ def write(directory: Path, *, dim: int, ids: list[str], vectors: list[list[float
         ids: 每个 chunk 的唯一标识，与 vectors、metadata 按下标对应。
         vectors: 每个 chunk 的向量，每个向量长度都必须等于 dim。
         metadata: 每个 chunk 的附加信息，长度必须与 ids 相同。
+        provider: 生成向量的 embedding 实现名（hashing / bge），写入 manifest
+            供 load_index 自描述还原——避免"建库用 bge、加载用 hashing"的错配。
+        model_name: bge 的模型名/本地路径；hashing 为空。
 
     Returns:
         None: 全部文件写入完成后返回。
@@ -77,10 +89,20 @@ def write(directory: Path, *, dim: int, ids: list[str], vectors: list[list[float
     os.replace(tmp_ids,     d / "ids.json")
     os.replace(tmp_meta,    d / "metadata.json")
 
-    # 3) 最后写 manifest（提交点）
+    # 3) 最后写 manifest（提交点）；provider/model_name 让索引自描述 embedding 实现
     with open(d / "manifest.json", "w", encoding="utf-8") as f:
-        json.dump({"version": 1, "dim": dim,
-                   "count": len(ids)}, f, ensure_ascii=False, indent=2)
+        json.dump(
+            {
+                "version": 1,
+                "dim": dim,
+                "count": len(ids),
+                "provider": provider,
+                "model_name": model_name,
+            },
+            f,
+            ensure_ascii=False,
+            indent=2,
+        )
 
 
 def load(directory: Path) -> VectorStore:

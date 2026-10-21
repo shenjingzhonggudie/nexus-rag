@@ -11,8 +11,8 @@ def test_default_config():
     cfg = config.load_config(environ={})
     assert cfg.retrieval.top_k == 20
     assert cfg.retrieval.final_k == 5
-    assert cfg.retrieval.fusion == "weighted"
     assert cfg.retrieval.fusion_alpha == 0.9
+    assert cfg.retrieval.rerank_enabled is True  # 加权排名融合默认开
     assert cfg.llm.provider == "none"
 
 
@@ -64,7 +64,6 @@ def test_non_mapping_top_level_rejected(tmp_path: Path):
             ("top_k", "final_k"),
             id="final-k-exceeds-top-k",
         ),
-        pytest.param("retrieval: {fusion: bm25}", ("fusion",), id="invalid-fusion"),
         pytest.param(
             "chunking: {chunk_size: -1}",
             ("chunk_size",),
@@ -122,7 +121,7 @@ def test_env_merges_deeply(tmp_path: Path):
     yaml_content = """
     retrieval:
         top_k: 30
-        fusion: weighted
+        fusion_alpha: 0.8
     """
     environ = {
         "RAG__RETRIEVAL__FINAL_K": "7"
@@ -132,8 +131,8 @@ def test_env_merges_deeply(tmp_path: Path):
 
     cfg = config.load_config(yaml_file, environ=environ)
     assert cfg.retrieval.top_k == 30  # from YAML
-    assert cfg.retrieval.fusion == "weighted"
-    assert cfg.retrieval.final_k == 7
+    assert cfg.retrieval.fusion_alpha == 0.8  # from YAML
+    assert cfg.retrieval.final_k == 7  # from env
 
 
 def test_env_type_conversion(tmp_path: Path):

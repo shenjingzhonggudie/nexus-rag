@@ -5,11 +5,11 @@
 retrieval:
   top_k: 20            # 粗排召回候选数
   final_k: 5           # 最终返回给生成阶段的证据条数（必须 <= top_k）
-  fusion: weighted     # 融合方式：rrf（等权）| weighted（加权排名融合）
-  fusion_alpha: 0.9    # weighted 融合时 BM25 腿权重（0~1，0.9=BM25 为主）
+  fusion_alpha: 0.9    # 加权排名融合里 BM25 腿权重（0~1，0.9=BM25 为主）
   sparse_enabled: true # 是否启用 BM25 稀疏召回
   dense_enabled: true  # 是否启用向量稠密召回
   rerank_enabled: false # 是否启用重排（默认关：dense 余弦精排负贡献，见消融结论）
+  refuse_threshold: 0.05 # 拒答阈值：查询实词覆盖率低于它则拒答；0 = 不启用
 
 # 分块参数
 chunking:
@@ -19,8 +19,9 @@ chunking:
 
 # 向量化参数
 embedding:
-  provider: hashing    # 本阶段仅支持 hashing
-  dim: 512             # 向量维度
+  provider: hashing                   # hashing（字面级，零依赖）| bge（本地语义模型，需 sentence-transformers）
+  dim: 512                            # 向量维度；切 bge 时必须与模型输出维度一致
+  model_name: BAAI/bge-small-zh-v1.5  # bge 模型名或本地路径；hashing 忽略
 
 # 大模型参数（默认关闭，离线可运行）
 llm:

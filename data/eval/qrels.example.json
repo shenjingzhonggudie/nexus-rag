@@ -1,0 +1,67 @@
+[
+  {
+    "query": "连接池为什么不能把最大连接数设得很大？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "mysql/连接池.md",
+        "section": "最大连接数",
+        "start": 1200,
+        "end": 2600
+      }
+    ]
+  },
+  {
+    "query": "服务一到高峰期就报连接超时，一般从哪里查起？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "mysql/连接池.md",
+        "section": "连接超时",
+        "start": 3200,
+        "end": 3900
+      }
+    ]
+  },
+  {
+    "query": "连接池的容量规划和数据库的连接上限之间是什么关系？",
+    "type": "multi_block",
+    "answers": [
+      {
+        "doc": "mysql/连接池.md",
+        "section": "最大连接数",
+        "start": 1200,
+        "end": 2600
+      },
+      {
+        "doc": "mysql/连接池.md",
+        "section": "全局视角的容量规划",
+        "start": 5400,
+        "end": 6800
+      }
+    ]
+  },
+  {
+    "query": "Redis 的持久化和 MySQL 的事务日志在可靠性上有什么不同？",
+    "type": "cross_doc",
+    "answers": [
+      {
+        "doc": "redis/持久化.md",
+        "section": "RDB 与 AOF",
+        "start": 800,
+        "end": 2400
+      },
+      {
+        "doc": "mysql/事务日志.md",
+        "section": "redo log 的作用",
+        "start": 1500,
+        "end": 2700
+      }
+    ]
+  },
+  {
+    "query": "这个项目支持分布式事务的自动补偿吗？",
+    "type": "no_answer",
+    "answers": []
+  }
+]

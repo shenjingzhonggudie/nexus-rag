@@ -4,6 +4,44 @@ from ragkit.errors import LoadError
 from ragkit.loaders import load_dir, load_file
 
 
+def test_front_matter_stripped_and_title_used(tmp_path):
+    # 真实技术文档（Hugo/Jekyll/Docusaurus）普遍带 YAML front matter：
+    # 正文要剥掉元数据，但 title 是有用的可读标题，应优先采用
+    file_path = tmp_path / "a.md"
+    file_path.write_text(
+        "---\ntitle: 概念\nweight: 40\nmain_menu: true\n---\n\n# 正文标题\n\n内容\n",
+        encoding="utf-8",
+    )
+
+    doc = load_file(file_path)
+
+    assert doc.title == "概念"
+    assert "weight:" not in doc.text
+    assert "main_menu" not in doc.text
+    assert "内容" in doc.text
+
+
+def test_no_front_matter_keeps_heading_title(tmp_path):
+    file_path = tmp_path / "b.md"
+    file_path.write_text("# 原生标题\n\n内容\n", encoding="utf-8")
+
+    doc = load_file(file_path)
+
+    assert doc.title == "原生标题"
+    assert doc.text.startswith("# 原生标题")
+
+
+def test_mid_document_divider_not_stripped(tmp_path):
+    # 只剥文件开头的 front matter，正文中间的分隔线不能动
+    file_path = tmp_path / "c.md"
+    file_path.write_text("# 标题\n\n第一段\n\n---\n\n第二段\n", encoding="utf-8")
+
+    doc = load_file(file_path)
+
+    assert "---" in doc.text
+    assert "第二段" in doc.text
+
+
 def test_load_file_returns_document_with_expected_fields(tmp_path):
     file_path = tmp_path / "a.txt"
     file_path.write_text("a", encoding="utf-8")

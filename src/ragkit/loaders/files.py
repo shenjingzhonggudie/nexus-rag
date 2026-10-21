@@ -5,6 +5,45 @@ import re
 from pathlib import Path
 from ragkit.errors import LoadError
 from ragkit.schemas import Document
+from ragkit.text import clean_heading
+
+# 文件开头的 YAML front matter（Hugo / Jekyll / Docusaurus 等静态站点通用）：
+# 形如 ---\ntitle: xxx\nweight: 10\n---\n。只在文件最开头匹配，正文中间的分隔线不受影响。
+_FRONT_MATTER = re.compile(
+    r"\A---[ \t]*\r?\n(?P<body>.*?)\r?\n---[ \t]*(?:\r?\n|\Z)", re.DOTALL
+)
+_FRONT_MATTER_TITLE = re.compile(r"^title:\s*(?P<title>.+?)\s*$", re.MULTILINE)
+
+
+def strip_front_matter(text: str) -> str:
+    """剥离文件开头的 YAML front matter。
+
+    真实技术文档普遍带这一段元数据；不剥离的话 ``weight: 40``、``main_menu: true``
+    会被当成正文参与分块与检索，既污染内容也干扰字符偏移。
+
+    Args:
+        text: 原文。
+
+    Returns:
+        str: 去掉 front matter 后的文本；没有 front matter 时原样返回。
+    """
+    return _FRONT_MATTER.sub("", text, count=1)
+
+
+def _front_matter_title(text: str) -> str | None:
+    """从 front matter 的 ``title:`` 字段取标题；没有则返回 None。
+
+    优先级高于 ``# 一级标题``：压平后的文件名（``content__zh-cn__...__index``）
+    不可读，而 front matter 里的 title 是作者写的可读标题。
+    """
+    matched = _FRONT_MATTER.match(text)
+    if matched is None:
+        return None
+    title = _FRONT_MATTER_TITLE.search(matched.group("body"))
+    if title is None:
+        return None
+    value = title.group("title").strip().strip("'\"")
+    return value or None
 
 
 def load_file(path: Path, *, source: str | None = None) -> Document:
@@ -48,16 +87,21 @@ def load_file(path: Path, *, source: str | None = None) -> Document:
             content = raw.decode("gbk")
             encoding = "gbk"
 
+        # front matter 的 title 优先于文件名；随后正文里也剥掉这段元数据
+        front_title = _front_matter_title(content)
+        content = strip_front_matter(content)
+
         # 默认标题使用不含最后一个扩展名的文件名，例如 a.md 的标题为 a。
-        title = path.stem
-        if path.suffix.lower() in {".md", ".markdown"}:
+        title = front_title or path.stem
+        # 只有在 front matter 没给 title 时，才回退到找 # 一级标题
+        if path.suffix.lower() in {".md", ".markdown"} and front_title is None:
             # Markdown 按行查找首个匹配的 # 标题：允许 0～3 个前导空格、
             # 1～6 个 #，且 # 后必须有空格或制表符；未找到时保留默认标题。
             for line in content.splitlines():
                 heading = re.match(r"^ {0,3}#{1,6}[ \t]+(.+?)\s*$", line)
                 if heading:
-                    # 去掉标题末尾由空白分隔的闭合 #，例如“# 标题 #”得到“标题”。
-                    title = re.sub(r"[ \t]+#+[ \t]*$", "", heading.group(1)).strip()
+                    # clean_heading 统一处理闭合 #、{#anchor}、{/* JSX */} 三种尾巴
+                    title = clean_heading(line.strip()) or title
                     break
         # 将正文、标题和元数据组装为 Document；标题存放在独立的 title 字段。
         # 临时规则：doc_id 取 source，第 3 阶段再重新决定稳定 ID。

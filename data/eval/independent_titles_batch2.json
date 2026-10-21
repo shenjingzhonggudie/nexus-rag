@@ -1,0 +1,752 @@
+[
+  {
+    "id": 0,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
+    "section": "运行控制器的方式"
+  },
+  {
+    "id": 1,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+    "section": "对等聚合发现"
+  },
+  {
+    "id": 2,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+    "section": "分离 DRA 相关 API 的权限"
+  },
+  {
+    "id": 3,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "section": "资源容量跟踪"
+  },
+  {
+    "id": 4,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+    "section": "设计"
+  },
+  {
+    "id": 5,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
+    "section": "期望状态与当前状态"
+  },
+  {
+    "id": 6,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "section": "节点拓扑"
+  },
+  {
+    "id": 7,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__self-healing.md",
+    "section": "自我修复能力"
+  },
+  {
+    "id": 8,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md",
+    "section": "集群网络类型"
+  },
+  {
+    "id": 9,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "section": "节点心跳"
+  },
+  {
+    "id": 10,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "section": "什么是 CGroup v2?"
+  },
+  {
+    "id": 11,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md",
+    "section": "示例:使用来自 kube-state-metrics 的指标查询集群状态"
+  },
+  {
+    "id": 12,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "section": "启用/禁用 API 优先级和公平性"
+  },
+  {
+    "id": 13,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "section": "识别 Linux 节点上的 CGroup 版本"
+  },
+  {
+    "id": 14,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md",
+    "section": "组件配置"
+  },
+  {
+    "id": 15,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "section": "良好的 Webhook 设计的重要性"
+  },
+  {
+    "id": 16,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "section": "配置垃圾收集"
+  },
+  {
+    "id": 17,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "section": "弃用 CGroup v1"
+  },
+  {
+    "id": 18,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md",
+    "section": "加固集群"
+  },
+  {
+    "id": 19,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "section": "递归服务器场景"
+  },
+  {
+    "id": 20,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md",
+    "section": "示例:基于 kube-state-metrics 发出警报"
+  },
+  {
+    "id": 21,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md",
+    "section": "Kubernetes IP 地址范围"
+  },
+  {
+    "id": 22,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "section": "节点状态"
+  },
+  {
+    "id": 23,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "section": "良好实现的示例"
+  },
+  {
+    "id": 24,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md",
+    "section": "基础设施"
+  },
+  {
+    "id": 25,
+    "doc": "tidb/develop__dev-guide-create-database.md",
+    "section": "数据库创建时应遵守的规则"
+  },
+  {
+    "id": 26,
+    "doc": "tidb/develop__dev-guide-optimize-sql-overview.md",
+    "section": "SQL 性能调优"
+  },
+  {
+    "id": 27,
+    "doc": "tidb/develop__dev-guide-delete-data.md",
+    "section": "最佳实践"
+  },
+  {
+    "id": 28,
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "section": "什么是表"
+  },
+  {
+    "id": 29,
+    "doc": "tidb/develop__dev-guide-join-tables.md",
+    "section": "Join 顺序"
+  },
+  {
+    "id": 30,
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "section": "创建索引的最佳实践"
+  },
+  {
+    "id": 31,
+    "doc": "tidb/develop__dev-guide-insert-data.md",
+    "section": "避免热点"
+  },
+  {
+    "id": 32,
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "section": "选择聚簇索引"
+  },
+  {
+    "id": 33,
+    "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
+    "section": "索引的最佳实践"
+  },
+  {
+    "id": 34,
+    "doc": "tidb/develop__dev-guide-gui-mysql-workbench.md",
+    "section": "常见问题"
+  },
+  {
+    "id": 35,
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "section": "选择主键"
+  },
+  {
+    "id": 36,
+    "doc": "tidb/develop__dev-guide-build-cluster-in-cloud.md",
+    "section": "第 1 步:创建 {{{ .starter }}} 实例"
+  },
+  {
+    "id": 37,
+    "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
+    "section": "聚合查询"
+  },
+  {
+    "id": 38,
+    "doc": "tidb/develop__dev-guide-create-database.md",
+    "section": "创建数据库过程"
+  },
+  {
+    "id": 39,
+    "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
+    "section": "对结果进行筛选"
+  },
+  {
+    "id": 40,
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "section": "添加列约束"
+  },
+  {
+    "id": 41,
+    "doc": "tidb/develop__dev-guide-optimize-sql-overview.md",
+    "section": "Schema 设计"
+  },
+  {
+    "id": 42,
+    "doc": "tidb/develop___index.md",
+    "section": "使用 MySQL 客户端软件"
+  },
+  {
+    "id": 43,
+    "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
+    "section": "DML 最佳实践"
+  },
+  {
+    "id": 44,
+    "doc": "tidb/develop__dev-guide-gui-mysql-workbench.md",
+    "section": "前置需求"
+  },
+  {
+    "id": 45,
+    "doc": "tidb/develop__dev-guide-insert-data.md",
+    "section": "在开始之前"
+  },
+  {
+    "id": 46,
+    "doc": "tidb/develop__dev-guide-insert-data.md",
+    "section": "使用 HTAP"
+  },
+  {
+    "id": 47,
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "section": "新建表的同时创建二级索引"
+  },
+  {
+    "id": 48,
+    "doc": "tidb/develop__dev-guide-aws-appflow-integration.md",
+    "section": "注意事项"
+  },
+  {
+    "id": 49,
+    "doc": "tidb/develop__dev-guide-implicit-type-conversion.md",
+    "section": "转换规则"
+  },
+  {
+    "id": 50,
+    "doc": "tidb/develop__dev-guide-optimize-sql.md",
+    "section": "准备工作"
+  },
+  {
+    "id": 51,
+    "doc": "tidb/develop__dev-guide-aws-appflow-integration.md",
+    "section": "前提条件"
+  },
+  {
+    "id": 52,
+    "doc": "tidb/develop__dev-guide-delete-data.md",
+    "section": "在开始之前"
+  },
+  {
+    "id": 53,
+    "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
+    "section": "开始之前"
+  },
+  {
+    "id": 54,
+    "doc": "tidb/develop__dev-guide-hybrid-oltp-and-olap-queries.md",
+    "section": "数据准备"
+  },
+  {
+    "id": 55,
+    "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
+    "section": "字段命名规范"
+  },
+  {
+    "id": 56,
+    "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
+    "section": "限制查询结果数量"
+  },
+  {
+    "id": 57,
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "section": "在已有表中添加二级索引"
+  },
+  {
+    "id": 58,
+    "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
+    "section": "对结果进行排序"
+  },
+  {
+    "id": 59,
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "section": "更进一步"
+  },
+  {
+    "id": 60,
+    "doc": "tidb/develop___index.md",
+    "section": "其他资源"
+  },
+  {
+    "id": 61,
+    "doc": "tidb/develop__dev-guide-mysql-tools.md",
+    "section": "---"
+  },
+  {
+    "id": 62,
+    "doc": "tidb/develop__dev-guide-build-cluster-in-cloud.md",
+    "section": "第 3 步:运行 SQL"
+  },
+  {
+    "id": 63,
+    "doc": "tidb/develop__dev-guide-insert-data.md",
+    "section": "批量插入"
+  },
+  {
+    "id": 64,
+    "doc": "tidb/develop__dev-guide-aws-appflow-integration.md",
+    "section": "第 1 步:注册 TiDB 连接器"
+  },
+  {
+    "id": 65,
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "section": "和其他组件结合"
+  },
+  {
+    "id": 66,
+    "doc": "vue/src__guide__best-practices__accessibility.md",
+    "section": "规范"
+  },
+  {
+    "id": 67,
+    "doc": "vue/src__guide__built-ins__teleport.md",
+    "section": "延迟解析的 Teleport <sup class=\"vt-badge\" data-text=\"3.5+\" />"
+  },
+  {
+    "id": 68,
+    "doc": "vue/src__guide__best-practices__security.md",
+    "section": "首要规则:不要使用无法信赖的模板"
+  },
+  {
+    "id": 69,
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "section": "包含/排除"
+  },
+  {
+    "id": 70,
+    "doc": "vue/src__guide__components__props.md",
+    "section": "单向数据流"
+  },
+  {
+    "id": 71,
+    "doc": "vue/src__guide__built-ins__teleport.md",
+    "section": "多个 Teleport 共享目标"
+  },
+  {
+    "id": 72,
+    "doc": "vue/src__guide__essentials__conditional.md",
+    "section": "`<template>` 上的 `v-if`"
+  },
+  {
+    "id": 73,
+    "doc": "vue/src__guide__essentials__lifecycle.md",
+    "section": "生命周期图示"
+  },
+  {
+    "id": 74,
+    "doc": "vue/src__guide__best-practices__production-deployment.md",
+    "section": "使用构建工具"
+  },
+  {
+    "id": 75,
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "section": "异步依赖"
+  },
+  {
+    "id": 76,
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "section": "嵌套使用"
+  },
+  {
+    "id": 77,
+    "doc": "vue/src__guide__essentials__event-handling.md",
+    "section": "监听事件"
+  },
+  {
+    "id": 78,
+    "doc": "vue/src__guide__essentials__forms.md",
+    "section": "组件上的 `v-model`"
+  },
+  {
+    "id": 79,
+    "doc": "vue/src__guide__best-practices__security.md",
+    "section": "Vue 自身的安全机制"
+  },
+  {
+    "id": 80,
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "section": "缓存实例的生命周期"
+  },
+  {
+    "id": 81,
+    "doc": "vue/src__guide__best-practices__production-deployment.md",
+    "section": "不使用构建工具"
+  },
+  {
+    "id": 82,
+    "doc": "vue/src__guide__best-practices__production-deployment.md",
+    "section": "开发环境 vs. 生产环境"
+  },
+  {
+    "id": 83,
+    "doc": "vue/src__guide__best-practices__accessibility.md",
+    "section": "跳过链接"
+  },
+  {
+    "id": 84,
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "section": "动态过渡"
+  },
+  {
+    "id": 85,
+    "doc": "vue/src__guide__best-practices__performance.md",
+    "section": "概述"
+  },
+  {
+    "id": 86,
+    "doc": "vue/src__guide__essentials__computed.md",
+    "section": "计算属性缓存 vs 方法"
+  },
+  {
+    "id": 87,
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "section": "过渡模式"
+  },
+  {
+    "id": 88,
+    "doc": "vue/src__guide__essentials__application.md",
+    "section": "应用配置"
+  },
+  {
+    "id": 89,
+    "doc": "vue/src__guide__components__events.md",
+    "section": "触发与监听事件"
+  },
+  {
+    "id": 90,
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "section": "最大缓存实例数"
+  },
+  {
+    "id": 91,
+    "doc": "vue/src__guide__components__events.md",
+    "section": "事件参数"
+  },
+  {
+    "id": 92,
+    "doc": "vue/src__guide__essentials__conditional.md",
+    "section": "`v-if` 和 `v-for`"
+  },
+  {
+    "id": 93,
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "section": "`<Transition>` 组件"
+  },
+  {
+    "id": 94,
+    "doc": "vue/src__guide__components__provide-inject.md",
+    "section": "和响应式数据配合使用"
+  },
+  {
+    "id": 95,
+    "doc": "vue/src__guide__components__slots.md",
+    "section": "条件插槽"
+  },
+  {
+    "id": 96,
+    "doc": "vue/src__guide__essentials__conditional.md",
+    "section": "`v-show`"
+  },
+  {
+    "id": 97,
+    "doc": "vue/src__guide__components__slots.md",
+    "section": "动态插槽名"
+  },
+  {
+    "id": 98,
+    "doc": "vue/src__guide__components__provide-inject.md",
+    "section": "Provide (提供)"
+  },
+  {
+    "id": 99,
+    "doc": "vue/src__guide__best-practices__production-deployment.md",
+    "section": "追踪运行时错误"
+  },
+  {
+    "id": 100,
+    "doc": "vue/src__guide__essentials__event-handling.md",
+    "section": "事件修饰符"
+  },
+  {
+    "id": 101,
+    "doc": "vue/src__guide__best-practices__security.md",
+    "section": "报告漏洞"
+  },
+  {
+    "id": 102,
+    "doc": "vue/src__guide__best-practices__accessibility.md",
+    "section": "内容结构"
+  },
+  {
+    "id": 103,
+    "doc": "vue/src__guide__components__registration.md",
+    "section": "全局注册"
+  },
+  {
+    "id": 104,
+    "doc": "vue/src__guide__built-ins__transition-group.md",
+    "section": "和 `<Transition>` 的区别"
+  },
+  {
+    "id": 105,
+    "doc": "vue/src__guide__essentials__event-handling.md",
+    "section": "在内联处理器中调用方法"
+  },
+  {
+    "id": 106,
+    "doc": "vue/src__guide__components__props.md",
+    "section": "Props 声明"
+  },
+  {
+    "id": 107,
+    "doc": "vue/src__guide__essentials__computed.md",
+    "section": "最佳实践"
+  },
+  {
+    "id": 108,
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "section": "事件"
+  },
+  {
+    "id": 109,
+    "doc": "vue/src__guide__essentials__event-handling.md",
+    "section": "鼠标按键修饰符"
+  },
+  {
+    "id": 110,
+    "doc": "react/src__content__learn__installation.md",
+    "section": "Try React"
+  },
+  {
+    "id": 111,
+    "doc": "react/src__content__learn__creating-a-react-app.md",
+    "section": "其他框架"
+  },
+  {
+    "id": 112,
+    "doc": "react/src__content__learn__passing-props-to-a-component.md",
+    "section": "使用 JSX 展开语法传递 props"
+  },
+  {
+    "id": 113,
+    "doc": "react/src__content__learn__passing-props-to-a-component.md",
+    "section": "给 prop 指定一个默认值"
+  },
+  {
+    "id": 114,
+    "doc": "react/src__content__learn__adding-interactivity.md",
+    "section": "响应事件"
+  },
+  {
+    "id": 115,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "组件的导入与导出"
+  },
+  {
+    "id": 116,
+    "doc": "react/src__content__learn__adding-interactivity.md",
+    "section": "state 如同一张快照"
+  },
+  {
+    "id": 117,
+    "doc": "react/src__content__learn__extracting-state-logic-into-a-reducer.md",
+    "section": "编写一个好的 reducer"
+  },
+  {
+    "id": 118,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "保持组件纯粹"
+  },
+  {
+    "id": 119,
+    "doc": "react/src__content__learn__adding-interactivity.md",
+    "section": "渲染和提交"
+  },
+  {
+    "id": 120,
+    "doc": "react/src__content__learn__build-a-react-app-from-scratch.md",
+    "section": "步骤 1: 安装构建工具"
+  },
+  {
+    "id": 121,
+    "doc": "react/src__content__learn__index.md",
+    "section": "创建和嵌套组件"
+  },
+  {
+    "id": 122,
+    "doc": "react/src__content__learn__importing-and-exporting-components.md",
+    "section": "根组件文件"
+  },
+  {
+    "id": 123,
+    "doc": "react/src__content__learn__escape-hatches.md",
+    "section": "使用 ref 操作 DOM"
+  },
+  {
+    "id": 124,
+    "doc": "react/src__content__learn__choosing-the-state-structure.md",
+    "section": "构建 state 的原则"
+  },
+  {
+    "id": 125,
+    "doc": "react/src__content__learn__escape-hatches.md",
+    "section": "响应式 Effect 的生命周期"
+  },
+  {
+    "id": 126,
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "section": "渐进式采用的方法"
+  },
+  {
+    "id": 127,
+    "doc": "react/src__content__learn__escape-hatches.md",
+    "section": "你可能不需要 Effect"
+  },
+  {
+    "id": 128,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "在 JSX 中通过大括号使用 JavaScript"
+  },
+  {
+    "id": 129,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "你的第一个组件"
+  },
+  {
+    "id": 130,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "条件渲染"
+  },
+  {
+    "id": 131,
+    "doc": "react/src__content__learn__index.md",
+    "section": "响应事件"
+  },
+  {
+    "id": 132,
+    "doc": "react/src__content__learn__editor-setup.md",
+    "section": "推荐的文本编辑器功能"
+  },
+  {
+    "id": 133,
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "section": "故障排除"
+  },
+  {
+    "id": 134,
+    "doc": "react/src__content__learn__index.md",
+    "section": "添加样式"
+  },
+  {
+    "id": 135,
+    "doc": "react/src__content__learn__javascript-in-jsx-with-curly-braces.md",
+    "section": "使用 \"双大括号\":JSX 中的 CSS 和 对象"
+  },
+  {
+    "id": 136,
+    "doc": "react/src__content__learn__passing-data-deeply-with-context.md",
+    "section": "写在你使用 context 之前"
+  },
+  {
+    "id": 137,
+    "doc": "react/src__content__learn__managing-state.md",
+    "section": "用 State 响应输入"
+  },
+  {
+    "id": 138,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "将 UI 视为树"
+  },
+  {
+    "id": 139,
+    "doc": "react/src__content__learn__installation.md",
+    "section": "从零构建一个 React 应用"
+  },
+  {
+    "id": 140,
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "section": "为何采用渐进式迁移?"
+  },
+  {
+    "id": 141,
+    "doc": "react/src__content__learn__adding-interactivity.md",
+    "section": "把一系列 state 更新加入队列"
+  },
+  {
+    "id": 142,
+    "doc": "react/src__content__learn__react-compiler__debugging.md",
+    "section": "报告编译器错误"
+  },
+  {
+    "id": 143,
+    "doc": "react/src__content__learn__passing-props-to-a-component.md",
+    "section": "熟悉的 props"
+  },
+  {
+    "id": 144,
+    "doc": "react/src__content__learn__index.md",
+    "section": "使用 Hook"
+  },
+  {
+    "id": 145,
+    "doc": "react/src__content__learn__index.md",
+    "section": "使用 JSX 编写标签"
+  },
+  {
+    "id": 146,
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "section": "运行时控制"
+  },
+  {
+    "id": 147,
+    "doc": "react/src__content__learn__editor-setup.md",
+    "section": "你的编辑器"
+  },
+  {
+    "id": 148,
+    "doc": "react/src__content__learn__managing-state.md",
+    "section": "在组件间共享状态"
+  },
+  {
+    "id": 149,
+    "doc": "react/src__content__learn__react-compiler__debugging.md",
+    "section": "常见的破坏性模式"
+  }
+]

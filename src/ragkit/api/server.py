@@ -48,7 +48,9 @@ def _answer_payload(query: str, built: BuiltIndex, cfg: AppConfig) -> dict:
         dim=built.dim,
         retrieval=cfg.retrieval,
     )
-    answer = answer_question(query, result, llm=cfg.llm)
+    answer = answer_question(
+        query, result, llm=cfg.llm, refuse_threshold=cfg.retrieval.refuse_threshold
+    )
     return answer.to_dict()
 
 

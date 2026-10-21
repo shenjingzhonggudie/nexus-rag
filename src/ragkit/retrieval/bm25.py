@@ -1,10 +1,15 @@
 """BM25 稀疏检索：__init__ 建统计，search 打分。"""
 
 import math
+import re
 from collections import Counter
 
 from ragkit.schemas import Chunk, ScoredChunk
-from ragkit.text import tokenize
+from ragkit.text import tokenize, tokenize_terms
+
+# 英文标识符：Kubernetes / JVM / v-model / Kafka / RSA 这类专有名词。
+# 它们几乎不会被误分词，是判断"这个问题是不是在问语料之外的技术"的可靠信号。
+_ENGLISH_TOKEN = re.compile(r"[A-Za-z][A-Za-z0-9_.+#-]*")
 
 
 class BM25Index:
@@ -43,6 +48,22 @@ class BM25Index:
         for freq in self._doc_freq:
             for term in freq:
                 self._df[term] = self._df.get(term, 0) + 1
+
+        # chunk_id → 下标：拒答判据按命中块回捞原始词集合，避免重新分词
+        self._id_to_index: dict[str, int] = {
+            chunk.chunk_id: i for i, chunk in enumerate(chunks)
+        }
+
+        # 语料中所有词的最大 idf：给"语料外的查询词"一个合理权重（见 key_term_coverage）
+        self._max_idf = max((self._idf(t) for t in self._df), default=1.0)
+
+        # 小写词表：英文标识符大小写不一致（Kubernetes / kubernetes）时也能判断是否登陆
+        self._lower_terms: set[str] = {term.lower() for term in self._df}
+
+        # 原文拼接：判断"某个英文标识符是否在语料里"时比分词词表可靠。
+        # AUTO_RANDOM 这类代码标识符在原文里是完整的，但 jieba 可能把它切成
+        # AUTO / RANDOM，只查词表会误判成"语料外的技术"从而误拒。
+        self._raw_text: str = "\n".join(chunk.text for chunk in chunks)
 
     def _idf(self, term: str) -> float:
         """计算词的逆文档频率，越稀有的词权重越高。
@@ -109,3 +130,78 @@ class BM25Index:
             ScoredChunk(chunk=chunk, score=score, stage="bm25")
             for score, chunk in scored[:top_k]
         ]
+
+    def unknown_entities(self, query: str) -> list[str]:
+        """查询里**语料中完全未出现**的英文标识符（如 Kafka / ZooKeeper / JVM）。
+
+        这是比"实词覆盖率"更强的拒答信号：覆盖率会被口语化表述稀释（真实用户
+        问"部署到生产要留意什么"，文档写"生产部署"），但一个语料里根本没出现过
+        的技术名词（Kafka、ZooKeeper）几乎必然意味着"语料没有这个问题的答案"。
+
+        Args:
+            query: 查询文本。
+
+        Returns:
+            list[str]: 未登录的英文标识符（去重、保持原大小写）；没有则为空列表。
+        """
+        # 只看首字母大写的专有名词：v-model / v-if / v-show 这类框架指令小写开头，
+        # 且分词形式不稳定（v / model / v-model），拿它们当"外来实体"会误拒正常问题。
+        # 用原文而不是分词词表判断：AUTO_RANDOM 在原文里完整存在，但会被 jieba 切开。
+        return [
+            token
+            for token in set(_ENGLISH_TOKEN.findall(query))
+            if token[0].isupper()
+            and token not in self._raw_text
+            and token.lower() not in self._lower_terms
+        ]
+
+    def key_term_coverage(
+        self, query: str, hits: list[ScoredChunk], *, top_n: int = 3
+    ) -> float | None:
+        """查询实词的 idf 加权覆盖率（0~1），用于拒答判断。
+
+        实词 = 长度 ≥ 2 的**词语**（``tokenize_terms``，不含 bigram），以此过滤
+        "的 / 有 / 哪 / 几 / 种"这类单字虚词。覆盖率按 **idf 加权**，而不是
+        简单计数——否则"Kubernetes 的 Service 怎么配置"会因为"配置""怎么"
+        这类高频词在语料里随处可见而拿到很高的覆盖率，掩盖"Kubernetes /
+        Service 根本没在语料出现"这一关键事实。
+
+        权重规则：
+        - 语料内的词 → 它的 idf（越罕见权重越高）；
+        - **语料外的词 → 全语料最大 idf**（把它当作"很可能重要却完全没被覆盖"
+          的关键词），这是识别"语料里没有答案"的核心信号。
+
+        为什么不用融合分做阈值：RRF / 加权融合的分数是排名分
+        ``Σ w/(k+rank)``，取值集中在 0.012~0.017，只反映名次、不反映匹配质量，
+        无法区分"第 1 名但毫不相关"和"第 1 名且高度相关"。
+
+        Args:
+            query: 查询文本。
+            hits: 该查询的 BM25 检索结果（已按分数降序）。
+            top_n: 参与覆盖统计的结果数；取前几个而非只取第一个，是为了避免
+                单个块的偶然措辞导致误拒。
+
+        Returns:
+            float | None: 覆盖率 0~1；查询没有长度 ≥ 2 的实词时返回 None
+                （无判定信号，调用方不应据此拒答）。
+        """
+        terms = {t for t in tokenize_terms(query) if len(t) >= 2}
+        if not terms:
+            return None
+
+        # 命中块用建索引时缓存好的词集合，不重新分词（避免每次查询的额外开销）
+        covered: set[str] = set()
+        for hit in hits[:top_n]:
+            index = self._id_to_index.get(hit.chunk.chunk_id)
+            if index is not None:
+                covered.update(self._doc_freq[index])
+
+        total_weight = 0.0
+        matched_weight = 0.0
+        for term in terms:
+            weight = self._idf(term) if term in self._df else self._max_idf
+            total_weight += weight
+            if term in covered:
+                matched_weight += weight
+
+        return matched_weight / total_weight if total_weight > 0 else None

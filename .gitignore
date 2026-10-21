@@ -26,7 +26,15 @@ dist/
 .env
 .env.*
 
+# 语料正文：第三方公开文档，由 scripts/fetch_docs.py 按需拉取。
+# 不提交正文既避免仓库体积膨胀，也规避再分发许可风险；来源与许可证见
+# data/SOURCES.md（该文件要提交）。
+data/raw/
+
 # 索引与报告产物（可随时由 build/eval 重建，不进版本库）
-data/index/
-data2/index/
+# data/index*/ 同时覆盖 data/index/ 与切换 embedding 时留的备份 data/index.hashing/
+data/index*/
 reports/
+
+# 标注骨架：由 scripts/build_skeleton.py 按固定种子生成，可复现，不必入库
+data/eval/qrels.skeleton.json

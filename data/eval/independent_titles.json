@@ -1,0 +1,202 @@
+[
+  {
+    "id": 0,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md",
+    "section": "如何实现 Kubernetes 的网络模型"
+  },
+  {
+    "id": 1,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "section": "健康检查并发豁免"
+  },
+  {
+    "id": 2,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "section": "识别是否使用 Admission Webhook"
+  },
+  {
+    "id": 3,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture___index.md",
+    "section": "节点组件"
+  },
+  {
+    "id": 4,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+    "section": "节点心跳"
+  },
+  {
+    "id": 5,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__compatibility-version.md",
+    "section": "仿真版本"
+  },
+  {
+    "id": 6,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+    "section": "工作负载"
+  },
+  {
+    "id": 7,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+    "section": "领导者选举"
+  },
+  {
+    "id": 8,
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
+    "section": "设计"
+  },
+  {
+    "id": 9,
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md",
+    "section": "相关组件"
+  },
+  {
+    "id": 10,
+    "doc": "tidb/develop__dev-guide-delete-data.md",
+    "section": "性能注意事项"
+  },
+  {
+    "id": 11,
+    "doc": "tidb/develop__dev-guide-insert-data.md",
+    "section": "主键为 `AUTO_RANDOM` 表插入数据"
+  },
+  {
+    "id": 12,
+    "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
+    "section": "表命名规范"
+  },
+  {
+    "id": 13,
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "section": "执行 `CREATE TABLE` 语句"
+  },
+  {
+    "id": 14,
+    "doc": "tidb/develop__dev-guide-join-tables.md",
+    "section": "Join 相关算法"
+  },
+  {
+    "id": 15,
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "section": "命名表"
+  },
+  {
+    "id": 16,
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "section": "什么是二级索引"
+  },
+  {
+    "id": 17,
+    "doc": "tidb/develop__dev-guide-choose-driver-or-orm.md",
+    "section": "Golang"
+  },
+  {
+    "id": 18,
+    "doc": "tidb/develop__dev-guide-gui-navicat.md",
+    "section": "下一步"
+  },
+  {
+    "id": 19,
+    "doc": "tidb/develop__dev-guide-delete-data.md",
+    "section": "非事务批量删除"
+  },
+  {
+    "id": 20,
+    "doc": "vue/src__guide__essentials__application.md",
+    "section": "多个应用实例"
+  },
+  {
+    "id": 21,
+    "doc": "vue/src__guide__essentials__lifecycle.md",
+    "section": "注册周期钩子"
+  },
+  {
+    "id": 22,
+    "doc": "vue/src__guide__essentials__forms.md",
+    "section": "修饰符"
+  },
+  {
+    "id": 23,
+    "doc": "vue/src__guide__essentials__event-handling.md",
+    "section": "在内联事件处理器中访问事件参数"
+  },
+  {
+    "id": 24,
+    "doc": "vue/src__guide__best-practices__performance.md",
+    "section": "分析选项"
+  },
+  {
+    "id": 25,
+    "doc": "vue/src__guide__essentials__conditional.md",
+    "section": "`v-if` vs. `v-show`"
+  },
+  {
+    "id": 26,
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "section": "可复用过渡效果"
+  },
+  {
+    "id": 27,
+    "doc": "vue/src__guide__components__attrs.md",
+    "section": "在 JavaScript 中访问透传 Attributes"
+  },
+  {
+    "id": 28,
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "section": "加载中状态"
+  },
+  {
+    "id": 29,
+    "doc": "vue/src__guide__components__attrs.md",
+    "section": "多根节点的 Attributes 继承"
+  },
+  {
+    "id": 30,
+    "doc": "react/src__content__learn__passing-data-deeply-with-context.md",
+    "section": "传递 props 带来的问题"
+  },
+  {
+    "id": 31,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "将 Props 传递给组件"
+  },
+  {
+    "id": 32,
+    "doc": "react/src__content__learn__describing-the-ui.md",
+    "section": "使用 JSX 书写标签语言"
+  },
+  {
+    "id": 33,
+    "doc": "react/src__content__learn__index.md",
+    "section": "显示数据"
+  },
+  {
+    "id": 34,
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "section": "基于目录的采用与 Babel 覆盖"
+  },
+  {
+    "id": 35,
+    "doc": "react/src__content__learn__add-react-to-an-existing-project.md",
+    "section": "在现有网站的子路由中使用 React"
+  },
+  {
+    "id": 36,
+    "doc": "react/src__content__learn__escape-hatches.md",
+    "section": "使用 ref 引用值"
+  },
+  {
+    "id": 37,
+    "doc": "react/src__content__learn__index.md",
+    "section": "更新界面"
+  },
+  {
+    "id": 38,
+    "doc": "react/src__content__learn__choosing-the-state-structure.md",
+    "section": "合并关联的 state"
+  },
+  {
+    "id": 39,
+    "doc": "react/src__content__learn__react-compiler__debugging.md",
+    "section": "调试工作流程"
+  }
+]

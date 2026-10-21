@@ -20,8 +20,10 @@
 ├── configs/
 │   └── default.yaml           # 默认配置模板（值必须与模型默认值一致）
 ├── data/                      # 【第 18~19 轮】真实语料与评测数据
-│   ├── raw/                   # 语料：10 篇中文技术文档（2 主题 × 1正+4误导，每篇约 10000 字，脚本生成，.md）
-│   └── eval/qrels.json        # 评测集：25 条 query（direct/paraphrase/no_answer）+ 块级标注
+│   ├── raw/                   # 语料：公开技术文档正文（脚本拉取，gitignore，不进仓库）
+│   ├── eval/qrels.json        # 评测集：小节级标注（文档 + 字符区间，不绑切分）
+│   ├── eval/qrels.example.json # 五类标注格式示例
+│   └── SOURCES.md             # 数据来源与许可证
 ├── src/
 │   └── ragkit/
 │       ├── __init__.py        # 包 docstring + __version__ = "0.0.1"
@@ -50,10 +52,10 @@
 │       │   ├── __init__.py    # 公开 write / load / VectorStore
 │       │   └── vector_store.py # 三元组同序、原子落盘、加载校验
 │       ├── retrieval/         # 【第 11~13 轮】检索层
-│       │   ├── __init__.py    # 公开 BM25Index / dense_search / rrf_fuse / weighted_fuse / rerank / search / RetrievalResult
+│       │   ├── __init__.py    # 公开 BM25Index / dense_search / rrf_fuse / rerank / search / RetrievalResult
 │       │   ├── bm25.py        # BM25Index：建统计 + 打分
 │       │   ├── dense.py       # dense_search：向量点积召回（余弦相似度）
-│       │   ├── fusion.py      # rrf_fuse / weighted_fuse：等权 RRF 与加权排名融合
+│       │   ├── fusion.py      # rrf_fuse：等权 RRF（加权融合已移入 rerank）
 │       │   ├── rerank.py      # rerank：dense 余弦精排，输出 final_k
 │       │   ├── pipeline.py    # search：编排召回→融合→重排，生成 trace
 │       │   └── result.py      # RetrievalResult：最终结果 + 检索轨迹
@@ -69,9 +71,9 @@
 │       │   ├── __init__.py    # 公开 create_server / make_handler
 │       │   └── server.py     # 壳芯分离：_answer_payload 纯芯 + handler HTTP 细节 + 错误翻译表
 │       ├── evaluation/       # 【第 18~19 轮】评测层
-│       │   ├── __init__.py    # 公开 recall_at_k / mrr / load_qrels / evaluate / run_ablation
-│       │   ├── metrics.py     # recall_at_k / mrr 纯函数
-│       │   ├── qrels.py       # Qrel / load_qrels：评测集加载与校验
+│       │   ├── __init__.py    # 公开 coverage_recall / first_hit_mrr / load_qrels / evaluate / run_ablation
+│       │   ├── metrics.py     # coverage_recall / first_hit_mrr 纯函数（覆盖式）
+│       │   ├── qrels.py       # AnswerSection / Qrel / load_qrels：小节级标注
 │       │   ├── report.py      # evaluate：编排 + doc_id 去重 + 冷/热耗时表
 │       │   └── ablation.py    # run_ablation：4 组单变量对照 + 边际贡献
 │       └── ragkit.egg-info/   # editable 安装产物（不入 git）
@@ -109,8 +111,9 @@
 | `src/ragkit/__init__.py` | 包标识 + 版本号 | 第 0 课 |
 | `src/ragkit/cli.py` | `main(argv=None, environ=None) -> int`；`ragkit build` / `ask` / `serve` / `eval` 四子命令；薄壳，领域层延迟 import | 第 0 课；第 16~18 轮 |
 | `src/ragkit/api/server.py` | `create_server` / `make_handler` / `_answer_payload`：壳芯分离、错误翻译表、请求日志 | 第 17 轮 |
-| `src/ragkit/evaluation/metrics.py` | `recall_at_k` / `mrr`：检索质量指标纯函数 | 第 18 轮 |
-| `src/ragkit/evaluation/qrels.py` | `Qrel` / `load_qrels`：评测集加载与校验 | 第 18 轮 |
+| `src/ragkit/evaluation/metrics.py` | `coverage_recall` / `first_hit_mrr`：覆盖式指标纯函数 | 第 18 轮；第 25 轮改覆盖式 |
+| `src/ragkit/evaluation/qrels.py` | `AnswerSection` / `Qrel` / `load_qrels`：小节级标注（不绑切分） | 第 18 轮；第 25 轮改小节级 |
+| `src/ragkit/embeddings/bge.py` | `embed_text`：本地 BGE 语义模型（懒加载 + 缓存 + 维度校验） | 第 25 轮 |
 | `src/ragkit/evaluation/report.py` | `evaluate`：评测编排 + doc_id 去重 + 冷/热耗时表 | 第 18 轮 |
 | `src/ragkit/evaluation/ablation.py` | `run_ablation`：4 组单变量对照 + 边际贡献 | 第 19 轮 |
 | `src/ragkit/schemas.py` | 领域模型与 `to_dict` / `from_dict` | 第 1~3 轮 |
@@ -129,7 +132,7 @@
 | `src/ragkit/stores/vector_store.py` | `VectorStore` + `write` / `load`：三元组同序、原子落盘、加载校验 | 第 10 轮 |
 | `src/ragkit/retrieval/bm25.py` | `BM25Index`：建索引统计 df / 词频 / 块长，`search` 打分 | 第 11 轮 |
 | `src/ragkit/retrieval/dense.py` | `dense_search`：embed query → 矩阵点积 → argsort 取 top_k | 第 12 轮 |
-| `src/ragkit/retrieval/fusion.py` | `rrf_fuse`（等权）/ `weighted_fuse`（加权 S=α·S1+(1-α)·S2）：按 chunk_id 聚合、rank 分累加 | 第 12 轮；第 23 轮加权 |
+| `src/ragkit/retrieval/fusion.py` | `rrf_fuse`：等权 RRF，按 chunk_id 聚合、rank 分累加 | 第 12 轮 |
 | `src/ragkit/retrieval/rerank.py` | `rerank`：dense 余弦精排，输出 final_k，sub_scores 记 prev | 第 13 轮 |
 | `src/ragkit/retrieval/pipeline.py` | `search`：编排召回→融合→重排，生成 RetrievalTrace | 第 13 轮 |
 | `src/ragkit/retrieval/result.py` | `RetrievalResult`：最终结果 + 检索轨迹 | 第 13 轮 |
@@ -275,7 +278,7 @@
 
 | 模型 | 字段（默认值 / 约束） |
 |---|---|
-| `RetrievalConfig` | `top_k=20 (gt 0)`、`final_k=5 (gt 0 且 ≤ top_k)`、`fusion="weighted"`（默认加权，`fusion_alpha=0.9` 即 BM25 权重 0.9 / dense 权重 0.1）、`sparse_enabled=True`、`dense_enabled=True`、`rerank_enabled=False`（**默认关：dense 余弦精排负贡献**） |
+| `RetrievalConfig` | `top_k=20 (gt 0)`、`final_k=5 (gt 0 且 ≤ top_k)`、`fusion_alpha=0.9`（加权排名融合里 BM25 权重）、`sparse_enabled=True`、`dense_enabled=True`、`rerank_enabled=True`（**默认开：加权融合优于等权 RRF**）、`refuse_threshold=0.05` |
 | `ChunkingConfig` | `strategy="heading"`、`chunk_size=300 (gt 0)`、`overlap=50 (ge 0 且 < chunk_size)` |
 | `EmbeddingConfig` | `provider="hashing"`、`dim=512 (gt 0)` |
 | `LLMConfig` | `provider="none"`、`model=""`、`api_key="" (repr=False)`、`base_url=""` |
@@ -544,7 +547,7 @@ metadata.json   → 每个 chunk 的 metadata（JSON 数组）
 
 ## 十、检索层契约（`retrieval/`）
 
-**导入方式**：`from ragkit.retrieval import BM25Index, dense_search, rrf_fuse, weighted_fuse, rerank, search, RetrievalResult`
+**导入方式**：`from ragkit.retrieval import BM25Index, dense_search, rrf_fuse, rerank, search, RetrievalResult`
 
 检索层是**两条腿 + 融合器 + 精排 + 编排**：BM25（稀疏）与 dense（向量点积）各自返回 `list[ScoredChunk]`，RRF 融合成 top_k，`rerank` 精排到 final_k，`search` 编排全程并生成 trace。BM25 分数**无上界、不归一化**、dense 分数是**余弦相似度（−1~1）**——两者量纲不可比，这正是用 RRF 的 rank 融合、而非直接加权的原因。
 
@@ -555,7 +558,6 @@ metadata.json   → 每个 chunk 的 metadata（JSON 数组）
 | `BM25Index` | `__init__(chunks, *, k1=1.5, b=0.75)`；`search(query, *, top_k=20) -> list[ScoredChunk]` |
 | `dense_search` | `(query, store, id_to_chunk, *, dim, top_k=20) -> list[ScoredChunk]` |
 | `rrf_fuse` | `(results: list[list[ScoredChunk]], *, k=60, top_k=20) -> list[ScoredChunk]` |
-| `weighted_fuse` | `(results, *, alpha=0.9, k=60, top_k=20) -> list[ScoredChunk]`——加权排名融合 S=α·S1+(1-α)·S2 |
 | `rerank` | `(candidates, query, store, *, dim, final_k) -> list[ScoredChunk]` |
 | `search` | `(query, *, bm25, store, id_to_chunk, dim, retrieval) -> RetrievalResult` |
 
@@ -592,34 +594,37 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | 归一化责任 | **在 embeddings 层**（写向量时保证单位向量）；store 原样存、dense 只点积。换真模型未归一化会退化成内积、长块虚高 |
 | 前提 | `store.ids` 里每个 id 都必须能在 `id_to_chunk` 查到；`dim` 与向量列数一致 |
 
-### 融合契约（`rrf_fuse` / `weighted_fuse`）
+### 融合契约（`rrf_fuse` 等权 / `rerank` 加权）
 
 | 项 | 规则 |
 |---|---|
 | 公式 | RRF：每块分数 = Σ_腿 1/(k + rank)，`k=60` |
-| 加权公式 | `weighted_fuse`：S(d) = α·S1(d) + (1-α)·S2(d)，S_i 为第 i 腿的 RRF 排名分；第一腿（BM25）权重 α、第二腿（dense）权重 1-α；α=0.5 与等权 RRF 等价（差常数因子） |
+| 加权公式 | 见「重排契约」：`rerank` 做 S(d) = α·S1(d) + (1−α)·S2(d)；等权 RRF 是它 α=0.5 的特例（差常数因子） |
 | 聚合 | **按 `chunk_id` 聚合**：同一块跨腿只留一份、rank 分累加（不是 concat 后重复出现） |
 | 输出 | `stage="rrf"`，按融合分降序，`top_k` 截断 |
 | 单腿退化 | 只传一条腿 `[leg]` 时退化为该腿的 rank 顺序（α 不参与，权重归一化为 1） |
 | 空腿容错 | 某条腿为空列表 `[]` 时跳过，不影响其他腿；全部空返回 `[]` |
 | 接口形状 | `list[list[ScoredChunk]]` 是刻意选的：把"腿的数量"从签名写死变成运行时可变，消融（1 腿）/ 未来加腿都不用改签名 |
 
-### 重排契约（`rerank`）
+### 重排契约（`rerank`，加权排名融合）
 
 | 项 | 规则 |
 |---|---|
-| 分数 | dense 余弦：`store` 里候选向量 · `embed_text(query)` 点积，连续、有界（−1~1） |
-| 输出 | `stage="rerank"`、`score` 纯 `float`、降序截断到 `final_k` |
-| sub_scores | `prev` 记录精排前的分数；原有 `sub_scores` 保留（`{**c.sub_scores, "prev": c.score}`） |
-| 不在库候选 | `chunk_id` 不在 `store.ids` 里的候选无法打分，被丢弃 |
-| 空候选 | 返回 `[]` |
+| 公式 | `S(d) = α·S1(d) + (1−α)·S2(d)`，`S_i = 1/(k + rank_i)`，`k=60` |
+| 入参 | `legs: list[list[ScoredChunk]]`（顺序 [BM25, dense]）、`alpha`、`k`、`final_k` |
+| 聚合 | 按 `chunk_id` 累加：同一块跨腿只留一份、分数相加 |
+| 输出 | `stage="rerank"`、按融合分降序、截断到 `final_k` |
+| α 语义 | 第一条腿（BM25）权重。`α=1` 退化为纯 BM25 名次、`α=0` 退化为纯 dense 名次、`α=0.5` 与等权 RRF 等价（差常数因子） |
+| 单腿退化 | 只有一条腿时权重归一化为 1，α 不参与（只开一路召回时不应改变排序） |
+| 空腿 | `legs=[]` 返回 `[]` |
+| 与旧实现的关系 | 早期是「用 dense 向量内积重排」——那个分数与 dense 腿完全相同、无信息增量，相当于让 dense 一票否决 BM25，实测 **−0.039**，已废弃 |
 
 ### 流水线契约（`search`）
 
 | 项 | 规则 |
 |---|---|
-| 编排 | 按 `retrieval.sparse_enabled / dense_enabled` 跑腿 → 按 `retrieval.fusion` 选 `rrf_fuse`（等权）或 `weighted_fuse`（加权 α=`fusion_alpha`）融合 top_k → `rerank_enabled` 时 `rerank` 到 final_k |
-| 关重排 | `rerank_enabled=False`（**默认**）时融合后直接 `[:final_k]`，`stage` 保持 `"rrf"` |
+| 编排 | 按 `sparse_enabled / dense_enabled` 跑腿 → `rerank_enabled=True`（**默认**）时 `rerank(legs, alpha=fusion_alpha, final_k)` 做加权排名融合；否则 `rrf_fuse(legs, top_k)` 等权后截断 |
+| 关 rerank | `rerank_enabled=False` 时走等权 `rrf_fuse` 后 `[:final_k]`，`stage` 为 `"rrf"`；开启时 `stage` 为 `"rerank"` 且**没有独立的 fusion 阶段** |
 | 两腿都关 | 返回 `RetrievalResult(results=[], trace=RetrievalTrace())`，不报错 |
 | trace | 每阶段 `perf_counter()` 计时；`candidate_count` 口径：`bm25`/`dense` 记腿返回数、`fusion` 记融合后数、`rerank` 记 `final_k` |
 | 返回 | `RetrievalResult`（`results` + `trace`），查询编排的对外入口；建索引（load → chunk → embed → store → BM25Index）属阶段 8 |
@@ -714,7 +719,7 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 
 ## 十四、评测层契约（`evaluation/`）
 
-**导入方式**：`from ragkit.evaluation import recall_at_k, mrr, load_qrels, evaluate`
+**导入方式**：`from ragkit.evaluation import coverage_recall, first_hit_mrr, load_qrels, evaluate`
 
 ### 它是干什么的
 
@@ -724,42 +729,73 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 
 | 接口 | 定义 |
 |---|---|
-| `recall_at_k(retrieved, relevant, k)` | 前 k 个 chunk_id 里命中的相关数 / 相关总数；`relevant` 空 → 0.0（不除零）；`k<=0` → `ValueError`（**参数校验最先**，即使 relevant 也空） |
-| `mrr(retrieved, relevant)` | 第一个相关块所在位置 rank 的倒数；无命中 / `relevant` 空 → 0.0 |
+| `coverage_recall(hits_per_rank, total, k)` | 前 k 个结果覆盖的答案小节比例；`total<=0` → 0.0（不除零）；`k<=0` → `ValueError`（**参数校验最先**） |
+| `first_hit_mrr(hits_per_rank)` | 第一个命中任意答案小节的 rank 的倒数；无命中 → 0.0 |
 
-`retrieved` 是**已去重、按排名排列的 chunk_id 序列**（指标函数只认有序序列，不认 `ScoredChunk`——最小依赖、可直测、可复用）。`relevant` 用 `set`/`frozenset`：**相关是无序的成员关系**（0/1 相关，不分等级；分级属 nDCG 扩展）。
+`hits_per_rank` 是"第 i 个检索结果命中了哪些答案小节"的集合序列（`list[set[int]]`；落盘序列化为 `list[list[int]]`，指标内部用 `update` 兼容两者）。**"是否命中"的判定留在调用方**——它需要 `Chunk.doc_id` 与 `char_start/char_end`；指标函数只做纯集合运算，保持可直测、无依赖。
 
 ### 评测集契约（`data/eval/qrels.json`，第 18 轮拍板）
 
-- 格式：`[{"query": str, "type": str, "relevant": [chunk_id, ...]}, ...]`；`load_qrels` 校验（顶层列表、query 非空、relevant 列表），`relevant` 去重为 `frozenset`（无答案 query 允许空列表）；
-- **评测单元 = 块**（`chunk_id`）：答案精确标注到某个 `##` 小节对应的 chunk；超长小节被 heading 再切后，标注其**全部块**；
-- 当前 25 条 query（direct 10 / paraphrase 9 / no_answer 6），对应 `data/raw` 的 10 篇文档（2 主题 × 1 正 + 4 误导，每篇约 10000 字）。语料由 `scripts/generate_corpus.py` 生成，query 从 `scripts/corpus_data_*.py` 手写；改写类 query 不照搬概念词，无答案 query（relevant 为空）测拒答。
+- 格式：`[{"query": str, "type": str, "answers": [{"doc","section","start","end"}, ...]}, ...]`；
+- **标注不绑切分**：`doc` 与 `Chunk.doc_id` 同口径，`start/end` 是小节在 `normalize_text(文档)` 中的字符区间；评测时判断「召回的块与该区间是否重叠」（同文档且区间相交）。换 `chunk_size` / 换分块策略都不需要重标；
+- `section` 只用于人工核对与报告展示，**不参与匹配**；
+- `answers` 为空列表 → 无答案 query（测拒答）；
+- 类型：`direct` / `paraphrase` / `multi_block` / `cross_doc` / `no_answer`，建议配比 30/30/15/10/15（`scripts/check_qrels.py` 会检查偏离）；
+- 数据规模与标注流程见 `data/README.md`：拉正文 → 列小节 → 出题 prompt → 人工筛选 → 质检 → 建库评测。语料正文由 `scripts/fetch_docs.py` 按公开仓库拉取（来源与许可证记在 `data/SOURCES.md`），**不进 Git**。
 
 ### 评测编排（`evaluate`）
 
-`evaluate(built, cfg, qrels, ks=(1,2,...,10)) -> EvalReport`：逐条 `search` → **提取 chunk_id 序列**（融合已按 chunk_id 去重）→ 算 recall@k/mrr → 汇总平均 + 耗时表（`LatencyStats`：`cold_ms` 进程内首查 + `warm_p50/p95/mean`）。
+`evaluate(built, cfg, qrels, ks=(1,2,...,10)) -> EvalReport`：逐条 `search` → 对每个结果判定「命中了哪些答案小节」（同文档 + 区间相交）→ 算覆盖式 recall@k / first_hit_mrr → **只对有答案 query 平均**（无答案 query 算 0 会稀释成假低分）→ 另算拒答准确率 / 误拒率 → 汇总耗时表（`LatencyStats`：`cold_ms` 进程内首查 + `warm_p50/p95/mean`）。
 
 **耗时口径澄清（本轮实测发现）**：`evaluate` 的“冷启动”是**进程内首查**，**不含 jieba**——因为 `built` 在 build/load_index 时已经加载了 jieba。真正的 jieba 冷启动（~1.8s + BM25 重建分词）发生在 build/load_index 层，不属检索耗时。检索各阶段的热耗时看 `RetrievalTrace`（第 13 轮起就有），本轮把它们汇总成 P50/P95/均值。
 
-**实测基线（2026-10-21，10 篇语料 + 25 条块级标注 query）：`recall@1=0.25`、`recall@3=0.41`、`MRR=0.457`**。块级标注下 recall 天然低于文档级——任务从"在 10 篇里选对主题"变成"在 423 块里精确命中答案小节"，数字不可与旧文档级直接比较。
+**实测基线**（100 篇文档、221 条标注、bge embedding）：`internal recall@1 = 0.390`、
+`MRR = 0.502`；`external recall@1 = 0.282`、`MRR = 0.338`（正式报告按 `internal` /
+`external` 分组，见 README）。拒答准确率 **1.000**、误拒率 **0.008**。
 
-### 消融实验（`run_ablation`，第 19 轮；块级语料重测于 2026-10-21）
+### 消融实验（`run_ablation`，第 19 轮；2026-10-21 在真实语料 + bge 上重测）
 
-5 组对照（单腿组同时关 rerank，隔离变量）：
+**设计契约（不改）**：单变量对照——每次只改一个开关，其余保持 baseline；
+**单腿组必须同时关 rerank**，否则 rerank 会把另一条腿拉进来算加权，就不是"纯单腿"了。
 
-| 组 | @1 | @2 | @3 | @4 | @5 | @6 | @7 | @8 | @9 | @10 | MRR |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| baseline（全开 = 等权 RRF + dense 余弦 rerank） | 0.25 | 0.29 | 0.40 | 0.42 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.428 |
-| bm25_only（纯 BM25） | 0.25 | 0.31 | 0.37 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.447 |
-| dense_only（纯 dense） | 0.25 | 0.29 | 0.40 | 0.42 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.428 |
-| **no_rerank（等权 RRF）** | **0.27** | **0.35** | 0.41 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | **0.477** |
-| weighted α=0.9（当前默认） | 0.25 | 0.33 | 0.41 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.457 |
+`VARIANTS` 固定为 `baseline / no_rerank / bm25_only / dense_only`（`test_ablation.py`
+锁定）。**对照组必须与默认值相反**才有信息量：`rerank_enabled` 默认 `True`（加权融合），
+所以对照是 `no_rerank`（等权 RRF）；反过来若某开关默认是关的，对照才该是"打开它"。
 
-**结论（块级标注 + 25 条 query 下）**：`baseline == dense_only` 再次印证 rerank 用 dense 余弦一票否决、把 baseline 退化成 dense 主导——这个机制性规律在块级标注下依然成立，**rerank 负贡献（MRR −0.049）**。块级标注下 **no_rerank（等权 RRF）MRR 最高（0.477）**，weighted α=0.9（0.457）略低，但差异在 25 条 query 的波动范围内，不据此断言"等权优于加权"。
+| 组 | @1 | @2 | @3 | @4 | @5 | @6~10 | MRR |
+|---|---|---|---|---|---|---|---|
+| baseline（加权融合 α=0.9） | **0.38** | 0.46 | 0.51 | 0.52 | 0.57 | 0.57 | **0.485** |
+| no_rerank（等权 RRF） | 0.34 | 0.46 | **0.53** | **0.58** | **0.59** | 0.59 | 0.477 |
+| bm25_only | 0.34 | 0.41 | 0.48 | 0.51 | 0.53 | 0.53 | 0.446 |
+| dense_only | 0.29 | 0.40 | 0.46 | 0.52 | 0.54 | 0.54 | 0.421 |
 
-**关键发现：标注粒度决定任务难度**。文档级标注测"在 10 篇里选对主题"（易，0.9），块级标注测"在 423 块里精确命中答案小节"（难，0.25）——跨粒度比较绝对数字没有意义，评测粒度升级本身就是"让检索任务更真实"。此外，**样本量（25 条）不足以支撑细粒度结论**，组间差异需更大样本 + 显著性检验才能下定论。
+边际贡献（按 recall@1）：BM25 腿 **+0.091**、dense 腿 **+0.039**、rerank（加权 vs 等权）**+0.039**。
 
-**落点**：默认**关 rerank**（稳定负贡献）；`fusion="weighted"` + `fusion_alpha=0.9` 保持现状（块级下虽略低于等权 RRF，但差异不显著，且 α=0.9 是"偏 BM25 的保守安全值"）。rerank 标为“换真 embedding（cross-encoder）后再评估”的扩展。
+**结论**：
+1. **加权排名融合是正贡献**（+0.039）。它和早期「dense 内积重排」不是一回事：后者让
+   dense 分数覆盖 BM25、无信息增量，实测 −0.039，已废弃；
+2. **dense 腿的贡献随 embedding 变化**：hashing +0.004、bge **+0.039**
+   （`dense_only` MRR 0.319 → 0.421）；
+3. **两种融合各有所长**：加权 @1 高（0.38 vs 0.34）、等权 @5 高（0.59 vs 0.57）。
+
+**换 embedding 后必须重跑**：rerank 用的就是 dense 向量，换成 BGE 后这个负贡献很
+可能翻正——那才是"从负资产变正贡献"的完整验证。
+
+**必须警惕**：样本 221 条仍不算大，组间差异要配显著性检验；调参用的题与最终报告
+的题应分开（盲测集）。
+
+### 拒答契约（第 25 轮）
+
+| 项 | 规则 |
+|---|---|
+| 信号 | `BM25Index.key_term_coverage(query, hits, top_n=3)`：查询实词（`tokenize_terms`，长度 ≥ 2、不含 bigram）的 **idf 加权覆盖率** |
+| 未登录词 | 语料中不存在的实词按"全语料最大 idf"计权，并算作**未覆盖**——这是识别"语料里没有答案"的核心信号 |
+| 为什么不用融合分 | RRF 分是排名分 `Σ w/(k+rank)`，取值 0.012~0.017，只反映名次、不反映匹配质量 |
+| 强信号 | `BM25Index.unknown_entities(query)`：查询里首字母大写的英文专有名词（Kafka / JVM）若语料中从未出现 → 强制 `match_score=0` |
+| 判定 | `results` 为空 **或** `match_score < refuse_threshold` → 拒答；`match_score=None`（稀疏腿关闭 / 无长实词）不拒答 |
+| 默认阈值 | `refuse_threshold=0.1`（0 = 不启用） |
+| 实测（100 篇 / 221 条） | 拒答准确率 **100%**、误拒率 **0%**；`v-model` / `v-if` 等小写框架指令不计入外来实体（否则误拒正常问题） |
+| 评测 | `refusal_accuracy`（无答案 query 的正确拒答率）+ `false_refusal_rate`（有答案 query 的误拒率）——两个方向都要报，只报一个会掩盖另一面的代价 |
 
 ## 十五、测试覆盖
 
@@ -776,22 +812,22 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | `tests/test_chunking_ids.py` | ID 格式、序号下限校验、稳定性、**局部性**、变化粒度、跨文档隔离、唯一性 | 8 |
 | `tests/test_embeddings_hashing.py` | 长度恒为 dim、单位向量、确定性、**跨进程稳定**（subprocess + PYTHONHASHSEED）、相似度按 token 重叠排序、空 token、dim 校验 | 14 |
 | `tests/test_vector_store.py` | 三元组同序往返、shape/dtype、长度/重复 id/dim 校验、空库、缺失目录、损坏文件、manifest dim 不匹配、无 tmp 残留、中文往返、可复现 | 14 |
-| `tests/test_bm25.py` | 手算样例（分数精确对齐）、词频/罕见词/长度三直觉、k1/b 参数化、空 query（全 0 分块）/语料、未知词、stage 与 top_k、query 规范化、确定性 | 11 |
-| `tests/test_dense.py` | 点积降序、score 为纯 float、stage、top_k、同文本余弦=1、空 query 全 0 分块、空 store、确定性 | 9 |
-| `tests/test_fusion.py` | 跨腿聚合累加、去重、保留 Chunk 对象、单腿退化、空腿容错、全空、top_k、k 常数、加权融合 α 权重/极端值/单腿退化/stage | 12 |
+| `tests/test_bm25.py` | 手算样例（分数精确对齐）、词频/罕见词/长度三直觉、k1/b 参数化、空 query（全 0 分块）/语料、未知词、stage 与 top_k、query 规范化、确定性、**实词 idf 覆盖率（全覆盖/未登录词计未命中/无长实词返回 None/无命中为 0）** | 15 |
+| `tests/test_dense.py` | 点积降序、score 为纯 float、stage、top_k、同文本余弦=1、空 query 全 0 分块、空 store、确定性 | 8 |
+| `tests/test_fusion.py` | 跨腿聚合累加、去重、保留 Chunk 对象、单腿退化、空腿容错、全空、top_k、k 常数、加权融合 α 权重/极端值/单腿退化/stage | 13 |
 | `tests/test_rerank.py` | 手算样例、final_k 截断、stage、sub_scores.prev、空候选、不在库候选丢弃、确定性 | 8 |
 | `tests/test_pipeline.py` | 开关组合（只稀疏/只稠密/都关/关重排）、默认关 rerank、trace 阶段顺序与候选数口径、总耗时=各阶段和、返回类型 | 9 |
 | `tests/test_index_build.py` | 五文件产物、id 三方一致、坏文件隔离、空目录、可直接检索、可复现 | 7 |
 | `tests/test_index_load.py` | 与 build 结果等价（分数一致）、缺文件 / id 不一致 / 坏行拦截、dim 与 failures 口径 | 5 |
-| `tests/test_generation.py` | 正常组装、引用编号与顺序、拒答（trace 仍挂）、fail-fast、序列化、端到端链路 | 6 |
+| `tests/test_generation.py` | 正常组装、引用编号与顺序、拒答（trace 仍挂）、fail-fast、序列化、端到端链路、**阈值拒答 / 高于阈值不拒 / 阈值 0 不启用 / match_score=None 不拒** | 10 |
 | `tests/test_cli.py` | build 统计与坏文件、ask 回答与引用、serve/eval 无索引、eval 跑通落盘、拒答=0、配置/语料错误=1、环境隔离、jieba 降噪 | 11 |
 | `tests/test_api.py` | 真服务器集成：/ask 回答 JSON、拒答=200+refused、400（坏 JSON/缺 query，参数化）、404/405、/healthz、请求日志 | 12 |
-| `tests/test_metrics.py` | recall 手算、k 越界、空 relevant/retrieved、k<=0 抛、mrr 手算/无命中/空 relevant | 8 |
-| `tests/test_evaluation.py` | doc_id 去重保持首现顺序、端到端跑评测集、空 qrels 返回全 0 | 3 |
+| `tests/test_metrics.py` | 覆盖式 recall 手算、单答案、重复命中只算一次、k 越界、零答案/空命中、k<=0 抛、first_hit_mrr 手算/无命中/空 | 9 |
+| `tests/test_evaluation.py` | **区间重叠算命中（不绑切分）**、跨文档不算、无偏移安全判未命中、端到端跑评测、拒答指标（准确率/误拒率/recall 不稀释）、空 qrels 返回全 0 | 7 |
 | `tests/test_ablation.py` | 对照组开关契约（4 组单变量）、run_ablation 跑通与指标范围 | 2 |
-| **合计** | | **272** |
+| **合计** | | **291** |
 
-**当前结果**：**272 passed**（2026-10-17）
+**当前结果**：**291 passed**（2026-10-21）
 **历史自证**：先在真实环境里设 `RAG__RETRIEVAL__TOP_K=99`，再跑 `pytest -q` → 结果不变（2026-10-07 于 64 条时验证，可随时重跑）
 
 ## 十六、阶段状态
@@ -813,8 +849,9 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | 9 | 生成层（`generation/`） | ✅ 完成（第 15 轮，231 passed）：`RetrievalResult` 的第一个生产消费者就位；`openai_compatible` 为扩展（触发信号：拿到密钥 + 网络可用） |
 | 10 | CLI（`ragkit build` / `ragkit ask`） | ✅ 完成（第 16 轮，239 passed）：全链路暴露成命令；`--json` / REPL 为扩展 |
 | 11 | HTTP API + 请求日志 | ✅ 完成（第 17 轮，252 passed）：`POST /ask` / `GET /healthz`，索引常驻；FastAPI 迁移 / 鉴权为扩展 |
-| 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮起，272 passed）：recall@k(1~10) / MRR / 耗时表；块级标注（10 篇语料 + 25 条 query） |
-| 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮起）：rerank 稳定负贡献；块级语料下 no_rerank（等权 RRF）MRR 最高，weighted α=0.9 略低但差异不显著 |
+| 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮起，291 passed）：覆盖式 recall@k / MRR / 拒答指标 / 耗时表；**小节级标注（文档 + 字符区间，不绑切分）** |
+| 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮；第 26 轮补 `with_rerank` 并在真实语料重测）：rerank **−0.039**、dense 腿 **+0.004**、BM25 腿 +0.110 |
+| 16 | 真实语料 + 人工标注 | ⬜ 待做：`scripts/fetch_docs.py` 拉公开文档 → 人工标注 221 条 → `check_qrels.py` 质检 |
 | 14 | 交付：README 收尾 + 打包 | ✅ 完成（第 21 轮）：README 重写（四命令/架构/评测结论）、版本升 1.0.0、pyproject 加 readme 字段 |
 | 15 | 总结报告 | ✅ 完成（第 22 轮）：`SUMMARY.md` 沉淀全项目——架构全景、消融结论、设计决策、踩坑规律、演进方向 |
 
@@ -837,9 +874,10 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | `src/ragkit/generation/` | ✅ 已建（第 15 轮） |
 | `src/ragkit/api/` | ✅ 已建（第 17 轮） |
 | `src/ragkit/evaluation/` | ✅ 已建（第 18 轮） |
-| `data/raw/`、`data/eval/` | ✅ 已建（第 18 轮：10 篇语料 + 12 条评测集） |
-| `data/eval/`、`reports/` | ✅ 已建（第 18 轮：评测集 + 报告落盘） |
-| `scripts/` | ✅ 已建（第 19 轮：`generate_corpus.py` 程序化生成语料与评测集） |
+| `data/raw/` | ⬜ 待拉取（第 25 轮改：公开文档由 `scripts/fetch_docs.py` 按需拉取，不进仓库） |
+| `data/eval/` | ✅ 已建（第 25 轮改：小节级标注格式 + 五类示例；221 条已标注） |
+| `reports/` | ✅ 已建（评测 / 消融报告落盘） |
+| `scripts/` | ✅ 已建（第 25 轮改：`fetch_docs` / `section_index` / `gen_queries` / `check_qrels` 数据工具链） |
 
 ## 十八、常用命令
 

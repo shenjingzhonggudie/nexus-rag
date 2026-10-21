@@ -2,7 +2,7 @@
 
 import pytest
 
-from ragkit.retrieval.fusion import rrf_fuse, weighted_fuse
+from ragkit.retrieval.fusion import rrf_fuse
 from ragkit.schemas import Chunk, ScoredChunk
 
 
@@ -94,50 +94,5 @@ def test_k_constant_affects_score():
     assert out[0].score == pytest.approx(1.0)
 
 
-def test_weighted_fuse_alpha_weights():
-    # S(d) = α·S1 + (1-α)·S2；α=0.9 时 BM25 权重 0.9、dense 权重 0.1
-    c1 = _chunk("c1")
-    c2 = _chunk("c2")
-    bm25 = [_scored(c1, 9.0), _scored(c2, 8.0)]
-    dense = [_scored(c1, 0.9, "dense")]
-
-    out = weighted_fuse([bm25, dense], alpha=0.9)
-
-    # c1: 0.9/61 (bm25 rank1) + 0.1/61 (dense rank1) = 1.0/61
-    # c2: 0.9/62 (bm25 rank2)
-    assert [r.chunk.chunk_id for r in out] == ["c1", "c2"]
-    c1_score = next(r.score for r in out if r.chunk.chunk_id == "c1")
-    assert c1_score == pytest.approx(0.9 / 61 + 0.1 / 61)
-
-
-def test_weighted_fuse_alpha_extremes():
-    # α=1 纯 BM25、α=0 纯 dense
-    c1 = _chunk("c1")
-    c2 = _chunk("c2")
-    bm25 = [_scored(c1, 9.0), _scored(c2, 8.0)]
-    dense = [_scored(c2, 0.9, "dense"), _scored(c1, 0.8, "dense")]
-
-    out_bm25 = weighted_fuse([bm25, dense], alpha=1.0)
-    assert [r.chunk.chunk_id for r in out_bm25] == ["c1", "c2"]
-
-    out_dense = weighted_fuse([bm25, dense], alpha=0.0)
-    assert [r.chunk.chunk_id for r in out_dense] == ["c2", "c1"]
-
-
-def test_weighted_fuse_single_leg_degenerates():
-    # 单腿时 α 不参与，退化为该腿排序
-    c1 = _chunk("c1")
-    c2 = _chunk("c2")
-    bm25 = [_scored(c1, 9.0), _scored(c2, 8.0)]
-
-    out = weighted_fuse([bm25], alpha=0.9)
-
-    assert [r.chunk.chunk_id for r in out] == ["c1", "c2"]
-    assert [r.score for r in out] == pytest.approx([1 / 61, 1 / 62])
-
-
-def test_weighted_fuse_stage_is_rrf():
-    c1 = _chunk("c1")
-    out = weighted_fuse([[_scored(c1, 9.0)]], alpha=0.9)
-
-    assert all(r.stage == "rrf" for r in out)
+# 加权排名融合（原 weighted_fuse）的契约测试已随实现一起移到 test_rerank.py：
+# α 权重、α 极端值（0/1）、单腿退化、stage 标记都在那里覆盖。

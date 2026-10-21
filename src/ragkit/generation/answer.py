@@ -10,19 +10,27 @@ def answer_question(
     result: RetrievalResult,
     *,
     llm: LLMConfig,
+    refuse_threshold: float = 0.0,
 ) -> Answer:
-    """把检索结果组装成回答：证据转引用、空结果拒答、抽取式生成。
+    """把检索结果组装成回答：证据转引用、两类拒答判定、抽取式生成。
 
     Args:
         question: 用户问题，原样进 Answer.question。
         result: 检索流水线产物；results 已按最终分数降序，本层不再排序。
         llm: LLM 配置；provider=none 走抽取式（answer=最高分块原文），
             openai_compatible 尚未实现，显式拒绝。
+        refuse_threshold: 拒答阈值，与 ``result.match_score``（查询实词被检索
+            结果覆盖的比例）比较；0 表示不启用阈值判定。
 
     Returns:
-        Answer: 拒答（results 为空）时 refused=True、answer 为空串、
-            citations 为空；两种情形下 trace 都原样挂载 result.trace
-            （拒答也挂——检索确实发生了，保留"为什么拒"的诊断能力）。
+        Answer: 拒答时 refused=True、answer 为空串、citations 为空；两种情形
+            下 trace 都原样挂载 result.trace（拒答也挂——检索确实发生了，
+            保留"为什么拒"的诊断能力）。
+
+    Note:
+        拒答有两类判据：① 检索结果为空（稀疏腿全部词不在语料时会发生）；
+        ② ``match_score`` 低于阈值——稠密腿总会返回 top_k，所以"结果不为空"
+        不代表"语料里有答案"；后者正是补上这个洞的关键。
 
     Raises:
         NotImplementedError: llm.provider == "openai_compatible" 时抛出；
@@ -33,8 +41,13 @@ def answer_question(
             "openai_compatible 尚未实现：当前生成层只有 provider=none 的抽取式回答"
         )
 
-    if not result.results:
-        # 拒答：检索跑了但结果为空（第 15 轮决策 3：只认空，分数阈值挂扩展）
+    # 阈值判定只对有信号的情况生效：match_score=None 表示无法判定（不该拒答）
+    below_threshold = (
+        refuse_threshold > 0.0
+        and result.match_score is not None
+        and result.match_score < refuse_threshold
+    )
+    if not result.results or below_threshold:
         return Answer(
             question=question,
             answer="",

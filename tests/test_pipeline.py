@@ -61,13 +61,14 @@ def test_rerank_disabled_keeps_rrf_stage():
     assert all(r.stage == "rrf" for r in result.results)
 
 
-def test_rerank_disabled_by_default():
-    # 第 19 轮消融结论：rerank 默认关闭（dense 余弦精排稳定负贡献）
+def test_rerank_enabled_by_default():
+    # 加权排名融合（S = α·S1 + (1−α)·S2）默认开启：实测优于等权 RRF。
+    # 开启后不再有独立的 fusion 阶段——融合与精排合并成一步。
     bm25, store, id_to_chunk = _fixture()
     result = _search("容器冷启动", bm25, store, id_to_chunk, top_k=20, final_k=2)
 
-    assert all(r.stage == "rrf" for r in result.results)
-    assert [s.name for s in result.trace.stages] == ["bm25", "dense", "fusion"]
+    assert all(r.stage == "rerank" for r in result.results)
+    assert [s.name for s in result.trace.stages] == ["bm25", "dense", "rerank"]
 
 
 def test_sparse_only():
@@ -77,7 +78,7 @@ def test_sparse_only():
         top_k=20, final_k=2, dense_enabled=False, rerank_enabled=True,
     )
 
-    assert [s.name for s in result.trace.stages] == ["bm25", "fusion", "rerank"]
+    assert [s.name for s in result.trace.stages] == ["bm25", "rerank"]
 
 
 def test_dense_only():
@@ -87,7 +88,7 @@ def test_dense_only():
         top_k=20, final_k=2, sparse_enabled=False, rerank_enabled=True,
     )
 
-    assert [s.name for s in result.trace.stages] == ["dense", "fusion", "rerank"]
+    assert [s.name for s in result.trace.stages] == ["dense", "rerank"]
 
 
 def test_both_legs_disabled():
@@ -105,7 +106,7 @@ def test_trace_stages_and_order():
     bm25, store, id_to_chunk = _fixture()
     result = _search("容器冷启动", bm25, store, id_to_chunk, top_k=20, final_k=2, rerank_enabled=True)
 
-    assert [s.name for s in result.trace.stages] == ["bm25", "dense", "fusion", "rerank"]
+    assert [s.name for s in result.trace.stages] == ["bm25", "dense", "rerank"]
 
 
 def test_trace_candidate_counts():
@@ -115,7 +116,8 @@ def test_trace_candidate_counts():
     result = _search("", bm25, store, id_to_chunk, top_k=20, final_k=2, rerank_enabled=True)
 
     counts = {s.name: s.candidate_count for s in result.trace.stages}
-    assert counts == {"bm25": 3, "dense": 3, "fusion": 3, "rerank": 2}
+    # rerank 直接吃两条腿（各 3 个），融合后仍 3 个（去重），再截断到 final_k=2
+    assert counts == {"bm25": 3, "dense": 3, "rerank": 2}
 
 
 def test_trace_total_latency():

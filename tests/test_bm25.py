@@ -129,3 +129,73 @@ def test_top_k_limits_results(monkeypatch):
     })
     idx = BM25Index([_chunk("c1", "d1"), _chunk("c2", "d2"), _chunk("c3", "d3")])
     assert len(idx.search("qa", top_k=1)) == 1
+
+
+def _patch_terms(monkeypatch, term_map):
+    """替换 tokenize_terms（key_term_coverage 用它算实词，不含 bigram）。"""
+    monkeypatch.setattr(
+        "ragkit.retrieval.bm25.tokenize_terms",
+        lambda text: list(term_map[text]),
+    )
+
+
+def test_coverage_full_when_all_terms_hit(monkeypatch):
+    _patch_tokenize(monkeypatch, {"D1": ["数据库", "连接池"], "q": ["数据库", "连接池"]})
+    _patch_terms(monkeypatch, {"D1": ["数据库", "连接池"], "q": ["数据库", "连接池"]})
+    idx = BM25Index([_chunk("c1", "D1")])
+
+    hits = idx.search("q", top_k=10)
+    assert idx.key_term_coverage("q", hits) == pytest.approx(1.0)
+
+
+def test_coverage_unknown_term_counts_as_miss(monkeypatch):
+    # "Redis" 不在语料：必须计入分母（若只统计语料内词，覆盖率会假高到 1.0）
+    _patch_tokenize(monkeypatch, {"D1": ["持久化"], "q": ["Redis", "持久化"]})
+    _patch_terms(monkeypatch, {"D1": ["持久化"], "q": ["Redis", "持久化"]})
+    idx = BM25Index([_chunk("c1", "D1")])
+
+    hits = idx.search("q", top_k=10)
+    coverage = idx.key_term_coverage("q", hits)
+
+    assert coverage is not None
+    assert 0.0 < coverage < 1.0
+
+
+def test_coverage_none_without_long_terms(monkeypatch):
+    # 查询只有单字虚词 → 没有判定信号，返回 None（不应据此拒答）
+    _patch_tokenize(monkeypatch, {"D1": ["的"], "q": ["的"]})
+    _patch_terms(monkeypatch, {"D1": ["的"], "q": ["的"]})
+    idx = BM25Index([_chunk("c1", "D1")])
+
+    assert idx.key_term_coverage("q", []) is None
+
+
+def test_coverage_zero_when_no_hits(monkeypatch):
+    _patch_tokenize(monkeypatch, {"D1": ["数据库"], "q": ["数据库"]})
+    _patch_terms(monkeypatch, {"D1": ["数据库"], "q": ["数据库"]})
+    idx = BM25Index([_chunk("c1", "D1")])
+
+    assert idx.key_term_coverage("q", []) == pytest.approx(0.0)
+
+
+def test_unknown_entities_detects_foreign_tech(monkeypatch):
+    # 语料里没有 Kafka → 这是比"覆盖率"更强的拒答信号
+    _patch_tokenize(monkeypatch, {"D1": ["数据库"]})
+    idx = BM25Index([_chunk("c1", "D1")])
+
+    assert idx.unknown_entities("Kafka 消息积压怎么办") == ["Kafka"]
+
+
+def test_unknown_entities_ignores_known_terms(monkeypatch):
+    _patch_tokenize(monkeypatch, {"D1": ["Vue"]})
+    idx = BM25Index([_chunk("c1", "D1")])
+
+    assert idx.unknown_entities("Vue 的响应式原理") == []
+
+
+def test_unknown_entities_ignores_lowercase_directives(monkeypatch):
+    # v-model / v-if 是框架指令（小写开头），分词形式不稳定，不能当外来实体
+    _patch_tokenize(monkeypatch, {"D1": ["Vue"]})
+    idx = BM25Index([_chunk("c1", "D1")])
+
+    assert idx.unknown_entities("v-model 的 .lazy 修饰符") == []

@@ -1,138 +1,76 @@
-"""rerank 的契约测试：手算样例、final_k 截断、stage、sub_scores、边界、确定性。"""
+"""rerank 的契约测试：加权排名融合 S(d) = α·S1(d) + (1−α)·S2(d)。"""
 
-import importlib
-
-import numpy as np
 import pytest
 
 from ragkit.retrieval.rerank import rerank
 from ragkit.schemas import Chunk, ScoredChunk
-from ragkit.stores import VectorStore
 
 
-def _chunk(chunk_id: str, text: str = "t") -> Chunk:
-    return Chunk(chunk_id=chunk_id, doc_id="doc", text=text, ordinal=0)
+def _chunk(chunk_id: str) -> Chunk:
+    return Chunk(chunk_id=chunk_id, doc_id="doc", text="t", ordinal=0)
 
 
-def _patch_embed(monkeypatch, vec):
-    # 用 importlib 拿真实模块对象再 patch：`ragkit/retrieval/__init__.py` 里
-    # `from ...rerank import rerank` 让函数名与子模块名同名，遮蔽了
-    # `ragkit.retrieval.rerank` 子模块属性，字符串路径会解析成函数而失败。
-    rerank_mod = importlib.import_module("ragkit.retrieval.rerank")
-    monkeypatch.setattr(rerank_mod, "embed_text", lambda text, *, dim: list(vec))
+def _leg(*ids: str) -> list[ScoredChunk]:
+    """按给定顺序造一条腿：列表顺序就是名次，原始分数不参与融合。"""
+    return [ScoredChunk(chunk=_chunk(cid), score=1.0, stage="bm25") for cid in ids]
 
 
-def test_hand_calculated_ranking(monkeypatch):
-    # q=[0.6,0.8,0,0]；store 各行 a=[1,0,0,0] b=[0,1,0,0] c=[0,0,1,0]
-    # 手算：a=0.6 b=0.8 c=0 → 降序 b>a>c，final_k=2 → [b, a]
-    _patch_embed(monkeypatch, [0.6, 0.8, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a", "b", "c"],
-        matrix=np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0]], dtype=np.float32),
-        metadata=[{}, {}, {}],
-    )
-    a, b, c = _chunk("a"), _chunk("b"), _chunk("c")
-    cands = [
-        ScoredChunk(chunk=c, score=1.0, stage="rrf"),
-        ScoredChunk(chunk=a, score=0.9, stage="rrf"),
-        ScoredChunk(chunk=b, score=0.8, stage="rrf"),
-    ]
+def test_hand_calculated_weighted_score():
+    # BM25: c1(rank1) c2(rank2)；dense: c2(rank1) c1(rank2)；alpha=0.9, k=60
+    # c1 = 0.9/61 + 0.1/62，c2 = 0.9/62 + 0.1/61 → c1 略高
+    out = rerank([_leg("c1", "c2"), _leg("c2", "c1")], alpha=0.9, final_k=5)
 
-    out = rerank(cands, "q", store, dim=4, final_k=2)
-
-    assert [r.chunk.chunk_id for r in out] == ["b", "a"]
-    assert [r.score for r in out] == pytest.approx([0.8, 0.6])
+    assert [r.chunk.chunk_id for r in out] == ["c1", "c2"]
+    scores = {r.chunk.chunk_id: r.score for r in out}
+    assert scores["c1"] == pytest.approx(0.9 / 61 + 0.1 / 62)
+    assert scores["c2"] == pytest.approx(0.9 / 62 + 0.1 / 61)
 
 
-def test_final_k_truncates(monkeypatch):
-    _patch_embed(monkeypatch, [1.0, 0.0, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a", "b", "c"],
-        matrix=np.array([[1, 0, 0, 0], [1, 0, 0, 0], [1, 0, 0, 0]], dtype=np.float32),
-        metadata=[{}, {}, {}],
-    )
-    cands = [ScoredChunk(chunk=_chunk(i), score=1.0, stage="rrf") for i in ("a", "b", "c")]
+def test_alpha_flips_ranking():
+    # 两腿名次完全相反时，α 决定听谁的
+    bm25, dense = _leg("c1", "c2"), _leg("c2", "c1")
 
-    assert len(rerank(cands, "q", store, dim=4, final_k=2)) == 2
-
-
-def test_stage_is_rerank(monkeypatch):
-    _patch_embed(monkeypatch, [1.0, 0.0, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a"], matrix=np.array([[1, 0, 0, 0]], dtype=np.float32), metadata=[{}]
-    )
-    out = rerank([ScoredChunk(chunk=_chunk("a"), score=0.9, stage="rrf")], "q", store, dim=4, final_k=1)
-
-    assert all(r.stage == "rerank" for r in out)
+    assert [
+        r.chunk.chunk_id for r in rerank([bm25, dense], alpha=0.9, final_k=2)
+    ] == ["c1", "c2"]
+    assert [
+        r.chunk.chunk_id for r in rerank([bm25, dense], alpha=0.1, final_k=2)
+    ] == ["c2", "c1"]
 
 
-def test_score_is_python_float(monkeypatch):
-    _patch_embed(monkeypatch, [1.0, 0.0, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a"], matrix=np.array([[1, 0, 0, 0]], dtype=np.float32), metadata=[{}]
-    )
-    out = rerank([ScoredChunk(chunk=_chunk("a"), score=0.9, stage="rrf")], "q", store, dim=4, final_k=1)
-
-    assert isinstance(out[0].score, float)
-    assert not isinstance(out[0].score, np.floating)
+def test_alpha_one_reduces_to_bm25_order():
+    out = rerank([_leg("c3", "c1", "c2"), _leg("c2", "c3", "c1")], alpha=1.0, final_k=3)
+    assert [r.chunk.chunk_id for r in out] == ["c3", "c1", "c2"]
 
 
-def test_sub_scores_preserves_prev(monkeypatch):
-    # 精排前分数记入 sub_scores["prev"]，原有 sub_scores 保留
-    _patch_embed(monkeypatch, [1.0, 0.0, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a"], matrix=np.array([[1, 0, 0, 0]], dtype=np.float32), metadata=[{}]
-    )
-    a = _chunk("a")
-    out = rerank(
-        [ScoredChunk(chunk=a, score=0.9, stage="rrf", sub_scores={"bm25": 5.0})],
-        "q",
-        store,
-        dim=4,
-        final_k=1,
-    )
-
-    assert out[0].sub_scores["prev"] == pytest.approx(0.9)
-    assert out[0].sub_scores["bm25"] == pytest.approx(5.0)
+def test_alpha_zero_reduces_to_dense_order():
+    out = rerank([_leg("c3", "c1", "c2"), _leg("c2", "c3", "c1")], alpha=0.0, final_k=3)
+    assert [r.chunk.chunk_id for r in out] == ["c2", "c3", "c1"]
 
 
-def test_empty_candidates_returns_empty(monkeypatch):
-    _patch_embed(monkeypatch, [1.0, 0.0, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a"], matrix=np.array([[1, 0, 0, 0]], dtype=np.float32), metadata=[{}]
-    )
-
-    assert rerank([], "q", store, dim=4, final_k=2) == []
+def test_single_leg_ignores_alpha():
+    # 单腿时权重归一化为 1，alpha 不参与（只开一路召回时不应改变排序）
+    leg = _leg("c2", "c1")
+    assert [r.chunk.chunk_id for r in rerank([leg], alpha=0.0, final_k=5)] == ["c2", "c1"]
+    assert [r.chunk.chunk_id for r in rerank([leg], alpha=1.0, final_k=5)] == ["c2", "c1"]
 
 
-def test_candidate_not_in_store_is_dropped(monkeypatch):
-    # chunk_id 不在 store 里的候选无法打分，被丢弃
-    _patch_embed(monkeypatch, [1.0, 0.0, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a"], matrix=np.array([[1, 0, 0, 0]], dtype=np.float32), metadata=[{}]
-    )
-    a = _chunk("a")
-    ghost = _chunk("ghost")
-    cands = [
-        ScoredChunk(chunk=ghost, score=1.0, stage="rrf"),
-        ScoredChunk(chunk=a, score=0.5, stage="rrf"),
-    ]
-
-    out = rerank(cands, "q", store, dim=4, final_k=2)
-
-    assert [r.chunk.chunk_id for r in out] == ["a"]
+def test_same_chunk_accumulates_across_legs():
+    # 同一块在两腿都靠前 → 分数累加，应排第一
+    out = rerank([_leg("c1", "c2"), _leg("c1", "c2")], alpha=0.5, final_k=2)
+    assert out[0].chunk.chunk_id == "c1"
+    assert out[0].score == pytest.approx(0.5 / 61 + 0.5 / 61)
 
 
-def test_deterministic(monkeypatch):
-    _patch_embed(monkeypatch, [0.6, 0.8, 0.0, 0.0])
-    store = VectorStore(
-        ids=["a", "b", "c"],
-        matrix=np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0]], dtype=np.float32),
-        metadata=[{}, {}, {}],
-    )
-    cands = [ScoredChunk(chunk=_chunk(i), score=1.0, stage="rrf") for i in ("a", "b", "c")]
+def test_empty_legs_returns_empty():
+    assert rerank([], alpha=0.9, final_k=5) == []
 
-    first = [(r.chunk.chunk_id, r.score) for r in rerank(cands, "q", store, dim=4, final_k=3)]
-    second = [(r.chunk.chunk_id, r.score) for r in rerank(cands, "q", store, dim=4, final_k=3)]
 
-    assert first == second
+def test_final_k_truncates():
+    out = rerank([_leg("a", "b", "c", "d")], alpha=0.9, final_k=2)
+    assert len(out) == 2
+
+
+def test_stage_is_rerank():
+    out = rerank([_leg("a")], alpha=0.9, final_k=1)
+    assert out[0].stage == "rerank"

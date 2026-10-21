@@ -2,32 +2,38 @@
 
 from pathlib import Path
 
+from ragkit.chunking import iter_heading_sections
 from ragkit.config import AppConfig
-from ragkit.evaluation import Qrel, VARIANTS, run_ablation
+from ragkit.evaluation import AnswerSection, Qrel, VARIANTS, run_ablation
 from ragkit.index import build
+from ragkit.text.normalize import normalize_text
 
 
 def test_variants_contract():
-    # 锁定 4 组单变量对照设计：单腿组必须同时关 rerank（隔离变量）
-    assert list(VARIANTS) == ["baseline", "bm25_only", "dense_only", "no_rerank"]
+    # 锁定 4 组单变量对照设计：对照组必须与默认值相反——
+    # rerank_enabled 默认 True（加权排名融合），所以对照是"关掉它"（等权 RRF）；
+    # 单腿组同时关 rerank，隔离变量。
+    assert list(VARIANTS) == ["baseline", "no_rerank", "bm25_only", "dense_only"]
     assert VARIANTS["baseline"] == {}
+    assert VARIANTS["no_rerank"] == {"rerank_enabled": False}
     assert VARIANTS["bm25_only"] == {"dense_enabled": False, "rerank_enabled": False}
     assert VARIANTS["dense_only"] == {"sparse_enabled": False, "rerank_enabled": False}
-    assert VARIANTS["no_rerank"] == {"rerank_enabled": False}
 
 
 def test_run_ablation_structure(tmp_path):
     raw = tmp_path / "raw"
     raw.mkdir()
-    (raw / "a.md").write_text(
-        "# 主题A\n\n## 小节1\n\n内容一\n\n## 小节2\n\n内容二\n", encoding="utf-8"
-    )
+    text = "# 主题A\n\n## 小节1\n\n内容一\n\n## 小节2\n\n内容二\n"
+    (raw / "a.md").write_text(text, encoding="utf-8")
     built = build(raw, AppConfig(index_dir=tmp_path / "idx"))
-    qrels = [Qrel(query="内容一", relevant=frozenset([built.store.ids[0]]))]
+
+    # 小节级标注：只标"小节1"的字符区间，不依赖切出来的 chunk_id
+    start, end = iter_heading_sections(normalize_text(text))[0]
+    qrels = [Qrel(query="内容一", answers=(AnswerSection("a.md", "小节1", start, end),))]
 
     results = run_ablation(built, qrels)
 
-    assert list(results) == ["baseline", "bm25_only", "dense_only", "no_rerank"]
+    assert list(results) == ["baseline", "no_rerank", "bm25_only", "dense_only"]
     for name, r in results.items():
         assert set(r["recall_at"]) == set(range(1, 11))
         assert 0.0 <= r["mrr"] <= 1.0

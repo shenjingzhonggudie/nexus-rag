@@ -139,7 +139,11 @@ def _cmd_ask(args, environ: Mapping[str, str] | None) -> int:
 
     # 第二步：从磁盘加载 build 产出的索引，不重新处理文档
     try:
-        built = load_index(cfg.index_dir)
+        built = load_index(
+            cfg.index_dir,
+            provider=cfg.embedding.provider,
+            model_name=cfg.embedding.model_name,
+        )
     except FileNotFoundError:
         # chunks.jsonl 缺失（build 写到一半的半成品）
         print(
@@ -161,8 +165,10 @@ def _cmd_ask(args, environ: Mapping[str, str] | None) -> int:
         dim=built.dim,
         retrieval=cfg.retrieval,
     )
-    # 第四步：基于检索结果生成答案，没有可用结果时会拒答
-    answer = answer_question(args.query, result, llm=cfg.llm)
+    # 第四步：基于检索结果生成答案；结果为空或实词覆盖率低于阈值时拒答
+    answer = answer_question(
+        args.query, result, llm=cfg.llm, refuse_threshold=cfg.retrieval.refuse_threshold
+    )
 
     # 拒答是业务上的正常结果，退出码仍为 0
     if answer.refused:
@@ -192,7 +198,11 @@ def _cmd_serve(args, environ: Mapping[str, str] | None) -> int:
         print(f"错误：{e}", file=sys.stderr)
         return 1
     try:
-        built = load_index(cfg.index_dir)
+        built = load_index(
+            cfg.index_dir,
+            provider=cfg.embedding.provider,
+            model_name=cfg.embedding.model_name,
+        )
     except FileNotFoundError:
         print(f"错误：索引不完整（{cfg.index_dir}），请重新运行 ragkit build", file=sys.stderr)
         return 1
@@ -235,7 +245,11 @@ def _cmd_eval(args, environ: Mapping[str, str] | None) -> int:
         print(f"错误：{e}", file=sys.stderr)
         return 1
     try:
-        built = load_index(cfg.index_dir)
+        built = load_index(
+            cfg.index_dir,
+            provider=cfg.embedding.provider,
+            model_name=cfg.embedding.model_name,
+        )
     except FileNotFoundError:
         print(f"错误：索引不完整（{cfg.index_dir}），请重新运行 ragkit build", file=sys.stderr)
         return 1
@@ -250,11 +264,30 @@ def _cmd_eval(args, environ: Mapping[str, str] | None) -> int:
 
     report = evaluate(built, cfg, qrels)
 
-    # 打印摘要
+    # 打印摘要：有多个来源时**只报分组**，不报合计。
+    # 合计会被两组的题目比例左右（external 占比一高，整体就掉），
+    # 它不是系统能力，放在报告里容易被误读成"一个数字"。
     print(f"评测集 {len(report.per_query)} 条")
-    for k, v in report.recall_at.items():
-        print(f"recall@{k} = {v:.3f}")
-    print(f"MRR      = {report.mrr:.3f}")
+    if len(report.by_source) > 1:
+        labels = {"internal": "内部组（读正文出题）", "external": "外部组（只看标题）"}
+        print("按来源（两组必须分开看，合计会随两组比例变化）：")
+        for name, stats in report.by_source.items():
+            print(f"  {labels.get(name, name)}  n={stats.n}")
+            print(
+                f"    recall@1={stats.recall_at[1]:.3f}  "
+                f"@3={stats.recall_at[3]:.3f}  "
+                f"@5={stats.recall_at[5]:.3f}  MRR={stats.mrr:.3f}"
+            )
+    else:
+        for k, v in report.recall_at.items():
+            print(f"recall@{k} = {v:.3f}")
+        print(f"MRR      = {report.mrr:.3f}")
+    if report.n_no_answer:
+        print(
+            f"拒答    准确率 {report.refusal_accuracy:.3f}"
+            f"（{report.n_no_answer} 条无答案）"
+            f" | 误拒率 {report.false_refusal_rate:.3f}"
+        )
     print(
         f"耗时  冷启动 {report.latency.cold_ms:.0f}ms | "
         f"热启动 P50 {report.latency.warm_p50_ms:.1f}ms "

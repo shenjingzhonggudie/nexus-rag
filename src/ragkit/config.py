@@ -21,22 +21,26 @@ class RetrievalConfig(BaseModel):
     Attributes:
         top_k: 初步召回的候选数量。
         final_k: 融合或重排后最终保留的条数。
-        fusion: 多路结果的融合策略（rrf = 等权，weighted = 加权排名融合）。
-        fusion_alpha: weighted 融合时第一条腿（BM25）的权重，取值 0~1。
+        fusion_alpha: 加权排名融合里第一条腿（BM25）的权重，取值 0~1；
+            只在 ``rerank_enabled=True`` 时生效。
         sparse_enabled: 是否启用关键词或 BM25 等稀疏检索。
         dense_enabled: 是否启用向量相似度等稠密检索。
-        rerank_enabled: 是否对召回候选执行二次重排。
+        rerank_enabled: 是否启用**加权排名融合**
+            ``S(d) = α·S1(d) + (1−α)·S2(d)``；关闭时退化为等权 RRF。
+            默认开：加权（α=0.9，BM25 为主）实测优于等权（MRR 0.485 vs 0.477）。
+        refuse_threshold: 拒答阈值——查询实词被检索结果覆盖的比例低于它时
+            拒答；0 表示不启用（只靠"结果为空"拒答）。
     """
 
     model_config = ConfigDict(extra="forbid")
 
     top_k: int = Field(default=20, gt=0)  # 初步召回的候选数量。
     final_k: int = Field(default=5, gt=0)  # 经过融合/重排后最终保留的条数。
-    fusion: Literal["rrf", "weighted"] = "weighted"  # 多路结果的融合策略（默认加权：α=0.9 BM25 为主）。
-    fusion_alpha: float = Field(default=0.9, ge=0.0, le=1.0)  # weighted 融合时 BM25 腿的权重。
+    fusion_alpha: float = Field(default=0.9, ge=0.0, le=1.0)  # 加权排名融合里 BM25 腿的权重。
     sparse_enabled: bool = True  # 是否启用关键词/BM25 等稀疏检索。
     dense_enabled: bool = True  # 是否启用向量相似度等稠密检索。
-    rerank_enabled: bool = False  # 是否对候选二次重排。默认关：消融证明 hashing dense 余弦精排稳定负贡献（见 PROJECT_LAYOUT 评测契约）
+    rerank_enabled: bool = True  # 是否启用加权排名融合（S = α·S1 + (1−α)·S2）；关则退化为等权 RRF。
+    refuse_threshold: float = Field(default=0.05, ge=0.0, le=1.0)  # 拒答阈值：实词覆盖率低于它则拒答（0 = 不启用阈值）。
 
     @model_validator(mode="after")
     def validate_top_k(self) -> "RetrievalConfig":
@@ -87,14 +91,16 @@ class EmbeddingConfig(BaseModel):
     """文本向量化阶段的参数。
 
     Attributes:
-        provider: 向量嵌入实现方式。
-        dim: 每个文本向量的维度。
+        provider: 向量嵌入实现方式（hashing 字面级 / bge 本地语义模型）。
+        dim: 每个文本向量的维度，必须与所选模型输出维度一致。
+        model_name: bge 的模型名或本地路径；hashing 忽略。
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    provider: Literal["hashing"] = "hashing"  # 向量嵌入的实现方式。
+    provider: Literal["hashing", "bge"] = "hashing"  # 向量嵌入的实现方式。
     dim: int = Field(default=512, gt=0)  # 每个文本向量的维度。
+    model_name: str = "BAAI/bge-small-zh-v1.5"  # bge 模型名/路径；hashing 忽略。
 
 
 class LLMConfig(BaseModel):

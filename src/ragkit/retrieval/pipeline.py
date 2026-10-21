@@ -5,7 +5,7 @@ import time
 from ragkit.config import RetrievalConfig
 from ragkit.retrieval.bm25 import BM25Index
 from ragkit.retrieval.dense import dense_search
-from ragkit.retrieval.fusion import rrf_fuse, weighted_fuse
+from ragkit.retrieval.fusion import rrf_fuse
 from ragkit.retrieval.rerank import rerank
 from ragkit.retrieval.result import RetrievalResult
 from ragkit.schemas import Chunk, RetrievalTrace, ScoredChunk, StageTrace
@@ -57,8 +57,10 @@ def search(
         return hits
 
     legs: list[list[ScoredChunk]] = []
+    bm25_hits: list[ScoredChunk] = []
     if retrieval.sparse_enabled:
-        legs.append(timed("bm25", lambda: bm25.search(query, top_k=retrieval.top_k)))
+        bm25_hits = timed("bm25", lambda: bm25.search(query, top_k=retrieval.top_k))
+        legs.append(bm25_hits)
     if retrieval.dense_enabled:
         legs.append(
             timed(
@@ -67,23 +69,32 @@ def search(
             )
         )
     if not legs:
-        return RetrievalResult(results=[], trace=RetrievalTrace())
+        return RetrievalResult(results=[], trace=RetrievalTrace(), match_score=0.0)
 
-    if retrieval.fusion == "weighted":
+    # 拒答判据（两层）：① 语料里完全没出现过的英文实体（Kafka / JVM）→ 强制 0；
+    # ② 否则用实词覆盖率。不能用融合分——它是排名分（0.012~0.017），只反映名次。
+    match_score: float | None = None
+    if retrieval.sparse_enabled:
+        if bm25.unknown_entities(query):
+            match_score = 0.0
+        else:
+            match_score = bm25.key_term_coverage(query, bm25_hits)
+
+    # 融合 / 精排：开启 rerank 走加权排名融合 S(d) = α·S1(d) + (1−α)·S2(d)；
+    # 关闭时退化为等权 RRF（纯召回合并，不给任何一条腿更高权重）。
+    if retrieval.rerank_enabled:
         results = timed(
-            "fusion",
-            lambda: weighted_fuse(
-                legs, alpha=retrieval.fusion_alpha, top_k=retrieval.top_k
+            "rerank",
+            lambda: rerank(
+                legs, alpha=retrieval.fusion_alpha, final_k=retrieval.final_k
             ),
         )
     else:
         results = timed("fusion", lambda: rrf_fuse(legs, top_k=retrieval.top_k))
-    if retrieval.rerank_enabled:
-        results = timed(
-            "rerank",
-            lambda: rerank(results, query, store, dim=dim, final_k=retrieval.final_k),
-        )
-    else:
         results = results[: retrieval.final_k]
 
-    return RetrievalResult(results=results, trace=RetrievalTrace(stages=stages))
+    return RetrievalResult(
+        results=results,
+        trace=RetrievalTrace(stages=stages),
+        match_score=match_score,
+    )

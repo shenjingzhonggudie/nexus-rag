@@ -7,19 +7,21 @@
 从零手搓的**中文 RAG 系统**（检索增强生成），**不用 LangChain/LlamaIndex 等框架**，核心算法（BM25、RRF/加权融合、重排、拒答、评测指标）全部自己实现。默认模式**离线可运行、不需要 API Key、不联网**。
 
 - 版本：`1.0.0`（`src/ragkit/__init__.py` 的 `__version__`）
-- 测试：**272 条全绿**（`pytest -q`）
+- 测试：**291 条全绿**（`pytest -q`）
 - Python：3.12（虚拟环境 `.venv`）
 - GitHub：`https://github.com/shenjingzhonggudie/nexus-rag`（分支 `master`）
 
 ## 技术栈与依赖
 
-`pyyaml` / `pydantic` / `jieba`（中文分词）/ `numpy`。**零 RAG 框架、零真 embedding 模型**——向量用的是 hashing 字面级 embedding（见"关键结论"）。
+`pyyaml` / `pydantic` / `jieba`（中文分词）/ `numpy`。**零 RAG 框架**；默认向量是
+hashing 字面级 embedding（离线零依赖）。真语义模型是**可选依赖组**：
+`pip install -e ".[embedding]"` 后才启用 `embedding.provider = bge`（见"关键结论"）。
 
 ## 怎么跑
 
 ```powershell
 cd "C:\Users\王佳浩\Desktop\项目"
-.\.venv\Scripts\python.exe -m pytest -q          # 跑测试（预期 272 passed）
+.\.venv\Scripts\python.exe -m pytest -q          # 跑测试（预期 291 passed）
 .\.venv\Scripts\ragkit.exe build                  # 建库（data/raw → data/index）
 .\.venv\Scripts\ragkit.exe ask "问题"             # 问答
 .\.venv\Scripts\ragkit.exe serve --port 8000      # HTTP API（POST /ask、GET /healthz）
@@ -34,31 +36,27 @@ cd "C:\Users\王佳浩\Desktop\项目"
 |---|---|---|
 | 加载 | `loaders/` | `.txt/.md/.markdown`，UTF-8 + GBK 回退，坏文件隔离 |
 | 分块 | `chunking/` | heading（按 `##`，超长小节 fixed 再切）+ fixed，稳定 chunk_id（内容哈希） |
-| 向量化 | `embeddings/` | hashing 字面级 embedding，L2 归一化 |
-| 存储 | `stores/` | NumPy 向量库，五文件落盘（manifest 最后写） |
-| 检索 | `retrieval/` | BM25 → dense → 融合（RRF/加权）→ rerank |
+| 向量化 | `embeddings/` | hashing 字面级（默认）/ bge 本地语义模型（可选依赖组 `.[embedding]`） |
+| 存储 | `stores/` | NumPy 向量库，五文件落盘（manifest 最后写，内含 provider 自描述） |
+| 检索 | `retrieval/` | BM25 → dense → 融合（RRF/加权）→ rerank；`match_score` 供拒答 |
 | 建库 | `index/` | `build` / `load_index`，chunks.jsonl + id 一致性校验 |
-| 生成 | `generation/` | `answer_question`：证据→引用、拒答、抽取式回答 |
+| 生成 | `generation/` | `answer_question`：证据→引用、**两类拒答**、抽取式回答 |
 | API | `api/` | `create_server` / `_answer_payload`（壳芯分离） |
-| 评测 | `evaluation/` | recall@k / MRR + 评测编排 + 消融 |
+| 评测 | `evaluation/` | 覆盖式 recall@k / MRR + 拒答指标 + **小节级标注（区间重叠）** + 消融 |
 
-## 关键结论（**不要轻易推翻，都是消融实验验证过的**）
+## 关键结论（**不要轻易推翻**）
 
-1. **融合默认是加权 RRF**：`RetrievalConfig.fusion = "weighted"`、`fusion_alpha = 0.9`。公式 `S(d) = 0.9·S1 + 0.1·S2`，其中 `S_i = 1/(60 + rank_i)`。
-2. **rerank 默认关闭**（`rerank_enabled=False`）——`baseline == dense_only` 印证 rerank 用 dense 余弦一票否决，这个规律跨语料稳定。
-3. **dense 腿（hashing）是字面级替身，不懂语义**：这是 hashing 的固有限制，不是 bug——要真正提升 dense 腿，得接真 embedding（BGE 等）。
-4. **块级标注下（10 篇 + 25 条 query）的完整消融结果**：
+1. **融合 = 加权排名融合，在 `rerank()` 里实现**：`S(d) = α·S1(d) + (1−α)·S2(d)`，`S_i = 1/(60 + rank_i)`，`fusion_alpha = 0.9`（BM25 权重 0.9 / dense 权重 0.1）。**`weighted_fuse` 已删除**——加权融合属于精排阶段职责，与等权 `rrf_fuse` 分开，避免两份几乎相同的实现。
+2. **`rerank_enabled` 默认 `True`**（开启加权融合）：221 条标注上实测比等权 RRF **recall@1 +0.039**。注意这里的 `rerank` 已经不是"用 dense 向量重排"——那个版本（让 dense 分数一票否决 BM25）实测 **−0.039**，已废弃。两种融合的取舍：加权 **@1 更高**（0.38 vs 0.34），等权 **@5 更高**（0.59 vs 0.57）。
+3. **hashing dense 是字面级替身，不懂语义**：这是它的固有限制，不是 bug。接真 embedding（BGE，已实现 `embeddings/bge.py`）后重估 dense 腿与 rerank。
+4. **标注绝不绑切分**（本轮最重要的约定）：答案标「文档 + 小节字符区间」，评测用**区间重叠**判定。千万不要改成标 `chunk_id`——切分策略一改就全废。
+5. **拒答是两层判据**：① `unknown_entities`——查询里首字母大写的英文专有名词（Kafka / JVM）若语料中从未出现，**强制 `match_score=0`**；② 实词 idf 加权覆盖率低于阈值（默认 0.05）。稠密腿永远返回 top_k，所以"结果为空"根本不成立；融合分也不能当阈值（排名分 0.012~0.017）。实测：拒答准确率 100%、误拒率 0.8%。**`v-model` / `v-if` 这类小写框架指令不能当外来实体**，否则会稳定误拒正常问题。
+6. **评测必须按来源分组报告**：`internal`（读正文出题，**能力基准**，recall@1=0.390）与 `external`（只看标题出题，**真实用户视角**，recall@1=0.282）**并列报告，不报合计**——合计取决于两组题目比例，不是系统能力。对内外一致：README、`eval` 输出、面试话术都一样。
 
-| 组 | @1 | @2 | @3 | @4 | @5 | @6 | @7 | @8 | @9 | @10 | MRR |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| baseline（等权 RRF + dense rerank） | 0.25 | 0.29 | 0.40 | 0.42 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.428 |
-| bm25_only（纯 BM25） | 0.25 | 0.31 | 0.37 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.447 |
-| dense_only（纯 dense） | 0.25 | 0.29 | 0.40 | 0.42 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.43 | 0.428 |
-| **no_rerank（等权 RRF）** | **0.27** | **0.35** | 0.41 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | **0.477** |
-| weighted α=0.9（当前默认） | 0.25 | 0.33 | 0.41 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.44 | 0.457 |
-
-   no_rerank（等权 RRF）MRR 最高（0.477），weighted α=0.9（0.457）略低但差异在样本波动内——25 条样本太小，不据此断言"等权优于加权"，要下结论需扩大样本 + 显著性检验。
-5. **标注粒度决定任务难度**：文档级 0.9（在 N 篇里选主题）vs 块级 0.25（在 M 块里选段落），跨粒度比较绝对数字没有意义。
+> **消融（221 条标注、bge embedding）**：BM25 腿 **+0.091**、dense 腿 **+0.039**、rerank **+0.039**（按 recall@1）。
+> `VARIANTS = baseline / with_rerank / bm25_only / dense_only`——注意 `rerank_enabled` 默认就是 `False`，
+> "关 rerank"单独设组会和 baseline 完全等价（旧的 `no_rerank` 就是这样，白占一行）；
+> 要量化 rerank 必须有 `with_rerank`。单腿组仍必须同时关 rerank（隔离变量）。
 
 ## 必须遵守的约定（改代码前先读）
 
@@ -67,18 +65,23 @@ cd "C:\Users\王佳浩\Desktop\项目"
 - **壳芯分离**：HTTP 的 `_answer_payload` 是纯函数芯，handler 只做 HTTP 细节；CLI 是薄壳，不写业务逻辑。
 - **领域层输出结构化对象，表现层各自翻译**：领域层产出 `Chunk`/`RetrievalResult`/`Answer`，CLI 转文本、API 转 JSON，不在领域层写格式化。
 - **参数可注入 = 测试可隔离**：`main(argv, environ)`、`load_config(environ)` 不直接读 `sys.argv`/`os.environ`。
-- **可再生的重建优于修补**：`data/index/`、`reports/` 是产物（已被 `.gitignore` 忽略），可随时重建；`data/raw/`、`data/eval/` 是原料，要保留。
+- **可再生的重建优于修补**：`data/index/`、`reports/` 是产物（gitignore），可随时重建；`data/raw/` 是第三方正文（gitignore，由脚本拉取）；**只有 `data/eval/` 与 `data/SOURCES.md` 是必须保留的人工成果**。
 - **改 `pyproject.toml` 后要重新 `pip install -e ".[dev]"`**（离线环境装依赖需联网或预装 setuptools）。
 
 ## 数据文件说明
 
 | 路径 | 内容 | 可否再生 |
 |---|---|---|
-| `data/raw/` | 语料：10 篇后端技术文档（2 主题 × 1正+4误导，每篇约 10000 字） | ✅ `python scripts/generate_corpus.py` |
-| `data/eval/qrels.json` | 评测集：25 条 query（direct/paraphrase/no_answer）+ 块级标注 | ✅ 同脚本 |
+| `data/raw/` | 公开技术文档正文（K8s / Docker / Python / Vue / React） | ✅ `python scripts/fetch_docs.py`（需联网） |
+| `data/eval/qrels.json` | 小节级标注：文档 + 字符区间（221 条，五类配比） | ❌ 人工筛选的成果，**必须提交** |
+| `data/eval/qrels.example.json` | 五类标注的格式示例 | — |
+| `data/SOURCES.md` | 数据来源与许可证 | ❌ fetch 时生成，**必须提交** |
 | `data/index/`、`reports/` | 建库/评测产物 | ✅ 可重建，已 gitignore |
 
-> 生成脚本在 `scripts/`，数据源是 `scripts/corpus_data_01.py` / `corpus_data_02.py`（语料内容 + query）。改语料/评测集改这些源文件，再跑 `generate_corpus.py`，别直接手改 `data/raw`。
+> 数据工具在 `scripts/`：`fetch_docs.py`（拉正文）/ `section_index.py`（列小节
+> 与字符区间）/ `gen_queries.py`（生成出题 prompt）/ `check_qrels.py`（质检）。
+> 完整流程见 `data/README.md`。**别把 `data/raw/` 的正文提交进 Git**——那是第三方
+> 文档，再分发涉及许可证。
 
 ## 文档索引
 
@@ -92,7 +95,7 @@ cd "C:\Users\王佳浩\Desktop\项目"
 
 | 项 | 触发信号 |
 |---|---|
-| 真语义 embedding（替换 hashing，dense 腿重估） | 拿到 embedding 模型（本地 BGE）或 API key |
+| 真语义 embedding 验证（`bge.py` 已实现，待实测） | 装上 `.[embedding]` 并下载 BGE 模型后跑 `build` + `eval` |
 | cross-encoder rerank | 接真模型后重评 rerank |
 | `openai_compatible` 真实生成 | 拿到 LLM API key（`generation/answer.py` 已有 fail-fast 分支，只改函数体） |
 | 增量更新 | 全量重建慢到痛 |
@@ -101,6 +104,6 @@ cd "C:\Users\王佳浩\Desktop\项目"
 
 ## 给接手者的三个提醒
 
-1. **别动消融结论除非有新的实测数据**——当前结论是 25 条块级标注 query 上跑出来的（样本较小），改动默认配置前先重跑 `demo_ablation.py` 或扩大样本重测。
+1. **消融数字已作废、方法论有效**——旧数字跑在已删除的合成语料上，别再引用；方向性结论（rerank 负贡献、hashing 只懂字面）保留，新语料到位后先重跑 `demo_ablation.py` 再报数。
 2. **中文引号/编码**：源码和文档统一 UTF-8；写文档里的中文引号别用英文双引号（历史上引发过语法错误）。
 3. **GitHub 网络**：push 可能因网络连不上 `github.com:443` 失败（国内直连常被墙），本地 commit 不会丢，等网络恢复或开代理再 `git push`。
