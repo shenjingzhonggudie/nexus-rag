@@ -689,19 +689,6 @@
     "source": "internal"
   },
   {
-    "query": "已经有一个别的后端渲染的老网站，想只把其中一段页面换成 React 该从哪下手？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-gui-navicat.md",
-        "section": "下一步",
-        "start": 6165,
-        "end": 6668
-      }
-    ],
-    "source": "internal"
-  },
-  {
     "query": "子组件怎么把内部发生的事情通知给父组件？",
     "type": "paraphrase",
     "answers": [
@@ -741,19 +728,6 @@
     "source": "internal"
   },
   {
-    "query": "集群怎么知道某个工作节点还活着？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-create-table.md",
-        "section": "执行 `CREATE TABLE` 语句",
-        "start": 14330,
-        "end": 15071
-      }
-    ],
-    "source": "internal"
-  },
-  {
     "query": "想在组件刚渲染完成、DOM 已经可用时跑一段代码，应该挂在哪里？",
     "type": "paraphrase",
     "answers": [
@@ -762,240 +736,6 @@
         "section": "注册周期钩子",
         "start": 145,
         "end": 1591
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "想让查询直接在索引上拿到全部数据、不用回表，索引该怎么建？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__passing-props-to-a-component.md",
-        "section": "给 prop 指定一个默认值",
-        "start": 3760,
-        "end": 4115
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "想先搞清楚页面到底慢在哪，有哪些现成的检测工具可用？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-insert-data.md",
-        "section": "主键为 `AUTO_RANDOM` 表插入数据",
-        "start": 9348,
-        "end": 10442
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "在 JSX 里怎么把变量的值渲染到页面上？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__event-handling.md",
-        "section": "在内联事件处理器中访问事件参数",
-        "start": 4163,
-        "end": 4839
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "怎么限制不同角色只能操作设备分配相关的部分接口？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__installation.md",
-        "section": "Try React",
-        "start": 119,
-        "end": 761
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "主键和数据的物理存放顺序绑在一起有什么好处？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-create-table.md",
-        "section": "什么是表",
-        "start": 475,
-        "end": 709
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "过渡效果能不能跟着状态变化动态切换？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__forms.md",
-        "section": "组件上的 `v-model`",
-        "start": 14047,
-        "end": 14274
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "写 reducer 时最基本的几条纪律是什么？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__describing-the-ui.md",
-        "section": "将 Props 传递给组件",
-        "start": 4242,
-        "end": 5469
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "每台机器上都有哪些进程在维持 Pod 运行？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-delete-data.md",
-        "section": "性能注意事项",
-        "start": 4430,
-        "end": 4931
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "给表加索引时有哪些要注意的地方？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__built-ins__transition.md",
-        "section": "可复用过渡效果",
-        "start": 15133,
-        "end": 15623
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "组件有多个根元素时，外部传进来的属性还会自动挂到根上吗？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__react-compiler__debugging.md",
-        "section": "调试工作流程",
-        "start": 930,
-        "end": 1722
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "组件层级很深时，一层层往下传参数会带来什么麻烦？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
-        "section": "表命名规范",
-        "start": 272,
-        "end": 595
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "云控制器管理器在设计上是怎样部署的？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__conditional.md",
-        "section": "`<template>` 上的 `v-if`",
-        "start": 1627,
-        "end": 1962
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "已经有一个别的后端渲染的老网站，想只把其中一段页面换成 React 该从哪下手？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
-        "section": "基于目录的采用与 Babel 覆盖",
-        "start": 817,
-        "end": 2162
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "子组件怎么把内部发生的事情通知给父组件？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-delete-data.md",
-        "section": "最佳实践",
-        "start": 832,
-        "end": 1290
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "属性很多时，怎么把一整个对象一次性拆开传给组件？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__computed.md",
-        "section": "计算属性缓存 vs 方法",
-        "start": 3682,
-        "end": 4724
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "能不能让控制面假装成更早的版本对外提供服务？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__choosing-the-state-structure.md",
-        "section": "合并关联的 state",
-        "start": 928,
-        "end": 2345
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "集群怎么知道某个工作节点还活着？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-insert-data.md",
-        "section": "避免热点",
-        "start": 9105,
-        "end": 9348
-      }
-    ],
-    "source": "internal"
-  },
-  {
-    "query": "想在组件刚渲染完成、DOM 已经可用时跑一段代码，应该挂在哪里？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__application.md",
-        "section": "应用配置",
-        "start": 1553,
-        "end": 1954
       }
     ],
     "source": "internal"
@@ -1956,19 +1696,6 @@
     "source": "external"
   },
   {
-    "query": "频繁增删改数据时，语句怎么写才更稳妥？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
-        "section": "DML 最佳实践",
-        "start": 40,
-        "end": 1998
-      }
-    ],
-    "source": "external"
-  },
-  {
     "query": "需要兼顾交易和报表时，TiDB 的 HTAP 该怎么用？",
     "type": "direct",
     "answers": [
@@ -2081,19 +1808,6 @@
         "section": "首要规则:不要使用无法信赖的模板",
         "start": 228,
         "end": 688
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "父级传来的值能在子级直接改掉吗？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__components__props.md",
-        "section": "单向数据流",
-        "start": 6006,
-        "end": 7955
       }
     ],
     "source": "external"
@@ -2471,19 +2185,6 @@
         "section": "在内联处理器中调用方法",
         "start": 3195,
         "end": 4163
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "父层向下传入的数据，接收端该怎样提前定义？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__components__props.md",
-        "section": "Props 声明",
-        "start": 96,
-        "end": 2054
       }
     ],
     "source": "external"
@@ -2877,5 +2578,265 @@
       }
     ],
     "source": "external"
+  },
+  {
+    "query": "集群的全局决策是谁在做？比如某个应用副本数不够时要自动补上",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture___index.md",
+        "section": "控制平面组件",
+        "start": 762,
+        "end": 2232
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "集群里那些提供额外能力的组件，一般装在哪个命名空间？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture___index.md",
+        "section": "插件(Addons)",
+        "start": 2688,
+        "end": 3948
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "删除一个对象时，系统怎么知道哪些资源属于它、该一起清理？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+        "section": "属主与依赖",
+        "start": 803,
+        "end": 1947
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "节点刚加入集群时谁给它分配地址段？节点失联了又是谁负责标记？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+        "section": "节点控制器",
+        "start": 5329,
+        "end": 6932
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "控制面除了直接装在物理机上，还有哪几种部署方式？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture___index.md",
+        "section": "架构变种",
+        "start": 3948,
+        "end": 5019
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "用 Python 连 TiDB，官方列出哪几种驱动？各自的支持等级是什么？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-choose-driver-or-orm.md",
+        "section": "Python",
+        "start": 6623,
+        "end": 8609
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "删了数据，磁盘占用为什么没有马上降下来？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-delete-data.md",
+        "section": "性能注意事项",
+        "start": 4430,
+        "end": 4931
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "表主键设成随机生成之后，插入时还能自己指定 id 吗？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-insert-data.md",
+        "section": "主键为 `AUTO_RANDOM` 表插入数据",
+        "start": 9348,
+        "end": 10442
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "要把 TiDB 接入 AWS 的数据集成服务，第一步得做什么？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-aws-appflow-integration.md",
+        "section": "第 1 步:注册 TiDB 连接器",
+        "start": 1838,
+        "end": 3472
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "不想让组件自动继承传进来的属性，该怎么关掉？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__attrs.md",
+        "section": "禁用 Attributes 继承",
+        "start": 1582,
+        "end": 3025
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "组件只在某个父组件里用，全局注册有什么坏处？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__registration.md",
+        "section": "局部注册",
+        "start": 862,
+        "end": 2037
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "异步组件加载慢或者失败时，能显示占位和报错吗？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__async.md",
+        "section": "加载与错误状态",
+        "start": 1852,
+        "end": 2475
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "列表增删时，周围的元素能不能平滑挪动而不是跳一下？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__built-ins__transition-group.md",
+        "section": "移动动画",
+        "start": 1142,
+        "end": 1812
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "列表特别长的时候，怎么只渲染屏幕里看得见的那部分？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__best-practices__performance.md",
+        "section": "通用优化",
+        "start": 6112,
+        "end": 7864
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "传给组件的 class 没在 props 里声明，最后会跑到哪去？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__attrs.md",
+        "section": "Attributes 继承",
+        "start": 122,
+        "end": 1582
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "官方推荐的那些 React 框架，部署时一定要自己搭服务器吗？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__creating-a-react-app.md",
+        "section": "全栈框架",
+        "start": 163,
+        "end": 2023
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "想跟着 React 的状态去控制一个非 React 的东西（比如播放器），该用什么？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__escape-hatches.md",
+        "section": "使用 Effect 进行同步",
+        "start": 2171,
+        "end": 4007
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "状态更新逻辑变复杂以后，useState 和 useReducer 各有什么利弊？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__extracting-state-logic-into-a-reducer.md",
+        "section": "对比 `useState` 和 `useReducer`",
+        "start": 16146,
+        "end": 17071
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "为什么说 React 组件要像数学公式一样，同样的输入必须给同样的结果？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__keeping-components-pure.md",
+        "section": "纯函数:组件作为公式",
+        "start": 207,
+        "end": 1886
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "什么工具都不装，想从头搭一个 React 应用该怎么做？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__creating-a-react-app.md",
+        "section": "从零开始",
+        "start": 3395,
+        "end": 4040
+      }
+    ],
+    "source": "internal"
   }
 ]

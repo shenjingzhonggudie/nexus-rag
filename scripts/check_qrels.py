@@ -24,6 +24,7 @@ from pathlib import Path
 
 from ragkit.chunking import iter_heading_sections
 from ragkit.evaluation import QUERY_TYPES, load_qrels
+from ragkit.loaders import load_file
 from ragkit.text.normalize import normalize_text
 
 RAW_DIR = Path("data/raw")
@@ -60,14 +61,28 @@ def main() -> None:
     errors: list[str] = []
     warnings: list[str] = []
 
+    # query 唯一性：重复的题会被算两次，直接虚高指标（实测曾混进 20 条重复，
+    # 221 条里只有 201 个不同 query，而当时的质检完全没有发现）
+    seen_queries: dict[str, int] = {}
+    for i, qrel in enumerate(qrels):
+        if qrel.query in seen_queries:
+            errors.append(
+                f"[{i}] {qrel.query[:24]}: 与第 {seen_queries[qrel.query]} 条 query 重复"
+            )
+        else:
+            seen_queries[qrel.query] = i
+
     # 文档 → 归一化文本 / 小节区间（只算一次，供区间校验复用）
     section_cache: dict[str, tuple[str, list[tuple[int, int]]]] = {}
 
     def sections_of(doc: str):
         if doc not in section_cache:
             path = RAW_DIR / doc
-            text = path.read_text(encoding="utf-8")
-            normalized = normalize_text(text)
+            # 必须走 load_file：qrels 的区间是在「剥掉 front matter / HTML 注释 /
+            # MDX 标签之后」的文本上算的。直接用 read_text 会差掉上万个码点，
+            # 校验会「碰巧通过」而完全失效（实测 23214 vs 8414）。
+            loaded = load_file(path)
+            normalized = normalize_text(loaded.text)
             section_cache[doc] = (normalized, iter_heading_sections(normalized))
         return section_cache[doc]
 
