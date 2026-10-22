@@ -10,7 +10,8 @@
         "end": 7470
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0000"
   },
   {
     "query": "创建表时表名应该遵循什么规范？",
@@ -23,7 +24,8 @@
         "end": 1065
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0001"
   },
   {
     "query": "v-model 的 .lazy 修饰符改变了什么更新时机？",
@@ -36,7 +38,8 @@
         "end": 14047
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0002"
   },
   {
     "query": "React 项目里根组件文件通常放在哪里？",
@@ -49,7 +52,8 @@
         "end": 738
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0003"
   },
   {
     "query": "Kubernetes 的网络模型是由谁来实现的？",
@@ -62,7 +66,8 @@
         "end": 2109
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0004"
   },
   {
     "query": "用 Go 语言连接 TiDB 有哪些可选的驱动？",
@@ -75,7 +80,8 @@
         "end": 6623
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0005"
   },
   {
     "query": "Vue 是怎么防止模板内容被注入脚本的？",
@@ -88,7 +94,8 @@
         "end": 1471
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0006"
   },
   {
     "query": "什么情况下需要用 ref 直接操作 DOM？",
@@ -101,7 +108,8 @@
         "end": 2171
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0007"
   },
   {
     "query": "启用对等聚合发现后，发现请求会默认返回什么？",
@@ -114,7 +122,8 @@
         "end": 2568
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0008"
   },
   {
     "query": "TiDB 里主键的定义和 InnoDB 有什么不同？",
@@ -127,7 +136,8 @@
         "end": 4439
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0009"
   },
   {
     "query": "Web 无障碍访问相关的 W3C 标准有哪些？",
@@ -140,7 +150,8 @@
         "end": 12201
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0010"
   },
   {
     "query": "JSX 和普通 HTML 在写法上有什么区别？",
@@ -153,7 +164,8 @@
         "end": 3229
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0011"
   },
   {
     "query": "自定义工作负载可以用 Lease 来做什么？",
@@ -166,7 +178,8 @@
         "end": 3731
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0012"
   },
   {
     "query": "TiDB 怎么决定多表 Join 的执行顺序？",
@@ -179,7 +192,8 @@
         "end": 8120
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0013"
   },
   {
     "query": "同一个页面里可以创建多个 Vue 应用实例吗？",
@@ -192,7 +206,8 @@
         "end": 2340
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0014"
   },
   {
     "query": "什么样的 React 组件才算得上是纯组件？",
@@ -205,7 +220,8 @@
         "end": 9080
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0015"
   },
   {
     "query": "Kubernetes 的自动扩缩容相关有哪些辅助组件？",
@@ -218,7 +234,8 @@
         "end": 22488
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0016"
   },
   {
     "query": "TiDB 从哪个版本开始支持非事务的批量删除？",
@@ -231,7 +248,8 @@
         "end": 10674
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0017"
   },
   {
     "query": "在 script setup 里怎么拿到父组件传下来的透传属性？",
@@ -244,7 +262,8 @@
         "end": 4244
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0018"
   },
   {
     "query": "想让一个值变化时不触发重新渲染，应该用什么？",
@@ -257,7 +276,8 @@
         "end": 1473
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0019"
   },
   {
     "query": "kubelet 对 apiserver 的健康检查请求怎么避免被限流？",
@@ -270,7 +290,8 @@
         "end": 11710
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0020"
   },
   {
     "query": "报错 Lost connection to MySQL server during query 应该怎么处理？",
@@ -283,7 +304,8 @@
         "end": 7073
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0021"
   },
   {
     "query": "Suspense 的后备插槽在什么时候显示？",
@@ -296,7 +318,8 @@
         "end": 2112
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0022"
   },
   {
     "query": "哪些情况下其实不该用 Effect？",
@@ -309,7 +332,8 @@
         "end": 5052
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0023"
   },
   {
     "query": "Kubernetes 怎么保证控制面组件同一时间只有一个实例在跑？",
@@ -322,7 +346,8 @@
         "end": 1200
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0024"
   },
   {
     "query": "TiDB 里优化 SQL 性能要遵循哪些原则？",
@@ -335,7 +360,8 @@
         "end": 529
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0025"
   },
   {
     "query": "v-if 和 v-show 在渲染行为上有什么本质区别？",
@@ -348,7 +374,8 @@
         "end": 2531
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0026"
   },
   {
     "query": "React 官方文档里提到了哪些全栈框架？",
@@ -361,7 +388,8 @@
         "end": 3395
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0027"
   },
   {
     "query": "Kubernetes 的控制器遵循什么设计原则？",
@@ -374,7 +402,8 @@
         "end": 2637
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0028"
   },
   {
     "query": "TiDB 支持哪几种表连接算法？",
@@ -387,7 +416,8 @@
         "end": 7715
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0029"
   },
   {
     "query": "组件被 KeepAlive 缓存后是卸载还是变成其他状态？",
@@ -400,7 +430,8 @@
         "end": 3981
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0030"
   },
   {
     "query": "在 React 组件里怎么让界面随着数据变化而更新？",
@@ -413,7 +444,8 @@
         "end": 6885
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0031"
   },
   {
     "query": "怎么检查集群里有没有启用准入 Webhook？",
@@ -426,7 +458,8 @@
         "end": 1493
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0032"
   },
   {
     "query": "创建数据库时有哪些命名规则要遵守？",
@@ -439,7 +472,8 @@
         "end": 1669
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0033"
   },
   {
     "query": "为了无障碍访问，页面顶部应该放一个什么链接？",
@@ -452,7 +486,8 @@
         "end": 1540
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0034"
   },
   {
     "query": "React 应用的基本组成单位是什么？",
@@ -465,7 +500,8 @@
         "end": 994
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0035"
   },
   {
     "query": "Kubernetes 内置的控制器运行在哪里？",
@@ -478,7 +514,8 @@
         "end": 3013
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0036"
   },
   {
     "query": "TiDB 的二级索引是对什么进行排序？",
@@ -491,7 +528,8 @@
         "end": 702
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0037"
   },
   {
     "query": "想让离开动画先播完再播进入动画，该怎么设置？",
@@ -504,7 +542,8 @@
         "end": 17036
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0038"
   },
   {
     "query": "已经有一个别的后端渲染的老网站，想只把其中一段页面换成 React 该从哪下手？",
@@ -517,7 +556,8 @@
         "end": 1137
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0039"
   },
   {
     "query": "集群怎么知道某个工作节点还活着？",
@@ -530,7 +570,8 @@
         "end": 629
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0040"
   },
   {
     "query": "想让查询直接在索引上拿到全部数据、不用回表，索引该怎么建？",
@@ -543,7 +584,8 @@
         "end": 1350
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0041"
   },
   {
     "query": "想先搞清楚页面到底慢在哪，有哪些现成的检测工具可用？",
@@ -556,7 +598,8 @@
         "end": 1288
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0042"
   },
   {
     "query": "在 JSX 里怎么把变量的值渲染到页面上？",
@@ -569,7 +612,8 @@
         "end": 3166
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0043"
   },
   {
     "query": "怎么限制不同角色只能操作设备分配相关的部分接口？",
@@ -582,7 +626,8 @@
         "end": 345
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0044"
   },
   {
     "query": "主键和数据的物理存放顺序绑在一起有什么好处？",
@@ -595,7 +640,8 @@
         "end": 5473
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0045"
   },
   {
     "query": "过渡效果能不能跟着状态变化动态切换？",
@@ -608,7 +654,8 @@
         "end": 18693
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0046"
   },
   {
     "query": "写 reducer 时最基本的几条纪律是什么？",
@@ -621,7 +668,8 @@
         "end": 17731
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0047"
   },
   {
     "query": "每台机器上都有哪些进程在维持 Pod 运行？",
@@ -634,7 +682,8 @@
         "end": 2688
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0048"
   },
   {
     "query": "给表加索引时有哪些要注意的地方？",
@@ -647,7 +696,8 @@
         "end": 3011
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0049"
   },
   {
     "query": "组件有多个根元素时，外部传进来的属性还会自动挂到根上吗？",
@@ -660,7 +710,8 @@
         "end": 3463
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0050"
   },
   {
     "query": "组件层级很深时，一层层往下传参数会带来什么麻烦？",
@@ -673,7 +724,8 @@
         "end": 609
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0051"
   },
   {
     "query": "云控制器管理器在设计上是怎样部署的？",
@@ -686,7 +738,8 @@
         "end": 765
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0052"
   },
   {
     "query": "子组件怎么把内部发生的事情通知给父组件？",
@@ -699,7 +752,8 @@
         "end": 1349
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0053"
   },
   {
     "query": "属性很多时，怎么把一整个对象一次性拆开传给组件？",
@@ -712,7 +766,8 @@
         "end": 4815
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0054"
   },
   {
     "query": "能不能让控制面假装成更早的版本对外提供服务？",
@@ -725,7 +780,8 @@
         "end": 447
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0055"
   },
   {
     "query": "想在组件刚渲染完成、DOM 已经可用时跑一段代码，应该挂在哪里？",
@@ -738,7 +794,8 @@
         "end": 1591
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0056"
   },
   {
     "query": "TiDB 里主键的选择会影响数据的物理存储方式吗？",
@@ -757,7 +814,8 @@
         "end": 5473
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0057"
   },
   {
     "query": "想优化 Vue 应用的性能，第一步该做什么？",
@@ -776,7 +834,8 @@
         "end": 1288
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0058"
   },
   {
     "query": "React 从状态变化到页面更新，中间经历了哪几个阶段？",
@@ -795,7 +854,8 @@
         "end": 7734
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0059"
   },
   {
     "query": "Vue 项目部署到生产环境时，用不用构建工具分别要注意什么？",
@@ -814,7 +874,8 @@
         "end": 1141
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0060"
   },
   {
     "query": "设计组件的 state 结构时，应该遵循哪些原则？",
@@ -833,7 +894,8 @@
         "end": 2345
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0061"
   },
   {
     "query": "TiDB 执行多表 Join 时，算法和顺序分别是怎么决定的？",
@@ -852,7 +914,8 @@
         "end": 8120
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0062"
   },
   {
     "query": "Vue 在安全上做了哪些防护，还需要开发者自己注意什么？",
@@ -871,7 +934,8 @@
         "end": 1471
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0063"
   },
   {
     "query": "KeepAlive 怎么控制哪些组件被缓存、最多缓存多少个？",
@@ -890,7 +954,8 @@
         "end": 2737
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0064"
   },
   {
     "query": "在 React 里怎么定义一个组件并从别的文件引入它？",
@@ -909,7 +974,8 @@
         "end": 2003
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0065"
   },
   {
     "query": "KeepAlive 缓存满了之后，被淘汰的实例会经历什么？",
@@ -928,26 +994,22 @@
         "end": 3981
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0066"
   },
   {
     "query": "把一个组件拆到单独文件后，它的标签怎么写？",
-    "type": "multi_block",
+    "type": "paraphrase",
     "answers": [
       {
-        "doc": "react/src__content__learn__describing-the-ui.md",
-        "section": "组件的导入与导出",
-        "start": 1260,
-        "end": 2003
-      },
-      {
-        "doc": "react/src__content__learn__describing-the-ui.md",
-        "section": "使用 JSX 书写标签语言",
-        "start": 2003,
-        "end": 3229
+        "doc": "react/src__content__learn__importing-and-exporting-components.md",
+        "section": "从同一文件中导出和导入多个组件",
+        "start": 3454,
+        "end": 7617
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0067"
   },
   {
     "query": "Suspense 在等待异步依赖时，默认插槽和后备插槽怎么切换？",
@@ -966,7 +1028,8 @@
         "end": 2112
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0068"
   },
   {
     "query": "JSX 里怎么把 JavaScript 表达式的值嵌进标签？",
@@ -985,7 +1048,8 @@
         "end": 4242
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0069"
   },
   {
     "query": "Suspense 和 Transition、KeepAlive 一起用，或者嵌套多层时要注意什么？",
@@ -1004,7 +1068,8 @@
         "end": 4071
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0070"
   },
   {
     "query": "在 JSX 里怎么把从父组件拿到的值渲染出来？",
@@ -1023,7 +1088,8 @@
         "end": 5469
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0071"
   },
   {
     "query": "多个 Teleport 指向同一个目标，或者想延迟渲染内容时该怎么做？",
@@ -1042,7 +1108,8 @@
         "end": 4432
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0072"
   },
   {
     "query": "Vue 和 React 在给元素绑定事件处理函数的方式上有什么不同？",
@@ -1061,7 +1128,8 @@
         "end": 1223
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0073"
   },
   {
     "query": "Vue 的 v-if 和 React 的条件渲染在写法上有什么差异？",
@@ -1080,7 +1148,8 @@
         "end": 2653
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0074"
   },
   {
     "query": "Vue 和 React 对 props 单向数据流的约束分别是什么？",
@@ -1093,13 +1162,14 @@
         "end": 7955
       },
       {
-        "doc": "react/src__content__learn__describing-the-ui.md",
-        "section": "将 Props 传递给组件",
-        "start": 4242,
-        "end": 5469
+        "doc": "react/src__content__learn__passing-props-to-a-component.md",
+        "section": "Props 如何随时间变化",
+        "start": 6307,
+        "end": 20806
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0075"
   },
   {
     "query": "Vue 和 React 在区分开发环境与生产环境上的做法有什么不同？",
@@ -1118,7 +1188,8 @@
         "end": 2094
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0076"
   },
   {
     "query": "Vue 和 React 在优化首屏加载上都提供了哪些手段？",
@@ -1137,115 +1208,134 @@
         "end": 5323
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0077"
   },
   {
     "query": "Kafka 出现消息积压时应该怎么处理？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0078"
   },
   {
     "query": "ZooKeeper 的选主机制是怎么工作的？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0079"
   },
   {
     "query": "HBase 的 RowKey 应该怎么设计才能避免热点？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0080"
   },
   {
     "query": "Flink 的水位线机制解决了什么问题？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0081"
   },
   {
     "query": "Cassandra 的一致性哈希是怎么实现的？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0082"
   },
   {
     "query": "HDFS 的副本机制如何保证数据可靠？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0083"
   },
   {
     "query": "Nginx 的负载均衡支持哪些算法？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0084"
   },
   {
     "query": "JVM 的垃圾回收器应该怎么选？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0085"
   },
   {
     "query": "TensorFlow 的分布式训练有哪几种策略？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0086"
   },
   {
     "query": "PyTorch 显存不足时可以怎么优化？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0087"
   },
   {
     "query": "RSA 签名的生成和验签流程是什么？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0088"
   },
   {
     "query": "ClickHouse 的 MergeTree 引擎是怎么组织数据的？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0089"
   },
   {
     "query": "RabbitMQ 的死信队列有什么作用？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0090"
   },
   {
     "query": "MongoDB 的副本集如何实现高可用？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0091"
   },
   {
     "query": "RocketMQ 的消息顺序怎么保证？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0092"
   },
   {
     "query": "Jenkins 的流水线脚本怎么写？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0093"
   },
   {
     "query": "Ansible 的 playbook 如何组织？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0094"
   },
   {
     "query": "Vagrant 的虚拟环境怎么管理？",
     "type": "no_answer",
     "answers": [],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0095"
   },
   {
     "query": "我想把控制器常驻在集群里，有哪些部署办法？",
@@ -1258,7 +1348,8 @@
         "end": 3013
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0096"
   },
   {
     "query": "配置访问控制时，怎样将 DRA 的相关 API 权限拆开管理？",
@@ -1271,7 +1362,8 @@
         "end": 345
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0097"
   },
   {
     "query": "部署应用前，怎样跟踪集群的资源容量变化？",
@@ -1279,12 +1371,13 @@
     "answers": [
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
-        "section": "资源容量跟踪",
-        "start": 6932,
-        "end": 7470
+        "section": "节点状态",
+        "start": 4565,
+        "end": 5011
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0098"
   },
   {
     "query": "配置里的运行数量和实际看到的不一样，这两个数该怎么理解？",
@@ -1292,12 +1385,13 @@
     "answers": [
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
-        "section": "期望状态与当前状态",
-        "start": 1945,
-        "end": 2113
+        "section": "控制器模式",
+        "start": 253,
+        "end": 1945
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0099"
   },
   {
     "query": "线上服务出故障后，平台能自动恢复正常吗？",
@@ -1310,7 +1404,8 @@
         "end": 1083
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0100"
   },
   {
     "query": "搭建新集群时，可以选用哪些网络类型？",
@@ -1323,7 +1418,8 @@
         "end": 1687
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0101"
   },
   {
     "query": "有台机器突然联系不上，集群怎么知道它已经掉线？",
@@ -1336,7 +1432,8 @@
         "end": 5329
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0102"
   },
   {
     "query": "管理集群资源时，CGroup v2 主要起什么作用？",
@@ -1349,7 +1446,8 @@
         "end": 935
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0103"
   },
   {
     "query": "集群请求拥堵时，如何开启或关闭 API 的优先级与公平性？",
@@ -1362,7 +1460,8 @@
         "end": 1500
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0104"
   },
   {
     "query": "排查节点问题时，如何确认 Linux 上的 CGroup 版本？",
@@ -1375,7 +1474,8 @@
         "end": 3638
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0105"
   },
   {
     "query": "给集群接入外部回调时，设计不当会带来什么问题？",
@@ -1388,7 +1488,8 @@
         "end": 1130
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0106"
   },
   {
     "query": "升级集群时，为什么不建议继续用旧版资源分组机制？",
@@ -1401,7 +1502,8 @@
         "end": 3980
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0107"
   },
   {
     "query": "规划新集群时，IP 地址的分配范围该怎么确定？",
@@ -1414,7 +1516,8 @@
         "end": 997
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0108"
   },
   {
     "query": "怎样查看集群中一台机器是否运行正常？",
@@ -1427,7 +1530,8 @@
         "end": 5011
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0109"
   },
   {
     "query": "要给订单业务单独建库，创建时有哪些限制要先确认？",
@@ -1440,7 +1544,8 @@
         "end": 1669
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0110"
   },
   {
     "query": "查询执行太慢时，该从哪些方面入手优化？",
@@ -1453,7 +1558,8 @@
         "end": 529
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0111"
   },
   {
     "query": "我想把客户资料按行列存起来，数据库里该建什么？",
@@ -1466,7 +1572,8 @@
         "end": 709
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0112"
   },
   {
     "query": "同时查询多张表时，先处理哪一张有什么讲究？",
@@ -1479,7 +1586,8 @@
         "end": 8120
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0113"
   },
   {
     "query": "订单表查询越来越慢，给它新建索引时该避开哪些坑？",
@@ -1492,7 +1600,8 @@
         "end": 1350
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0114"
   },
   {
     "query": "新建 TiDB 表时，怎样决定是否采用聚簇索引？",
@@ -1500,25 +1609,27 @@
     "answers": [
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
-        "section": "选择聚簇索引",
-        "start": 4439,
-        "end": 5473
+        "section": "创建表时应遵守的规则",
+        "start": 15071,
+        "end": 17371
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0115"
   },
   {
     "query": "表的数据逐渐变多后，应该怎样合理规划索引？",
     "type": "direct",
     "answers": [
       {
-        "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
-        "section": "索引的最佳实践",
-        "start": 2123,
-        "end": 3011
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "创建索引的最佳实践",
+        "start": 590,
+        "end": 1350
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0116"
   },
   {
     "query": "订单里有编号和流水号，该用哪个来唯一标识记录？",
@@ -1531,7 +1642,8 @@
         "end": 4439
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0117"
   },
   {
     "query": "想把每家门店的销售额分别加总，该怎么查？",
@@ -1544,7 +1656,8 @@
         "end": 9423
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0118"
   },
   {
     "query": "第一次使用 TiDB 时，怎样完成数据库的创建？",
@@ -1557,7 +1670,8 @@
         "end": 871
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0119"
   },
   {
     "query": "查询出的记录太多，怎样只留下符合条件的？",
@@ -1570,7 +1684,8 @@
         "end": 3949
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0120"
   },
   {
     "query": "录入订单时不想让金额为空，怎样给这一列加约束？",
@@ -1583,7 +1698,8 @@
         "end": 6986
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0121"
   },
   {
     "query": "需要兼顾交易和报表时，TiDB 的 HTAP 该怎么用？",
@@ -1596,7 +1712,8 @@
         "end": 10610
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0122"
   },
   {
     "query": "新建业务表时，怎样同时定义所需的二级索引？",
@@ -1609,7 +1726,8 @@
         "end": 1291
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0123"
   },
   {
     "query": "给新表设计列名时，TiDB有哪些命名要求？",
@@ -1622,7 +1740,8 @@
         "end": 847
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0124"
   },
   {
     "query": "列表只想展示前十条数据，该怎样控制返回条数？",
@@ -1635,7 +1754,8 @@
         "end": 7541
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0125"
   },
   {
     "query": "线上表已经有数据，TiDB如何补建二级索引？",
@@ -1648,7 +1768,8 @@
         "end": 1031
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0126"
   },
   {
     "query": "想让最新记录排在最前面，数据库该怎么取数据？",
@@ -1661,7 +1782,8 @@
         "end": 5656
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0127"
   },
   {
     "query": "一次要导入几千条记录，怎样合成批量插入语句？",
@@ -1669,12 +1791,13 @@
     "answers": [
       {
         "doc": "tidb/develop__dev-guide-insert-data.md",
-        "section": "批量插入",
-        "start": 7596,
-        "end": 9105
+        "section": "插入行",
+        "start": 364,
+        "end": 7596
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0128"
   },
   {
     "query": "页面还没准备好时，怎样推迟 Teleport 的解析？",
@@ -1687,7 +1810,8 @@
         "end": 4432
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0129"
   },
   {
     "query": "用户输入的页面片段能直接交给框架执行吗？",
@@ -1700,7 +1824,8 @@
         "end": 688
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0130"
   },
   {
     "query": "多个Teleport要把弹窗放到同一个位置，怎么写？",
@@ -1713,7 +1838,8 @@
         "end": 3911
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0131"
   },
   {
     "query": "多段内容一起切换，<template>怎样用v-if？",
@@ -1726,7 +1852,8 @@
         "end": 1962
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0132"
   },
   {
     "query": "新建Vue项目时，构建工具该怎么接入？",
@@ -1739,7 +1866,8 @@
         "end": 1141
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0133"
   },
   {
     "query": "按钮点击后要执行函数，Vue里如何监听事件？",
@@ -1752,7 +1880,8 @@
         "end": 291
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0134"
   },
   {
     "query": "展示用户提交的内容时，Vue自带哪些安全保护？",
@@ -1765,7 +1894,8 @@
         "end": 1471
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0135"
   },
   {
     "query": "暂时保留的页面恢复显示时，有哪些回调可用？",
@@ -1778,20 +1908,34 @@
         "end": 3981
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0136"
   },
   {
     "query": "我只有一个普通网页文件，怎样直接接入 Vue 做交互？",
-    "type": "paraphrase",
+    "type": "multi_block",
     "answers": [
       {
         "doc": "vue/src__guide__best-practices__production-deployment.md",
         "section": "不使用构建工具",
         "start": 316,
         "end": 672
+      },
+      {
+        "doc": "vue/src__guide__essentials__application.md",
+        "section": "应用实例",
+        "start": 45,
+        "end": 243
+      },
+      {
+        "doc": "vue/src__guide__essentials__application.md",
+        "section": "挂载应用",
+        "start": 779,
+        "end": 1553
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0137"
   },
   {
     "query": "本地调试和正式上线时，代码应作哪些调整？",
@@ -1804,7 +1948,8 @@
         "end": 316
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0138"
   },
   {
     "query": "键盘操作时，怎样快速越过重复的导航区域？",
@@ -1817,7 +1962,8 @@
         "end": 1540
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0139"
   },
   {
     "query": "页面切换时，动画能随当前内容自动变化吗？",
@@ -1830,7 +1976,8 @@
         "end": 18693
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0140"
   },
   {
     "query": "同一份派生结果反复读取时，怎样避免每次重算？",
@@ -1843,7 +1990,8 @@
         "end": 4724
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0141"
   },
   {
     "query": "两个视图切换时，过渡模式怎样控制先后？",
@@ -1856,7 +2004,8 @@
         "end": 17036
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0142"
   },
   {
     "query": "Vue项目启动时，应用配置应该在哪里设置？",
@@ -1869,7 +2018,8 @@
         "end": 1954
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0143"
   },
   {
     "query": "子组件有变化时，怎样发出事件并让父组件监听？",
@@ -1882,7 +2032,8 @@
         "end": 1349
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0144"
   },
   {
     "query": "打开太多页面占内存时，怎样限制保留的数量？",
@@ -1895,7 +2046,8 @@
         "end": 2737
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0145"
   },
   {
     "query": "点击处理函数要接收额外数据时，事件参数怎么传？",
@@ -1908,7 +2060,8 @@
         "end": 2028
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0146"
   },
   {
     "query": "列表只显示部分数据时，v-if和v-for怎么搭配？",
@@ -1921,7 +2074,8 @@
         "end": 2766
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0147"
   },
   {
     "query": "元素进出页面时，怎样让显示变化带上动画？",
@@ -1934,7 +2088,8 @@
         "end": 2417
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0148"
   },
   {
     "query": "外部没有传入内容时，能隐藏对应的占位区吗？",
@@ -1947,7 +2102,8 @@
         "end": 9804
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0149"
   },
   {
     "query": "需要频繁显隐的元素，怎样保留原有页面结构？",
@@ -1960,7 +2116,8 @@
         "end": 2197
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0150"
   },
   {
     "query": "同一份页面布局怎样按变量决定内容填到哪里？",
@@ -1973,7 +2130,8 @@
         "end": 10199
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0151"
   },
   {
     "query": "深层子组件需要同一份数据时，provide 该写在哪里？",
@@ -1986,7 +2144,8 @@
         "end": 2048
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0152"
   },
   {
     "query": "页面运行中报错时，如何定位出问题的地方？",
@@ -1999,7 +2158,8 @@
         "end": 1541
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0153"
   },
   {
     "query": "提交表单时，怎样用事件修饰符拦住默认跳转？",
@@ -2012,7 +2172,8 @@
         "end": 6072
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0154"
   },
   {
     "query": "发现Vue的安全漏洞后，应该怎样报告？",
@@ -2025,7 +2186,8 @@
         "end": 228
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0155"
   },
   {
     "query": "多个页面都要用的组件，如何在Vue全局注册？",
@@ -2038,7 +2200,8 @@
         "end": 862
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0156"
   },
   {
     "query": "按钮标签里写点击逻辑时，怎样直接执行已有的函数？",
@@ -2051,7 +2214,8 @@
         "end": 4163
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0157"
   },
   {
     "query": "点击按钮时，怎样限定只有右键操作才会生效？",
@@ -2064,7 +2228,8 @@
         "end": 7844
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0158"
   },
   {
     "query": "给子组件传一组数据时，怎样用JSX展开语法？",
@@ -2077,7 +2242,8 @@
         "end": 4815
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0159"
   },
   {
     "query": "上层没有传入某项数据时，怎样自动补上预设值？",
@@ -2090,7 +2256,8 @@
         "end": 4115
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0160"
   },
   {
     "query": "点击按钮后，React里该怎样绑定事件处理函数？",
@@ -2103,7 +2270,8 @@
         "end": 1223
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0161"
   },
   {
     "query": "拆成多个文件后，React组件该怎样导入和导出？",
@@ -2116,7 +2284,8 @@
         "end": 2003
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0162"
   },
   {
     "query": "设置了新数值之后，为什么本次操作还拿到旧数值？",
@@ -2129,7 +2298,8 @@
         "end": 7734
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0163"
   },
   {
     "query": "更新逻辑越来越复杂时，怎样写好React的reducer？",
@@ -2142,7 +2312,8 @@
         "end": 17731
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0164"
   },
   {
     "query": "生成页面内容时，怎样避免顺手改动外面的数据？",
@@ -2155,7 +2326,8 @@
         "end": 9080
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0165"
   },
   {
     "query": "页面的新内容算出来后，框架会马上改动网页元素吗？",
@@ -2168,7 +2340,8 @@
         "end": 6468
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0166"
   },
   {
     "query": "写好的 React 组件，怎样放进另一个组件里复用？",
@@ -2181,7 +2354,8 @@
         "end": 994
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0167"
   },
   {
     "query": "整理React项目时，应该把根组件放在哪个文件？",
@@ -2194,7 +2368,8 @@
         "end": 738
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0168"
   },
   {
     "query": "需要手动聚焦输入框时，React如何用ref操作DOM？",
@@ -2207,7 +2382,8 @@
         "end": 2171
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0169"
   },
   {
     "query": "页面里要保存的数据很多，怎样安排才更清楚？",
@@ -2220,7 +2396,8 @@
         "end": 928
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0170"
   },
   {
     "query": "依赖值改变后，React的Effect会怎样结束再重新开始？",
@@ -2233,7 +2410,8 @@
         "end": 6715
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0171"
   },
   {
     "query": "写页面逻辑时，哪些情况可以不额外安排自动同步？",
@@ -2246,7 +2424,8 @@
         "end": 5052
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0172"
   },
   {
     "query": "在JSX标签中插入计算结果，JavaScript表达式该放哪里？",
@@ -2259,7 +2438,8 @@
         "end": 4242
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0173"
   },
   {
     "query": "用户登录前后，怎样让页面显示不同的一块内容？",
@@ -2272,7 +2452,8 @@
         "end": 6248
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0174"
   },
   {
     "query": "React表单提交时，事件处理逻辑应该怎样接入？",
@@ -2285,7 +2466,8 @@
         "end": 5547
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0175"
   },
   {
     "query": "React页面里的按钮和文字，应该怎样添加样式？",
@@ -2298,7 +2480,8 @@
         "end": 1943
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0176"
   },
   {
     "query": "JSX的行内样式里，为什么经常要写两层大括号？",
@@ -2311,7 +2494,8 @@
         "end": 3381
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0177"
   },
   {
     "query": "填写文本时，怎样让页面立刻跟着新的内容变化？",
@@ -2324,7 +2508,8 @@
         "end": 2368
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0178"
   },
   {
     "query": "页面内容层层包含时，怎样梳理它们的父子关系？",
@@ -2337,7 +2522,8 @@
         "end": 9517
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0179"
   },
   {
     "query": "同一次点击里接连修改数值时，系统会怎样安排这些改动？",
@@ -2350,7 +2536,8 @@
         "end": 9385
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0180"
   },
   {
     "query": "使用React编译器遇到异常时，应该怎样报告错误？",
@@ -2363,7 +2550,8 @@
         "end": 2046
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0181"
   },
   {
     "query": "函数组件要记住点击次数时，Hook 该在哪里调用？",
@@ -2376,7 +2564,8 @@
         "end": 7157
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0182"
   },
   {
     "query": "写界面时，怎样把页面结构直接放进逻辑代码？",
@@ -2389,7 +2578,8 @@
         "end": 1460
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0183"
   },
   {
     "query": "两个同级控件要使用同一份数据，应该把它放在哪里？",
@@ -2402,7 +2592,8 @@
         "end": 5779
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0184"
   },
   {
     "query": "集群的全局决策是谁在做？比如某个应用副本数不够时要自动补上",
@@ -2415,7 +2606,8 @@
         "end": 2232
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0185"
   },
   {
     "query": "集群里那些提供额外能力的组件，一般装在哪个命名空间？",
@@ -2428,7 +2620,8 @@
         "end": 3948
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0186"
   },
   {
     "query": "删除一个对象时，系统怎么知道哪些资源属于它、该一起清理？",
@@ -2441,7 +2634,8 @@
         "end": 1947
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0187"
   },
   {
     "query": "节点刚加入集群时谁给它分配地址段？节点失联了又是谁负责标记？",
@@ -2454,7 +2648,8 @@
         "end": 6932
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0188"
   },
   {
     "query": "控制面除了直接装在物理机上，还有哪几种部署方式？",
@@ -2467,7 +2662,8 @@
         "end": 5019
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0189"
   },
   {
     "query": "用 Python 连 TiDB，官方列出哪几种驱动？各自的支持等级是什么？",
@@ -2480,7 +2676,8 @@
         "end": 8609
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0190"
   },
   {
     "query": "删了数据，磁盘占用为什么没有马上降下来？",
@@ -2493,7 +2690,8 @@
         "end": 4931
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0191"
   },
   {
     "query": "表主键设成随机生成之后，插入时还能自己指定 id 吗？",
@@ -2506,7 +2704,8 @@
         "end": 10442
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0192"
   },
   {
     "query": "要把 TiDB 接入 AWS 的数据集成服务，第一步得做什么？",
@@ -2519,7 +2718,8 @@
         "end": 3472
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0193"
   },
   {
     "query": "不想让组件自动继承传进来的属性，该怎么关掉？",
@@ -2532,7 +2732,8 @@
         "end": 3025
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0194"
   },
   {
     "query": "组件只在某个父组件里用，全局注册有什么坏处？",
@@ -2545,7 +2746,8 @@
         "end": 2037
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0195"
   },
   {
     "query": "异步组件加载慢或者失败时，能显示占位和报错吗？",
@@ -2558,7 +2760,8 @@
         "end": 2475
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0196"
   },
   {
     "query": "列表增删时，周围的元素能不能平滑挪动而不是跳一下？",
@@ -2571,7 +2774,8 @@
         "end": 1812
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0197"
   },
   {
     "query": "列表特别长的时候，怎么只渲染屏幕里看得见的那部分？",
@@ -2584,7 +2788,8 @@
         "end": 7864
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0198"
   },
   {
     "query": "传给组件的 class 没在 props 里声明，最后会跑到哪去？",
@@ -2597,7 +2802,8 @@
         "end": 1582
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0199"
   },
   {
     "query": "官方推荐的那些 React 框架，部署时一定要自己搭服务器吗？",
@@ -2610,7 +2816,8 @@
         "end": 2023
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0200"
   },
   {
     "query": "想跟着 React 的状态去控制一个非 React 的东西（比如播放器），该用什么？",
@@ -2623,7 +2830,8 @@
         "end": 4007
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0201"
   },
   {
     "query": "状态更新逻辑变复杂以后，useState 和 useReducer 各有什么利弊？",
@@ -2636,7 +2844,8 @@
         "end": 17071
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0202"
   },
   {
     "query": "为什么说 React 组件要像数学公式一样，同样的输入必须给同样的结果？",
@@ -2649,20 +2858,22 @@
         "end": 1886
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0203"
   },
   {
     "query": "什么工具都不装，想从头搭一个 React 应用该怎么做？",
     "type": "paraphrase",
     "answers": [
       {
-        "doc": "react/src__content__learn__creating-a-react-app.md",
-        "section": "从零开始",
-        "start": 3395,
-        "end": 4040
+        "doc": "react/src__content__learn__installation.md",
+        "section": "Try React",
+        "start": 119,
+        "end": 761
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0204"
   },
   {
     "query": "页面里的标题层级该怎么安排才符合无障碍规范？",
@@ -2675,7 +2886,8 @@
         "end": 3209
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0205"
   },
   {
     "query": "给内置标签（比如 img）传属性时，React 有什么约定？",
@@ -2688,7 +2900,8 @@
         "end": 888
       }
     ],
-    "source": "internal"
+    "source": "internal",
+    "id": "q_0206"
   },
   {
     "query": "TiDB 里做增删改有哪些推荐做法？",
@@ -2701,7 +2914,8 @@
         "end": 1998
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0207"
   },
   {
     "query": "TiDB 做隐式类型转换时遵循什么规则？",
@@ -2714,7 +2928,8 @@
         "end": 516
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0208"
   },
   {
     "query": "provide/inject 提供的值能跟着数据变化自动更新吗？",
@@ -2727,7 +2942,8 @@
         "end": 7232
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0209"
   },
   {
     "query": "TransitionGroup 和 Transition 用法上有什么不同？",
@@ -2740,7 +2956,8 @@
         "end": 797
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0210"
   },
   {
     "query": "Vue 组件里怎么声明接收的 props？",
@@ -2753,7 +2970,8 @@
         "end": 2054
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0211"
   },
   {
     "query": "写 React 时编辑器需要哪些功能比较好用？",
@@ -2766,7 +2984,8 @@
         "end": 2316
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0212"
   },
   {
     "query": "用 context 之前应该先考虑什么替代方案？",
@@ -2779,7 +2998,8 @@
         "end": 16521
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0213"
   },
   {
     "query": "React 编译器能不能在运行时按开关启停？",
@@ -2792,7 +3012,8 @@
         "end": 3776
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0214"
   },
   {
     "query": "k8s 上有哪些算基础设施类的扩展组件？",
@@ -2805,7 +3026,8 @@
         "end": 4594
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0215"
   },
   {
     "query": "有没有现成的 Webhook 服务器实现可以参考？",
@@ -2818,7 +3040,8 @@
         "end": 15920
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0216"
   },
   {
     "query": "React 编译器采用过程中出了问题该怎么排查？",
@@ -2831,6 +3054,7 @@
         "end": 4000
       }
     ],
-    "source": "external"
+    "source": "external",
+    "id": "q_0217"
   }
 ]

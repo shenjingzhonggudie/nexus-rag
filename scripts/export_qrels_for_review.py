@@ -5,7 +5,7 @@
 HTML 注释、MDX 标签之后的文本，**不能拿原始文件按下标去切**。
 
 输出一个 Markdown 文件，每条标注给出：
-- 序号、query、类型、来源
+- **稳定样本 ID**（`q_0042`，供 ``review_log.jsonl`` 关联）、query、类型、来源
 - 答案所在文档、小节名
 - 该区间对应的正文（截断到 600 字，够判断主题）
 
@@ -61,7 +61,8 @@ def main() -> None:
 
     for i, item in enumerate(qrels):
         answers = item.get("answers", [])
-        lines.append(f"## [{i}] {item['query']}")
+        sample_id = item.get("id") or f"q_{i:04d}"
+        lines.append(f"## [{sample_id}] {item['query']}")
         lines.append("")
         lines.append(f"- type: `{item['type']}`  |  source: `{item.get('source', '?')}`")
         if not answers:

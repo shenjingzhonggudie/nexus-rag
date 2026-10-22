@@ -70,12 +70,16 @@ class Qrel:
         source: 题目来源。``internal`` = 读过正文出的题（答案保证可被该节回答）；
             ``external`` = 只看标题出的题（更接近真实用户问法）。报告按来源分组，
             用来看"出题视角"带来的差距。
+        id: 稳定标识（如 ``q_0042``），用于复核日志 ``review_log.jsonl`` 的关联。
+            **改了 query / 答案也保留同一个 id**：id 标识的是"这道题"，不是"这版标注"。
+            允许为空（旧文件没有这个字段），为空时无法与复核日志关联。
     """
 
     query: str
     type: str = "direct"
     answers: tuple[AnswerSection, ...] = ()
     source: str = "internal"
+    id: str = ""
 
     def __post_init__(self) -> None:
         """校验问题与类型。
@@ -135,6 +139,7 @@ def load_qrels(path: Path) -> list[Qrel]:
                 type=str(item.get("type", "direct")),
                 answers=answers,
                 source=str(item.get("source", "internal")),
+                id=str(item.get("id", "")),
             )
         )
     return qrels
