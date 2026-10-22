@@ -6,12 +6,10 @@
 data/
 ├── raw/                        # 语料正文（第三方公开文档，gitignore，由脚本拉取）
 ├── eval/
-│   ├── qrels.json                    # 评测标注（221 条，人工筛选后提交）
-│   ├── qrels.example.json            # 格式示例（五类各一条）
-│   ├── independent_titles.json       # 第 1 批外部出题的输入（40 个标题）
-│   ├── independent_titles_batch2.json# 第 2 批输入（150 个标题）
-│   ├── external_queries.json         # 第 1 批外部产出（40 条，含 skip）
-│   └── external_queries_batch2.json  # 第 2 批产出（150 条，含 skip）
+│   ├── qrels.json                     # 评测标注（221 条，人工筛选后提交）
+│   ├── qrels.example.json             # 格式示例（五类各一条）
+│   ├── independent_titles_batch2.json # 外部出题的输入（150 个标题，只有 doc/section，没有 query）
+│   └── external_queries_batch2.json   # 外部产出（150 条：103 条有效 + 47 条 skip）
 ├── index/                      # 建库产物（gitignore，可重建）
 └── SOURCES.md                  # 数据来源与许可证（fetch 时生成，要提交）
 ```
@@ -77,14 +75,17 @@ data/
 | 来源 | 数量 | 说明 |
 |---|---|---|
 | `internal` | 100 | 读过正文出题，答案保证能被该节回答 |
-| `external` | 103 | 只给标题、不看正文出题（两批共提交 190 条，agent 自己 skip 55 条，其余全部可用） |
+| `external` | 103 | 只给标题、不看正文出题（提交 150 条，agent 自己 skip 47 条，其余 103 条全部可用） |
 | `no_answer` | 18 | 语料外主题 |
 
-两点说明：
+三点说明：
 
 - **有答案部分的比例是 100 : 103（49.3% : 50.7%）**，基本 50:50；
 - **`external` 只含 `direct` / `paraphrase`**——“只看标题”写不出 `multi_block`（答案分散在
   2~3 节）和 `cross_doc`（跨文档对比），这两类仍全部来自内部组（16 + 6 条）。
+- **早期一批 40 个标题的试点已移除**：当时 32 条有效、剔掉 5 条超纲后留 27 条。样本太小
+  （27 条时 external recall@1 = 0.333，扩到 103 条后降到 0.340 且波动更大），已由当前
+  103 条**整体替换**（不是追加），原始文件随之删除。演进过程见 `docs/LEARNING_LOG.md`。
 
 ## 类型配比（建议）
 

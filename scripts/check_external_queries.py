@@ -2,7 +2,7 @@
 
 检查项
 ------
-1. **id 覆盖**：`data/eval/independent_titles.json` 里的每个 id 都要出现且只出现一次；
+1. **id 覆盖**：标题清单里的每个 id 都要出现且只出现一次；
 2. **长度**：非 skip 条目 10~35 个汉字（含标点 ≤ 40 字符）；
 3. **类型**：`direct` / `paraphrase` 二选一；
 4. **复用限制**：`paraphrase` 不得含标题里连续 4 个汉字、`direct` 不得含连续 6 个汉字
@@ -24,7 +24,8 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-TITLES_FILE = Path("data/eval/independent_titles.json")
+# 默认指向当前在用的第二批；第一批的标题清单已随产出一起移除（数据已过期）
+TITLES_FILE = Path("data/eval/independent_titles_batch2.json")
 
 _CJK_RUN = re.compile(r"[\u4e00-\u9fff]{2,}")
 _PARAPHRASE_MIN_REUSE = 4   # paraphrase 允许的标题最长复用片段
@@ -68,7 +69,7 @@ def main() -> None:
     parser.add_argument(
         "--titles",
         default=str(TITLES_FILE),
-        help="标题清单 JSON（第一批默认 independent_titles.json，第二批传 batch2）",
+        help="标题清单 JSON（默认 independent_titles_batch2.json）",
     )
     parser.add_argument("--strict", action="store_true", help="有警告也视为失败")
     args = parser.parse_args()
