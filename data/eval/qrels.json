@@ -741,19 +741,6 @@
     "source": "internal"
   },
   {
-    "query": "父组件没传某个属性时，怎么让组件用上一个兜底值？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
-        "section": "渐进式采用的方法",
-        "start": 603,
-        "end": 817
-      }
-    ],
-    "source": "internal"
-  },
-  {
     "query": "TiDB 里主键的选择会影响数据的物理存储方式吗？",
     "type": "multi_block",
     "answers": [
@@ -1058,25 +1045,6 @@
     "source": "internal"
   },
   {
-    "query": "Vue 的生命周期钩子和 React 的 Effect 在触发时机上有什么区别？",
-    "type": "cross_doc",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__lifecycle.md",
-        "section": "生命周期图示",
-        "start": 1591,
-        "end": 1942
-      },
-      {
-        "doc": "react/src__content__learn__escape-hatches.md",
-        "section": "响应式 Effect 的生命周期",
-        "start": 5052,
-        "end": 6715
-      }
-    ],
-    "source": "internal"
-  },
-  {
     "query": "Vue 和 React 在给元素绑定事件处理函数的方式上有什么不同？",
     "type": "cross_doc",
     "answers": [
@@ -1332,19 +1300,6 @@
     "source": "external"
   },
   {
-    "query": "机器分散在不同机房时，怎么描述它们的位置？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
-        "section": "节点拓扑",
-        "start": 7470,
-        "end": 7763
-      }
-    ],
-    "source": "external"
-  },
-  {
     "query": "线上服务出故障后，平台能自动恢复正常吗？",
     "type": "paraphrase",
     "answers": [
@@ -1436,19 +1391,6 @@
     "source": "external"
   },
   {
-    "query": "集群里废弃对象的自动清理该怎么设置？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
-        "section": "配置垃圾收集",
-        "start": 5518,
-        "end": 5772
-      }
-    ],
-    "source": "external"
-  },
-  {
     "query": "升级集群时，为什么不建议继续用旧版资源分组机制？",
     "type": "paraphrase",
     "answers": [
@@ -1457,19 +1399,6 @@
         "section": "弃用 CGroup v1",
         "start": 3638,
         "end": 3980
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "上线前怎样提升整套容器平台的安全性？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md",
-        "section": "加固集群",
-        "start": 1116,
-        "end": 2379
       }
     ],
     "source": "external"
@@ -1566,19 +1495,6 @@
     "source": "external"
   },
   {
-    "query": "数据库的读写压力过于集中，该如何分散？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-insert-data.md",
-        "section": "避免热点",
-        "start": 9105,
-        "end": 9348
-      }
-    ],
-    "source": "external"
-  },
-  {
     "query": "新建 TiDB 表时，怎样决定是否采用聚簇索引？",
     "type": "direct",
     "answers": [
@@ -1665,32 +1581,6 @@
         "section": "添加列约束",
         "start": 5473,
         "end": 6986
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "开始建库前，如何规划各类数据及其关系？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "tidb/develop__dev-guide-optimize-sql-overview.md",
-        "section": "Schema 设计",
-        "start": 529,
-        "end": 765
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "第一次用 MySQL 客户端连接 TiDB，该怎么操作？",
-    "type": "direct",
-    "answers": [
-      {
-        "doc": "tidb/develop___index.md",
-        "section": "使用 MySQL 客户端软件",
-        "start": 1248,
-        "end": 1580
       }
     ],
     "source": "external"
@@ -1839,19 +1729,6 @@
     "source": "external"
   },
   {
-    "query": "页面从创建到移除，中间会经历哪些阶段？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__lifecycle.md",
-        "section": "生命周期图示",
-        "start": 1591,
-        "end": 1942
-      }
-    ],
-    "source": "external"
-  },
-  {
     "query": "新建Vue项目时，构建工具该怎么接入？",
     "type": "direct",
     "answers": [
@@ -1873,19 +1750,6 @@
         "section": "监听事件",
         "start": 26,
         "end": 291
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "自定义输入框需要双向绑定时，v-model怎么接？",
-    "type": "direct",
-    "answers": [
-      {
-        "doc": "vue/src__guide__essentials__forms.md",
-        "section": "组件上的 `v-model`",
-        "start": 14047,
-        "end": 14274
       }
     ],
     "source": "external"
@@ -2372,19 +2236,6 @@
     "source": "external"
   },
   {
-    "query": "旧网站暂时不重做，怎样先让其中一部分用上 React？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
-        "section": "渐进式采用的方法",
-        "start": 603,
-        "end": 817
-      }
-    ],
-    "source": "external"
-  },
-  {
     "query": "写页面逻辑时，哪些情况可以不额外安排自动同步？",
     "type": "paraphrase",
     "answers": [
@@ -2484,32 +2335,6 @@
         "section": "将 UI 视为树",
         "start": 9080,
         "end": 9517
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "没有现成项目时，该怎样从头搭建一个React应用？",
-    "type": "direct",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__installation.md",
-        "section": "从零构建一个 React 应用",
-        "start": 885,
-        "end": 1058
-      }
-    ],
-    "source": "external"
-  },
-  {
-    "query": "老项目要换成 React 时，为什么适合分几次完成？",
-    "type": "paraphrase",
-    "answers": [
-      {
-        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
-        "section": "为何采用渐进式迁移?",
-        "start": 187,
-        "end": 603
       }
     ],
     "source": "external"
@@ -2838,5 +2663,174 @@
       }
     ],
     "source": "internal"
+  },
+  {
+    "query": "页面里的标题层级该怎么安排才符合无障碍规范？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__best-practices__accessibility.md",
+        "section": "内容结构",
+        "start": 1540,
+        "end": 3209
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "给内置标签（比如 img）传属性时，React 有什么约定？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__passing-props-to-a-component.md",
+        "section": "熟悉的 props",
+        "start": 205,
+        "end": 888
+      }
+    ],
+    "source": "internal"
+  },
+  {
+    "query": "TiDB 里做增删改有哪些推荐做法？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
+        "section": "DML 最佳实践",
+        "start": 40,
+        "end": 1998
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "TiDB 做隐式类型转换时遵循什么规则？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-implicit-type-conversion.md",
+        "section": "转换规则",
+        "start": 52,
+        "end": 516
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "provide/inject 提供的值能跟着数据变化自动更新吗？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__provide-inject.md",
+        "section": "和响应式数据配合使用",
+        "start": 5357,
+        "end": 7232
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "TransitionGroup 和 Transition 用法上有什么不同？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__built-ins__transition-group.md",
+        "section": "和 `<Transition>` 的区别",
+        "start": 306,
+        "end": 797
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "Vue 组件里怎么声明接收的 props？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__props.md",
+        "section": "Props 声明",
+        "start": 96,
+        "end": 2054
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "写 React 时编辑器需要哪些功能比较好用？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__editor-setup.md",
+        "section": "推荐的文本编辑器功能",
+        "start": 607,
+        "end": 2316
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "用 context 之前应该先考虑什么替代方案？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__passing-data-deeply-with-context.md",
+        "section": "写在你使用 context 之前",
+        "start": 15794,
+        "end": 16521
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "React 编译器能不能在运行时按开关启停？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+        "section": "运行时控制",
+        "start": 3083,
+        "end": 3776
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "k8s 上有哪些算基础设施类的扩展组件？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md",
+        "section": "基础设施",
+        "start": 4222,
+        "end": 4594
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "有没有现成的 Webhook 服务器实现可以参考？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+        "section": "良好实现的示例",
+        "start": 15550,
+        "end": 15920
+      }
+    ],
+    "source": "external"
+  },
+  {
+    "query": "React 编译器采用过程中出了问题该怎么排查？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+        "section": "故障排除",
+        "start": 3776,
+        "end": 4000
+      }
+    ],
+    "source": "external"
   }
 ]
