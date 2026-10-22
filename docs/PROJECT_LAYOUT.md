@@ -279,7 +279,7 @@
 | 模型 | 字段（默认值 / 约束） |
 |---|---|
 | `RetrievalConfig` | `top_k=20 (gt 0)`、`final_k=5 (gt 0 且 ≤ top_k)`、`fusion_alpha=0.9`（加权排名融合里 BM25 权重）、`sparse_enabled=True`、`dense_enabled=True`、`rerank_enabled=True`（**默认开：加权融合优于等权 RRF**）、`refuse_threshold=0.05` |
-| `ChunkingConfig` | `strategy="heading"`、`chunk_size=300 (gt 0)`、`overlap=50 (ge 0 且 < chunk_size)` |
+| `ChunkingConfig` | `strategy="heading"`、`chunk_size=300 (gt 0，单位是**字**：汉字 1、英文 3 字母 1)`、`overlap=50 (ge 0 且 < chunk_size)`。注意 `chunk_size`/`overlap` 只在 `fixed` 策略下生效，`heading` 用 `heading.py` 里的 `_SPLIT_THRESHOLD=400` 与 `_SPLIT_CHUNK_SIZE=300`（同样是"字"） |
 | `EmbeddingConfig` | `provider="hashing"`、`dim=512 (gt 0)` |
 | `LLMConfig` | `provider="none"`、`model=""`、`api_key="" (repr=False)`、`base_url=""` |
 | `AppConfig` | 上面四个（`default_factory`）+ `data_dir=Path("data/raw")`、`index_dir=Path("data/index")` |
@@ -429,13 +429,15 @@
 
 | 规则 | 内容 |
 |---|---|
-| 分块单位 | **字符**（Unicode 码点）。绝不能改成 jieba 词数或 token 数——那些依赖第三方库版本，一变则全部 `chunk_id` 改变、索引全量失效 |
+| 分块单位 | **有效长度（字）**：汉字 1 字、英文字母 3 个算 1 字、空白不计。`chunk_size=300` 表示"约 300 个字的信息量"，**不是 300 个字符**——一个 300 字符的纯英文段落只有约 100 字 |
+| 整数刻度 | 内部用整数（汉字 3 刻度、其他 1 刻度）而非 `1/3` 浮点：`0.333... × 6` 在浮点下是 `1.9999999999999998`，会让"6 字母 = 2 字"判断失败、**多切一个字符** |
 | 参数校验 | `chunk_size <= 0`、`overlap < 0`、`overlap >= chunk_size` → `ValueError`（**配置层与函数层各拦一次**） |
 | 边界优先级 | **类型优先于位置**：先看 `\n\n`，有就用（哪怕更靠后的单换行更接近窗口末尾）；否则 `\n`；否则 `。！？；`。边界字符**归属前一块** |
-| 回退下限 | 切点不得早于 `start + chunk_size // 2`，否则硬切 |
-| **触底收尾** | 窗口触到文末（剩余 ≤ `chunk_size`）时**不再找边界，整段收尾**。"短文本单块"是它的自然推论，无需特判 |
+| 回退下限 | 切点处的**有效长度**不足 `chunk_size / 2` 时硬切 |
+| **触底收尾** | 窗口累计到 `chunk_size` 时若已到文末，**不再找边界，整段收尾**。"短文本单块"是它的自然推论，无需特判 |
 | 前进保底 | `next_start = max(end - overlap, start + 1)`——保证起点严格递增（只靠回退下限挡不住 `overlap` 接近 `chunk_size` 的情形） |
-| 不变式 | 每段 `0 < end - start <= chunk_size`；并集 == `[0, len(text))`；空输入返回 `[]` |
+| 不变式 | 每段**有效长度** ≤ `chunk_size`（边界处允许溢出 1 字）；**字符数不受限**（纯英文块可能是 `chunk_size` 的 3 倍）；并集 == `[0, len(text))`；空输入返回 `[]` |
+| 碎块闸门 | `chunk_document` 丢弃有效长度 < **10** 的块（`_MIN_CHUNK_LEN`）。典型是 MDX 闭合标签（`</Sandpack>`）、代码块结尾、注释残骸——字符数看着不少，信息量为零 |
 
 ### `chunk_id` 的规则（契约，改动即破坏性变更）
 
@@ -750,7 +752,7 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 **耗时口径澄清（本轮实测发现）**：`evaluate` 的“冷启动”是**进程内首查**，**不含 jieba**——因为 `built` 在 build/load_index 时已经加载了 jieba。真正的 jieba 冷启动（~1.8s + BM25 重建分词）发生在 build/load_index 层，不属检索耗时。检索各阶段的热耗时看 `RetrievalTrace`（第 13 轮起就有），本轮把它们汇总成 P50/P95/均值。
 
 **实测基线**（100 篇文档、221 条标注、bge embedding、α=0.7）：`internal recall@1 = 0.375`、
-`MRR = 0.509`；`external recall@1 = 0.282`、`MRR = 0.355`（正式报告按 `internal` /
+`MRR = 0.529`；`external recall@1 = 0.340`、`MRR = 0.389`（正式报告按 `internal` /
 `external` 分组，见 README）。拒答准确率 **1.000**、误拒率 **0.005**。
 
 ### 消融实验（`run_ablation`，第 19 轮；2026-10-21 在 221 条标注上重测）
@@ -764,15 +766,17 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 
 **完整数字见 README「评测与消融」**（bge 与 hashing 两张表）。结论：
 
-1. **hashing 下 dense 腿是负资产**：`bm25_only` 的 MRR 0.388 高于任何融合组——
+1. **hashing 下 dense 腿是负资产**：`bm25_only` 的 MRR **0.411** 高于任何融合组——
    字面哈希把"词面像但无关"的块排上来。这是"必须换真语义向量"的最强证据；
-2. **BGE 下 dense 腿转正（+0.032）**，加权 α=0.7 的 MRR 0.431 与等权 RRF 0.433
-   基本打平；α=0.9 的 `@1` 最高（0.335）但 MRR 最低（0.419）；
-3. **α 敏感度不大**（MRR 波动 ≤0.014），**embedding 质量才是主要矛盾**
-   （`dense_only` 的 MRR：hashing 0.277 → bge 0.392，差 0.115）。
+2. **BGE 下 dense 腿转正（+0.054）**，`dense_only` 的 MRR 从 0.300 升到 **0.438**；
+   加权 α=0.7 的 MRR **0.458** 略高于等权 RRF **0.454**（`@5` 则是等权更高 0.549 vs 0.539）；
+3. **α 敏感度不大**（MRR 0.436~0.458），**embedding 质量才是主要矛盾**
+   （`dense_only` 的 MRR：hashing 0.300 → bge 0.438，差 0.138）。
 
 **必须警惕**：145 条时曾得出"加权 α=0.9 优于等权 +0.039"，扩到 221 条后被推翻——
-**小样本结论不可靠**，调参与报告要分开（盲测集尚未落地）。
+**小样本结论不可靠**，调参与报告要分开（盲测集尚未落地）。切块单位从"字符"
+改成"有效长度"（汉字 1、英文 3 字母 = 1）后块数 4796 → 1553，所有消融数字都随之重测，
+这也是「任何指标都必须标注它跑在哪个索引上」的原因。
 
 ### 拒答契约（第 25 轮）
 
@@ -815,9 +819,9 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | `tests/test_metrics.py` | 覆盖式 recall 手算、单答案、重复命中只算一次、k 越界、零答案/空命中、k<=0 抛、first_hit_mrr 手算/无命中/空 | 9 |
 | `tests/test_evaluation.py` | **区间重叠算命中（不绑切分）**、跨文档不算、无偏移安全判未命中、端到端跑评测、拒答指标（准确率/误拒率/recall 不稀释）、空 qrels 返回全 0 | 7 |
 | `tests/test_ablation.py` | 对照组开关契约（4 组单变量）、run_ablation 跑通与指标范围 | 2 |
-| **合计** | | **287** |
+| **合计** | | **278** |
 
-**当前结果**：**287 passed**（2026-10-21）
+**当前结果**：**278 passed**（2026-10-21）
 **历史自证**：先在真实环境里设 `RAG__RETRIEVAL__TOP_K=99`，再跑 `pytest -q` → 结果不变（2026-10-07 于 64 条时验证，可随时重跑）
 
 ## 十六、阶段状态
@@ -839,7 +843,7 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | 9 | 生成层（`generation/`） | ✅ 完成（第 15 轮，231 passed）：`RetrievalResult` 的第一个生产消费者就位；`openai_compatible` 为扩展（触发信号：拿到密钥 + 网络可用） |
 | 10 | CLI（`ragkit build` / `ragkit ask`） | ✅ 完成（第 16 轮，239 passed）：全链路暴露成命令；`--json` / REPL 为扩展 |
 | 11 | HTTP API + 请求日志 | ✅ 完成（第 17 轮，252 passed）：`POST /ask` / `GET /healthz`，索引常驻；FastAPI 迁移 / 鉴权为扩展 |
-| 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮起，287 passed）：覆盖式 recall@k / MRR / 拒答指标 / 耗时表；**小节级标注（文档 + 字符区间，不绑切分）** |
+| 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮起，278 passed）：覆盖式 recall@k / MRR / 拒答指标 / 耗时表；**小节级标注（文档 + 字符区间，不绑切分）** |
 | 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮；在 221 条上重测并扩到 6 组）：hashing 下 dense 腿 **−0.013**（负资产，纯 BM25 最优）、bge 下 **+0.032**；rerank 与等权 RRF 打平（**−0.003 / −0.002**） |
 | 16 | 真实语料 + 人工标注 | ⬜ 待做：`scripts/fetch_docs.py` 拉公开文档 → 人工标注 221 条 → `check_qrels.py` 质检 |
 | 14 | 交付：README 收尾 + 打包 | ✅ 完成（第 21 轮）：README 重写（四命令/架构/评测结论）、版本升 1.0.0、pyproject 加 readme 字段 |

@@ -7,7 +7,7 @@
 从零手搓的**中文 RAG 系统**（检索增强生成），**不用 LangChain/LlamaIndex 等框架**，核心算法（BM25、RRF/加权融合、重排、拒答、评测指标）全部自己实现。默认模式**离线可运行、不需要 API Key、不联网**。
 
 - 版本：`1.0.0`（`src/ragkit/__init__.py` 的 `__version__`）
-- 测试：**287 条全绿**（`pytest -q`）
+- 测试：**278 条全绿**（`pytest -q`）
 - Python：3.12（虚拟环境 `.venv`）
 - GitHub：`https://github.com/shenjingzhonggudie/nexus-rag`（分支 `master`）
 
@@ -21,7 +21,7 @@ hashing 字面级 embedding（离线零依赖）。真语义模型是**可选依
 
 ```powershell
 cd path/to/nexus-rag                             # 换成你 clone 下来的目录
-.\.venv\Scripts\python.exe -m pytest -q          # 跑测试（预期 287 passed）
+.\.venv\Scripts\python.exe -m pytest -q          # 跑测试（预期 278 passed）
 .\.venv\Scripts\ragkit.exe build                  # 建库（data/raw → data/index）
 .\.venv\Scripts\ragkit.exe ask "问题"             # 问答
 .\.venv\Scripts\ragkit.exe serve --port 8000      # HTTP API（POST /ask、GET /healthz）
@@ -47,17 +47,17 @@ cd path/to/nexus-rag                             # 换成你 clone 下来的目�
 ## 关键结论（**不要轻易推翻**）
 
 1. **融合 = 加权排名融合，在 `rerank()` 里实现**：`S(d) = α·S1(d) + (1−α)·S2(d)`，`S_i = 1/(60 + rank_i)`，`fusion_alpha = 0.7`（BM25 权重 0.7 / dense 权重 0.3）。**`weighted_fuse` 已删除**——加权融合属于精排阶段职责，与等权 `rrf_fuse` 分开，避免两份几乎相同的实现。默认值 0.7 是在 221 条上调出来的（见第 2 条）。
-2. **`rerank_enabled` 默认 `True`（加权融合），但它与等权 RRF 基本打平**：MRR 0.431（α=0.7）vs 0.433（等权）。α 的敏感度很小（波动 ≤0.014），**真正的瓶颈是 embedding**。α=0.9 的 `@1` 最高（0.335）但 MRR 最低（0.419）——擅长第一名、不擅长整体排序。
-3. **hashing dense 是字面级替身，不懂语义**：221 条上它是**负资产**（`bm25_only` MRR 0.388 高于任何融合组）——字面哈希会把"词面像但无关"的块排上来。**已接入 BGE**（`embeddings/bge.py`，可选依赖组 `.[embedding]`）：dense 腿从 **−0.013 转正到 +0.032**，`dense_only` 的 MRR 从 0.277 升到 0.392。
+2. **`rerank_enabled` 默认 `True`（加权融合）**：1553 块索引上 MRR **0.458**（α=0.7）vs **0.454**（等权 RRF），加权略优；`@5` 则是等权更高（0.549 vs 0.539）。α 的敏感度不大（MRR 0.436~0.458），**真正的瓶颈是 embedding**：`dense_only` 的 MRR 从 hashing 0.300 升到 bge 0.438。
+3. **hashing dense 是字面级替身，不懂语义**：1553 块索引上它是**负资产**（`bm25_only` MRR **0.411** 高于任何融合组）——字面哈希会把"词面像但无关"的块排上来。**已接入 BGE**（`embeddings/bge.py`，可选依赖组 `.[embedding]`）：dense 腿从 **−0.007 转正到 +0.054**，`dense_only` 的 MRR 从 **0.300 升到 0.438**。
 4. **标注绝不绑切分**（本轮最重要的约定）：答案标「文档 + 小节字符区间」，评测用**区间重叠**判定。千万不要改成标 `chunk_id`——切分策略一改就全废。
 5. **拒答是两层判据**：① `unknown_entities`——查询里首字母大写的英文专有名词（Kafka / JVM）若语料中从未出现，**强制 `match_score=0`**；② 实词 idf 加权覆盖率低于阈值（默认 0.05）。稠密腿永远返回 top_k，所以"结果为空"根本不成立；融合分也不能当阈值（排名分 0.012~0.017）。实测：拒答准确率 100%、误拒率 0.5%。**`v-model` / `v-if` 这类小写框架指令不能当外来实体**，否则会稳定误拒正常问题。
-6. **评测必须按来源分组报告**：`internal`（读正文出题，**能力基准**，recall@1=0.375 / MRR=0.509）与 `external`（只看标题出题，**真实用户视角**，recall@1=0.282 / MRR=0.355）**并列报告，不报合计**——合计取决于两组题目比例，不是系统能力。对内外一致：README、`eval` 输出、面试话术都一样。
+6. **评测必须按来源分组报告**：`internal`（读正文出题，**能力基准**，recall@1=0.410 / MRR=0.529）与 `external`（只看标题出题，**真实用户视角**，recall@1=0.340 / MRR=0.389）**并列报告，不报合计**——合计取决于两组题目比例，不是系统能力。对内外一致：README、`eval` 输出、面试话术都一样。
 
-> **消融（221 条标注，6 组）**：`baseline`（α=0.7）/ `alpha_09` / `alpha_05` /
+> **消融（221 条标注，1553 块索引，6 组）**：`baseline`（α=0.7）/ `alpha_09` / `alpha_05` /
 > `no_rerank`（等权 RRF）/ `bm25_only` / `dense_only`，`test_ablation.py` 锁定。
 > **自洽性检查**：`alpha_05` 与 `no_rerank` 每列完全相同（α=0.5 的加权就是等权 RRF）。
-> 边际贡献（recall@1）：dense 腿 **hashing −0.013 / bge +0.032**；BM25 腿 +0.083 / +0.035；
-> rerank **−0.003 / −0.002**（与等权 RRF 打平）。完整数字见 README「评测与消融」（两张表）。
+> 边际贡献（recall@1）：dense 腿 **hashing −0.007 / bge +0.054**；BM25 腿 +0.108 / +0.039；
+> rerank **+0.022 / +0.012**。完整数字见 README「评测与消融」（两张表）。
 
 ## 必须遵守的约定（改代码前先读）
 

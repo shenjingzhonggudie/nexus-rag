@@ -20,8 +20,11 @@ def _document(text: str, doc_id: str = "doc-1") -> Document:
     return Document(doc_id=doc_id, source="docs/example.md", text=text)
 
 
-# 三个等长段落，每段 10 字符；配合 chunk_size=20 时恰好一段一块。
-PARAGRAPHS = "A" * 10 + "\n\n" + "B" * 10 + "\n\n" + "C" * 10
+# 三个等长段落，每段 12 个汉字——有效长度 12 已高于 _MIN_CHUNK_LEN=10，
+# 不会被碎块闸门过滤。配合 chunk_size=20 时恰好一段一块。
+# 注意：这里必须用汉字而不是 "A"*10——英文字母 3 个才算 1 个字，
+# "A"*10 的有效长度只有 3.3，会被当成碎块丢掉。
+PARAGRAPHS = "甲" * 12 + "\n\n" + "乙" * 12 + "\n\n" + "丙" * 12
 
 
 def test_make_chunk_id_format():
@@ -57,7 +60,9 @@ def test_inserting_a_prefix_paragraph_keeps_later_ids():
     """
     before = chunk_document(_document(PARAGRAPHS), chunk_size=20, overlap=0)
     after = chunk_document(
-        _document("Z" * 10 + "\n\n" + PARAGRAPHS), chunk_size=20, overlap=0
+        _document("插入的前缀段落内容" * 2 + "\n\n" + PARAGRAPHS),
+        chunk_size=20,
+        overlap=0,
     )
 
     before_ids = [chunk.chunk_id for chunk in before]
@@ -74,7 +79,7 @@ def test_inserting_a_prefix_paragraph_keeps_later_ids():
 
 def test_editing_one_paragraph_changes_only_that_id():
     """内容变化的粒度：只有被改的那一块换 ID，其余不受牵连。"""
-    edited = "A" * 10 + "\n\n" + "B" * 9 + "X" + "\n\n" + "C" * 10
+    edited = "甲" * 12 + "\n\n" + "乙" * 11 + "改" + "\n\n" + "丙" * 12
 
     before = chunk_document(_document(PARAGRAPHS), chunk_size=20, overlap=0)
     after = chunk_document(_document(edited), chunk_size=20, overlap=0)

@@ -5,9 +5,13 @@ from hashlib import sha256
 from ragkit.schemas import Chunk, Document
 from ragkit.text.normalize import normalize_text
 
-from .fixed import iter_spans
+from .fixed import effective_len, iter_spans
 from .heading import iter_heading_spans
 from .ids import make_chunk_id
+
+# 有效长度低于此值的块直接丢弃：典型是 MDX 组件闭合标签、代码块结尾、
+# 注释残骸——字符数看着不少（13~40），但信息量只有 3~15 字，没有检索价值。
+_MIN_CHUNK_LEN = 10
 
 
 def chunk_document(
@@ -57,8 +61,15 @@ def chunk_document(
     occurrences: dict[str, int] = {}
     chunks: list[Chunk] = []
 
-    for ordinal, (char_start, char_end) in enumerate(spans):
+    for char_start, char_end in spans:
         chunk_text = normalized[char_start:char_end]
+        # 质量闸门：有效长度低于 10 字的块直接丢弃。
+        # 典型来源是 MDX 组件闭合标签（`</Sandpack>`）、代码块结尾（`;\n```）、
+        # 被剥掉的注释残骸（`## Metrics\n-->`）——它们字符数看着不少，但没有任何
+        # 检索价值，留着只会污染候选池（实测 18 个，最短 2 字符）。
+        if effective_len(chunk_text) < _MIN_CHUNK_LEN:
+            continue
+        ordinal = len(chunks)  # 过滤后重新连续编号，避免跳号
         full_hash = sha256(chunk_text.encode("utf-8")).hexdigest()
         occurrence = occurrences.get(full_hash, 0) + 1
         occurrences[full_hash] = occurrence

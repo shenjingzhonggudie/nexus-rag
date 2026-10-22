@@ -6,8 +6,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
         "section": "资源容量跟踪",
-        "start": 19908,
-        "end": 21134
+        "start": 6932,
+        "end": 7470
       }
     ],
     "source": "internal"
@@ -19,8 +19,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "命名表",
-        "start": 911,
-        "end": 1267
+        "start": 709,
+        "end": 1065
       }
     ],
     "source": "internal"
@@ -32,8 +32,8 @@
       {
         "doc": "vue/src__guide__essentials__forms.md",
         "section": "修饰符",
-        "start": 13528,
-        "end": 14253
+        "start": 13360,
+        "end": 14047
       }
     ],
     "source": "internal"
@@ -45,8 +45,8 @@
       {
         "doc": "react/src__content__learn__importing-and-exporting-components.md",
         "section": "根组件文件",
-        "start": 283,
-        "end": 927
+        "start": 172,
+        "end": 738
       }
     ],
     "source": "internal"
@@ -58,8 +58,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md",
         "section": "如何实现 Kubernetes 的网络模型",
-        "start": 5725,
-        "end": 6321
+        "start": 1687,
+        "end": 2109
       }
     ],
     "source": "internal"
@@ -71,8 +71,8 @@
       {
         "doc": "tidb/develop__dev-guide-choose-driver-or-orm.md",
         "section": "Golang",
-        "start": 6336,
-        "end": 6924
+        "start": 6035,
+        "end": 6623
       }
     ],
     "source": "internal"
@@ -97,8 +97,8 @@
       {
         "doc": "react/src__content__learn__escape-hatches.md",
         "section": "使用 ref 操作 DOM",
-        "start": 1672,
-        "end": 2467
+        "start": 1473,
+        "end": 2171
       }
     ],
     "source": "internal"
@@ -110,8 +110,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
         "section": "对等聚合发现",
-        "start": 6217,
-        "end": 6983
+        "start": 2101,
+        "end": 2568
       }
     ],
     "source": "internal"
@@ -123,8 +123,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "选择主键",
-        "start": 3329,
-        "end": 4641
+        "start": 3127,
+        "end": 4439
       }
     ],
     "source": "internal"
@@ -136,8 +136,8 @@
       {
         "doc": "vue/src__guide__best-practices__accessibility.md",
         "section": "规范",
-        "start": 11008,
-        "end": 12275
+        "start": 10934,
+        "end": 12201
       }
     ],
     "source": "internal"
@@ -149,8 +149,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "使用 JSX 书写标签语言",
-        "start": 2465,
-        "end": 3806
+        "start": 2003,
+        "end": 3229
       }
     ],
     "source": "internal"
@@ -162,8 +162,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
         "section": "工作负载",
-        "start": 7716,
-        "end": 8505
+        "start": 3302,
+        "end": 3731
       }
     ],
     "source": "internal"
@@ -175,8 +175,8 @@
       {
         "doc": "tidb/develop__dev-guide-join-tables.md",
         "section": "Join 顺序",
-        "start": 8010,
-        "end": 8415
+        "start": 7715,
+        "end": 8120
       }
     ],
     "source": "internal"
@@ -189,7 +189,7 @@
         "doc": "vue/src__guide__essentials__application.md",
         "section": "多个应用实例",
         "start": 1954,
-        "end": 2365
+        "end": 2340
       }
     ],
     "source": "internal"
@@ -201,8 +201,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "保持组件纯粹",
-        "start": 9295,
-        "end": 10272
+        "start": 8330,
+        "end": 9080
       }
     ],
     "source": "internal"
@@ -214,8 +214,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md",
         "section": "相关组件",
-        "start": 21520,
-        "end": 22616
+        "start": 21392,
+        "end": 22488
       }
     ],
     "source": "internal"
@@ -227,8 +227,8 @@
       {
         "doc": "tidb/develop__dev-guide-delete-data.md",
         "section": "非事务批量删除",
-        "start": 10106,
-        "end": 10973
+        "start": 9807,
+        "end": 10674
       }
     ],
     "source": "internal"
@@ -240,8 +240,8 @@
       {
         "doc": "vue/src__guide__components__attrs.md",
         "section": "在 JavaScript 中访问透传 Attributes",
-        "start": 3691,
-        "end": 4472
+        "start": 3463,
+        "end": 4244
       }
     ],
     "source": "internal"
@@ -253,8 +253,8 @@
       {
         "doc": "react/src__content__learn__escape-hatches.md",
         "section": "使用 ref 引用值",
-        "start": 731,
-        "end": 1672
+        "start": 627,
+        "end": 1473
       }
     ],
     "source": "internal"
@@ -266,8 +266,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
         "section": "健康检查并发豁免",
-        "start": 35597,
-        "end": 36574
+        "start": 11229,
+        "end": 11710
       }
     ],
     "source": "internal"
@@ -279,8 +279,8 @@
       {
         "doc": "tidb/develop__dev-guide-gui-mysql-workbench.md",
         "section": "常见问题",
-        "start": 6753,
-        "end": 7336
+        "start": 6490,
+        "end": 7073
       }
     ],
     "source": "internal"
@@ -292,8 +292,8 @@
       {
         "doc": "vue/src__guide__built-ins__suspense.md",
         "section": "加载中状态",
-        "start": 1474,
-        "end": 2242
+        "start": 1442,
+        "end": 2112
       }
     ],
     "source": "internal"
@@ -305,8 +305,8 @@
       {
         "doc": "react/src__content__learn__escape-hatches.md",
         "section": "你可能不需要 Effect",
-        "start": 4421,
-        "end": 5536
+        "start": 4007,
+        "end": 5052
       }
     ],
     "source": "internal"
@@ -318,8 +318,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
         "section": "领导者选举",
-        "start": 2355,
-        "end": 3538
+        "start": 629,
+        "end": 1200
       }
     ],
     "source": "internal"
@@ -331,8 +331,8 @@
       {
         "doc": "tidb/develop__dev-guide-optimize-sql-overview.md",
         "section": "SQL 性能调优",
-        "start": 379,
-        "end": 774
+        "start": 134,
+        "end": 529
       }
     ],
     "source": "internal"
@@ -357,8 +357,8 @@
       {
         "doc": "react/src__content__learn__creating-a-react-app.md",
         "section": "其他框架",
-        "start": 2186,
-        "end": 3623
+        "start": 2023,
+        "end": 3395
       }
     ],
     "source": "internal"
@@ -370,8 +370,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
         "section": "设计",
-        "start": 7551,
-        "end": 8588
+        "start": 2113,
+        "end": 2637
       }
     ],
     "source": "internal"
@@ -383,8 +383,8 @@
       {
         "doc": "tidb/develop__dev-guide-join-tables.md",
         "section": "Join 相关算法",
-        "start": 6924,
-        "end": 8010
+        "start": 6629,
+        "end": 7715
       }
     ],
     "source": "internal"
@@ -396,8 +396,8 @@
       {
         "doc": "vue/src__guide__built-ins__keep-alive.md",
         "section": "缓存实例的生命周期",
-        "start": 3075,
-        "end": 4319
+        "start": 2737,
+        "end": 3981
       }
     ],
     "source": "internal"
@@ -409,8 +409,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "更新界面",
-        "start": 5835,
-        "end": 7235
+        "start": 5547,
+        "end": 6885
       }
     ],
     "source": "internal"
@@ -422,8 +422,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
         "section": "识别是否使用 Admission Webhook",
-        "start": 4060,
-        "end": 4684
+        "start": 1130,
+        "end": 1493
       }
     ],
     "source": "internal"
@@ -435,8 +435,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-database.md",
         "section": "数据库创建时应遵守的规则",
-        "start": 1477,
-        "end": 1887
+        "start": 1259,
+        "end": 1669
       }
     ],
     "source": "internal"
@@ -461,8 +461,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "创建和嵌套组件",
-        "start": 266,
-        "end": 1197
+        "start": 124,
+        "end": 994
       }
     ],
     "source": "internal"
@@ -474,8 +474,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
         "section": "运行控制器的方式",
-        "start": 9435,
-        "end": 9811
+        "start": 2637,
+        "end": 3013
       }
     ],
     "source": "internal"
@@ -487,8 +487,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
         "section": "什么是二级索引",
-        "start": 681,
-        "end": 958
+        "start": 425,
+        "end": 702
       }
     ],
     "source": "internal"
@@ -500,8 +500,8 @@
       {
         "doc": "vue/src__guide__built-ins__transition.md",
         "section": "过渡模式",
-        "start": 17300,
-        "end": 17709
+        "start": 16701,
+        "end": 17036
       }
     ],
     "source": "internal"
@@ -513,8 +513,8 @@
       {
         "doc": "react/src__content__learn__add-react-to-an-existing-project.md",
         "section": "在现有网站的子路由中使用 React",
-        "start": 311,
-        "end": 1204
+        "start": 244,
+        "end": 1137
       }
     ],
     "source": "internal"
@@ -526,8 +526,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
         "section": "节点心跳",
-        "start": 1636,
-        "end": 2004
+        "start": 266,
+        "end": 629
       }
     ],
     "source": "internal"
@@ -539,8 +539,8 @@
       {
         "doc": "tidb/develop__dev-guide-index-best-practice.md",
         "section": "创建索引的最佳实践",
-        "start": 864,
-        "end": 1624
+        "start": 590,
+        "end": 1350
       }
     ],
     "source": "internal"
@@ -552,8 +552,8 @@
       {
         "doc": "vue/src__guide__best-practices__performance.md",
         "section": "分析选项",
-        "start": 833,
-        "end": 1310
+        "start": 811,
+        "end": 1288
       }
     ],
     "source": "internal"
@@ -565,8 +565,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "显示数据",
-        "start": 2146,
-        "end": 3394
+        "start": 1943,
+        "end": 3166
       }
     ],
     "source": "internal"
@@ -578,8 +578,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
         "section": "分离 DRA 相关 API 的权限",
-        "start": 956,
-        "end": 1246
+        "start": 60,
+        "end": 345
       }
     ],
     "source": "internal"
@@ -591,8 +591,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "选择聚簇索引",
-        "start": 4641,
-        "end": 5675
+        "start": 4439,
+        "end": 5473
       }
     ],
     "source": "internal"
@@ -604,8 +604,8 @@
       {
         "doc": "vue/src__guide__built-ins__transition.md",
         "section": "动态过渡",
-        "start": 19122,
-        "end": 19504
+        "start": 18375,
+        "end": 18693
       }
     ],
     "source": "internal"
@@ -617,8 +617,8 @@
       {
         "doc": "react/src__content__learn__extracting-state-logic-into-a-reducer.md",
         "section": "编写一个好的 reducer",
-        "start": 17725,
-        "end": 18385
+        "start": 17071,
+        "end": 17731
       }
     ],
     "source": "internal"
@@ -630,8 +630,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture___index.md",
         "section": "节点组件",
-        "start": 6484,
-        "end": 7242
+        "start": 2232,
+        "end": 2688
       }
     ],
     "source": "internal"
@@ -643,8 +643,8 @@
       {
         "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
         "section": "索引的最佳实践",
-        "start": 2422,
-        "end": 3310
+        "start": 2123,
+        "end": 3011
       }
     ],
     "source": "internal"
@@ -656,8 +656,8 @@
       {
         "doc": "vue/src__guide__components__attrs.md",
         "section": "多根节点的 Attributes 继承",
-        "start": 3197,
-        "end": 3691
+        "start": 3025,
+        "end": 3463
       }
     ],
     "source": "internal"
@@ -669,8 +669,8 @@
       {
         "doc": "react/src__content__learn__passing-data-deeply-with-context.md",
         "section": "传递 props 带来的问题",
-        "start": 358,
-        "end": 1775
+        "start": 231,
+        "end": 609
       }
     ],
     "source": "internal"
@@ -682,8 +682,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
         "section": "设计",
-        "start": 1397,
-        "end": 1976
+        "start": 358,
+        "end": 765
       }
     ],
     "source": "internal"
@@ -695,8 +695,8 @@
       {
         "doc": "tidb/develop__dev-guide-gui-navicat.md",
         "section": "下一步",
-        "start": 6388,
-        "end": 6891
+        "start": 6165,
+        "end": 6668
       }
     ],
     "source": "internal"
@@ -709,7 +709,7 @@
         "doc": "vue/src__guide__components__events.md",
         "section": "触发与监听事件",
         "start": 565,
-        "end": 1450
+        "end": 1349
       }
     ],
     "source": "internal"
@@ -721,8 +721,8 @@
       {
         "doc": "react/src__content__learn__passing-props-to-a-component.md",
         "section": "使用 JSX 展开语法传递 props",
-        "start": 4354,
-        "end": 5081
+        "start": 4115,
+        "end": 4815
       }
     ],
     "source": "internal"
@@ -734,8 +734,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__compatibility-version.md",
         "section": "仿真版本",
-        "start": 840,
-        "end": 1867
+        "start": 93,
+        "end": 447
       }
     ],
     "source": "internal"
@@ -747,8 +747,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "执行 `CREATE TABLE` 语句",
-        "start": 14532,
-        "end": 15273
+        "start": 14330,
+        "end": 15071
       }
     ],
     "source": "internal"
@@ -773,8 +773,8 @@
       {
         "doc": "react/src__content__learn__passing-props-to-a-component.md",
         "section": "给 prop 指定一个默认值",
-        "start": 3999,
-        "end": 4354
+        "start": 3760,
+        "end": 4115
       }
     ],
     "source": "internal"
@@ -786,8 +786,8 @@
       {
         "doc": "tidb/develop__dev-guide-insert-data.md",
         "section": "主键为 `AUTO_RANDOM` 表插入数据",
-        "start": 9663,
-        "end": 10757
+        "start": 9348,
+        "end": 10442
       }
     ],
     "source": "internal"
@@ -799,8 +799,8 @@
       {
         "doc": "vue/src__guide__essentials__event-handling.md",
         "section": "在内联事件处理器中访问事件参数",
-        "start": 4190,
-        "end": 4908
+        "start": 4163,
+        "end": 4839
       }
     ],
     "source": "internal"
@@ -812,8 +812,8 @@
       {
         "doc": "react/src__content__learn__installation.md",
         "section": "Try React",
-        "start": 185,
-        "end": 852
+        "start": 119,
+        "end": 761
       }
     ],
     "source": "internal"
@@ -825,8 +825,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "什么是表",
-        "start": 677,
-        "end": 911
+        "start": 475,
+        "end": 709
       }
     ],
     "source": "internal"
@@ -838,8 +838,8 @@
       {
         "doc": "vue/src__guide__essentials__forms.md",
         "section": "组件上的 `v-model`",
-        "start": 14253,
-        "end": 14480
+        "start": 14047,
+        "end": 14274
       }
     ],
     "source": "internal"
@@ -851,8 +851,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "将 Props 传递给组件",
-        "start": 4921,
-        "end": 6264
+        "start": 4242,
+        "end": 5469
       }
     ],
     "source": "internal"
@@ -864,8 +864,8 @@
       {
         "doc": "tidb/develop__dev-guide-delete-data.md",
         "section": "性能注意事项",
-        "start": 4684,
-        "end": 5185
+        "start": 4430,
+        "end": 4931
       }
     ],
     "source": "internal"
@@ -877,8 +877,8 @@
       {
         "doc": "vue/src__guide__built-ins__transition.md",
         "section": "可复用过渡效果",
-        "start": 15562,
-        "end": 16144
+        "start": 15133,
+        "end": 15623
       }
     ],
     "source": "internal"
@@ -890,8 +890,8 @@
       {
         "doc": "react/src__content__learn__react-compiler__debugging.md",
         "section": "调试工作流程",
-        "start": 1002,
-        "end": 1794
+        "start": 930,
+        "end": 1722
       }
     ],
     "source": "internal"
@@ -903,8 +903,8 @@
       {
         "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
         "section": "表命名规范",
-        "start": 529,
-        "end": 852
+        "start": 272,
+        "end": 595
       }
     ],
     "source": "internal"
@@ -929,8 +929,8 @@
       {
         "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
         "section": "基于目录的采用与 Babel 覆盖",
-        "start": 886,
-        "end": 2231
+        "start": 817,
+        "end": 2162
       }
     ],
     "source": "internal"
@@ -942,8 +942,8 @@
       {
         "doc": "tidb/develop__dev-guide-delete-data.md",
         "section": "最佳实践",
-        "start": 1041,
-        "end": 1499
+        "start": 832,
+        "end": 1290
       }
     ],
     "source": "internal"
@@ -955,8 +955,8 @@
       {
         "doc": "vue/src__guide__essentials__computed.md",
         "section": "计算属性缓存 vs 方法",
-        "start": 3945,
-        "end": 4987
+        "start": 3682,
+        "end": 4724
       }
     ],
     "source": "internal"
@@ -968,8 +968,8 @@
       {
         "doc": "react/src__content__learn__choosing-the-state-structure.md",
         "section": "合并关联的 state",
-        "start": 1030,
-        "end": 2495
+        "start": 928,
+        "end": 2345
       }
     ],
     "source": "internal"
@@ -981,8 +981,8 @@
       {
         "doc": "tidb/develop__dev-guide-insert-data.md",
         "section": "避免热点",
-        "start": 9420,
-        "end": 9663
+        "start": 9105,
+        "end": 9348
       }
     ],
     "source": "internal"
@@ -1007,8 +1007,8 @@
       {
         "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
         "section": "渐进式采用的方法",
-        "start": 672,
-        "end": 886
+        "start": 603,
+        "end": 817
       }
     ],
     "source": "internal"
@@ -1020,14 +1020,14 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "选择主键",
-        "start": 3329,
-        "end": 4641
+        "start": 3127,
+        "end": 4439
       },
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "选择聚簇索引",
-        "start": 4641,
-        "end": 5675
+        "start": 4439,
+        "end": 5473
       }
     ],
     "source": "internal"
@@ -1039,14 +1039,14 @@
       {
         "doc": "vue/src__guide__best-practices__performance.md",
         "section": "概述",
-        "start": 46,
-        "end": 833
+        "start": 24,
+        "end": 811
       },
       {
         "doc": "vue/src__guide__best-practices__performance.md",
         "section": "分析选项",
-        "start": 833,
-        "end": 1310
+        "start": 811,
+        "end": 1288
       }
     ],
     "source": "internal"
@@ -1058,14 +1058,14 @@
       {
         "doc": "react/src__content__learn__adding-interactivity.md",
         "section": "渲染和提交",
-        "start": 6529,
-        "end": 7346
+        "start": 6157,
+        "end": 6468
       },
       {
         "doc": "react/src__content__learn__adding-interactivity.md",
         "section": "state 如同一张快照",
-        "start": 7346,
-        "end": 8698
+        "start": 6468,
+        "end": 7734
       }
     ],
     "source": "internal"
@@ -1096,14 +1096,14 @@
       {
         "doc": "react/src__content__learn__choosing-the-state-structure.md",
         "section": "构建 state 的原则",
-        "start": 237,
-        "end": 1030
+        "start": 135,
+        "end": 928
       },
       {
         "doc": "react/src__content__learn__choosing-the-state-structure.md",
         "section": "合并关联的 state",
-        "start": 1030,
-        "end": 2495
+        "start": 928,
+        "end": 2345
       }
     ],
     "source": "internal"
@@ -1115,14 +1115,14 @@
       {
         "doc": "tidb/develop__dev-guide-join-tables.md",
         "section": "Join 相关算法",
-        "start": 6924,
-        "end": 8010
+        "start": 6629,
+        "end": 7715
       },
       {
         "doc": "tidb/develop__dev-guide-join-tables.md",
         "section": "Join 顺序",
-        "start": 8010,
-        "end": 8415
+        "start": 7715,
+        "end": 8120
       }
     ],
     "source": "internal"
@@ -1153,14 +1153,14 @@
       {
         "doc": "vue/src__guide__built-ins__keep-alive.md",
         "section": "包含/排除",
-        "start": 2082,
-        "end": 2729
+        "start": 1981,
+        "end": 2424
       },
       {
         "doc": "vue/src__guide__built-ins__keep-alive.md",
         "section": "最大缓存实例数",
-        "start": 2729,
-        "end": 3075
+        "start": 2424,
+        "end": 2737
       }
     ],
     "source": "internal"
@@ -1172,14 +1172,14 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "你的第一个组件",
-        "start": 836,
-        "end": 1554
+        "start": 682,
+        "end": 1260
       },
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "组件的导入与导出",
-        "start": 1554,
-        "end": 2465
+        "start": 1260,
+        "end": 2003
       }
     ],
     "source": "internal"
@@ -1191,14 +1191,14 @@
       {
         "doc": "vue/src__guide__built-ins__keep-alive.md",
         "section": "最大缓存实例数",
-        "start": 2729,
-        "end": 3075
+        "start": 2424,
+        "end": 2737
       },
       {
         "doc": "vue/src__guide__built-ins__keep-alive.md",
         "section": "缓存实例的生命周期",
-        "start": 3075,
-        "end": 4319
+        "start": 2737,
+        "end": 3981
       }
     ],
     "source": "internal"
@@ -1210,14 +1210,14 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "组件的导入与导出",
-        "start": 1554,
-        "end": 2465
+        "start": 1260,
+        "end": 2003
       },
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "使用 JSX 书写标签语言",
-        "start": 2465,
-        "end": 3806
+        "start": 2003,
+        "end": 3229
       }
     ],
     "source": "internal"
@@ -1229,14 +1229,14 @@
       {
         "doc": "vue/src__guide__built-ins__suspense.md",
         "section": "异步依赖",
-        "start": 217,
-        "end": 1474
+        "start": 195,
+        "end": 1442
       },
       {
         "doc": "vue/src__guide__built-ins__suspense.md",
         "section": "加载中状态",
-        "start": 1474,
-        "end": 2242
+        "start": 1442,
+        "end": 2112
       }
     ],
     "source": "internal"
@@ -1248,14 +1248,14 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "使用 JSX 书写标签语言",
-        "start": 2465,
-        "end": 3806
+        "start": 2003,
+        "end": 3229
       },
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "在 JSX 中通过大括号使用 JavaScript",
-        "start": 3806,
-        "end": 4921
+        "start": 3229,
+        "end": 4242
       }
     ],
     "source": "internal"
@@ -1267,14 +1267,14 @@
       {
         "doc": "vue/src__guide__built-ins__suspense.md",
         "section": "和其他组件结合",
-        "start": 2692,
-        "end": 3576
+        "start": 2562,
+        "end": 3226
       },
       {
         "doc": "vue/src__guide__built-ins__suspense.md",
         "section": "嵌套使用",
-        "start": 3576,
-        "end": 4517
+        "start": 3226,
+        "end": 4071
       }
     ],
     "source": "internal"
@@ -1286,14 +1286,14 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "在 JSX 中通过大括号使用 JavaScript",
-        "start": 3806,
-        "end": 4921
+        "start": 3229,
+        "end": 4242
       },
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "将 Props 传递给组件",
-        "start": 4921,
-        "end": 6264
+        "start": 4242,
+        "end": 5469
       }
     ],
     "source": "internal"
@@ -1305,14 +1305,14 @@
       {
         "doc": "vue/src__guide__built-ins__teleport.md",
         "section": "多个 Teleport 共享目标",
-        "start": 3752,
-        "end": 4139
+        "start": 3593,
+        "end": 3911
       },
       {
         "doc": "vue/src__guide__built-ins__teleport.md",
         "section": "延迟解析的 Teleport <sup class=\"vt-badge\" data-text=\"3.5+\" />",
-        "start": 4139,
-        "end": 4681
+        "start": 3911,
+        "end": 4432
       }
     ],
     "source": "internal"
@@ -1325,13 +1325,13 @@
         "doc": "vue/src__guide__essentials__lifecycle.md",
         "section": "生命周期图示",
         "start": 1591,
-        "end": 2097
+        "end": 1942
       },
       {
         "doc": "react/src__content__learn__escape-hatches.md",
         "section": "响应式 Effect 的生命周期",
-        "start": 5536,
-        "end": 7329
+        "start": 5052,
+        "end": 6715
       }
     ],
     "source": "internal"
@@ -1349,8 +1349,8 @@
       {
         "doc": "react/src__content__learn__adding-interactivity.md",
         "section": "响应事件",
-        "start": 581,
-        "end": 1503
+        "start": 493,
+        "end": 1223
       }
     ],
     "source": "internal"
@@ -1368,8 +1368,8 @@
       {
         "doc": "react/src__content__learn__conditional-rendering.md",
         "section": "条件返回 JSX",
-        "start": 271,
-        "end": 2826
+        "start": 173,
+        "end": 2653
       }
     ],
     "source": "internal"
@@ -1381,14 +1381,14 @@
       {
         "doc": "vue/src__guide__components__props.md",
         "section": "单向数据流",
-        "start": 7283,
-        "end": 9232
+        "start": 6006,
+        "end": 7955
       },
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "将 Props 传递给组件",
-        "start": 4921,
-        "end": 6264
+        "start": 4242,
+        "end": 5469
       }
     ],
     "source": "internal"
@@ -1406,8 +1406,8 @@
       {
         "doc": "react/src__content__learn__build-a-react-app-from-scratch.md",
         "section": "步骤 1: 安装构建工具",
-        "start": 663,
-        "end": 2284
+        "start": 589,
+        "end": 2094
       }
     ],
     "source": "internal"
@@ -1419,14 +1419,14 @@
       {
         "doc": "vue/src__guide__best-practices__performance.md",
         "section": "页面加载优化",
-        "start": 1310,
-        "end": 3543
+        "start": 1288,
+        "end": 3521
       },
       {
         "doc": "react/src__content__learn__build-a-react-app-from-scratch.md",
         "section": "步骤 2: 构建常见的应用程序模式",
-        "start": 2284,
-        "end": 5513
+        "start": 2094,
+        "end": 5323
       }
     ],
     "source": "internal"
@@ -1546,8 +1546,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
         "section": "运行控制器的方式",
-        "start": 9435,
-        "end": 9811
+        "start": 2637,
+        "end": 3013
       }
     ],
     "source": "external"
@@ -1559,8 +1559,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
         "section": "分离 DRA 相关 API 的权限",
-        "start": 956,
-        "end": 1246
+        "start": 60,
+        "end": 345
       }
     ],
     "source": "external"
@@ -1572,8 +1572,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
         "section": "资源容量跟踪",
-        "start": 19908,
-        "end": 21134
+        "start": 6932,
+        "end": 7470
       }
     ],
     "source": "external"
@@ -1585,8 +1585,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
         "section": "期望状态与当前状态",
-        "start": 6635,
-        "end": 6808
+        "start": 1945,
+        "end": 2113
       }
     ],
     "source": "external"
@@ -1598,8 +1598,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
         "section": "节点拓扑",
-        "start": 21155,
-        "end": 21784
+        "start": 7470,
+        "end": 7763
       }
     ],
     "source": "external"
@@ -1611,8 +1611,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__self-healing.md",
         "section": "自我修复能力",
-        "start": 1686,
-        "end": 3546
+        "start": 86,
+        "end": 1083
       }
     ],
     "source": "external"
@@ -1624,8 +1624,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md",
         "section": "集群网络类型",
-        "start": 3320,
-        "end": 5101
+        "start": 997,
+        "end": 1687
       }
     ],
     "source": "external"
@@ -1637,8 +1637,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
         "section": "节点心跳",
-        "start": 13519,
-        "end": 14120
+        "start": 5011,
+        "end": 5329
       }
     ],
     "source": "external"
@@ -1650,8 +1650,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
         "section": "什么是 CGroup v2?",
-        "start": 1130,
-        "end": 2695
+        "start": 346,
+        "end": 935
       }
     ],
     "source": "external"
@@ -1663,8 +1663,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
         "section": "启用/禁用 API 优先级和公平性",
-        "start": 2993,
-        "end": 4624
+        "start": 889,
+        "end": 1500
       }
     ],
     "source": "external"
@@ -1676,8 +1676,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
         "section": "识别 Linux 节点上的 CGroup 版本",
-        "start": 9555,
-        "end": 9921
+        "start": 3367,
+        "end": 3638
       }
     ],
     "source": "external"
@@ -1689,8 +1689,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
         "section": "良好的 Webhook 设计的重要性",
-        "start": 1728,
-        "end": 3718
+        "start": 337,
+        "end": 1130
       }
     ],
     "source": "external"
@@ -1702,8 +1702,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
         "section": "配置垃圾收集",
-        "start": 16043,
-        "end": 16297
+        "start": 5518,
+        "end": 5772
       }
     ],
     "source": "external"
@@ -1715,8 +1715,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
         "section": "弃用 CGroup v1",
-        "start": 9953,
-        "end": 10668
+        "start": 3638,
+        "end": 3980
       }
     ],
     "source": "external"
@@ -1728,8 +1728,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md",
         "section": "加固集群",
-        "start": 5222,
-        "end": 6808
+        "start": 1116,
+        "end": 2379
       }
     ],
     "source": "external"
@@ -1741,8 +1741,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md",
         "section": "Kubernetes IP 地址范围",
-        "start": 2368,
-        "end": 3170
+        "start": 618,
+        "end": 997
       }
     ],
     "source": "external"
@@ -1754,8 +1754,8 @@
       {
         "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
         "section": "节点状态",
-        "start": 12640,
-        "end": 13305
+        "start": 4565,
+        "end": 5011
       }
     ],
     "source": "external"
@@ -1767,8 +1767,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-database.md",
         "section": "数据库创建时应遵守的规则",
-        "start": 1477,
-        "end": 1887
+        "start": 1259,
+        "end": 1669
       }
     ],
     "source": "external"
@@ -1780,8 +1780,8 @@
       {
         "doc": "tidb/develop__dev-guide-optimize-sql-overview.md",
         "section": "SQL 性能调优",
-        "start": 379,
-        "end": 774
+        "start": 134,
+        "end": 529
       }
     ],
     "source": "external"
@@ -1793,8 +1793,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "什么是表",
-        "start": 677,
-        "end": 911
+        "start": 475,
+        "end": 709
       }
     ],
     "source": "external"
@@ -1806,8 +1806,8 @@
       {
         "doc": "tidb/develop__dev-guide-join-tables.md",
         "section": "Join 顺序",
-        "start": 8010,
-        "end": 8415
+        "start": 7715,
+        "end": 8120
       }
     ],
     "source": "external"
@@ -1819,8 +1819,8 @@
       {
         "doc": "tidb/develop__dev-guide-index-best-practice.md",
         "section": "创建索引的最佳实践",
-        "start": 864,
-        "end": 1624
+        "start": 590,
+        "end": 1350
       }
     ],
     "source": "external"
@@ -1832,8 +1832,8 @@
       {
         "doc": "tidb/develop__dev-guide-insert-data.md",
         "section": "避免热点",
-        "start": 9420,
-        "end": 9663
+        "start": 9105,
+        "end": 9348
       }
     ],
     "source": "external"
@@ -1845,8 +1845,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "选择聚簇索引",
-        "start": 4641,
-        "end": 5675
+        "start": 4439,
+        "end": 5473
       }
     ],
     "source": "external"
@@ -1858,8 +1858,8 @@
       {
         "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
         "section": "索引的最佳实践",
-        "start": 2422,
-        "end": 3310
+        "start": 2123,
+        "end": 3011
       }
     ],
     "source": "external"
@@ -1871,8 +1871,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "选择主键",
-        "start": 3329,
-        "end": 4641
+        "start": 3127,
+        "end": 4439
       }
     ],
     "source": "external"
@@ -1884,8 +1884,8 @@
       {
         "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
         "section": "聚合查询",
-        "start": 8016,
-        "end": 9942
+        "start": 7541,
+        "end": 9423
       }
     ],
     "source": "external"
@@ -1897,8 +1897,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-database.md",
         "section": "创建数据库过程",
-        "start": 786,
-        "end": 1089
+        "start": 568,
+        "end": 871
       }
     ],
     "source": "external"
@@ -1910,8 +1910,8 @@
       {
         "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
         "section": "对结果进行筛选",
-        "start": 3129,
-        "end": 4336
+        "start": 2786,
+        "end": 3949
       }
     ],
     "source": "external"
@@ -1923,8 +1923,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-table.md",
         "section": "添加列约束",
-        "start": 5675,
-        "end": 7188
+        "start": 5473,
+        "end": 6986
       }
     ],
     "source": "external"
@@ -1936,8 +1936,8 @@
       {
         "doc": "tidb/develop__dev-guide-optimize-sql-overview.md",
         "section": "Schema 设计",
-        "start": 774,
-        "end": 1010
+        "start": 529,
+        "end": 765
       }
     ],
     "source": "external"
@@ -1949,8 +1949,8 @@
       {
         "doc": "tidb/develop___index.md",
         "section": "使用 MySQL 客户端软件",
-        "start": 5656,
-        "end": 6473
+        "start": 1248,
+        "end": 1580
       }
     ],
     "source": "external"
@@ -1962,8 +1962,8 @@
       {
         "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
         "section": "DML 最佳实践",
-        "start": 314,
-        "end": 2297
+        "start": 40,
+        "end": 1998
       }
     ],
     "source": "external"
@@ -1975,8 +1975,8 @@
       {
         "doc": "tidb/develop__dev-guide-insert-data.md",
         "section": "使用 HTAP",
-        "start": 10757,
-        "end": 10925
+        "start": 10442,
+        "end": 10610
       }
     ],
     "source": "external"
@@ -1988,8 +1988,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
         "section": "新建表的同时创建二级索引",
-        "start": 1287,
-        "end": 1547
+        "start": 1031,
+        "end": 1291
       }
     ],
     "source": "external"
@@ -2001,8 +2001,8 @@
       {
         "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
         "section": "字段命名规范",
-        "start": 852,
-        "end": 1104
+        "start": 595,
+        "end": 847
       }
     ],
     "source": "external"
@@ -2014,8 +2014,8 @@
       {
         "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
         "section": "限制查询结果数量",
-        "start": 6087,
-        "end": 8016
+        "start": 5656,
+        "end": 7541
       }
     ],
     "source": "external"
@@ -2027,8 +2027,8 @@
       {
         "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
         "section": "在已有表中添加二级索引",
-        "start": 958,
-        "end": 1287
+        "start": 702,
+        "end": 1031
       }
     ],
     "source": "external"
@@ -2040,8 +2040,8 @@
       {
         "doc": "tidb/develop__dev-guide-get-data-from-single-table.md",
         "section": "对结果进行排序",
-        "start": 4336,
-        "end": 6087
+        "start": 3949,
+        "end": 5656
       }
     ],
     "source": "external"
@@ -2053,8 +2053,8 @@
       {
         "doc": "tidb/develop__dev-guide-insert-data.md",
         "section": "批量插入",
-        "start": 7867,
-        "end": 9420
+        "start": 7596,
+        "end": 9105
       }
     ],
     "source": "external"
@@ -2066,8 +2066,8 @@
       {
         "doc": "vue/src__guide__built-ins__teleport.md",
         "section": "延迟解析的 Teleport <sup class=\"vt-badge\" data-text=\"3.5+\" />",
-        "start": 4139,
-        "end": 4681
+        "start": 3911,
+        "end": 4432
       }
     ],
     "source": "external"
@@ -2092,8 +2092,8 @@
       {
         "doc": "vue/src__guide__components__props.md",
         "section": "单向数据流",
-        "start": 7283,
-        "end": 9232
+        "start": 6006,
+        "end": 7955
       }
     ],
     "source": "external"
@@ -2105,8 +2105,8 @@
       {
         "doc": "vue/src__guide__built-ins__teleport.md",
         "section": "多个 Teleport 共享目标",
-        "start": 3752,
-        "end": 4139
+        "start": 3593,
+        "end": 3911
       }
     ],
     "source": "external"
@@ -2132,7 +2132,7 @@
         "doc": "vue/src__guide__essentials__lifecycle.md",
         "section": "生命周期图示",
         "start": 1591,
-        "end": 2097
+        "end": 1942
       }
     ],
     "source": "external"
@@ -2170,8 +2170,8 @@
       {
         "doc": "vue/src__guide__essentials__forms.md",
         "section": "组件上的 `v-model`",
-        "start": 14253,
-        "end": 14480
+        "start": 14047,
+        "end": 14274
       }
     ],
     "source": "external"
@@ -2196,8 +2196,8 @@
       {
         "doc": "vue/src__guide__built-ins__keep-alive.md",
         "section": "缓存实例的生命周期",
-        "start": 3075,
-        "end": 4319
+        "start": 2737,
+        "end": 3981
       }
     ],
     "source": "external"
@@ -2248,8 +2248,8 @@
       {
         "doc": "vue/src__guide__built-ins__transition.md",
         "section": "动态过渡",
-        "start": 19122,
-        "end": 19504
+        "start": 18375,
+        "end": 18693
       }
     ],
     "source": "external"
@@ -2261,8 +2261,8 @@
       {
         "doc": "vue/src__guide__essentials__computed.md",
         "section": "计算属性缓存 vs 方法",
-        "start": 3945,
-        "end": 4987
+        "start": 3682,
+        "end": 4724
       }
     ],
     "source": "external"
@@ -2274,8 +2274,8 @@
       {
         "doc": "vue/src__guide__built-ins__transition.md",
         "section": "过渡模式",
-        "start": 17300,
-        "end": 17709
+        "start": 16701,
+        "end": 17036
       }
     ],
     "source": "external"
@@ -2301,7 +2301,7 @@
         "doc": "vue/src__guide__components__events.md",
         "section": "触发与监听事件",
         "start": 565,
-        "end": 1450
+        "end": 1349
       }
     ],
     "source": "external"
@@ -2313,8 +2313,8 @@
       {
         "doc": "vue/src__guide__built-ins__keep-alive.md",
         "section": "最大缓存实例数",
-        "start": 2729,
-        "end": 3075
+        "start": 2424,
+        "end": 2737
       }
     ],
     "source": "external"
@@ -2326,8 +2326,8 @@
       {
         "doc": "vue/src__guide__components__events.md",
         "section": "事件参数",
-        "start": 1450,
-        "end": 2170
+        "start": 1349,
+        "end": 2028
       }
     ],
     "source": "external"
@@ -2353,7 +2353,7 @@
         "doc": "vue/src__guide__built-ins__transition.md",
         "section": "`<Transition>` 组件",
         "start": 797,
-        "end": 2453
+        "end": 2417
       }
     ],
     "source": "external"
@@ -2365,8 +2365,8 @@
       {
         "doc": "vue/src__guide__components__slots.md",
         "section": "条件插槽",
-        "start": 9056,
-        "end": 10380
+        "start": 8480,
+        "end": 9804
       }
     ],
     "source": "external"
@@ -2391,8 +2391,8 @@
       {
         "doc": "vue/src__guide__components__slots.md",
         "section": "动态插槽名",
-        "start": 10380,
-        "end": 10790
+        "start": 9804,
+        "end": 10199
       }
     ],
     "source": "external"
@@ -2404,8 +2404,8 @@
       {
         "doc": "vue/src__guide__components__provide-inject.md",
         "section": "Provide (提供)",
-        "start": 890,
-        "end": 2197
+        "start": 741,
+        "end": 2048
       }
     ],
     "source": "external"
@@ -2418,7 +2418,7 @@
         "doc": "vue/src__guide__best-practices__production-deployment.md",
         "section": "追踪运行时错误",
         "start": 1141,
-        "end": 1566
+        "end": 1541
       }
     ],
     "source": "external"
@@ -2430,8 +2430,8 @@
       {
         "doc": "vue/src__guide__essentials__event-handling.md",
         "section": "事件修饰符",
-        "start": 4908,
-        "end": 6477
+        "start": 4839,
+        "end": 6072
       }
     ],
     "source": "external"
@@ -2456,8 +2456,8 @@
       {
         "doc": "vue/src__guide__components__registration.md",
         "section": "全局注册",
-        "start": 297,
-        "end": 1003
+        "start": 180,
+        "end": 862
       }
     ],
     "source": "external"
@@ -2469,8 +2469,8 @@
       {
         "doc": "vue/src__guide__essentials__event-handling.md",
         "section": "在内联处理器中调用方法",
-        "start": 3222,
-        "end": 4190
+        "start": 3195,
+        "end": 4163
       }
     ],
     "source": "external"
@@ -2482,8 +2482,8 @@
       {
         "doc": "vue/src__guide__components__props.md",
         "section": "Props 声明",
-        "start": 262,
-        "end": 2220
+        "start": 96,
+        "end": 2054
       }
     ],
     "source": "external"
@@ -2495,8 +2495,8 @@
       {
         "doc": "vue/src__guide__essentials__event-handling.md",
         "section": "鼠标按键修饰符",
-        "start": 8048,
-        "end": 8454
+        "start": 7463,
+        "end": 7844
       }
     ],
     "source": "external"
@@ -2508,8 +2508,8 @@
       {
         "doc": "react/src__content__learn__passing-props-to-a-component.md",
         "section": "使用 JSX 展开语法传递 props",
-        "start": 4354,
-        "end": 5081
+        "start": 4115,
+        "end": 4815
       }
     ],
     "source": "external"
@@ -2521,8 +2521,8 @@
       {
         "doc": "react/src__content__learn__passing-props-to-a-component.md",
         "section": "给 prop 指定一个默认值",
-        "start": 3999,
-        "end": 4354
+        "start": 3760,
+        "end": 4115
       }
     ],
     "source": "external"
@@ -2534,8 +2534,8 @@
       {
         "doc": "react/src__content__learn__adding-interactivity.md",
         "section": "响应事件",
-        "start": 581,
-        "end": 1503
+        "start": 493,
+        "end": 1223
       }
     ],
     "source": "external"
@@ -2547,8 +2547,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "组件的导入与导出",
-        "start": 1554,
-        "end": 2465
+        "start": 1260,
+        "end": 2003
       }
     ],
     "source": "external"
@@ -2560,8 +2560,8 @@
       {
         "doc": "react/src__content__learn__adding-interactivity.md",
         "section": "state 如同一张快照",
-        "start": 7346,
-        "end": 8698
+        "start": 6468,
+        "end": 7734
       }
     ],
     "source": "external"
@@ -2573,8 +2573,8 @@
       {
         "doc": "react/src__content__learn__extracting-state-logic-into-a-reducer.md",
         "section": "编写一个好的 reducer",
-        "start": 17725,
-        "end": 18385
+        "start": 17071,
+        "end": 17731
       }
     ],
     "source": "external"
@@ -2586,8 +2586,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "保持组件纯粹",
-        "start": 9295,
-        "end": 10272
+        "start": 8330,
+        "end": 9080
       }
     ],
     "source": "external"
@@ -2599,8 +2599,8 @@
       {
         "doc": "react/src__content__learn__adding-interactivity.md",
         "section": "渲染和提交",
-        "start": 6529,
-        "end": 7346
+        "start": 6157,
+        "end": 6468
       }
     ],
     "source": "external"
@@ -2612,8 +2612,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "创建和嵌套组件",
-        "start": 266,
-        "end": 1197
+        "start": 124,
+        "end": 994
       }
     ],
     "source": "external"
@@ -2625,8 +2625,8 @@
       {
         "doc": "react/src__content__learn__importing-and-exporting-components.md",
         "section": "根组件文件",
-        "start": 283,
-        "end": 927
+        "start": 172,
+        "end": 738
       }
     ],
     "source": "external"
@@ -2638,8 +2638,8 @@
       {
         "doc": "react/src__content__learn__escape-hatches.md",
         "section": "使用 ref 操作 DOM",
-        "start": 1672,
-        "end": 2467
+        "start": 1473,
+        "end": 2171
       }
     ],
     "source": "external"
@@ -2651,8 +2651,8 @@
       {
         "doc": "react/src__content__learn__choosing-the-state-structure.md",
         "section": "构建 state 的原则",
-        "start": 237,
-        "end": 1030
+        "start": 135,
+        "end": 928
       }
     ],
     "source": "external"
@@ -2664,8 +2664,8 @@
       {
         "doc": "react/src__content__learn__escape-hatches.md",
         "section": "响应式 Effect 的生命周期",
-        "start": 5536,
-        "end": 7329
+        "start": 5052,
+        "end": 6715
       }
     ],
     "source": "external"
@@ -2677,8 +2677,8 @@
       {
         "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
         "section": "渐进式采用的方法",
-        "start": 672,
-        "end": 886
+        "start": 603,
+        "end": 817
       }
     ],
     "source": "external"
@@ -2690,8 +2690,8 @@
       {
         "doc": "react/src__content__learn__escape-hatches.md",
         "section": "你可能不需要 Effect",
-        "start": 4421,
-        "end": 5536
+        "start": 4007,
+        "end": 5052
       }
     ],
     "source": "external"
@@ -2703,8 +2703,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "在 JSX 中通过大括号使用 JavaScript",
-        "start": 3806,
-        "end": 4921
+        "start": 3229,
+        "end": 4242
       }
     ],
     "source": "external"
@@ -2716,8 +2716,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "条件渲染",
-        "start": 6264,
-        "end": 7131
+        "start": 5469,
+        "end": 6248
       }
     ],
     "source": "external"
@@ -2729,8 +2729,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "响应事件",
-        "start": 5485,
-        "end": 5835
+        "start": 5197,
+        "end": 5547
       }
     ],
     "source": "external"
@@ -2742,8 +2742,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "添加样式",
-        "start": 1663,
-        "end": 2146
+        "start": 1460,
+        "end": 1943
       }
     ],
     "source": "external"
@@ -2755,8 +2755,8 @@
       {
         "doc": "react/src__content__learn__javascript-in-jsx-with-curly-braces.md",
         "section": "使用 \"双大括号\":JSX 中的 CSS 和 对象",
-        "start": 2522,
-        "end": 3659
+        "start": 2292,
+        "end": 3381
       }
     ],
     "source": "external"
@@ -2768,8 +2768,8 @@
       {
         "doc": "react/src__content__learn__managing-state.md",
         "section": "用 State 响应输入",
-        "start": 674,
-        "end": 2599
+        "start": 538,
+        "end": 2368
       }
     ],
     "source": "external"
@@ -2781,8 +2781,8 @@
       {
         "doc": "react/src__content__learn__describing-the-ui.md",
         "section": "将 UI 视为树",
-        "start": 10272,
-        "end": 11328
+        "start": 9080,
+        "end": 9517
       }
     ],
     "source": "external"
@@ -2794,8 +2794,8 @@
       {
         "doc": "react/src__content__learn__installation.md",
         "section": "从零构建一个 React 应用",
-        "start": 976,
-        "end": 1149
+        "start": 885,
+        "end": 1058
       }
     ],
     "source": "external"
@@ -2807,8 +2807,8 @@
       {
         "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
         "section": "为何采用渐进式迁移?",
-        "start": 256,
-        "end": 672
+        "start": 187,
+        "end": 603
       }
     ],
     "source": "external"
@@ -2820,8 +2820,8 @@
       {
         "doc": "react/src__content__learn__adding-interactivity.md",
         "section": "把一系列 state 更新加入队列",
-        "start": 8698,
-        "end": 10475
+        "start": 7734,
+        "end": 9385
       }
     ],
     "source": "external"
@@ -2833,8 +2833,8 @@
       {
         "doc": "react/src__content__learn__react-compiler__debugging.md",
         "section": "报告编译器错误",
-        "start": 1794,
-        "end": 2118
+        "start": 1722,
+        "end": 2046
       }
     ],
     "source": "external"
@@ -2846,8 +2846,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "使用 Hook",
-        "start": 7235,
-        "end": 7507
+        "start": 6885,
+        "end": 7157
       }
     ],
     "source": "external"
@@ -2859,8 +2859,8 @@
       {
         "doc": "react/src__content__learn__index.md",
         "section": "使用 JSX 编写标签",
-        "start": 1197,
-        "end": 1663
+        "start": 994,
+        "end": 1460
       }
     ],
     "source": "external"
@@ -2872,8 +2872,8 @@
       {
         "doc": "react/src__content__learn__managing-state.md",
         "section": "在组件间共享状态",
-        "start": 4794,
-        "end": 6256
+        "start": 4444,
+        "end": 5779
       }
     ],
     "source": "external"

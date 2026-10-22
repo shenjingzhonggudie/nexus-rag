@@ -38,3 +38,9 @@ reports/
 
 # 标注骨架：由 scripts/build_skeleton.py 按固定种子生成，可复现，不必入库
 data/eval/qrels.skeleton.json
+
+# 临时启动/诊断日志（本地调试产物，不进版本库）
+_*.log
+_*.err
+_*.ps1
+_*.bat

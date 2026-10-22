@@ -2,13 +2,13 @@
 
 import re
 
-from .fixed import iter_spans
+from .fixed import effective_len, iter_spans
 
 _HEADING_RE = re.compile(r"^##[ \t]+", re.MULTILINE)
 
-# 超长小节再切参数
-_SPLIT_THRESHOLD = 400  # 小节超过该字符数则启用 fixed 再切
-_SPLIT_CHUNK_SIZE = 300  # 再切时的目标块长
+# 超长小节再切参数（长度单位：字 = 汉字 1 个 / 英文字母 3 个）
+_SPLIT_THRESHOLD = 400  # 小节超过该有效长度则启用 fixed 再切
+_SPLIT_CHUNK_SIZE = 300  # 再切时的目标块长（有效长度）
 
 
 def iter_heading_sections(text: str) -> list[tuple[int, int]]:
@@ -60,8 +60,12 @@ def iter_heading_spans(text: str) -> list[tuple[int, int]]:
 
 
 def _split_long(start: int, end: int, text: str) -> list[tuple[int, int]]:
-    """小节长度不超过阈值时原样返回；否则用 fixed 策略再切为多个块。"""
-    if end - start <= _SPLIT_THRESHOLD:
+    """小节长度不超过阈值时原样返回；否则用 fixed 策略再切为多个块。
+
+    长度按**有效长度**判断（汉字 1、英文 3 字母 = 1）：否则一个 400 字符的
+    纯英文小节会被判为"超长"，而它实际信息量只有约 133 个字。
+    """
+    if effective_len(text[start:end]) <= _SPLIT_THRESHOLD:
         return [(start, end)]
     sub_spans = iter_spans(
         text[start:end], chunk_size=_SPLIT_CHUNK_SIZE, overlap=0

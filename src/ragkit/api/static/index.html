@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAGKit · 知识库检索</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #fff; --border: #e3e6ea;
+    --text: #1f2328; --muted: #656d76; --accent: #2563eb;
+    --hover: #eef1f5; --active: #dbeafe;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.65 -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  header {
+    display: flex; align-items: baseline; gap: 14px;
+    padding: 13px 20px; background: var(--card);
+    border-bottom: 1px solid var(--border);
+  }
+  h1 { font-size: 17px; margin: 0; letter-spacing: .3px; }
+  #stats { color: var(--muted); font-size: 12px; }
+  main {
+    display: grid; grid-template-columns: 300px 1fr;
+    height: calc(100vh - 52px);
+  }
+
+  /* ---------- 左栏 ---------- */
+  aside {
+    background: var(--card); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .sidebar-head { padding: 10px 12px 8px; border-bottom: 1px solid var(--border); }
+  .sidebar-title {
+    font-weight: 600; font-size: 12px; color: var(--muted);
+    letter-spacing: .5px; margin-bottom: 8px;
+  }
+  #doc-filter {
+    width: 100%; padding: 6px 9px; font-size: 12px;
+    border: 1px solid var(--border); border-radius: 6px;
+    background: var(--bg); color: var(--text);
+  }
+  #doc-filter:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  #doc-list { flex: 1; overflow-y: auto; padding: 6px 8px 12px; }
+
+  /* 技术栈：原生 details 折叠 */
+  .stack { margin-bottom: 2px; }
+  .stack > summary {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 8px; border-radius: 6px; cursor: pointer;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    list-style: none; user-select: none;
+  }
+  .stack > summary::-webkit-details-marker { display: none; }
+  .stack > summary:hover { background: var(--hover); }
+  .stack > summary::before {
+    content: '▸'; font-size: 10px; width: 10px;
+    transition: transform .15s ease; color: var(--muted);
+  }
+  .stack[open] > summary::before { transform: rotate(90deg); }
+  .stack-name { flex: 1; text-transform: none; }
+  .stack-count {
+    font-weight: 400; font-size: 11px; background: var(--hover);
+    padding: 0 6px; border-radius: 8px;
+  }
+
+  /* 文档项：缩进一级，形成层次 */
+  .doc-list { padding: 2px 0 4px 16px; border-left: 1px solid var(--border); margin-left: 12px; }
+  .doc {
+    display: flex; justify-content: space-between; gap: 8px;
+    padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 13px;
+    border-left: 2px solid transparent; margin-left: -1px;
+  }
+  .doc:hover { background: var(--hover); }
+  .doc.active { background: var(--active); border-left-color: var(--accent); }
+  .doc-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .doc-chunks { color: var(--muted); font-size: 11px; flex-shrink: 0; }
+  .hidden { display: none !important; }
+
+  /* ---------- 右栏 ---------- */
+  section { padding: 16px 20px; overflow-y: auto; }
+  .search-box { display: flex; gap: 8px; margin-bottom: 12px; }
+  #query {
+    flex: 1; padding: 9px 12px; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 14px; background: var(--card); color: var(--text);
+  }
+  #query:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  button {
+    padding: 9px 20px; border: none; border-radius: 8px;
+    background: var(--accent); color: #fff; font-size: 14px; cursor: pointer;
+  }
+  button:disabled { opacity: .55; cursor: default; }
+  #meta { color: var(--muted); font-size: 12px; margin-bottom: 10px; min-height: 18px; }
+  #meta code { background: var(--hover); padding: 1px 5px; border-radius: 4px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
+  }
+  .card-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 6px; font-size: 12px; color: var(--muted);
+  }
+  .rank { font-weight: 700; color: var(--accent); font-size: 13px; }
+  .score { font-variant-numeric: tabular-nums; }
+  .badge { background: var(--hover); padding: 1px 6px; border-radius: 4px; font-size: 11px; }
+  .source { font-size: 12px; color: var(--muted); margin-bottom: 6px; word-break: break-all; }
+  .card p { margin: 0; white-space: pre-wrap; }
+  mark { background: #fde68a; padding: 0 1px; border-radius: 2px; }
+  .warn { color: #b91c1c; font-weight: 600; }
+  .empty { color: var(--muted); text-align: center; padding: 48px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>RAGKit</h1>
+  <span id="stats">加载中…</span>
+</header>
+<main>
+  <aside>
+    <div class="sidebar-head">
+      <div class="sidebar-title">知识库</div>
+      <input id="doc-filter" placeholder="过滤文档…" autocomplete="off">
+    </div>
+    <div id="doc-list"></div>
+  </aside>
+  <section>
+    <div class="search-box">
+      <input id="query" placeholder="输入问题，例如：连接池怎么配置" autocomplete="off">
+      <button id="search-btn">搜索</button>
+    </div>
+    <div id="meta"></div>
+    <div id="results"><div class="empty">左侧选一篇文档查看内容，或直接输入问题检索</div></div>
+  </section>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function fmt(v) {
+  return (v === null || v === undefined) ? '—' : v.toFixed(3);
+}
+function extractTerms(q) {
+  const cjk = q.match(/[\u4e00-\u9fa5]{2,}/g) || [];
+  const en = q.match(/[A-Za-z]{2,}[A-Za-z0-9_.+#-]*/g) || [];
+  return [...new Set([...cjk, ...en])];
+}
+function highlight(text, query) {
+  const escaped = escapeHtml(text);
+  const terms = extractTerms(query);
+  if (!terms.length) return escaped;
+  const pattern = new RegExp(
+    '(' + terms.map((t) => escapeRegExp(escapeHtml(t))).join('|') + ')', 'g'
+  );
+  return escaped.replace(pattern, '<mark>$1</mark>');
+}
+
+async function loadKnowledge() {
+  try {
+    const data = await (await fetch('/api/knowledge')).json();
+    $('stats').textContent = `${data.total_docs} 篇文档 · ${data.total_chunks} 块`;
+    renderDocs(data.docs);
+  } catch (err) {
+    $('stats').textContent = '知识库加载失败';
+    $('doc-list').innerHTML = `<div class="empty">${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function renderDocs(docs) {
+  const groups = {};
+  for (const d of docs) {
+    const stack = d.doc_id.split('/')[0] || '其他';
+    (groups[stack] = groups[stack] || []).push(d);
+  }
+  const entries = Object.entries(groups).sort((a, b) => b[1].length - a[1].length);
+
+  $('doc-list').innerHTML = entries.map(([stack, items], idx) => `
+    <details class="stack" ${idx === 0 ? 'open' : ''}>
+      <summary>
+        <span class="stack-name">${escapeHtml(stack)}</span>
+        <span class="stack-count">${items.length}</span>
+      </summary>
+      <div class="doc-list">
+        ${items.map((d) => {
+          const label = d.title || d.doc_id.split('/').pop();
+          return `
+          <div class="doc" data-doc="${escapeHtml(d.doc_id)}"
+               data-search="${escapeHtml((label + ' ' + d.doc_id).toLowerCase())}"
+               title="${escapeHtml(d.doc_id)}">
+            <span class="doc-title">${escapeHtml(label)}</span>
+            <span class="doc-chunks">${d.chunks}</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </details>`).join('');
+
+  // 事件委托：容器只挂一次，避免每次重渲染重复绑定
+  $('doc-list').addEventListener('click', (e) => {
+    const el = e.target.closest('.doc');
+    if (el) showChunks(el.dataset.doc);
+  });
+}
+
+function applyFilter() {
+  const kw = $('doc-filter').value.trim().toLowerCase();
+  let totalHit = 0;
+  document.querySelectorAll('.stack').forEach((stack) => {
+    let visible = 0;
+    stack.querySelectorAll('.doc').forEach((doc) => {
+      const hit = !kw || (doc.dataset.search || '').includes(kw);
+      doc.classList.toggle('hidden', !hit);
+      if (hit) visible++;
+    });
+    stack.classList.toggle('hidden', visible === 0);
+    if (kw && visible) stack.open = true;  // 过滤时自动展开有命中的组
+    totalHit += visible;
+  });
+  if (kw && totalHit === 0) {
+    $('meta').textContent = `没有匹配「${kw}」的文档`;
+  }
+}
+
+async function showChunks(docId) {
+  document.querySelectorAll('.doc').forEach((el) => {
+    el.classList.toggle('active', el.dataset.doc === docId);
+  });
+  $('meta').innerHTML = `加载 <code>${escapeHtml(docId)}</code> …`;
+  try {
+    const data = await (await fetch('/api/chunks?doc=' + encodeURIComponent(docId))).json();
+    $('meta').innerHTML = `<code>${escapeHtml(data.doc_id)}</code> · ${data.chunks.length} 块`;
+    $('results').innerHTML = data.chunks.map((c) => `
+      <article class="card">
+        <div class="card-head">
+          <span class="badge">块 ${c.ordinal + 1}</span>
+          <code>${escapeHtml(c.chunk_id)}</code>
+        </div>
+        <p>${escapeHtml(c.text)}</p>
+      </article>`).join('') || '<div class="empty">该文档没有块</div>';
+  } catch (err) {
+    $('meta').textContent = '加载失败：' + err.message;
+  }
+}
+
+async function doSearch() {
+  const query = $('query').value.trim();
+  if (!query) { $('query').focus(); return; }
+  $('search-btn').disabled = true;
+  $('search-btn').textContent = '检索中…';
+  try {
+    const resp = await fetch('/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query }),
+    });
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    renderResults(await resp.json());
+  } catch (err) {
+    $('meta').textContent = '检索失败：' + err.message;
+    $('results').innerHTML = '';
+  } finally {
+    $('search-btn').disabled = false;
+    $('search-btn').textContent = '搜索';
+  }
+}
+
+function renderResults(data) {
+  const head = data.refused
+    ? `<span class="warn">拒答</span>（语料未覆盖）`
+    : `${data.results.length} 个结果`;
+  $('meta').textContent =
+    `${head} · 覆盖率 ${fmt(data.match_score)} · 耗时 ${data.latency_ms} ms`;
+
+  if (!data.results.length) {
+    $('results').innerHTML = '<div class="empty">没有检索到任何块</div>';
+    return;
+  }
+  $('results').innerHTML = data.results.map((r) => `
+    <article class="card">
+      <div class="card-head">
+        <span class="rank">#${r.rank}</span>
+        <span class="score">${r.score.toFixed(6)}</span>
+        <span class="badge">${escapeHtml(r.stage)}</span>
+      </div>
+      <div class="source">${escapeHtml(r.doc_id)} · ${escapeHtml(r.title || '')} · 第 ${r.ordinal + 1} 块</div>
+      <p>${highlight(r.text, data.query)}</p>
+    </article>`).join('');
+}
+
+$('search-btn').addEventListener('click', doSearch);
+$('query').addEventListener('keydown', (e) => { if (e.key === 'Enter') doSearch(); });
+$('doc-filter').addEventListener('input', applyFilter);
+
+/* 用 file:// 直接打开时，浏览器会拦截所有 API 请求（CORS / 同源策略），
+   页面只会显示 "Failed to fetch"，很难看出是访问方式错了。这里直接给出指引。 */
+if (location.protocol === 'file:') {
+  document.body.innerHTML = `
+    <div style="max-width:620px;margin:80px auto;padding:32px 36px;background:#fff;
+                border:1px solid #e3e6ea;border-radius:12px;color:#1f2328;
+                font:14px/1.75 -apple-system,'Segoe UI','Microsoft YaHei',sans-serif">
+      <h2 style="margin:0 0 14px;font-size:19px">请通过 HTTP 访问</h2>
+      <p style="margin:0 0 14px">
+        你现在是用 <code style="background:#eef1f5;padding:1px 5px;border-radius:4px">file://</code>
+        打开的本地文件。浏览器会拦截页面对 <code>http://</code> 接口的请求（同源策略），
+        所以知识库加载不出来。
+      </p>
+      <p style="margin:0 0 8px;font-weight:600">正确做法：先启动服务</p>
+      <pre style="background:#f6f7f9;padding:14px;border-radius:8px;margin:0 0 16px;
+                  overflow:auto;font-size:13px">cd path/to/nexus-rag
+.\\.venv\\Scripts\\ragkit.exe serve --port 8000</pre>
+      <p style="margin:0">
+        然后访问
+        <a href="http://127.0.0.1:8000/" style="color:#2563eb;font-weight:600">
+          http://127.0.0.1:8000/
+        </a>
+      </p>
+    </div>`;
+} else {
+  loadKnowledge();
+}
+</script>
+</body>
+</html>

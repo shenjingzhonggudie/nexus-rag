@@ -15,6 +15,56 @@ _FRONT_MATTER = re.compile(
 _FRONT_MATTER_TITLE = re.compile(r"^title:\s*(?P<title>.+?)\s*$", re.MULTILINE)
 
 
+_HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
+
+# 独占一行的 MDX 组件标签，如 `</Sandpack>`、`<Intro>`、`<SimpleTab  label="x">`。
+# 只匹配**整行只有一个标签**的情况：`<Transition> 是内置组件` 这种出现在句子里的
+# 标签必须保留——Vue 文档正是在讨论这些组件，删了就丢正文。
+_MDX_TAG_LINE = re.compile(
+    r"^[ \t]*</?[A-Z][A-Za-z0-9]*(?:[ \t][^>\n]*)?>[ \t]*$", re.MULTILINE
+)
+
+
+def strip_mdx_lines(text: str) -> str:
+    """删除整行只有 MDX 组件标签的行。
+
+    React 文档用 MDX 写，正文里散布 ``<Sandpack>`` / ``<Pitfall>`` / ``<LearnMore>``
+    这类布局组件的开闭标签；TiDB 站点有 ``<SimpleTab>`` / ``<DevToolCard>``。
+    它们单独成行时是纯噪音，切成块后就是 ``</Sandpack>\\n\\n`` 这种 13 字符的碎块。
+
+    **只删独占一行的标签**：``<Transition> 是内置组件`` 这种句子里的标签保留，
+    那是正文在讨论组件本身，删掉会丢失内容。
+
+    Args:
+        text: 待处理文本。
+
+    Returns:
+        str: 独占行的 MDX 标签已移除的文本（留下的空行由 normalize_text 压缩）。
+    """
+    return _MDX_TAG_LINE.sub("", text)
+
+
+def strip_html_comments(text: str) -> str:
+    """剥离 HTML 注释。
+
+    Kubernetes 中文站点把**英文原文整段包在注释里**（中文译文才是正文），
+    这些注释对中文检索是纯噪音：注释占比最高的文档达 72%，块文本里大量
+    出现 ``<!-- overview -->``、``title: Concepts`` 这类元数据。
+
+    **只在 ``<!--`` 与 ``-->`` 数量一致时执行**：配对不齐说明代码块里有孤立的
+    标记（实测 2 篇如此），此时剥离有吞正文的风险，原样返回。
+
+    Args:
+        text: 待处理文本。
+
+    Returns:
+        str: 注释已移除的文本；配对不齐时原样返回。
+    """
+    if text.count("<!--") != text.count("-->"):
+        return text
+    return _HTML_COMMENT.sub("", text)
+
+
 def strip_front_matter(text: str) -> str:
     """剥离文件开头的 YAML front matter。
 
@@ -90,6 +140,10 @@ def load_file(path: Path, *, source: str | None = None) -> Document:
         # front matter 的 title 优先于文件名；随后正文里也剥掉这段元数据
         front_title = _front_matter_title(content)
         content = strip_front_matter(content)
+        # k8s 中文文档用注释包住英文原文：剥离后只留中文正文
+        content = strip_html_comments(content)
+        # React/TiDB 用 MDX 写正文：独占一行的 <Sandpack> 之类是纯噪音
+        content = strip_mdx_lines(content)
 
         # 默认标题使用不含最后一个扩展名的文件名，例如 a.md 的标题为 a。
         title = front_title or path.stem

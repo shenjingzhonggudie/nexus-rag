@@ -24,6 +24,11 @@ embedding = ["sentence-transformers>=2.2"]
 [tool.setuptools.packages.find]
 where = ["src"]
 
+# 静态资源随包安装：内置 Web UI 的 HTML 放在 ragkit/api/static/
+# 不加这段的话，wheel 安装后 `ragkit serve` 找不到页面（editable 安装不受影响）
+[tool.setuptools.package-data]
+"ragkit.api" = ["static/*.html"]
+
 # 安装后生成命令行程序 ragkit，执行 ragkit.cli 里的 main 函数
 [project.scripts]
 ragkit = "ragkit.cli:main"

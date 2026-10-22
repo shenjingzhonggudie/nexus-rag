@@ -44,11 +44,13 @@ def test_chunk_document_preserves_normalized_offsets_and_source_fields():
 
 
 def test_repeated_chunk_ids_count_using_full_text_hash_occurrences():
-    document = Document(doc_id="doc-1", source="source", text="aaaaaa")
+    # 用汉字而不是 "aaaaaa"：每块 16 个字，有效长度 16 高于 _MIN_CHUNK_LEN=10，
+    # 否则会被碎块闸门过滤，测不到"重复内容各自编号"这个契约。
+    document = Document(doc_id="doc-1", source="source", text="中文内容测试文本" * 6)
 
-    chunks = chunk_document(document, chunk_size=2, overlap=0)
+    chunks = chunk_document(document, chunk_size=16, overlap=0)
 
-    assert [chunk.text for chunk in chunks] == ["aa", "aa", "aa"]
+    assert [chunk.text for chunk in chunks] == ["中文内容测试文本中文内容测试文本"] * 3
     assert [chunk.chunk_id.rsplit("@", 1)[1] for chunk in chunks] == ["1", "2", "3"]
 
 
