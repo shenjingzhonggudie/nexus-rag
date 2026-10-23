@@ -753,7 +753,7 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 
 **实测基线**（100 篇文档、218 条标注、bge embedding、α=0.7）：`internal recall@1 = 0.550`、
 `MRR = 0.529`；`external recall@1 = 0.340`、`MRR = 0.389`（正式报告按 `internal` /
-`external` 分组，见 README）。拒答准确率 **1.000**、误拒率 **0.005**。
+`external` 分组，见 README）。拒答准确率 **1.000**、误拒率 **0.010**。
 
 ### 消融实验（`run_ablation`，第 19 轮；2026-10-22 在 218 条标注上重测）
 
@@ -782,13 +782,13 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 
 | 项 | 规则 |
 |---|---|
-| 信号 | `BM25Index.key_term_coverage(query, hits, top_n=3)`：查询实词（`tokenize_terms`，长度 ≥ 2、不含 bigram）的 **idf 加权覆盖率** |
+| 信号 | `BM25Index.key_term_coverage(query, hits, top_n=3)`：查询实词（`tokenize_terms`，长度 ≥ 2、剔除停用词、不含 bigram）的 **idf 加权覆盖率** |
 | 未登录词 | 语料中不存在的实词按"全语料最大 idf"计权，并算作**未覆盖**——这是识别"语料里没有答案"的核心信号 |
 | 为什么不用融合分 | RRF 分是排名分 `Σ w/(k+rank)`，取值 0.012~0.017，只反映名次、不反映匹配质量 |
 | 强信号 | `BM25Index.unknown_entities(query)`：查询里首字母大写的英文专有名词（Kafka / JVM）若语料中从未出现 → 强制 `match_score=0` |
 | 判定 | `results` 为空 **或** `match_score < refuse_threshold` → 拒答；`match_score=None`（稀疏腿关闭 / 无长实词）不拒答 |
 | 默认阈值 | `refuse_threshold=0.05`（0 = 不启用） |
-| 实测（100 篇 / 218 条） | 拒答准确率 **100%**、误拒率 **0.5%**；`v-model` / `v-if` 等小写框架指令不计入外来实体（否则误拒正常问题） |
+| 实测（100 篇 / 218 条） | 拒答准确率 **100%**、误拒率 **1.0%**；`v-model` / `v-if` 等小写框架指令不计入外来实体（否则误拒正常问题） |
 | 评测 | `refusal_accuracy`（无答案 query 的正确拒答率）+ `false_refusal_rate`（有答案 query 的误拒率）——两个方向都要报，只报一个会掩盖另一面的代价 |
 
 ## 十五、测试覆盖
