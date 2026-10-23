@@ -1,0 +1,2374 @@
+{
+  "recall_at": {
+    "1": 0.6666666666666666,
+    "2": 0.8571428571428571,
+    "3": 0.9047619047619048,
+    "4": 0.9285714285714286,
+    "5": 0.9285714285714286,
+    "6": 0.9285714285714286,
+    "7": 0.9285714285714286,
+    "8": 0.9285714285714286,
+    "9": 0.9285714285714286,
+    "10": 0.9285714285714286
+  },
+  "mrr": 0.8313492063492063,
+  "refusal": {
+    "accuracy": 0.0,
+    "false_rate": 0.0,
+    "n_no_answer": 20
+  },
+  "by_source": {
+    "holdout": {
+      "n": 42,
+      "recall_at": {
+        "1": 0.6666666666666666,
+        "2": 0.8571428571428571,
+        "3": 0.9047619047619048,
+        "4": 0.9285714285714286,
+        "5": 0.9285714285714286,
+        "6": 0.9285714285714286,
+        "7": 0.9285714285714286,
+        "8": 0.9285714285714286,
+        "9": 0.9285714285714286,
+        "10": 0.9285714285714286
+      },
+      "mrr": 0.8313492063492063
+    }
+  },
+  "per_query": [
+    {
+      "query": "kubelet 的节点心跳到底更新的是什么对象的什么字段？控制面靠它判断节点是否可用吗？",
+      "type": "direct",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__leases.md#2c5d839e@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#57b52897@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#922e50a2@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#75940b7a@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#40960d93@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 34.484999952837825,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5558617095644292
+    },
+    {
+      "query": "一个节点向集群表明自己仍然可用，有哪两种心跳形式？各自的载体是什么？",
+      "type": "cross_doc",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#922e50a2@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#fc03c4ff@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#3ff4871f@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32ff949c@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#074593d4@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5,
+        "7": 0.5,
+        "8": 0.5,
+        "9": 0.5,
+        "10": 0.5
+      },
+      "mrr": 1.0,
+      "total_ms": 36.8161000078544,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6780213937985068
+    },
+    {
+      "query": "节点联系不上被标记成未知状态后，控制面大概多久才会真正开始动手赶走上面的 Pod？平时又多久巡检一次节点状态？",
+      "type": "paraphrase",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#1b35dd53@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6db4f21d@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#074593d4@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32ff949c@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32b7d709@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 47.17089992482215,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.2369316718284682
+    },
+    {
+      "query": "要把 Kubernetes 节点切到 CGroup v2，需要满足哪些硬性前提？",
+      "type": "direct",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#7a3592e2@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#0223a45b@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#82918354@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32b7d709@1",
+        "react/src__content__learn__editor-setup.md#7b764a9b@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [
+          0
+        ],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 23.777500027790666,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5321741548197326
+    },
+    {
+      "query": "云控制器管理器里负责配置路由的那个控制器，为了干活至少得拿到 Node 对象的什么权限？",
+      "type": "paraphrase",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#06e42dcd@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#126d6b59@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__controller.md#536382c5@1",
+        "k8s/content__zh-cn__docs__concepts__architecture___index.md#be1740cb@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#52dadf72@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 13.219599961303174,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5492532452883645
+    },
+    {
+      "query": "开启混合版本代理后，如果请求被转给对等 API 服务器而对方没能应答，客户端会收到什么响应？",
+      "type": "direct",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#3235c726@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#f990bd31@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#5d504922@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#f30b2a8e@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#4ff62473@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 18.8639999832958,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5524342068289737
+    },
+    {
+      "query": "用动态资源分配时，DeviceClass 和 ResourceSlice 应该开放给谁？申领相关的 API 又是什么作用范围？",
+      "type": "direct",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#c9cd48c0@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#8bf2317a@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md#8af2273c@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#312bcf3f@1",
+        "react/src__content__learn__keeping-components-pure.md#32914c6e@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 24.888499989174306,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.795783918521102
+    },
+    {
+      "query": "文档给出的 100 节点 DRA 集群规模测试中，kube-controller-manager 的 QPS 与 Burst 建议设成多少？",
+      "type": "direct",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#e76b5555@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#54416cd3@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#48a6c213@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#c9356bc7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#c33ab52b@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 36.933199968189,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.787947007130522
+    },
+    {
+      "query": "节点关机宽限总共设了 30 秒、其中关键 Pod 占 10 秒，那么普通 Pod 能分到多长的体面终止时间？",
+      "type": "paraphrase",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#1dbebac4@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6db4f21d@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#3cb675c0@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#56ad0ec7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#d2877482@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 22.933400003239512,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.39289490676475686
+    },
+    {
+      "query": "kubelet 对未使用的镜像和未使用的容器，分别多久做一次垃圾收集？",
+      "type": "direct",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c8d9619f@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c61bb61b@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#9115d7af@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#cc30dbde@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#518ae6da@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 38.54540002066642,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.688935792224854
+    },
+    {
+      "query": "容器日志的单个文件大小与文件数上限由哪两个 kubelet 项控制、默认是多少？kubelet 自身日志在 Linux 与 Windows 节点上默认又写到哪里？",
+      "type": "multi_block",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#cd7b29c9@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#5530dde7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#67d3d7c7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6eaa9b0b@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          0
+        ],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 37.22810000181198,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.602053732767084
+    },
+    {
+      "query": "除了节点心跳，Lease 在集群里还承担什么角色？要让控制面组件用上协调领导者选举，需要同时打开哪两项开关？",
+      "type": "cross_doc",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__leases.md#7e8a8940@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#0223a45b@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#43788b79@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md#9868d1e2@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#922e50a2@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "2": 0.5,
+        "3": 0.5,
+        "4": 0.5,
+        "5": 0.5,
+        "6": 0.5,
+        "7": 0.5,
+        "8": 0.5,
+        "9": 0.5,
+        "10": 0.5
+      },
+      "mrr": 1.0,
+      "total_ms": 37.411199999041855,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.4937031595410505
+    },
+    {
+      "query": "kubelet 的 --node-status-update-frequency 参数默认是多少秒？",
+      "type": "no_answer",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#074593d4@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md#3f3d5a12@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__leases.md#2c5d839e@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#3613e5f3@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 25.28790000360459,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.845724401452438
+    },
+    {
+      "query": "kubelet 做镜像垃圾收集时，HighThresholdPercent 与 LowThresholdPercent 默认分别是多少百分比？",
+      "type": "no_answer",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c61bb61b@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#9115d7af@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c8d9619f@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#79de22bf@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 37.29840007144958,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.6295004364526858
+    },
+    {
+      "query": "kube-state-metrics 默认把指标暴露在哪个端口、哪个 HTTP 路径上？",
+      "type": "no_answer",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md#5fabf937@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md#b2d14381@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#8ffc90a7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md#9155a78b@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md#25cd9f10@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 32.3198001133278,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.3902738282148038
+    },
+    {
+      "query": "kubelet 的 imageMaximumGCAge 默认设成多久？",
+      "type": "no_answer",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#074593d4@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#5530dde7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#3613e5f3@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 14.84249986242503,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 1.0
+    },
+    {
+      "query": "按 Pod 优先级分阶段关闭节点时，kubelet 默认给每个优先级阶段分配多少秒？",
+      "type": "no_answer",
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#d2877482@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6c3208c1@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#280be166@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#fbf828a9@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#0731b4b2@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 19.010599935427308,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.611472382220122
+    },
+    {
+      "query": "React 编译器碰到疑似违反 React 规则的代码时，会怎么处理？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1",
+        "react/src__content__learn__react-compiler__index.md#ecfa5de2@1",
+        "react/src__content__learn__editor-setup.md#0a951ebf@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 15.6949000665918,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5742761360591755
+    },
+    {
+      "query": "怀疑某个组件被编译器优化出问题，调试的第一步是什么？修完之后怎么确认它已经被编译了？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#e3983c4c@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [
+          0
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "total_ms": 11.61419996060431,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.4773391294018248
+    },
+    {
+      "query": "控制编译器作用范围的两个指令分别是什么？各自用在什么场景？",
+      "type": "cross_doc",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1",
+        "vue/src__guide__best-practices__performance.md#b9218bc8@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#8bf2317a@1",
+        "react/src__content__learn__react-compiler__index.md#1aa54d0b@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 19.233800005167723,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.45454557102398896
+    },
+    {
+      "query": "想按目录一批一批接入 React 编译器，应该借助 Babel 的什么机制？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#96f1e7da@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1",
+        "vue/src__guide__components__registration.md#a509e6f3@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 19.076699973084033,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.4148413897496751
+    },
+    {
+      "query": "想用功能开关在运行时决定要不要走编译器优化，该配什么？它背后的工作方式是什么？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#2321db72@1",
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__controller.md#5d8aa015@1",
+        "vue/src__guide__best-practices__performance.md#cceea549@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 40.36340001039207,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5515191154549243
+    },
+    {
+      "query": "现在开始一个新的 React 项目，还应该用 Create React App 吗？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__installation.md#56d23237@1",
+        "react/src__content__learn__installation.md#8153ec93@1",
+        "react/src__content__learn__creating-a-react-app.md#cd268af0@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#3eda5a00@1",
+        "react/src__content__learn__installation.md#34b8712e@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 40.320899919606745,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 1.0
+    },
+    {
+      "query": "React 文档首推的全栈框架有哪些？用这些框架写的应用一定要配服务器吗？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__creating-a-react-app.md#691b5f0d@1",
+        "react/src__content__learn__creating-a-react-app.md#341e2df6@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#74362b11@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#30b1721c@1",
+        "react/src__content__learn__creating-a-react-app.md#e3e1ec2d@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [
+          0
+        ],
+        [],
+        [],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "total_ms": 42.47200000099838,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5166087130738821
+    },
+    {
+      "query": "React 项目里文档要求务必启用的是哪个 ESLint 插件规则？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__build-a-react-app-from-scratch.md#001ca4d3@1",
+        "react/src__content__learn__editor-setup.md#0a951ebf@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#45a710af@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#a2174d0b@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md#6590e953@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [
+          0
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "total_ms": 11.97730004787445,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.7215627800381432
+    },
+    {
+      "query": "不用框架、从零搭一个 React 项目时，文档举例的构建工具有哪些？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__creating-a-react-app.md#5a3369f8@1",
+        "react/src__content__learn__installation.md#ee7107db@1",
+        "react/src__content__learn__build-a-react-app-from-scratch.md#001ca4d3@1",
+        "react/src__content__learn__creating-a-react-app.md#691b5f0d@1",
+        "react/src__content__learn__build-a-react-app-from-scratch.md#d5b5c5bd@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [
+          0
+        ],
+        [],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.3333333333333333,
+      "total_ms": 9.559900034219027,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5571828267098372
+    },
+    {
+      "query": "React 编译器要求的最低 React 版本是多少？",
+      "type": "no_answer",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "tidb/develop__dev-guide-aws-appflow-integration.md#89c380e4@1",
+        "react/src__content__learn__react-compiler__index.md#1aa54d0b@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 10.165599873289466,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.36723404238731205
+    },
+    {
+      "query": "项目用 Vite 构建、并没有 Babel 配置时，React 编译器该怎么接进去？",
+      "type": "no_answer",
+      "retrieved": [
+        "react/src__content__learn__add-react-to-an-existing-project.md#ae47c449@1",
+        "react/src__content__learn__react-compiler__index.md#1aa54d0b@1",
+        "react/src__content__learn__react-compiler__index.md#c480441e@1",
+        "vue/src__guide__best-practices__production-deployment.md#b9de5746@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#b8b09380@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 24.35409987810999,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.5324608354027769
+    },
+    {
+      "query": "React 编译器默认会编译 node_modules 里的第三方库吗？",
+      "type": "no_answer",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "react/src__content__learn__react-compiler__index.md#1aa54d0b@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 30.56240000296384,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.6327377024808191
+    },
+    {
+      "query": "推广 React 编译器时，文档说的“监控采用进度”具体该怎么做？",
+      "type": "no_answer",
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1",
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#3a05a111@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md#5f862bed@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 29.517200076952577,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.40648092971197164
+    },
+    {
+      "query": "从 Create React App 迁到官方推荐的框架，具体要按哪几步做？",
+      "type": "no_answer",
+      "retrieved": [
+        "react/src__content__learn__creating-a-react-app.md#5a3369f8@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#74362b11@1",
+        "react/src__content__learn__creating-a-react-app.md#e3e1ec2d@1",
+        "react/src__content__learn__creating-a-react-app.md#691b5f0d@1",
+        "react/src__content__learn__installation.md#8153ec93@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 28.502300148829818,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.6290340226801292
+    },
+    {
+      "query": "完全不知道数据库连接池该配多大时，文档给的初始经验公式是什么？CPU 核数该怎么数？",
+      "type": "direct",
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#57a3511a@1",
+        "tidb/develop__dev-guide-connection-parameters.md#53f8fdda@1",
+        "tidb/develop__dev-guide-connection-parameters.md#62dfe34d@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d85f89c6@1",
+        "tidb/develop__dev-guide-connection-parameters.md#9bcb64b6@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 52.79720004182309,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.65672455286184
+    },
+    {
+      "query": "TiDB 会在连接空闲多久之后主动把客户端连接关掉？这个默认行为从哪个版本开始、由哪个变量控制？",
+      "type": "direct",
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d85f89c6@1",
+        "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__compatibility-version.md#2acd0ed4@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 15.614900039508939,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6913222019455862
+    },
+    {
+      "query": "Java 应用想让 TiDB 服务端真正执行预处理语句并复用，需要在 JDBC 上配哪些参数？默认值是多少？",
+      "type": "direct",
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#87ebc822@1",
+        "tidb/develop__dev-guide-insert-data.md#fe083b37@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d06e826a@1",
+        "tidb/develop__dev-guide-connection-parameters.md#7369870d@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 17.872200114652514,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.629219326877521
+    },
+    {
+      "query": "开启批量改写后，什么样的插入语句才能被合并成一条 SQL 发给 TiDB？批量更新又是怎么处理的？",
+      "type": "paraphrase",
+      "retrieved": [
+        "tidb/develop__dev-guide-optimize-sql-best-practices.md#54d46624@1",
+        "tidb/develop__dev-guide-connection-parameters.md#86078155@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d97c276c@1",
+        "tidb/develop__dev-guide-delete-data.md#3f94d7b8@1",
+        "tidb/develop__dev-guide-insert-data.md#0cdb293e@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "total_ms": 13.845300185494125,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6253376962025324
+    },
+    {
+      "query": "在 (title, published_at) 上建了组合索引后，只按 published_at 过滤的查询还能用上这个索引吗？",
+      "type": "direct",
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#b469a882@1",
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-index-best-practice.md#178b1899@1",
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#e46e9339@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        [
+          0
+        ],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 19.379799952730536,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.7856687350715683
+    },
+    {
+      "query": "为什么 WHERE YEAR(published_at)=2022 用不上 published_at 上的索引？文档给了哪两种改写思路？",
+      "type": "direct",
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#e46e9339@1",
+        "tidb/develop__dev-guide-index-best-practice.md#b469a882@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#294d4457@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        [
+          0
+        ],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 15.971999964676797,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6520017474740945
+    },
+    {
+      "query": "什么叫覆盖索引优化？查询要怎么写才能吃到这个优化？",
+      "type": "multi_block",
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#9798f266@1",
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-optimize-sql.md#5cac7a53@1",
+        "tidb/develop__dev-guide-index-best-practice.md#9432c58a@1",
+        "tidb/develop__dev-guide-optimize-sql.md#4f15897c@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [],
+        [
+          1
+        ],
+        []
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 15.48419997561723,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.7324239166325289
+    },
+    {
+      "query": "查询里用 IN 做条件时，文档建议后面的匹配值最多不要超过多少个？还有哪种写法是用不上索引的？",
+      "type": "direct",
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#34cc7b5b@1",
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "tidb/develop__dev-guide-index-best-practice.md#178b1899@1",
+        "tidb/develop__dev-guide-index-best-practice.md#b469a882@1",
+        "tidb/develop__dev-guide-index-best-practice.md#9432c58a@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 24.700399953871965,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6264712346691632
+    },
+    {
+      "query": "文档为什么说二级索引并不是越多越好？",
+      "type": "direct",
+      "retrieved": [
+        "tidb/develop__dev-guide-create-table.md#47f8074a@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#d51daabb@1",
+        "tidb/develop__dev-guide-index-best-practice.md#9798f266@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#de4724b0@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#a576e894@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [
+          0
+        ],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.3333333333333333,
+      "total_ms": 9.60670004133135,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.8261796461043568
+    },
+    {
+      "query": "表里的 account_id 是 varchar 类型的主键，写成 WHERE account_id=6010000000009801 时为什么会退化成全表扫描？",
+      "type": "cross_doc",
+      "retrieved": [
+        "tidb/develop__dev-guide-optimize-sql-overview.md#702bde17@1",
+        "tidb/develop__dev-guide-create-table.md#113ea727@1",
+        "tidb/develop__dev-guide-create-table.md#eb200e15@1",
+        "tidb/develop__dev-guide-create-table.md#1ec6075b@1",
+        "tidb/develop__dev-guide-optimize-sql.md#f108d550@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 16.28900005016476,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5640328535011595
+    },
+    {
+      "query": "按对象命名规范，唯一索引和普通索引各用什么前缀？字段名长度和字段个数又有什么上限建议？",
+      "type": "multi_block",
+      "retrieved": [
+        "tidb/develop__dev-guide-object-naming-guidelines.md#4945eb76@1",
+        "tidb/develop__dev-guide-object-naming-guidelines.md#f14b719f@1",
+        "tidb/develop__dev-guide-index-best-practice.md#178b1899@1",
+        "tidb/develop__dev-guide-create-table.md#dd172a63@1",
+        "tidb/develop__dev-guide-object-naming-guidelines.md#20069ea6@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 13.372600078582764,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6609912561986122
+    },
+    {
+      "query": "TiDB 的 tidb_idle_transaction_timeout 默认是多少秒？",
+      "type": "no_answer",
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1",
+        "tidb/develop__dev-guide-connection-parameters.md#62dfe34d@1",
+        "tidb/develop__dev-guide-create-table.md#77d6b351@1",
+        "vue/src__guide__components__props.md#c002938c@1",
+        "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 9.17249999474734,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.8324122687776954
+    },
+    {
+      "query": "HikariCP 的 minimumIdle 在连 TiDB 时应该配成多少？",
+      "type": "no_answer",
+      "retrieved": [
+        "react/src__content__learn__keeping-components-pure.md#d48b8067@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d85f89c6@1",
+        "vue/src__guide__built-ins__teleport.md#42ec9a99@1",
+        "tidb/develop__dev-guide-connection-parameters.md#6c1ae434@1",
+        "vue/src__guide__best-practices__performance.md#2a4b3005@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 13.117900001816452,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.5554597393369078
+    },
+    {
+      "query": "TiDB 服务端允许的最大连接数（如 max_connections 之类）默认是多少？",
+      "type": "no_answer",
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#a90fa1a1@1",
+        "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1",
+        "tidb/develop__dev-guide-bookshop-schema-design.md#01f4b4f7@1",
+        "tidb/develop__dev-guide-gui-mysql-workbench.md#34e8a8e7@1",
+        "tidb/develop__dev-guide-connection-parameters.md#53f8fdda@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 11.761900037527084,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.4073129139384138
+    },
+    {
+      "query": "要在 TiDB 里启用表达式索引，需要在配置文件中设置哪个配置项（开关名）？",
+      "type": "no_answer",
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d06e826a@1",
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#9115d7af@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 21.54390001669526,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.6690617780134934
+    },
+    {
+      "query": "用 Cursor Fetch 方式流式取结果时，FetchSize 建议设成多少？",
+      "type": "no_answer",
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#4b5f7b11@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d4a79b16@1",
+        "vue/src__guide__essentials__computed.md#f0555d8c@1",
+        "tidb/develop__dev-guide-connection-parameters.md#127b1dd0@1",
+        "react/src__content__learn__manipulating-the-dom-with-refs.md#05c1f8c6@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 9.257900062948465,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.7965744455604276
+    },
+    {
+      "query": "模板有多个根节点的组件，如果不显式绑定 $attrs 会发生什么？怎么避免？",
+      "type": "direct",
+      "retrieved": [
+        "vue/src__guide__components__attrs.md#f4825106@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32b7d709@1",
+        "vue/src__guide__essentials__application.md#8b49dc25@1",
+        "vue/src__guide__built-ins__transition.md#a1b804fc@1",
+        "vue/src__guide__components__attrs.md#e7cf67a0@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 16.75109995994717,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.7967095218177449
+    },
+    {
+      "query": "能用 watch 去监听组件透传 attribute 的变化吗？不能的话有什么替代办法？",
+      "type": "direct",
+      "retrieved": [
+        "vue/src__guide__components__attrs.md#eb245112@1",
+        "vue/src__guide__components__provide-inject.md#3a452588@1",
+        "vue/src__guide__best-practices__performance.md#fac8f726@1",
+        "vue/src__guide__components__attrs.md#ed6c0483@1",
+        "vue/src__guide__components__events.md#30cd6c1b@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [
+          0
+        ],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.25,
+      "total_ms": 11.045200051739812,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.5215808164026662
+    },
+    {
+      "query": "孙子组件触发的事件，爷爷组件能直接监听吗？跨多层级的组件通信该怎么办？",
+      "type": "paraphrase",
+      "retrieved": [
+        "vue/src__guide__components__events.md#8735f14e@1",
+        "vue/src__guide__components__provide-inject.md#3a452588@1",
+        "vue/src__guide__built-ins__teleport.md#b3a0a7e1@1",
+        "vue/src__guide__components__provide-inject.md#178e6d5a@1",
+        "react/src__content__learn__passing-data-deeply-with-context.md#3dd962c1@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 11.094599962234497,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.368144585441301
+    },
+    {
+      "query": "把 click 这个原生事件名写进组件的 emits 声明后，父组件上的 @click 还会响应原生点击吗？",
+      "type": "direct",
+      "retrieved": [
+        "vue/src__guide__components__attrs.md#e7cf67a0@1",
+        "vue/src__guide__components__events.md#30cd6c1b@1",
+        "vue/src__guide__essentials__component-basics.md#0d94d457@1",
+        "vue/src__guide__components__events.md#8735f14e@1",
+        "vue/src__guide__built-ins__teleport.md#b3a0a7e1@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [
+          0
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "total_ms": 16.234799870289862,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6666217842804962
+    },
+    {
+      "query": "defineAsyncComponent 配了 loadingComponent 之后，它默认要等多久才显示？不配 timeout 时默认值是多少？",
+      "type": "direct",
+      "retrieved": [
+        "react/src__content__learn__passing-props-to-a-component.md#c9edc9dd@1",
+        "vue/src__guide__components__async.md#540c14de@1",
+        "vue/src__guide__components__props.md#c002938c@1",
+        "vue/src__guide__built-ins__suspense.md#c7a0aa95@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#16eba59b@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [
+          0
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 0.5,
+      "total_ms": 10.923899943009019,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.7590218245441973
+    },
+    {
+      "query": "Suspense 初次渲染没碰到异步依赖会怎样？进入完成状态后，更深层新冒出来的异步依赖会让它重新挂起吗？",
+      "type": "direct",
+      "retrieved": [
+        "vue/src__guide__built-ins__suspense.md#e3faab5a@1",
+        "vue/src__guide__built-ins__suspense.md#c7a0aa95@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1",
+        "vue/src__guide__built-ins__suspense.md#ff8fb9b7@1",
+        "vue/src__guide__built-ins__suspense.md#f46aa256@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 19.958000164479017,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6688446218327344
+    },
+    {
+      "query": "异步组件放进 Suspense 之后，它自己配置的加载组件和超时还有效吗？想让它自己管加载状态要怎么设？",
+      "type": "cross_doc",
+      "retrieved": [
+        "vue/src__guide__built-ins__suspense.md#f46aa256@1",
+        "vue/src__guide__components__async.md#540c14de@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1",
+        "vue/src__guide__built-ins__suspense.md#32485914@1",
+        "vue/src__guide__components__async.md#4a37f2ab@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          0
+        ],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 16.526899999007583,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.6472411907802342
+    },
+    {
+      "query": "KeepAlive 的 include/exclude 是按什么来匹配组件的？3.2.34 之后用 script setup 还得手写 name 吗？",
+      "type": "direct",
+      "retrieved": [
+        "vue/src__guide__built-ins__keep-alive.md#1f69182c@1",
+        "vue/src__guide__built-ins__suspense.md#1ed8d614@1",
+        "vue/src__guide__built-ins__teleport.md#b3a0a7e1@1",
+        "vue/src__guide__essentials__component-basics.md#fa4f0573@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 22.544600069522858,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.804789830699585
+    },
+    {
+      "query": "给 KeepAlive 传了 max 之后，缓存实例数量超了会怎样？",
+      "type": "direct",
+      "retrieved": [
+        "vue/src__guide__built-ins__keep-alive.md#e6af4ac9@1",
+        "vue/src__guide__built-ins__keep-alive.md#79d23d31@1",
+        "vue/src__guide__built-ins__keep-alive.md#1f69182c@1",
+        "vue/src__guide__built-ins__keep-alive.md#ea08b986@1",
+        "tidb/develop__dev-guide-insert-data.md#fe083b37@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 13.069800101220608,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.8592751890933332
+    },
+    {
+      "query": "在 setTimeout 回调里调用 onMounted 会怎么样？有没有可以放在外部函数里的情况？",
+      "type": "direct",
+      "retrieved": [
+        "vue/src__guide__essentials__lifecycle.md#2b6ccfe2@1",
+        "vue/src__guide__components__props.md#0cf63dd7@1",
+        "vue/src__guide__components__slots.md#d104d1dc@1",
+        "vue/src__guide__built-ins__transition.md#31c7219e@1",
+        "vue/src__guide__built-ins__transition.md#d6f6ab83@1"
+      ],
+      "hits_per_rank": [
+        [
+          0
+        ],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "2": 1.0,
+        "3": 1.0,
+        "4": 1.0,
+        "5": 1.0,
+        "6": 1.0,
+        "7": 1.0,
+        "8": 1.0,
+        "9": 1.0,
+        "10": 1.0
+      },
+      "mrr": 1.0,
+      "total_ms": 17.16119982302189,
+      "refused": false,
+      "is_no_answer": false,
+      "match_score": 0.8083018807206354
+    },
+    {
+      "query": "KeepAlive 不传 max 的时候，默认最多能缓存多少个组件实例？",
+      "type": "no_answer",
+      "retrieved": [
+        "vue/src__guide__built-ins__keep-alive.md#e6af4ac9@1",
+        "vue/src__guide__built-ins__keep-alive.md#79d23d31@1",
+        "vue/src__guide__built-ins__keep-alive.md#dc3879ff@1",
+        "vue/src__guide__best-practices__performance.md#fac8f726@1",
+        "vue/src__guide__built-ins__keep-alive.md#1d0cd55d@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 13.267600093968213,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.534343260939179
+    },
+    {
+      "query": "Suspense 的 timeout prop 默认是多少毫秒？",
+      "type": "no_answer",
+      "retrieved": [
+        "vue/src__guide__built-ins__suspense.md#c7a0aa95@1",
+        "vue/src__guide__components__props.md#c002938c@1",
+        "vue/src__guide__built-ins__suspense.md#e3faab5a@1",
+        "react/src__content__learn__passing-props-to-a-component.md#c9edc9dd@1",
+        "tidb/develop__dev-guide-connection-parameters.md#62dfe34d@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 16.60109998192638,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.8098167065712855
+    },
+    {
+      "query": "异步组件加载失败后，Vue 默认会重试几次？",
+      "type": "no_answer",
+      "retrieved": [
+        "vue/src__guide__components__async.md#540c14de@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1",
+        "vue/src__guide__built-ins__suspense.md#f46aa256@1",
+        "vue/src__guide__built-ins__suspense.md#32485914@1",
+        "vue/src__guide__best-practices__performance.md#d383b503@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 9.404699900187552,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.5235675831687042
+    },
+    {
+      "query": "组件用 kebab-case 名字注册后，在模板里能写成 PascalCase 标签来引用吗？",
+      "type": "no_answer",
+      "retrieved": [
+        "vue/src__guide__components__registration.md#4c9c5250@1",
+        "vue/src__guide__components__registration.md#2a1e7fc3@1",
+        "vue/src__guide__essentials__component-basics.md#b312940f@1",
+        "vue/src__guide__essentials__component-basics.md#a803bc56@1",
+        "vue/src__guide__components__registration.md#16e05c6a@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 15.08559996727854,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.8667031502025828
+    },
+    {
+      "query": "hydrateOnIdle 不传参数时，默认的最大超时是多少？",
+      "type": "no_answer",
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "tidb/develop__dev-guide-insert-data.md#fe083b37@1",
+        "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1",
+        "vue/src__guide__components__async.md#3e9590ee@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1"
+      ],
+      "hits_per_rank": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "10": 0.0
+      },
+      "mrr": 0.0,
+      "total_ms": 8.79340001847595,
+      "refused": false,
+      "is_no_answer": true,
+      "match_score": 0.7846716821628962
+    }
+  ],
+  "latency": {
+    "cold_ms": 34.484999952837825,
+    "warm_mean_ms": 21.28217541460009,
+    "warm_p50_ms": 17.16119982302189,
+    "warm_p95_ms": 40.36340001039207
+  }
+}

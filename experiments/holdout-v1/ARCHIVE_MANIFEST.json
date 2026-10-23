@@ -1,0 +1,286 @@
+{
+  "archive": "rag-holdout v1.0.0",
+  "archived_at": "2026-10-23T13:43:51+08:00",
+  "source_root": "C:/Users/王佳浩/codex/2026-10-23/new-chat/outputs/rag-holdout",
+  "file_count": 43,
+  "total_bytes": 1313073,
+  "files": [
+    {
+      "path": "PROTOCOL.md",
+      "bytes": 12672,
+      "sha256": "ef8c078735d19baace918067ab3a8c48465eda3a1a520c274743d000d1445c9b"
+    },
+    {
+      "path": "README.md",
+      "bytes": 11569,
+      "sha256": "deb82cd42a6943b65452f055004bfedff9a7d1748390e494c3651964e619eb10"
+    },
+    {
+      "path": "audit/ACCEPTANCE_REPORT.md",
+      "bytes": 7754,
+      "sha256": "0a4deff26a77ce8076b7970808df4480fb05ff2a072a5fc029de7ad8a4c75d7e"
+    },
+    {
+      "path": "audit/answerable_intervals.txt",
+      "bytes": 172588,
+      "sha256": "5670c0446ae580883e7363742916ee0f6fd42b40265f2cf287dc8a57986eb726"
+    },
+    {
+      "path": "audit/eval.configA.bge.weighted.json",
+      "bytes": 68758,
+      "sha256": "4fd970ffe21ceb78363bc3cd32b9b54138fb34aec61ecf504e490898e03c79a5"
+    },
+    {
+      "path": "audit/eval.configB.hashing.rrf.json",
+      "bytes": 68591,
+      "sha256": "3f3fe7f20e69cbfaab6090131abc064a7b76064cb5f7c7e6fc5de92fa505a129"
+    },
+    {
+      "path": "audit/freeze_check.md",
+      "bytes": 8388,
+      "sha256": "aa668b08092d1de3ad35107b02475cd7e475ab3b2d98e7ca93d1205ee7b3761f"
+    },
+    {
+      "path": "audit/frozen_configs/configA.bge.weighted.yaml",
+      "bytes": 471,
+      "sha256": "6b9418d49ad15b4baa0e1059fc9d39acee7e6e47117b6815f8cfc49c8f23a25a"
+    },
+    {
+      "path": "audit/frozen_configs/configB.hashing.rrf.yaml",
+      "bytes": 480,
+      "sha256": "e97125bfda78070fd58305cbff4f61e275e79e993af4d7d7e7bf575f70aefcf1"
+    },
+    {
+      "path": "audit/human_subset_evidence.json",
+      "bytes": 132739,
+      "sha256": "96e069395f36f0cd176b59b7b16c2086e35cc06ebb211bb503bef6e024fd20b1"
+    },
+    {
+      "path": "audit/mech_report.json",
+      "bytes": 2901,
+      "sha256": "d35bc3af0a573daf6760912d2f2309fcde0f253f1dfcc7e039bf5705dfdb2d18"
+    },
+    {
+      "path": "audit/noanswer_compact.txt",
+      "bytes": 72231,
+      "sha256": "4b8cfa0b71cd345e7d652f5ff9ca5f8ac8a94caca402222ffd102747433b91e1"
+    },
+    {
+      "path": "audit/noanswer_search.txt",
+      "bytes": 150860,
+      "sha256": "b96a9dbc178d969f563802d1227d446196c14e2a61a2d2ad47987a1157139728"
+    },
+    {
+      "path": "audit/review.jsonl",
+      "bytes": 32271,
+      "sha256": "78017ae0b80d1c28ca0b0d67589163f8f36e0063ee565426386e6dd7d44a88c8"
+    },
+    {
+      "path": "audit/tools/mech_check.py",
+      "bytes": 4720,
+      "sha256": "c2b5de3d576a662c554573529b731b21effa467c66fcb67e23d6069773193618"
+    },
+    {
+      "path": "audit/tools/noanswer_check.py",
+      "bytes": 3949,
+      "sha256": "bbc75f20b9259f78780494342a1c655ca087b3fd7f8899a6db3e5543bf706239"
+    },
+    {
+      "path": "audit/tools/seal.py",
+      "bytes": 21211,
+      "sha256": "1b828221fdd7832ab453737a50a2272030b2447f8d3a37c68d740dabf5fe55a7"
+    },
+    {
+      "path": "candidate/build_problems.txt",
+      "bytes": 48,
+      "sha256": "a636638a0cf324a36aea47e2dc54ef1ba5508a9261ea7434811d455d2aa55f0d"
+    },
+    {
+      "path": "candidate/challenges.jsonl",
+      "bytes": 3797,
+      "sha256": "99278659feb447e990a60ea6bcb383ae01c2720108fbadc5647978c0b9e78cb9"
+    },
+    {
+      "path": "candidate/evidence.jsonl",
+      "bytes": 139466,
+      "sha256": "561ab6b71c3f7ee0ae892dc1ba60fbb95b2e511b259d0469aeed95d9e74d24c7"
+    },
+    {
+      "path": "candidate/pending.jsonl",
+      "bytes": 8490,
+      "sha256": "7a8c630fd194d1bc86271760e67ddb82724febbb0f8a1b51715d58276336e784"
+    },
+    {
+      "path": "candidate/qrels.candidate.json",
+      "bytes": 23544,
+      "sha256": "61c4b6eca52982a88766e6ccb68e8825cd3f98f1fc510061adf9411d20503302"
+    },
+    {
+      "path": "candidate/tools/build.py",
+      "bytes": 12618,
+      "sha256": "ecaf96d4771e470469c3b6063234baee6a3eb2db6bcf209860d9a82ed65e4608"
+    },
+    {
+      "path": "candidate/tools/data_k8s.py",
+      "bytes": 21683,
+      "sha256": "a0bd7fce03dd374b3a2ec46234fd8d8c3521cf888644436688bd021bc550497c"
+    },
+    {
+      "path": "candidate/tools/data_react.py",
+      "bytes": 16360,
+      "sha256": "3a914ad74f88c08eee34cfe72db20fa4a65163dad267c15fb0274edfac7ae6fa"
+    },
+    {
+      "path": "candidate/tools/data_tidb.py",
+      "bytes": 19854,
+      "sha256": "e5e04122dd50edffe4a460135e4af966a95aa599e7d772126a76eab83f5a5fbe"
+    },
+    {
+      "path": "candidate/tools/data_vue.py",
+      "bytes": 17970,
+      "sha256": "1400cf54e5277435ebb1bca2eb6c9398d818a424d5806263402113e40e42f5ae"
+    },
+    {
+      "path": "candidate/tools/loader.py",
+      "bytes": 8371,
+      "sha256": "3f3c2f6a9bee47dba00785b7bf567966e2bc908b56551ee05a19c349246b496f"
+    },
+    {
+      "path": "candidate/tools/query_list.txt",
+      "bytes": 7605,
+      "sha256": "e3a52fb9a0239069094ea650d078a0f9060970711613ae94d7d1d63a18862283"
+    },
+    {
+      "path": "candidate/tools/review.py",
+      "bytes": 1839,
+      "sha256": "25df9bbfda0112dde4a3686865048b220e8c7fcdb63510f60dad5360e3b010e3"
+    },
+    {
+      "path": "candidate/tools/sections_index.txt",
+      "bytes": 23612,
+      "sha256": "e46b46bdd29d1d1de91d39cd96b5b5a5eb95700529d5c96b2ca1be170737b948"
+    },
+    {
+      "path": "candidate/tools/verify_absence.py",
+      "bytes": 5102,
+      "sha256": "658f058489fe1c576c4f597d7dda13c77b0756ef435b355f2537179dec0fa20c"
+    },
+    {
+      "path": "candidate/tools/verify_k8s.txt",
+      "bytes": 22972,
+      "sha256": "37d9143663e3180f9ac2718b9a8cb26b471b3a1f4f82c288274300db67bf3983"
+    },
+    {
+      "path": "candidate/tools/verify_react.txt",
+      "bytes": 15718,
+      "sha256": "c6528e8dadac3eea090110cadc2006f0f2a5723d7b0e6a82f428bd69a9a33c9b"
+    },
+    {
+      "path": "candidate/tools/verify_tidb_vue.txt",
+      "bytes": 34168,
+      "sha256": "c8212c3ca348a1c40e42f827af2eb5a4a1735e57d992b5bb8144c3fd4c4a2216"
+    },
+    {
+      "path": "input/FORMAT.md",
+      "bytes": 6321,
+      "sha256": "0d7423c98c2eee1124f712cd3066a06ea1d83f13223125deaf16c46f377c362b"
+    },
+    {
+      "path": "input/corpus_manifest.json",
+      "bytes": 15020,
+      "sha256": "e1df720b5cee9c259355d965d6aec9ecf570e1ef0f5aa0142052b42e528914ec"
+    },
+    {
+      "path": "input/old_queries.jsonl",
+      "bytes": 22822,
+      "sha256": "b520cedc72f4420e10090bc8aea6e92299a5f8658a839149cd89457bea22871a"
+    },
+    {
+      "path": "input/sections.jsonl",
+      "bytes": 62137,
+      "sha256": "c62b86cda7b7db6c7ad5a8c62813e93f8e70ef7b406052e5244ca476e9c5bcf2"
+    },
+    {
+      "path": "sealed/challenges.jsonl",
+      "bytes": 4630,
+      "sha256": "c1407a2e5bff336ec482781d82a4e65138fcda77e8a3fd39a99b9050641ab788"
+    },
+    {
+      "path": "sealed/manifest.json",
+      "bytes": 2964,
+      "sha256": "55d5c6daba4f69b52717cf6da32d51ba54745eacfd9afdeb0728d2101df763db"
+    },
+    {
+      "path": "sealed/metadata.jsonl",
+      "bytes": 22754,
+      "sha256": "bdb4ea3410f208f7a4506bcec5a022cf47cab264dc3b3f0a4a626ce87fe953dc"
+    },
+    {
+      "path": "sealed/qrels.test.json",
+      "bytes": 21055,
+      "sha256": "8e3646a21532da400719d6827dec08f7ccd726bf103a9f446fce12d971ae94f8"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "candidate/tools/__pycache__/data_k8s.cpython-314.pyc",
+      "reason": "字节码缓存",
+      "bytes": 18030
+    },
+    {
+      "path": "candidate/tools/__pycache__/data_react.cpython-314.pyc",
+      "reason": "字节码缓存",
+      "bytes": 13577
+    },
+    {
+      "path": "candidate/tools/__pycache__/data_tidb.cpython-314.pyc",
+      "reason": "字节码缓存",
+      "bytes": 16183
+    },
+    {
+      "path": "candidate/tools/__pycache__/data_vue.cpython-314.pyc",
+      "reason": "字节码缓存",
+      "bytes": 14988
+    },
+    {
+      "path": "candidate/tools/__pycache__/loader.cpython-314.pyc",
+      "reason": "字节码缓存",
+      "bytes": 12949
+    },
+    {
+      "path": "candidate/tools/__pycache__/verify_absence.cpython-314.pyc",
+      "reason": "字节码缓存",
+      "bytes": 5450
+    },
+    {
+      "path": "candidate/tools/dump_k8s_a.txt",
+      "reason": "语料全文转储（无审核信息）",
+      "bytes": 57071
+    },
+    {
+      "path": "candidate/tools/dump_k8s_b.txt",
+      "reason": "语料全文转储（无审核信息）",
+      "bytes": 57414
+    },
+    {
+      "path": "candidate/tools/dump_react_a.txt",
+      "reason": "语料全文转储（无审核信息）",
+      "bytes": 36471
+    },
+    {
+      "path": "candidate/tools/dump_tidb_a.txt",
+      "reason": "语料全文转储（无审核信息）",
+      "bytes": 48053
+    },
+    {
+      "path": "candidate/tools/dump_vue_a.txt",
+      "reason": "语料全文转储（无审核信息）",
+      "bytes": 60576
+    },
+    {
+      "path": "input/corpus.jsonl",
+      "reason": "完整第三方语料（仓库约定不进库）",
+      "bytes": 1395202
+    }
+  ]
+}

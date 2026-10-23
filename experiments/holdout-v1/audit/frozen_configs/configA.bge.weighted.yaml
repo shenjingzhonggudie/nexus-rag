@@ -1,0 +1,28 @@
+# 验收配置 A（预登记于首次运行前）：bge + 加权排名融合
+retrieval:
+  top_k: 20
+  final_k: 5
+  fusion_alpha: 0.7
+  sparse_enabled: true
+  dense_enabled: true
+  rerank_enabled: true
+  refuse_threshold: 0.05
+
+chunking:
+  strategy: heading
+  chunk_size: 300
+  overlap: 50
+
+embedding:
+  provider: bge
+  dim: 512
+  model_name: BAAI/bge-small-zh-v1.5
+
+llm:
+  provider: none
+  model: ""
+  api_key: ""
+  base_url: ""
+
+data_dir: data/raw
+index_dir: data/index

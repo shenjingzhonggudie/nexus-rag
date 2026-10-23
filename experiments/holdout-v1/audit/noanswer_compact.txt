@@ -1,0 +1,295 @@
+◆ h_0013 kubelet --node-status-update-frequency 默认秒数
+  [node[- ]status[- ]update[- ]frequency] k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 管理 @2895: …NodeRestriction 准入控制插件](/zh-cn/docs/reference/access-authn-authz/admission-controllers
+
+◆ h_0014 镜像GC HighThresholdPercent/LowThresholdPercent 默认值
+  [HighThresholdPercent] k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 @4129: …器是 kubelet 的一部分,工作时与 {{< glossary_tooltip text="cadvisor" term_id="cadvisor" >}
+  [LowThresholdPercent] k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 @4290: …ent`  磁盘用量超出所配置的 `HighThresholdPercent` 值时会触发垃圾收集, 垃圾收集器会基于镜像上次被使用的时间来按顺序删除它们,首先
+  [threshold] k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 节点控制器 @6259: …中的节点变为不健康时,节点的驱逐行为将发生改变。 节点控制器会同时检查可用区域中不健康(`Ready` 状况为 `Unknown` 或 `False`) 的节点的百分比:  - 如果不健康节点的比例超过 `--unheal
+  [threshold] k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md | 在大规模环境中在高负载场景下监控和调优组件 @2558: … [SIG Scalability README 中的可扩缩性阈值](https://github.com/kubernetes/community/blob/main/si
+
+◆ h_0015 kube-state-metrics 默认端口/路径
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 插桩 @4624: …ster-resources/event-v1/)   或[节点状况](/zh-cn/docs/concepts/architecture/nodes/#condition
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | ? @51: …  Kubernetes API 中 Kubernetes 对象的状态可以被公开为指标。 一个名为 [kube-state-metrics](https:
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | ? @488: …}、 容器镜像的名称、镜像的 ID、容器规约中的镜像名称、运行中容器的 ID 和用作标签的 Pod ID。  {{% thirdparty-conten
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:使用来自 kube-state-metrics 的指标查询集群状态 @614: …tate-metrics 端点的外部组件现在可用于实现以下使用场景。  ## 示例
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:基于 kube-state-metrics 发出警报 @812: …言的工具,则以下 PromQL 查询将返回未就绪的 Pod 数:  ``` count(kube
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @2183: …e kubelet also exposes metrics at `/metrics/cadvisor`, `/metrics/resource`, and
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @2241: …etrics/resource`, and `/metrics/probes`, and add-ons such as [kube-state-metric
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @2414: …ls with Kubernetes object status. --> kubelet 还在 `/metrics/cadvisor`、`/metrics/
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @6313: …rics/) - [Resource usage monitoring with metrics-server](/docs/tasks/debug/debu
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @6588: …on/system-metrics/) - [使用 metrics-server 监控资源使用情况](/zh-cn/docs/tasks/debug/debu
+  [kube[-_ ]state[-_ ]metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @6655: …s/debug/debug-cluster/resource-usage-monitoring/) - [kube-state-metrics 概念](/zh
+  [/metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md | 在大规模环境中在高负载场景下监控和调优组件 @2947: …列指标,进一步判断对 DRA 性能影响最大的组件,从而优化其配置。 有关 Kubernetes 中所有稳定指标的更多信息,请参阅 [Kubernetes 指标参考](/zh-c
+  [/metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md | (全文) @5975: …s/concepts/scheduling-eviction/dynamic-resource-allocation) * 阅读 [Kubernetes 指标参考](/zh-cn/docs/reference/
+  [/metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @1813: …omponents emit metrics in [Prometheus format](https://prometheus.io/docs/instrumenting/exposition
+  [/metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @5241: …ernetes/api-extension/apiserver-aggregation/). Your cluster must run [Metrics Server](https://git
+  [/metrics] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @5862: …extend-kubernetes/api-extension/apiserver-aggregation/)提供的。 你的集群必须运行 [Metrics Server](https://git
+  [端口] k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 节点到控制面 @412: …用的是中心辐射型(Hub-and-Spoke)API 模式。 所有从节点(或运行于其上的 Pod)发出的 API 调用都终止于 API 服务器。 其它控制面组件都没有被设计为可暴露远
+  [端口] k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 节点到控制面 @1332: …一个虚拟 IP 地址, 用于(通过 `{{< glossary_tooltip text="kube-proxy" term_id="kube-proxy" >}}`)转发请求到 
+  [端口] k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 控制面到节点 @1736: …务器到 kubelet  {#api-server-to-kubelet}  从 API 服务器到 kubelet 的连接用于:  * 获取 Pod 日志。 * 挂接(通过 kub
+  [端口] k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 控制面到节点 @2557: …etes 支持使用 [SSH 隧道](https://www.ssh.com/academy/ssh/tunneling)来保护从控制面到节点的通信路径。 在这种配置下,API 服
+  [端口] k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | (全文) @3682: …concepts/overview/kubernetes-api/) * [设置 Konnectivity 服务](/zh-cn/docs/tasks/extend-kubernete
+  [端口] k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | (全文) @3900: …r/) * 学习如何[检查 Pod 的日志](/zh-cn/docs/tasks/debug/debug-application/debug-running-pod/#examine-
+  [端口] k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md | 启用对等聚合发现和混合版本代理 @1343: …e>,  # 此特性的可选标志 --peer-advertise-ip=`应由对等方用于代理请求的 kube-apiserver IP` --peer-advertise-port=`应由
+  [端口] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 健康检查并发豁免 @11347: …  ## 健康检查并发豁免    {#health-check-concurrency-exemption}  推荐配置没有为本地 kubelet 对 kube-apiserver 执行健康检查
+  [端口] k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md | ? @365: …services-networking/service/) 中。 4. 外部与 Service 间通信:也涵盖在 Service 中。  Kubernetes 的宗旨就是在应用之间共享机器。 通常来说,共享机器需要两
+  [端口] k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md | ? @427: …ce 中。  Kubernetes 的宗旨就是在应用之间共享机器。 通常来说,共享机器需要两个应用之间不能使用相同的端口,但是在多个应用开发者之间 去大规模地协调端口是件很困难的事情,而且容易引入开发者无法控制的集群
+  [端口] tidb/develop__dev-guide-bookshop-schema-design.md | 导入表结构和数据 @588: …TiDB 服务器,你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据:  ```shell tiup demo bookshop prepare ```  该命令默认会连接到 `127.0.0.1` 地址上的 `4000` 端口,使用
+  [端口] tidb/develop__dev-guide-bookshop-schema-design.md | 导入表结构和数据 @878: …--------- | -------------- | | `--host`     | `-H` | `127.0.0.1` | 数据库地址     | | `--port`     | `-P` | `4000`      | 数据库端口   
+  [端口] tidb/develop__dev-guide-gui-mysql-workbench.md | 连接到 TiDB @5881: …:      - **Connection Name**:为该连接指定一个有意义的名称。     - **Hostname**:输入本地部署 TiDB 集群的 IP 地址或域名。     - **Port**:输入本地部署 TiDB 集群的端口号。   
+  [端口] tidb/develop__dev-guide-gui-navicat.md | 连接到 TiDB @5814: …连接参数:      - **Connection Name**:为该连接指定一个有意义的名称。     - **Host**:输入本地部署 TiDB 集群的 IP 地址或域名。     - **Port**:输入本地部署 TiDB 集群的端口号。     - **Us
+
+◆ h_0016 imageMaximumGCAge 默认值
+  [imageMaximumGCAge] k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 @4452: …收集     {#image-maximum-age-gc}  不论磁盘使用情况如何,你都可以指定本地镜像未被使用的最长时间。 这是一个可以为每个节点配置的 kub
+  [imageMaximumGCAge] k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 @4810: …时 45 分钟。  {{< note >}}  这个特性不会跟踪 kubelet 重新启动后的镜像使用情况。 如果 kubelet 被重新启动,所跟踪的镜像年龄会被
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 @3606: …eletion-policy)。  ## 未使用容器和镜像的垃圾收集     {#containers-images}  {{<glossary_tooltip t
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 @4695: …,请参阅词汇表中的[持续时间(Duration)](/zh-cn/docs/reference/glossary/?all=true#term-duration)。
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 节点控制器 @5878: …所有 Pod 触发   [API 发起的逐出](/zh-cn/docs/concepts/scheduling-eviction/api-eviction/)操作。   默认情况下,节点控制器在将节点标记为
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 默认值 @10234: …初始行为,也是其周期性操作的一部分。 因此,当存在不同版本的服务器时,如果各个服务器对于配置对象中的合适内容有不同意见, 就可能出现抖动。  每个 `kube-apiserv
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 使用 API 优先级和公平性的最佳实践 @19273: …,你可以将该 FlowSchema 映射到一个具有较低席位份额的 PriorityLevelConfiguration。  例如,假设来自 d
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:基于 kube-state-metrics 发出警报 @987: …alert-1}  kube-state-metrics 生成的指标还允许在集群中出现问题时发出警报。  如果你使
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md | 处理节点非体面关闭 @8187: …并且用户要检查关闭节点是否已恢复,因为该用户是最初添加污点的用户。 {{< /note >}}  ### 存储超时强制解除挂接  {#storage-force-
+  [镜像.*默认.*（小时|分钟|秒）] k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md | 处理节点非体面关闭 @8659: …性。  可以通过在 `kube-controller-manager` 中设置 `disable-force-detach-on-timeout` 配置字段来禁用
+  [镜像.*默认.*（小时|分钟|秒）] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @11766: …来避免空闲连接和执行时间过长的 SQL 语句。例如,设置 `sessionVariables=wait_timeout=3600`(1 小时)和 `sessionVariables=max_execution_time=300
+  [镜像.*默认.*（小时|分钟|秒）] tidb/develop__dev-guide-delete-data.md | 性能注意事项 @4599: …非立刻删除数据,而是将这些数据标记为可删除。然后等待 TiDB GC (Garbage Collection) 来清理不再需要的旧数据。因此,你的 `DELETE` 语句**_并不会_**立即减少磁盘用量。  GC 在默认配置中,为 10 分钟
+  [镜像.*默认.*（小时|分钟|秒）] tidb/develop__dev-guide-delete-data.md | 批量删除 @5509: …/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据,例如,`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内,
+
+◆ h_0017 按优先级分阶段关闭默认每阶段秒数
+  [shutdownGracePeriodByPodPriority] k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md | 节点体面关闭 @5213: …unset`          | 0                      |  在 [kubelet 配置](/zh-cn/doc
+  [shutdownGracePeriodByPodPriority] k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md | 节点体面关闭 @5513: …0 秒    | | 1000                   | 120 秒    | | 0                   
+  [shutdownGracePeriodByPodPriority] k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md | 节点体面关闭 @6568: …mand-line-tools-reference/feature-gates/), 并将 [kubelet 配置](/zh-cn/doc
+  [priority.*默认] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 默认值 @9264: …不是正常场景下要使用的,`catch-all` 优先级的并发度份额很小,   并且不会对请求进行排队。  ### 建议的配置对象   {#suggested-configuration-
+
+◆ h_0032 tidb_idle_transaction_timeout 默认秒
+  [tidb_idle_transaction_timeout] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @11467: …system-variables.md#wait_timeout) 的默认值比较大,在事务已启动但未提交或回滚的情况下,你可能需要更细粒度的控制和更短的超时,以避免持有锁的时间过长。此时,你可以使用 T
+
+◆ h_0033 HikariCP minimumIdle 建议值
+  [minimumIdle] tidb/develop__dev-guide-connection-parameters.md | 连接池参数 @880: …连接,配置过小则会导致应用获取连接变慢,所以需根据应用自身特点配置合适的值,可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。  **
+
+◆ h_0034 TiDB max_connections 默认
+  [最大连接数] tidb/develop__dev-guide-connection-parameters.md | 连接池参数 @733: …p/)),TiDB 不会限定使用的连接池,应用可以根据业务特点自行选择连接池实现。  ### 连接数配置  比较常见的是应用需要根据自身情况配置合适的连接池大小,以 HikariCP 为例:  **maximumPoolSize**:连接池最大连接数,
+  [最大连接数] tidb/develop__dev-guide-connection-parameters.md | 连接池参数 @4302: …ools)中的描述,推荐的连接数大小公式为:  ``` connections = (number of cores * 4) ```  因此,你在使用 SSD 的情况下可以将连接数设置为 `CPU 核心数 * 4`。以此来达到初始的连接池最大连接数
+  [最大连接数] tidb/develop__dev-guide-connection-parameters.md | 连接池参数 @4460: …看到,在上方的[经验公式](#经验公式)中得到的,是一个推荐的初始值,若需得到某台具体机器上的最佳值,需在推荐值周围,通过尝试,得到最佳值。  此最佳值的获取,会有一些基本规律,此处罗列如下:  1. 如果你的网络或存储延迟较大,请增大你的最大连接数
+
+◆ h_0035 表达式索引配置开关名
+  [表达式索引] tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 @2462: …   ```sql     SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';     ```      也可以使用表达式
+  [表达式索引] tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 @2755: …过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。      > **注意:**     >     > 表达式
+  [表达式索引] tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 @2806: …2;` 查询就能使用 `published_year_idx` 索引来加速查询了。      > **注意:**     >     > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式
+
+◆ h_0036 Cursor Fetch FetchSize 建议值
+  [useCursorFetch] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @6297: …需[设置 **FetchSize**](https://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数,且在 JDBC URL 中配
+  [Cursor Fetch] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @6162: …en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存,客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。 - 方式二:使用
+  [cursor.*fetch] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @6634: …age_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`,可能会触发落盘临时将结果写入硬盘。  如果系统变量 [`tidb_enable_laz
+  [cursor.*fetch] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @21644: …oks WHERE id = %s FOR UPDATE"                 cursor.execute(select_book_for_update, (book_id,))    
+  [cursor.*fetch] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @24314: …oks WHERE id = %s FOR UPDATE"                 cursor.execute(select_book_for_update, (book_id,))    
+  [FetchSize] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @5969: …果并将其保存在客户端内存中。但在查询返回超大结果集的场景中,客户端会希望数据库服务器减少向客户端一次返回的记录数,等客户端在有限内存处理完一部分后再去向服务器要下一批。  在 JDBC 中通常有以下两种处理方式:  - 方式一:设置 [**Fe
+  [FetchSize] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @6449: …支持以上两种方式,但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式,比第二种功能实现更简单且执行效率更高。  对于第二种方式,TiDB 会先将所有数据加载到 TiDB 节点上,然后根据 `Fe
+
+◆ h_0050 KeepAlive max 默认值
+  [KeepAlive] vue/src__guide__built-ins__keep-alive.md | ? @97: …<script setup> import SwitchComponent from './keep-alive-demos/SwitchComponent.vue' </script>  # KeepAlive {#keepalive}  `<KeepAlive>` 
+  [KeepAlive] vue/src__guide__built-ins__keep-alive.md | 基本使用 @628: …下任意一个组件的状态,然后切走,再切回来:  你会发现在切回来之后,之前已更改的状态都被重置了。  在切换时创建新的组件实例通常是有意义的,但在这个例子中,我们的确想要组件能在被“切走”的时候保留它们的状态。要解决这个问题,我们可以用 `<KeepAlive>`
+  [KeepAlive] vue/src__guide__built-ins__keep-alive.md | 包含/排除 @2012: …ntials/component-basics#in-dom-template-parsing-caveats)中使用时,它应该被写为 `<keep-alive>`。 :::  ## 包含/排除 {#include-exclude}  `<KeepAlive
+  [KeepAlive] vue/src__guide__built-ins__keep-alive.md | 包含/排除 @2300: …omponent :is="view" />    <component :is="view" />  ```  它会根据组件的 [`name`](/api/options-misc#name) 选项进行匹配,所以组件如果想要条件性地被 `KeepAlive
+  [KeepAlive] vue/src__guide__built-ins__keep-alive.md | 最大缓存实例数 @2498: …` 的单文件组件会自动根据文件名生成对应的 `name` 选项,无需再手动声明。 :::  ## 最大缓存实例数 {#max-cached-instances}  我们可以通过传入 `max` prop 来限制可被缓存的最大组件实例数。`<KeepAli
+  [KeepAlive] vue/src__guide__built-ins__keep-alive.md | 缓存实例的生命周期 @2806: …-html    <component :is="activeComponent" />  ```  ## 缓存实例的生命周期 {#lifecycle-of-cached-instance}  当一个组件实例从 DOM 上移除但因为被 `<KeepA
+  [KeepAlive] vue/src__guide__built-ins__keep-alive.md | 缓存实例的生命周期 @3872: …lass="composition-api">`onDeactivated`</span><span class="options-api">`deactivated`</span> 在组件卸载时也会调用。  - 这两个钩子不仅适用于 `<KeepA
+  [KeepAlive] vue/src__guide__built-ins__suspense.md | 和其他组件结合 @2665: …的父组件中捕获和处理异步错误。  ## 和其他组件结合 {#combining-with-other-components}  我们常常会将 `<Suspense>` 和 [`<Transition>`](./transition)、[`<KeepAlive
+  [KeepAlive] vue/src__guide__essentials__component-basics.md | 动态组件 @14694: …被注册的组件名 - 导入的组件对象  你也可以使用 `is` attribute 来创建一般的 HTML 元素。  当使用 `<component :is="...">` 来在多个组件间作切换时,被切换掉的组件会被卸载。我们可以通过 [`<Ke
+  [max.*prop] tidb/develop__dev-guide-connection-parameters.md | 连接参数 @10495: …如 `select @@session.transaction_read_only`)。这些 SQL 对 TiDB 无用,推荐配置 `useConfigs = maxPerformance` 来避免额外开销。  `useConfigs = m
+  [max.*prop] tidb/develop__dev-guide-insert-data.md | 插入行 @4251: …Attributes=none useInformationSchema=true ```  你可以自行查看 `mysql-connector-java-{version}.jar!/com/mysql/cj/configurations/maxPerformanc
+  [最大缓存] tidb/develop__dev-guide-insert-data.md | 插入行 @3146: …56 字符时                                                             | 按实际预处理语句大小配置 | |    `prepStmtCacheSize`     | 预处理语句最大缓存数量 (默认 25 条) |
+
+◆ h_0051 Suspense timeout 默认毫秒
+  [Suspense] react/src__content__learn__creating-a-react-app.md | 其他框架 @3081: …eo);    // 3. 将数据传递给将在浏览器中运行的组件。   return <SearchableVideoList videos={videos} />; } ```  Next.js 的 App Router 还集成了 [使用 S
+  [Suspense] react/src__content__learn__creating-a-react-app.md | 其他框架 @3206: …nse 的数据获取](/blog/2022/03/29/react-v18#suspense-in-data-frameworks). 这让你可以直接在 React 树中为用户界面的不同部分指定加载状态(例如骨架占位符):  ```js <S
+  [Suspense] vue/src__guide__built-ins__suspense.md | ? @3: … # Suspense {#suspense}  :::warning 实验性功能 `<Suspense>` 是一项实验性功能。它不一定会最终成为稳定功能,并且在稳定之前相关 API 也可能会发生变化。 :::  `<Suspense>` 是一个内置组件,用来在组件树中协调对异
+  [Suspense] vue/src__guide__built-ins__suspense.md | 异步依赖 @232: …pense>` 是一个内置组件,用来在组件树中协调对异步依赖的处理。它让我们可以在组件树上层等待下层的多个嵌套异步依赖项解析完成,并可以在等待时渲染一个加载状态。  ## 异步依赖 {#async-dependencies}  要了解 `<Suspense>` 所解决
+  [Suspense] vue/src__guide__built-ins__suspense.md | 异步依赖 @478: …))    └─ <Content>       ├─ <ActivityFeed> (异步组件)       └─ <Stats> (异步组件) ```  在这个组件树中有多个嵌套组件,要渲染出它们,首先得解析一些异步资源。如果没有 `<Suspense>`,则它们
+  [Suspense] vue/src__guide__built-ins__suspense.md | 异步依赖 @627: …和完成状态。在最坏的情况下,我们可能会在页面上看到三个旋转的加载态,在不同的时间显示出内容。  有了 `<Suspense>` 组件后,我们就可以在等待整个多层级组件树中的各个异步依赖获取结果时,在顶层展示出加载中或加载失败的状态。  `<Suspense>` 可以等
+  [Suspense] vue/src__guide__built-ins__suspense.md | 异步依赖 @1261: …   {{ posts }} </template> ```  ### 异步组件 {#async-components}  异步组件默认就是<strong>“suspensible”</strong>的。这意味着如果组件关系链上有一个 `<Suspense>`,那么
+  [Suspense] vue/src__guide__built-ins__suspense.md | 异步依赖 @1411: …uspense>` 的一个异步依赖。在这种情况下,加载状态是由 `<Suspense>` 控制,而该组件自己的加载、报错、延时和超时等选项都将被忽略。  异步组件也可以通过在选项中指定 `suspensible: false` 表明不用 `Suspense` 控制,
+  [Suspense] vue/src__guide__built-ins__suspense.md | 加载中状态 @1650: …接子节点。在可能的时候都将显示默认插槽中的节点。否则将显示后备插槽中的节点。  ```vue-html    <template #fallback>     Loading...   </template>  ```  在初始渲染时,`<Suspense>` 将
+  [Suspense] vue/src__guide__built-ins__suspense.md | 加载中状态 @1847: …遇到的异步依赖都完成后,`<Suspense>` 会进入**完成**状态,并将展示出默认插槽的内容。  如果在初次渲染时没有遇到异步依赖,`<Suspense>` 会直接进入完成状态。  进入完成状态后,只有当默认插槽的根节点被替换时,`<Suspense>` 才
+  [Suspense] vue/src__guide__built-ins__suspense.md | 加载中状态 @2048: …展示出来。相反,`<Suspense>` 在等待新内容和异步依赖完成时,会展示之前 `#default` 插槽的内容。这个行为可以通过一个 `timeout` prop 进行配置:在等待渲染新内容耗时超过 `timeout` 毫秒之后,`<Suspense>` 将
+  [Suspense] vue/src__guide__built-ins__suspense.md | 错误处理 @2359: …取新内容时触发。`fallback` 事件则是在 `fallback` 插槽的内容显示时触发。  例如,可以使用这些事件在加载新组件时在之前的 DOM 最上层显示一个加载指示器。  ## 错误处理 {#error-handling}  `<Suspense>` 组件
+  [Suspense] vue/src__guide__built-ins__suspense.md | 错误处理 @2534: …i/options-lifecycle#errorcaptured) 选项或者 [`onErrorCaptured()`](/api/composition-api-lifecycle#onerrorcaptured) 钩子,在使用到 `<Suspense>` 的父
+  [Suspense] vue/src__guide__built-ins__suspense.md | 和其他组件结合 @2618: …ifecycle#onerrorcaptured) 钩子,在使用到 `<Suspense>` 的父组件中捕获和处理异步错误。  ## 和其他组件结合 {#combining-with-other-components}  我们常常会将 `<Suspense>`
+  [Suspense] vue/src__guide__built-ins__suspense.md | 和其他组件结合 @3170: …``  Vue Router 使用动态导入对[懒加载组件](https://router.vuejs.org/zh/guide/advanced/lazy-loading.html)进行了内置支持。这些与异步组件不同,目前他们不会触发 `<Suspense>`
+  [Suspense] vue/src__guide__built-ins__suspense.md | 和其他组件结合 @3213: …r.vuejs.org/zh/guide/advanced/lazy-loading.html)进行了内置支持。这些与异步组件不同,目前他们不会触发 `<Suspense>`。但是,它们仍然可以有异步组件作为后代,这些组件可以照常触发 `<Suspense>`
+  [Suspense] vue/src__guide__built-ins__suspense.md | 嵌套使用 @3421: …时:  ```vue-html    <component :is="DynamicAsyncOuter">     <component :is="DynamicAsyncInner" />   </component>  ```  `<Suspense>` 创建
+  [Suspense] vue/src__guide__built-ins__suspense.md | 嵌套使用 @3788: …s="DynamicAsyncOuter">        <component :is="DynamicAsyncInner" />    </component>  ```  如果你不设置 `suspensible` 属性,内部的 `<Suspense>` 将被
+  [Suspense] vue/src__guide__built-ins__suspense.md | 嵌套使用 @3806: …er">        <component :is="DynamicAsyncInner" />    </component>  ```  如果你不设置 `suspensible` 属性,内部的 `<Suspense>` 将被父级 `<Suspense>` 视为
+  [Suspense] vue/src__guide__built-ins__suspense.md | 嵌套使用 @4017: …现空节点和多个修补周期,这可能不是理想情况。设置后,所有异步依赖项处理都会交给父级 `<Suspense>` (包括发出的事件),而内部 `<Suspense>` 仅充当依赖项解析和修补的另一个边界。  ---  **参考**  - [`<Suspense>` AP
+  [Suspense] vue/src__guide__components__async.md | 搭配 Suspense 使用 @4487: …} }  const AsyncComp = defineAsyncComponent({   loader: () => import('./Comp.vue'),   hydrate: myStrategy }) ```  ## 搭配 Suspe
+  [Suspense] vue/src__guide__components__async.md | 搭配 Suspense 使用 @4619: …{#using-with-suspense}  异步组件可以搭配内置的 `<Suspense>` 组件一起使用,若想了解 `<Suspense>` 和异步组件之间交互,请参阅 [`<Suspense>`](/guide/built-ins/suspe
+
+◆ h_0052 异步组件加载失败默认重试次数
+  [重试] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | ? @365: …前上锁的代价小于事后回滚的代价,而且还能以比较低的代价解决多个并发事务互相冲突导致谁也成功不了的场景。不过悲观事务在冲突率不高的场景并没有乐观事务处理高效。  从应用端实现的复杂度而言,悲观事务更直观,更容易实现。而乐观事务需要复杂
+  [重试] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 乐观事务 @41116: …当前事务是否发生写冲突。  从上面 SQL 日志可以看出,由于两个事务并发执行,并且对同一条记录做了修改,`txn 1` COMMIT 之后抛出了 `9007 Write conflict` 异常。对于乐观事务写冲突,在应
+  [重试] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 乐观事务 @44144: …oks` WHERE `id` = 1 FOR UPDATE Fail -> out of stock /* txn 1 */ ROLLBACK ```  从上面的 SQL 日志可以看出,第一次执行由于写冲突,`txn 1
+  [重试] tidb/develop__dev-guide-optimize-sql-best-practices.md | 索引的最佳实践 @2869: …g_batch_size = 4096; ```  当添加索引操作的目标列被频繁更新(包含 `UPDATE`、`INSERT` 和 `DELETE`)时,调大上述配置会造成较为频繁的写冲突,使得在线负载较大;同时添加索引操作也可能由于不断地
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @10741: …actions in TiKV encounter write conflicts.     ErrInfoSchemaChanged  = 8028 // table schema changes     ErrF
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @10803: …anged  = 8028 // table schema changes     ErrForUpdateCantRetry = 8002 // "SELECT FOR UPDATE" commit conflic
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @11040: …orCodeSet = map[uint16]interface{}{     ErrWriteConflict:      nil,     ErrInfoSchemaChanged:  nil,     ErrF
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @11418: …f err != nil {         txn.Rollback()         if mysqlErr, ok := err.(*mysql.MySQLError); ok && optimistic &
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @11613: …qlErr.Number]; retryableError {                 fmt.Printf("[runTxn] got a retryable error, rest time: %d\n"
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @11935: …  } else {         err = txn.Commit()         if mysqlErr, ok := err.(*mysql.MySQLError); ok && optimistic &
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @12025: …ok && optimistic && optimisticRetryTimes != 0 {             if _, retryableError := retryErrorCodeSet[mysqlE
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @12433: …[runTxn] commit success")         }     } }  func prepareData(db *sql.DB, optimistic bool) {     runTxn(db, 
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @13412: …Comment     }      fmt.Printf("\nuser %d try to buy %d books(id: %d)\n", userID, amount, bookID)      runTxn
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @15619: …nComment     }      fmt.Printf("\nuser %d try to buy %d books(id: %d)\n", userID, amount, bookID)      runTx
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @21012: …ef buy_optimistic(thread_id: int, order_id: int, book_id: int, user_id: int, amount: int,                   
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @23387: …r:                     code, desc = db_err.args                     if code in REPEATABLE_ERROR_CODE_SET and
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @23436: …                   if code in REPEATABLE_ERROR_CODE_SET and optimistic_retry_times > 0:                     
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 悲观事务 @23601: …s, for {code} {desc}')                         buy_optimistic(thread_id, order_id, book_id, user_id, amount,
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 乐观事务 @34902: …rce ds, Integer threadID, Long orderID, Long bookID,                             Long userID, Integer quanti
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 乐观事务 @38234: …                    case 8022: // The transaction commit fails and has been rolled back                     
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 乐观事务 @38452: …es. retry for " + e.getMessage());                                 buy(ds, threadID, orderID, bookID, userID
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 乐观事务 @40273: …user_id`, `quality`) VALUES (1000, 1, 1, 6) /* txn 1 */ UPDATE `users` SET `balance` = `balance` - 600.0 WHE
+  [retry] tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md | 乐观事务 @43719: …user_id`, `quality`) VALUES (1000, 1, 1, 7) /* txn 1 */ UPDATE `users` SET `balance` = `balance` - 700.0 WHE
+
+◆ h_0053 kebab-case 注册 → PascalCase 标签可用？
+  [kebab] vue/src__guide__components__events.md | 触发与监听事件 @1093: … 同样,组件的事件监听器也支持 `.once` 修饰符:  ```vue-html  ```  像组件与 prop 一样,事件的名字也提供了自动的格式转换。注意这里我们触发了一个以 camelCase 形式命名的事件,但在父组件中可以使用 kebab-case 形式来
+  [kebab] vue/src__guide__components__props.md | 传递 prop 的细节 @4046: …用 [DOM 内模板](/guide/essentials/component-basics#in-dom-template-parsing-caveats)时例外),但实际上为了和 HTML attribute 对齐,我们通常会将其写为 kebab-case 
+  [kebab] vue/src__guide__components__registration.md | 组件名格式 @2467: … 内模板中是不可用的,详情参见 [DOM 内模板解析注意事项](/guide/essentials/component-basics#in-dom-template-parsing-caveats)。  为了方便,Vue 支持将模板中使用 kebab-case
+  [kebab] vue/src__guide__essentials__class-and-style.md | 绑定内联样式 @4297: …```vue-html <div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div> ```  尽管推荐使用 camelCase,但 `:style` 也支持 kebab-
+  [kebab] vue/src__guide__essentials__component-basics.md | 使用组件 @3684: …以在编译中区分大小写的。我们也可以使用 `/>` 来关闭一个标签。  如果你是直接在 DOM 中书写模板 (例如原生 `<template>` 元素的内容),模板的编译需要遵从浏览器中 HTML 的解析行为。在这种情况下,你应该需要使用 `kebab-c
+  [kebab] vue/src__guide__essentials__component-basics.md | DOM 内模板解析注意事项 @15204: …性名称是不分大小写的,所以浏览器会把任何大写的字符解释为小写。这意味着当你使用 DOM 内的模板时,无论是 PascalCase 形式的组件名称、camelCase 形式的 prop 名称还是 v-on 的事件名称,都需要转换为相应等
+  [kebab] vue/src__guide__essentials__event-handling.md | 按键修饰符 @6345: …ardEvent.key`](https://developer.mozilla.org/zh-CN/docs/Web/API/UI_Events/Keyboard_event_key_values) 暴露的按键名称作为修饰符,但需要转为 kebab-ca
+  [Pascal] vue/src__guide__components__registration.md | 组件名格式 @2085: …组件中<i>不</i>可用**。在这个例子中,`ComponentA` 注册后仅在当前组件可用,而在任何的子组件或更深层的子组件中都不可用。  ## 组件名格式 {#component-name-casing}  在整个指引中,我们都使用 PascalCas
+  [Pascal] vue/src__guide__components__registration.md | 组件名格式 @2203: …用 PascalCase 作为组件名的注册格式,这是因为:  1. PascalCase 是合法的 JavaScript 标识符。这使得在 JavaScript 中导入和注册组件都很容易,同时 IDE 也能提供较好的自动补全。  2. `<PascalCas
+  [Pascal] vue/src__guide__essentials__component-basics.md | 使用组件 @3493: …IhfMr0DTN4U0me8=)  </div>  你会注意到,每当点击这些按钮时,每一个组件都维护着自己的状态,是不同的 `count`。这是因为每当你使用一个组件,就创建了一个新的**实例**。  在单文件组件中,推荐为子组件使用 `Pascal
+  [Pascal] vue/src__guide__essentials__component-basics.md | DOM 内模板解析注意事项 @15138: …text/x-template">` :::  ### 大小写区分 {#case-insensitivity}  HTML 标签和属性名称是不分大小写的,所以浏览器会把任何大写的字符解释为小写。这意味着当你使用 DOM 内的模板时,
+  [组件名] vue/src__guide__built-ins__transition-group.md | 和 `<Transition>` 的区别 @762: …会被应用在列表内的元素上,**而不是**容器元素上。  :::tip 当在 [DOM 内模板](/guide/essentials/component-basics#in-dom-template-parsing-caveats)
+  [组件名] vue/src__guide__components__registration.md | 局部注册 @1817: …mponents: {     ComponentA   } } </script>  <template>  </template> ```  </div>  对于每个 `components` 对象里的属性,它们的 key 名就是注册的组件名,而值就是相应组件的
+  [组件名] vue/src__guide__essentials__class-and-style.md | 绑定 HTML class @3140: …)的知识基础。如果没有,你也可以暂时跳过,以后再阅读。  对于只有一个根元素的组件,当你使用了 `class` attribute 时,这些 class 会被添加到根元素上并与该元素上已有的 class 合并。  举例来说,如果你声明了一个组
+  [组件名] vue/src__guide__essentials__component-basics.md | 动态组件 @14578: …ion-api">  ```vue-html  <component :is="tabs[currentTab]"></component> ```  </div>  在上面的例子中,被传给 `:is` 的值可以是以下几种:  - 被注册的组件名 - 导入
+  [registration] k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 管理 @1881: …点标签这类属性。这可能在节点被更改但其名称未变时导致系统状态不一致。 如果某个 Node 需要被替换或者大量变更,需要从 API 服务器移除现有的 Node 对象, 之后再在更新之后重新将其加入。  ### 节点自注册  
+  [registration] k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 资源容量跟踪 @7012: …taint" >}}。 这意味着调度器不会将 Pod 调度到不健康的节点上。  ## 资源容量跟踪   {#node-capacity}  Node 对象会跟踪节点上资源的容量(例如可用内存和 CPU 数量)。 通
+  [registration] k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md | 变更性 Webhook 的部署 @15432: …下访问权限:  * 动词:**create**(创建)、**update**(更新)、**patch**(补丁)、  
+  [registration] vue/src__guide__components__async.md | 基本用法 @1081: …会将接收到的 props 和插槽传给内部组件,所以你可以使用这个异步的包装组件无缝地替换原始组件,同时实现延迟加载。  与普通组件一样,异步组件可以使用 `app.component()` [全局注册](/guide/components/registratio
+  [registration] vue/src__guide__components__async.md | 基本用法 @1287: …onent(() =>   import('./components/MyComponent.vue') )) ```  <div class="options-api">  你也可以在[局部注册组件](/guide/components/registratio
+  [registration] vue/src__guide__components__registration.md | ? @19: …# 组件注册 {#component-registration}  > 此章节假设你已经看过了[组件基础](/guide/essentials/component-basics)。若你还不了解组件是什么,请先阅读该章节。  一个 Vue 组件在使用前需要先被
+  [registration] vue/src__guide__components__registration.md | 局部注册 @878: …```vue-html  <ComponentA/> <ComponentB/> <ComponentC/> ```  所有的子组件也可以使用全局注册的组件,这意味着这三个组件也都可以在*彼此内部*使用。  ## 局部注册 {#local-regis
+  [registration] vue/src__guide__essentials__component-basics.md | 使用组件 @2171: …ate>   <h1>Here is a child component!</h1>  </template> ```  若要将导入的组件暴露给模板,我们需要在 `components` 选项上[注册](/guide/components/
+  [registration] vue/src__guide__essentials__component-basics.md | 使用组件 @2544: …都在模板中直接可用。  </div>  当然,你也可以全局地注册一个组件,使得它在当前应用中的任何组件上都可以使用,而不需要额外再导入。关于组件的全局注册和局部注册两种方式的利弊,我们放在了[组件注册](/guide/components/
+  [大小写] vue/src__guide__components__attrs.md | 禁用 Attributes 继承 @2317: …emits` 之外的所有其他 attribute,例如 `class`,`style`,`v-on` 监听器等等。  有几点需要注意:  - 和 props 有所不同,透传 attributes 在 JavaScript 中保留了它们原始的大小写,所以像 
+
+◆ h_0054 hydrateOnIdle 默认最大超时
+  [hydrateOnIdle] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @2897: …rameworks)) 中实现。  ### 在空闲时进行激活 {#hydrate-on-idle}  通过 `requestIdleCallback` 进行激活:  ```js
+  [hydrateOnIdle] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @3015: …, hydrateOnIdle } from 'vue'  const AsyncComp = defineAsyncComponent({   loader: () => i
+  [hydrate] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @3278: …ponent, hydrateOnVisible } from 'vue'  const AsyncComp = defineAsyncComponent({   loader: () =
+  [hydrate] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @3406: … hydrateOnVisible() }) ```  可以选择传递一个侦听器的选项对象值:  ```js hydrateOnVisible({ rootMargin: '100px' }
+  [hydrate] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @3601: …ent, hydrateOnMediaQuery } from 'vue'  const AsyncComp = defineAsyncComponent({   loader: () =
+  [hydrate] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @3888: …nt, hydrateOnInteraction } from 'vue'  const AsyncComp = defineAsyncComponent({   loader: () =
+  [hydrate] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @4150: …tegy}  ```ts import { defineAsyncComponent, type HydrationStrategy } from 'vue'  const myStrat
+  [hydrate] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @4307: …rEachElement 是一个遍历组件未激活的 DOM 中所有根元素的辅助函数,   // 因为根元素可能是一个片段而非单个元素   forEachElement(el => {    
+  [hydrate] vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> @4453: …urn () => {     // 如必要,返回一个销毁函数   } }  const AsyncComp = defineAsyncComponent({   loader: () =
+  [闲置] k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md | 组合使用负载自动扩缩容与 Node 自动扩缩容 @19330: …de 以容纳新的 Pod。  一旦应用负载减少,负载自动扩缩容应移除不必要的 Pod。 Node 自动扩缩容应按序整合不再需要的 Node。  如果配置正确
+
+◆ h_0065 React 编译器最低 React 版本
+  [最低.*版本] k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md | ? @298: …ane" >}}组件通过**协调领导者选举**确定性地选择一个领导者。 这对于在集群升级期间满足 Kubernetes 版本偏差约束非常有用。 目前,唯一内置的选择策略是 `
+
+◆ h_0066 Vite 无 Babel 配置时接入编译器
+  [Vite] react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React @2265: …码,并启用 [Babel React preset](https://babeljs.io/docs/babel-preset-react) 来使用 JSX。  * **如果你的应用没有用于编译 J
+  [Vite] react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React @2456: …Laravel)的 [许多集成项目](https://github.com/vitejs/awesome-vite#integrations-with-backends)。如果你的后端框架没有列出,
+  [Vite] react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React @3181: …内容都被替换为“Hello, world!”,则一切正常!那么继续阅读。  第一次将模块化 JavaScript 环境集成到现有项目中可能会让人感到害怕,但这是值得的!如果遇到困难,请尝试我们的 [
+  [Vite] react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React @3205: …一切正常!那么继续阅读。  第一次将模块化 JavaScript 环境集成到现有项目中可能会让人感到害怕,但这是值得的!如果遇到困难,请尝试我们的 [社区资源](/community) 或 [Vit
+  [Vite] react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 @655: …列表,请查看 [创建一个 React 应用](/learn/creating-a-react-app)。  ## 步骤 1: 安装构建工具 {/*step-1-install-a-build-tool*/}  第一步
+  [Vite] react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 @821: …地开发的开发服务器,以及部署应用到生产服务器的构建命令。  ### Vite {/*vite*/}  [Vite](https://vite.dev/) 是一个构建工具,旨在为现代网络项目提供更快更简洁的开发体验。 
+  [Vite] react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 @1029: …热更新、JSX、Babel/SWC 等常见功能。你可以查看 Vite 的 [React 插件](https://vite.dev/plugins/#vitejs-plugin-react) 或 [React SWC
+  [Vite] react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 @2067: …), 这是 React Native 的 JavaScript 打包工具。Metro 支持 iOS 和 Android 等平台的打包,但与这里提到的工具相比,它缺少许多功能。除非你的项目需要 React Nativ
+  [Vite] react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 2: 构建常见的应用程序模式 @3820: …分代码,并与打包和数据获取集成,可以减少应用程序的初始加载时间以及渲染应用程序最大可见内容所需的时间 ([最大内容绘制](https://web.dev/articles/lcp))。  有关代码拆分的说
+  [Vite] react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 2: 构建常见的应用程序模式 @4468: …工具的默认架构。  * **流式服务器端渲染 (SSR)** 在服务器上渲染页面并将完全渲染的页面发送到客户端。SSR 可以提高性能,但设置和维护比单页应用程序更复杂。随着流式处理的加入,SSR 的设置和
+  [Vite] react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 2: 构建常见的应用程序模式 @4612: …vite.dev/guide/ssr)。  * **静态站点生成 (SSG)** 在构建时为你的应用生成静态 HTML 文件。SSG 可以提高性能,但设置和维护可能比服务器端渲染更复杂。请参阅[Vite 
+  [Vite] react/src__content__learn__creating-a-react-app.md | 全栈框架 @1339: … (v7) {/*react-router-v7*/}  **[React Router](https://reactrouter.com/start/framework/installation) 是 React 最流行的路由库,可以与 Vite 
+  [Vite] react/src__content__learn__creating-a-react-app.md | 其他框架 @2203: … - [TanStack Start (Beta)](https://tanstack.com/start/): TanStack Start 是一个由 TanStack Router 驱动的全栈 React 框架。它使用 Nitro 和 Vite 
+  [Vite] react/src__content__learn__creating-a-react-app.md | 从零开始 @3739: …meworks) 为这些问题提供了内置的解决方案。  如果你想构建自己的解决方案,请参阅我们的 [从零构建一个 React 应用](/learn/build-a-react-app-from-scratch) 指南,该指南提供了如何使用 [Vite]
+  [Vite] vue/src__guide__best-practices__performance.md | 页面加载优化 @2881: …litting}  代码分割是指构建工具将构建后的 JavaScript 包拆分为多个较小的,可以按需或并行加载的文件。通过适当的代码分割,页面加载时需要的功能可以立即下载,而额外的块只在需要时才加载,从而提高性能。  像 Rollup (Vite 就是
+  [Vite] vue/src__guide__best-practices__production-deployment.md | 使用构建工具 @723: …thub.com/vuejs/core/tree/main/packages/vue#which-dist-file-to-use)。  ## 使用构建工具 {#with-build-tools}  通过 `create-vue` (基
+  [Vite] vue/src__guide__best-practices__production-deployment.md | 使用构建工具 @964: …编译时功能标记](/api/compile-time-flags)已被正确配置。 3. <code>process.env<wbr>.NODE_ENV</code> 会在构建时被替换为 `"production"`。  其他参考:  -
+  [Vite] vue/src__guide__best-practices__production-deployment.md | 使用构建工具 @1018: …ess.env<wbr>.NODE_ENV</code> 会在构建时被替换为 `"production"`。  其他参考:  - [Vite 生产环境指南](https://cn.vite.dev/guide/build.html) 
+  [Vite] vue/src__guide__components__async.md | 基本用法 @687: …la.org/en-US/docs/Web/JavaScript/Reference/Operators/import)也会返回一个 Promise,所以多数情况下我们会将它和 `defineAsyncComponent` 搭配使用。类似 Vite 和 Webpack 这样的构建
+  [Babel] react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React @2095: …取决于你现有的配置:  * **如果你的应用已经使用 `import` 语句来分割成不同的文件,请尝试利用已有的配置**。检查在你的 JavaScript 代码中编写 `<div />`是否会导致
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | ? @84: …  React 编译器可以逐步采用,允许你首先在代码库的特定部分尝试使用。本指南将向你展示如何在现有项目中逐步推广该编译器的使用。  * 为何推荐增量式采用 * 使用 Babel 覆写进行基于目录的采用 * 使用 "use m
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 渐进式采用的方法 @691: …数据有助于你做出是否全面采用的明智决策,并向团队展示其价值。  ## 渐进式采用的方法 {/*approaches-to-incremental-adoption*/}  有三种主要方法可以逐步采用 React
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 @829: …定目录 2. **通过 "use memo" 选择加入** - 仅编译明确选择加入的组件 3. **运行时控制** - 通过功能标志控制编译  所有方法都允许你在完全上线之前,在应用程序的特定
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 @1004: …ides` 选项允许你将不同的插件应用于代码库的不同部分。这对于逐步在各个目录中采用 React 编译器非常理想。  ### 基本配置 {/*basic-configuration*/}  
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 @1318: …'babel-plugin-react-compiler'       ]     }   ] }; ```  ### 扩展覆盖范围 {/*expanding-coverage*/}  随着
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 @1520: …  {       test: ['./src/modern/**/*.{js,jsx,ts,tsx}', './src/features/**/*.{js,jsx,ts,tsx}'],  
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 @1755: …         // 针对旧代码的不同插件       ]     }   ] }; ```  ### 使用配置编译器选项 {/*with-compiler-options*/}  你还可
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 @1908: …{   plugins: [],   overrides: [     {       test: './src/experimental/**/*.{js,jsx,ts,tsx}',   
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 @2072: … 选项 ...         }]       ]     },     {       test: './src/production/**/*.{js,jsx,ts,tsx}',   
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 使用 "use memo" 的选择加入模式 @2434: …以让你对各个组件和挂钩进行细粒度的控制。当你希望在不影响整个目录的情况下,针对特定组件测试编译器时,这种方法非常有用。  ### 选择加入模式配置 {/*annotation-mod
+  [Babel] react/src__content__learn__react-compiler__incremental-adoption.md | 运行时控制 @3333: …ow-gating-works*/}  编译器会在优化后的代码周围添加运行时检查。如果开关返回 `true`,则运行优化版本;否则运行原始代码。  ### 控制配置 {/*gating-configuration*
+
+◆ h_0067 默认是否编译 node_modules
+  [third[- ]party] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 常见可观测性工具 @13344: …ility tools --> ## 常见可观测性工具 {#common-observability-tools}  {{% thirdparty-content %}
+  [third[- ]party] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | (全文) @16877: …onent endpoints and stability - Review the [common observability tools](#common-observab
+  [third[- ]party] tidb/develop___index.md | 按语言和框架分类 @1222: …ecord ORM 连接 TiDB。  使用 mysql2 驱动连接 TiDB。  除了上述指南之外,{{{ .company }}} 还与社区合作,支持[第三方 MySQL 驱动、ORM 以及工具](/develop/dev-guide-third-party-suppor
+  [third[- ]party] tidb/develop__dev-guide-choose-driver-or-orm.md | ? @158: …等级说明: > > - **Full**:表明 TiDB 已经兼容该工具的绝大多数功能,并且在该工具的新版本中对其保持兼容。{{{ .company }}} 将定期地对 [TiDB 支持的第三方工具](/develop/dev-guide-th
+  [third[- ]party] tidb/develop__dev-guide-choose-driver-or-orm.md | ? @388: …大部分功能。但 {{{ .company }}} 并未对该工具作出完整的兼容性验证,有可能出现一些意外的行为。 > > 关于更多 TiDB 支持的第三方工具,你可以查看 [TiDB 支持的第三方工具](/develop/dev-guide-th
+  [third[- ]party] tidb/develop__dev-guide-choose-driver-or-orm.md | Java @894: …前的 MySQL Connector/J 8.0 版本中存在一个 [bug](https://bugs.mysql.com/bug.php?id=106252)(详见 [MySQL JDBC Bug](/develop/dev-guide
+  [third[- ]party] tidb/develop__dev-guide-gui-mysql-workbench.md | ? @437: …B 完全支持的 GUI 工具进行连接,例如 DataGrip,DBeaver 以及 VS Code SQLTools。TiDB 完全支持的 GUI 工具的完整列表,参考 [TiDB 支持的第三方工具](/develop/dev-guide-thi
+
+◆ h_0068 监控采用进度怎么做
+  [监控.*采用|采用.*进度|adoption.*progress|monitor.*adoption] react/src__content__learn__react-compiler__incremental-adoption.md | ? @177: …该编译器的使用。  * 为何推荐增量式采用 * 使用 Babel 覆写进行基于目录的采用 * 使用 "use memo" 指令进行选择
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__architecture___index.md | 插件(Addons) @3283: …DNS 是一个 DNS 服务器,和环境中的其他 DNS 服务器一起工作,它为 Kubernetes 服务提供 DNS 记录。  Kubernetes 启动的容器自动将此 DNS 
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 可视化管理 @4012: …扩展的 DNS 服务器,   可以[安装](https://github.com/coredns/helm)为集群内的 Pod 提供 DNS 服务。  ## 可视化管理
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @3170: …常见的 Kubernetes 指标流水线。  {{< mermaid >}} flowchart LR     C[集群组件] --> P[Prometheus
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 日志 @9924: …         B[控制平面日志]         C[审计记录]     end     A --> N[节点日志代理]     B --> N     C
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 链路 @11371: …到端的请求流可视化、诊断性能问题, 并发现控制平面、插件或应用程序中的瓶颈或意外交互。  <!-- Kubernetes {{< skew currentVe
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 链路 @11534: …administration/system-traces/) (OTLP), either directly via built-in gRPC export
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 链路 @11608: …xporters or by forwarding them through an OpenTelemetry Collector. --> Kubernet
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 链路 @12039: … them to a tracing backend for storage and analysis.  Figure 4 outlines a typic
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 链路 @12288: …LR     subgraph Sources         A[控制平面跨度]         B[应用程序跨度]     end     A --> X
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 链路 @12723: …"seealso" %}}  - [System traces for Kubernetes components](/docs/concepts/clust
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 链路 @13067: …## {{% heading "seealso" %}}  - [Kubernetes 组件的系统链路](/zh-cn/docs/concepts/clust
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 常见可观测性工具 @15828: …storage. - [Jaeger](https://www.jaegertracing.io/) captures and visualize
+  [仪表|dashboard|telemetry|遥测] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 常见可观测性工具 @16213: …o](https://grafana.com/oss/tempo/) 提供可扩展、低成本的分布式链路存储。 - [Jaeger](https://
+  [仪表|dashboard|telemetry|遥测] tidb/develop__dev-guide-aws-appflow-integration.md | 第 1 步:注册 TiDB 连接器 @2911: …进入 [AWS Lambda 控制台](https://console.aws.amazon.com/lambda/home),你可以看到刚刚上传的 Lambda。注意需要在窗口右上
+  [仪表|dashboard|telemetry|遥测] vue/src__guide__built-ins__suspense.md | 异步依赖 @293: …析完成,并可以在等待时渲染一个加载状态。  ## 异步依赖 {#async-dependencies}  要了解 `<Suspense>` 所解决的问题和它是如何与异步依赖进行交互的,我们需要想象这样一种组件层级结构:  ```  └
+
+◆ h_0069 CRA 迁移到新框架的步骤
+  [Create React App] react/src__content__learn__installation.md | 添加 React 到一个已有的项目 @1130: …ct 应用](/learn/build-a-react-app-from-scratch).  ## 添加 React 到一个已有的项目 {/*add-react-to-an-existing-project*/} 
+  [Create React App] react/src__content__learn__installation.md | 添加 React 到一个已有的项目 @1235: …/}  #### 我还应该用 Create React App 么? {/*should-i-use-create-react-app*/}  不, Create React App 已经不建议使用。更多信息可参照 
+  [CRA] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @2592: …ation/kube-state-metrics/) 这样的插件会用 Kubernetes 对象状态丰富这些控制平面信号。  <!-- A typical Kubernetes metrics pipel
+  [CRA] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 指标 @3604: …例如 Thanos 或 Cortex)可以补充 Prometheus。  <!-- See [Common observability tools - metrics tools](#metrics-to
+  [CRA] k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md | 常见可观测性工具 @14162: …izontally scalable Prometheus-compatible storage. - [Prometheus](https://prometheus.io/) is the
+  [CRA] react/src__content__learn__add-react-to-an-existing-project.md | 在现有网站的子路由中使用 React @861: …配置服务器或代理**,以便所有位于 `/some-app/` 下的请求都由 React 应用处理。  这可以确保应用的 React 部分可以受益于这些框架中内置的 [最佳实践](/learn/build
+  [CRA] react/src__content__learn__creating-a-react-app.md | ? @153: …框架开始。  如果你的应用程序具有现有框架无法很好满足的约束,你更喜欢构建自己的框架,或者你只想学习 React 应用程序的基础知识,你可以 [从头开始构建 React 应用](/learn/build-a-react-app-from-scratch)。  
+  [CRA] react/src__content__learn__creating-a-react-app.md | 从零开始 @3418: …框架层面采用它们需要开发者的支持和大量的实现工作。目前,Next.js App Router 是最完整的实现。React 团队正在与打包工具开发者合作,以便在下一代框架中更容易实现这些特性。  ## 从零开始 {/*start-from-scratch
+  [CRA] react/src__content__learn__creating-a-react-app.md | 从零开始 @3716: …们推荐的框架](#full-stack-frameworks) 为这些问题提供了内置的解决方案。  如果你想构建自己的解决方案,请参阅我们的 [从零构建一个 React 应用](/learn/build-a-react-app-from-scratch
+  [CRA] react/src__content__learn__extracting-state-logic-into-a-reducer.md | 使用 Immer 简化 reducer @44956: …不再需要通过修改任何事件处理程序来实现不同的行为。但如果没使用 reducer 的话,你不得不在每个事件处理程序中去更新状态。  #### 从零开始实现 `useReducer` {/*
+  [CRA] react/src__content__learn__installation.md | 从零构建一个 React 应用 @931: …始一个新的 React 应用,你可以用我们推荐的框架 [创建一个 React 应用](/learn/creating-a-react-app)。  ## 从零构建一个 React 应用 {/*build-a-react-app-from-scrat
+  [CRA] vue/src__guide__built-ins__transition.md | 基于 CSS 的过渡效果 @8203: …YF0yaOFZCJjU0LE2ixGFMiH9f2gDbcVKU2M9+tl98Fm8hNMdMYi5U0tEEXraOTsFHho52mC3DuXUAHTI+PlUbIBLn6G4eQOr91xw4ZqrIZXzKVY6S97rFYRqCRabRY7X
+  [CRA] vue/src__guide__components__slots.md | 默认内容 @4876: …"options-api">  [在演练场中尝试一下](https://play.vuejs.org/#eNp1UEEOwiAQ/MrKxYu1d4Mm+gWvXChuk0YKpCyNxvh3lxIb28SEA8zuDDPzEucQ9mNCcRAymqELdFKu64MfCK6p
+  [迁移] k8s/content__zh-cn__docs__concepts__architecture__cgroups.md | 使用 CGroup v2 @2128: …DLINE_LINUX` 中添加 `systemd.unified_cgroup_hierarchy=1`, 然后执行 `sudo update-grub`。不过,推荐的方法仍是使用一个默认已启用 CGroup v2 
+  [迁移] k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md | (全文) @3355: …r-cluster/running-cloud-controller/#cloud-controller-manager) 给出了运行和管理云控制器管理器的指南。  * 要升级 HA 控制平面以使用云控制器管理器, 
+  [迁移] k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md | 变更范围和字段注意事项 @9098: … 当运行 Webhook 服务器 Pod 的节点变得不健康时,Webhook 的 Deployment 会尝试将这些 Pod 重新调度到另一个节点。
+  [迁移] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 默认值 @10467: …除操作是不允许的, 维护操作期间会重建这类配置对象。如果你不需要某个建议的配置对象, 你需要将它放在一边,并让其规约所产生的影响最小化。 对建议的配置对象而言,其维护方面的设计也支持在上线新的 `kube
+  [迁移] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 默认值 @10966: …data.generation`。 如果该值为 1,则 kube-apiserver 控制对象,否则用户控制对象。 这些规则是在 1.22 发行版中引入的,而对 `metadata.generation`
+  [迁移] react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React @4871: …-react) 以了解如何在现有 HTML 页面中渲染 React 组件。  当在现有项目中采用 React 时,通常会从小型交互式组件(例如按钮)开始,然后逐渐“向上移动”,直到最终整个页面都由 Re
+  [迁移] react/src__content__learn__extracting-state-logic-into-a-reducer.md | 使用 reducer 整合状态逻辑 @3253: …越来越多。为了降低这种复杂度,并让所有逻辑都可以存放在一个易于理解的地方,你可以将这些状态逻辑移到组件之外的一个称为 **reducer** 的函数中。  Reducer 是处理状态的另一种方式
+  [迁移] react/src__content__learn__extracting-state-logic-into-a-reducer.md | 使用 reducer 整合状态逻辑 @5480: …,你需要:  1. 声明当前状态(`tasks`)作为第一个参数; 2. 声明 `action` 对象作为第二个参数; 3. 从 `reducer` 返回 **下一个** 状态(React 会将
+  [迁移] react/src__content__learn__managing-state.md | 迁移状态逻辑至 Reducer 中 @9519: …xtarea {   height: 150px; } ```  阅读 **[对 State 进行保留和重置](/learn/preserving-and-resetting-state)** 来学习状态的生命周期以及如何控制它。  ## 
+  [迁移] react/src__content__learn__managing-state.md | 迁移状态逻辑至 Reducer 中 @13121: …>   ); } ```  ```css button { margin: 5px; } li { list-style-type: none; } ul, li { margin: 0; padding: 0; } ```  阅读 **
+  [迁移] react/src__content__learn__react-compiler__incremental-adoption.md | 为何采用渐进式迁移? @197: …用 * 使用 Babel 覆写进行基于目录的采用 * 使用 "use memo" 指令进行选择性编译 * 使用 "use no memo" 指令排除组件 * 带有 gating 的运行时特性标志 * 监控你的采用
+  [迁移] react/src__content__learn__react-compiler__incremental-adoption.md | 为何采用渐进式迁移? @499: …缘情况。这种方法对于稳定性至关重要的生产应用程序尤其有价值。  渐进式采用还使得更容易处理编译器可能发现的任何违反 React 规则的问题。你可以在扩展编译器覆盖范围的同时有条不紊地解决这些问题,而不是一次性修复
+  [迁移] tidb/develop__dev-guide-bookshop-schema-design.md | 导入表结构和数据 @3054: …DB Cloud Migration Overview](https://docs.pingcap.com/tidbcloud/tidb-cloud-migration-overview) 文档获取更多有关 TiDB Cloud 数据导入和迁移的信
+  [迁移] tidb/develop__dev-guide-insert-data.md | 批量插入 @8407: …ion](https://docs.pingcap.com/zh/tidbcloud/migrate-from-mysql-using-data-migration) 功能。可同步 MySQL 兼容数据库到 TiDB,且支持分库分表数据库的迁移。 - 数据备份与恢复:使用 [T
+  [迁移] tidb/develop__dev-guide-insert-data.md | 批量插入 @8993: …on S3 云盘读取数据。 - 数据同步工具:[TiDB Data Migration](/dm/dm-overview.md)。可同步 MySQL、MariaDB、Amazon Aurora 数据库到 TiDB 中,且支持分库分表数据库的迁移。 - 数据备份恢复工具:[Bac
+  [migrat] k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md | (全文) @3432: …的指南。  * 要升级 HA 控制平面以使用云控制器管理器, 请参见[将复制的控制平面迁移以使用云控制器管理器](/zh-cn/docs/tasks/administer-cluster/controller
+  [migrat] tidb/develop__dev-guide-bookshop-schema-design.md | 导入表结构和数据 @2943: …0 万条作者信息、100 万条评分记录以及 100 万条订单信息。  4. 点击 **Connect** > **Start Import** 开始导入数据,等待 TiDB Cloud 完成数据导入。  你可以通过 [TiDB Cloud 
+  [migrat] tidb/develop__dev-guide-insert-data.md | 批量插入 @8281: …ps://docs.pingcap.com/zh/tidbcloud/import-csv-files/)。 - 数据同步:使用 [TiDB Cloud 控制台](https://tidbcloud.com/) 中的 [TiDB Data Migration](http
+  [eject] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 资源 @5733: …Schema,分别匹配变更性和非变更性的动作。 {{< /caution >}}  当入站请求的数量大于分配的 PriorityLevelConfiguration 中允许的并发级别时, `type` 
+  [eject] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 可观察性 @12090: …e-apiserver 会暴露额外指标。 监视这些指标有助于判断你的配置是否不当地限制了重要流量, 或者发现可能会损害系统健康的,行为不良的工作负载。  #### 成熟度水平 BETA  * `a
+  [eject] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 可观察性 @12357: …解。   `reason` 标签将是以下值之一:    * `queue-full`,表明已经有太多请求排队   * `concurrency-limit`,表示将 PriorityLevelCo
+  [eject] k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 使用 API 优先级和公平性的最佳实践 @17089: … 的形式被拒绝。 为了避免这些 APF 的副作用,你可以修改你的工作负载或调整你的 APF 设置,确保有足够的席位来处理请求。  要检测请求是否由于 APF 而被拒绝
+  [eject] react/src__content__learn__adding-interactivity.md | 更新 state 中的对象 @13498: … "start": "react-scripts start",     "build": "react-scripts build",     "test": "react-scripts test --env=jsdom",
+  [eject] react/src__content__learn__adding-interactivity.md | 更新 state 中的数组 @16703: … "start": "react-scripts start",     "build": "react-scripts build",     "test": "react-scripts test --env=jsdom",
+  [eject] react/src__content__learn__choosing-the-state-structure.md | 避免深度嵌套的 state @31882: … "start": "react-scripts start",     "build": "react-scripts build",     "test": "react-scripts test --env
+  [eject] react/src__content__learn__escape-hatches.md | 将事件从 Effect 中分开 @7303: … "start": "react-scripts start",     "build": "react-scripts build",     "test": "react-scripts test --env=jsdom",     
+  [eject] react/src__content__learn__escape-hatches.md | 将事件从 Effect 中分开 @10088: … "start": "react-scripts start",     "build": "react-scripts build",     "test": "react-scripts test --env=jsdom",    
+  ...共45行,截断
+

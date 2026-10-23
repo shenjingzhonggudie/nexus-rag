@@ -1,0 +1,287 @@
+"""React 技术栈候选题数据。
+
+职责：
+    以声明式数据描述本栈的可回答题、无答案题与挑战题，供 build.py 编译。
+
+边界：
+    只描述候选题与证据位置；不含任何被测系统输出、分数或历史记录。
+
+承诺清单：
+    1. answers 中的 (doc, section) 必须能在 sections.jsonl 中唯一命中。
+    2. points 中的 quote 必须是 corpus.jsonl 该区间内的原文子串。
+    3. 无答案题必须给出 missing 与 verify（关键词、别名、范围、结论）。
+"""
+
+REACT = "react"
+
+Q: list[dict] = [
+    {
+        "id": "h_0056",
+        "stack": REACT,
+        "family_id": "react-compiler-safety",
+        "subtype": "机制说明",
+        "type": "direct",
+        "query": "React 编译器碰到疑似违反 React 规则的代码时，会怎么处理？",
+        "answers": [("react/src__content__learn__react-compiler__debugging.md", "了解编译器行为")],
+        "points": [
+            {"point": "目标是处理遵循 React 规则的代码",
+             "quote": "React 编译器旨在处理遵循 [React 规则](/reference/rules) 的代码。"},
+            {"point": "遇到可能违规的代码会安全跳过优化，而不是冒险改变行为",
+             "quote": "当遇到可能违反这些规则的代码时,它会安全地跳过优化,而不是冒险改变应用程序的行为。"},
+        ],
+    },
+    {
+        "id": "h_0057",
+        "stack": REACT,
+        "family_id": "react-compiler-debug-flow",
+        "subtype": "操作步骤",
+        "type": "direct",
+        "query": "怀疑某个组件被编译器优化出问题，调试的第一步是什么？修完之后怎么确认它已经被编译了？",
+        "answers": [("react/src__content__learn__react-compiler__debugging.md", "调试工作流程")],
+        "points": [
+            {"point": "用 \"use no memo\" 跳过该组件编译来定位",
+             "quote": '使用 `"use no memo"` 来确定问题是否与编译器相关'},
+            {"point": "问题消失则多半是违反 React 规则导致的",
+             "quote": "如果问题消失,则很可能与违反 React 规则有关。"},
+            {"point": "修复后在 React DevTools 中确认出现 ✨ 徽章",
+             "quote": "在 React DevTools 中验证组件是否显示 ✨ 徽章"},
+        ],
+    },
+    {
+        "id": "h_0058",
+        "stack": REACT,
+        "family_id": "react-compiler-directives",
+        "subtype": "跨文档对比",
+        "type": "cross_doc",
+        "query": "控制编译器作用范围的两个指令分别是什么？各自用在什么场景？",
+        "answers": [
+            ("react/src__content__learn__react-compiler__incremental-adoption.md",
+             '使用 "use memo" 的选择加入模式'),
+            ("react/src__content__learn__react-compiler__debugging.md", "调试工作流程"),
+        ],
+        "points": [
+            {"point": "annotation 模式下只编译显式加了 \"use memo\" 的组件与 Hook", "span": 0,
+             "quote": '仅编译那些通过 `"use memo"` 指令显式选择加入的组件和 Hook。'},
+            {"point": "该模式要求在每个需要优化的组件与自定义 Hook 上加指令", "span": 0,
+             "quote": '在每个需要优化的组件中添加 `"use memo"`'},
+            {"point": "排查问题时用 \"use no memo\" 临时排除组件", "span": 1,
+             "quote": '使用 `"use no memo"` 来确定问题是否与编译器相关'},
+        ],
+    },
+    {
+        "id": "h_0059",
+        "stack": REACT,
+        "family_id": "react-compiler-directory-adoption",
+        "subtype": "操作步骤",
+        "type": "direct",
+        "query": "想按目录一批一批接入 React 编译器，应该借助 Babel 的什么机制？",
+        "answers": [("react/src__content__learn__react-compiler__incremental-adoption.md",
+                     "基于目录的采用与 Babel 覆盖")],
+        "points": [
+            {"point": "用 Babel 的 overrides 选项把插件只应用到部分文件",
+             "quote": "Babel 的 `overrides` 选项允许你将不同的插件应用于代码库的不同部分。"},
+            {"point": "这对按目录逐步采用编译器非常合适",
+             "quote": "这对于逐步在各个目录中采用 React 编译器非常理想。"},
+            {"point": "示例中插件名为 babel-plugin-react-compiler",
+             "quote": "'babel-plugin-react-compiler'"},
+        ],
+    },
+    {
+        "id": "h_0060",
+        "stack": REACT,
+        "family_id": "react-compiler-gating",
+        "subtype": "机制说明",
+        "type": "direct",
+        "query": "想用功能开关在运行时决定要不要走编译器优化，该配什么？它背后的工作方式是什么？",
+        "answers": [("react/src__content__learn__react-compiler__incremental-adoption.md", "运行时控制")],
+        "points": [
+            {"point": "gating 选项可在运行时用功能标志控制编译",
+             "quote": "`gating`选项使你能够在运行时使用功能标志控制编译。"},
+            {"point": "编译器会在优化代码外包裹运行时检查，按开关返回值二选一",
+             "quote": "编译器会在优化后的代码周围添加运行时检查。如果开关返回 `true`,则运行优化版本;否则运行原始代码。"},
+        ],
+    },
+    {
+        "id": "h_0061",
+        "stack": REACT,
+        "family_id": "react-cra-status",
+        "subtype": "结论判断",
+        "type": "direct",
+        "query": "现在开始一个新的 React 项目，还应该用 Create React App 吗？",
+        "answers": [("react/src__content__learn__installation.md", "添加 React 到一个已有的项目")],
+        "points": [
+            {"point": "官方明确表示不建议再使用",
+             "quote": "不, Create React App 已经不建议使用。"},
+        ],
+    },
+    {
+        "id": "h_0062",
+        "stack": REACT,
+        "family_id": "react-recommended-frameworks",
+        "subtype": "机制说明",
+        "type": "direct",
+        "query": "React 文档首推的全栈框架有哪些？用这些框架写的应用一定要配服务器吗？",
+        "answers": [("react/src__content__learn__creating-a-react-app.md", "全栈框架")],
+        "points": [
+            {"point": "列出的框架都支持 CSR、SPA 与 SSG",
+             "quote": "本页列出的所有框架都支持客户端渲染"},
+            {"point": "可以部署到 CDN 或静态托管服务，无需服务器",
+             "quote": "这些应用可以部署到 [CDN](https://developer.mozilla.org/en-US/docs/Glossary/CDN) 或静态托管服务(无需服务器)。"},
+            {"point": "还允许针对特定路由单独启用服务端渲染",
+             "quote": "这些框架允许你根据实际需求,针对特定路由单独启用服务端渲染。"},
+        ],
+    },
+    {
+        "id": "h_0063",
+        "stack": REACT,
+        "family_id": "react-editor-linting",
+        "subtype": "必备配置",
+        "type": "direct",
+        "query": "React 项目里文档要求务必启用的是哪个 ESLint 插件规则？",
+        "answers": [("react/src__content__learn__editor-setup.md", "推荐的文本编辑器功能")],
+        "points": [
+            {"point": "必须启用 eslint-plugin-react-hooks 规则",
+             "quote": "**请确保你已经为你的项目启用了 [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks) 规则**。"},
+            {"point": "推荐的 eslint-config-react-app preset 已集成该规则",
+             "quote": "我们推荐的 [`eslint-config-react-app`](https://www.npmjs.com/package/eslint-config-react-app) preset 中已经集成了该规则。"},
+        ],
+    },
+    {
+        "id": "h_0064",
+        "stack": REACT,
+        "family_id": "react-from-scratch-tooling",
+        "subtype": "选型",
+        "type": "direct",
+        "query": "不用框架、从零搭一个 React 项目时，文档举例的构建工具有哪些？",
+        "answers": [("react/src__content__learn__build-a-react-app-from-scratch.md", "步骤 1: 安装构建工具")],
+        "points": [
+            {"point": "第一步是安装构建工具，举例为 Vite、Parcel 或 rsbuild",
+             "quote": "第一步是安装一个构建工具,如 Vite、Parcel 或 rsbuild。"},
+            {"point": "构建工具负责打包、提供开发服务器与生产构建命令",
+             "quote": "这些构建工具提供了打包和运行源代码的功能"},
+        ],
+    },
+
+    # ---- 无答案题 ----
+    {
+        "id": "h_0065",
+        "stack": REACT,
+        "family_id": "react-compiler-compatibility",
+        "subtype": "缺失版本门槛",
+        "type": "no_answer",
+        "query": "React 编译器要求的最低 React 版本是多少？",
+        "missing": "语料只把“包含 React 版本兼容性”的配置项指向外链，没有写出任何 React 版本号或最低要求。",
+        "verify": {
+            "keywords": ["React 版本兼容性", "最低版本", "React 19"],
+            "aliases": ["minimum React version", "版本要求", "编译器兼容性"],
+            "stack": "react",
+            "scope": "react 全部 25 篇文档",
+            "patterns": ["React 版本兼容性", "最低.{0,6}版本", "React \\d+\\.\\d+", "支持.{0,10}React 版本"],
+            "cross_doc_check": "react-compiler 三篇文档（index/debugging/incremental-adoption）全篇无版本号；creating-a-react-app、installation 也未给出编译器相关的版本门槛",
+            "conclusion": "无任何版本数值，判为无答案",
+        },
+    },
+    {
+        "id": "h_0066",
+        "stack": REACT,
+        "family_id": "react-compiler-toolchain",
+        "subtype": "缺失非 Babel 链路配置",
+        "type": "no_answer",
+        "query": "项目用 Vite 构建、并没有 Babel 配置时，React 编译器该怎么接进去？",
+        "missing": "语料给出的三种接入方式（Babel overrides、annotation 指令、gating）全部以 babel.config.js 为例，没有给出 Vite 等不使用 Babel 配置的构建工具的接入方式。",
+        "verify": {
+            "keywords": ["Vite", "babel-plugin-react-compiler", "vite.config"],
+            "aliases": ["构建工具集成", "插件配置", "非 Babel 链路"],
+            "stack": "react",
+            "scope": "react 全部 25 篇文档",
+            "patterns": ["Vite", "vite\\.config", "babel-plugin-react-compiler"],
+            "cross_doc_check": "build-a-react-app-from-scratch 与 add-react-to-an-existing-project 提到 Vite，但只用于创建项目与 JSX 编译，未涉及编译器插件配置",
+            "conclusion": "只有 Babel 配置样例，缺 Vite 接入方式，判为无答案",
+        },
+    },
+    {
+        "id": "h_0067",
+        "stack": REACT,
+        "family_id": "react-compiler-scope",
+        "subtype": "缺失作用范围说明",
+        "type": "no_answer",
+        "query": "React 编译器默认会编译 node_modules 里的第三方库吗？",
+        "missing": "语料只在配置项清单里提到“编译库 - 提供预编译的库”的外链，未说明依赖目录中的库是否会被编译。",
+        "verify": {
+            "keywords": ["node_modules", "编译库", "预编译的库"],
+            "aliases": ["第三方库", "依赖包", "libraries"],
+            "stack": "react",
+            "scope": "react 全部 25 篇文档",
+            "patterns": ["node_modules", "编译库", "预编译的库", "第三方库"],
+            "cross_doc_check": "react-compiler__index 的配置与参考小节只列外链标题，无正文说明；incremental-adoption 只谈按目录与指令控制本仓库代码",
+            "conclusion": "依赖目录是否被编译未被覆盖，判为无答案",
+        },
+    },
+    {
+        "id": "h_0068",
+        "stack": REACT,
+        "family_id": "react-compiler-rollout",
+        "subtype": "缺失监控手段",
+        "type": "no_answer",
+        "query": "推广 React 编译器时，文档说的“监控采用进度”具体该怎么做？",
+        "missing": "语料在开头把“监控你的采用进度”列为要点之一，但正文三种采用方式与故障排除均未给出任何监控指标或工具。",
+        "verify": {
+            "keywords": ["监控你的采用进度", "采用进度", "监控"],
+            "aliases": ["覆盖率统计", "adoption metrics", "编译覆盖率"],
+            "stack": "react",
+            "scope": "react 全部 25 篇文档",
+            "patterns": ["监控", "采用进度", "覆盖率", "A/B 测试", "衡量"],
+            "cross_doc_check": "“监控你的采用进度”只出现在 incremental-adoption.md 首个小节之前的导言区（不属于任何小节），正文中仅 A/B 测试用于衡量优化效果的说法，无监控指标或工具；debugging 提到的 \"use no memo\" 与 DevTools ✨ 徽章属于单组件排查手段",
+            "conclusion": "要点被列出但正文无任何监控实现，判为无答案",
+        },
+    },
+    {
+        "id": "h_0069",
+        "stack": REACT,
+        "family_id": "react-cra-migration",
+        "subtype": "缺失迁移步骤",
+        "type": "no_answer",
+        "query": "从 Create React App 迁到官方推荐的框架，具体要按哪几步做？",
+        "missing": "语料只给出“已经不建议使用”的结论并指向 Sunsetting Create React App 的外链，没有列出迁移步骤。",
+        "verify": {
+            "keywords": ["Create React App", "迁移", "Sunsetting"],
+            "aliases": ["CRA", "逐步淘汰", "migrate from CRA"],
+            "stack": "react",
+            "scope": "react 全部 25 篇文档",
+            "patterns": ["Create React App", "迁移", "Sunsetting"],
+            "cross_doc_check": "add-react-to-an-existing-project 讲的是在已有项目中逐步引入 React 并建议迁移到框架，不是 CRA 的具体迁移步骤",
+            "conclusion": "只有结论与外链，无步骤，判为无答案",
+        },
+    },
+
+    # ---- 挑战题（纠错，不进主集）----
+    {
+        "id": "h_0070",
+        "stack": REACT,
+        "family_id": "react-compiler-safety",
+        "subtype": "纠错",
+        "type": "multi_block",
+        "set": "challenge",
+        "kind": "correction",
+        "query": "构建被编译器报错中断，这多半是代码违反了 React 规则，对吧？",
+        "answers": [
+            ("react/src__content__learn__react-compiler__debugging.md", "了解编译器行为"),
+            ("react/src__content__learn__react-compiler__debugging.md", "调试工作流程"),
+        ],
+        "points": [
+            {"point": "编译错误发生在构建时且很少见", "span": 0,
+             "quote": "**编译错误** 发生在构建时,并会阻止你的代码编译。这类错误很少见"},
+            {"point": "编译器的设计理念是跳过有问题的代码而不是直接失败", "span": 0,
+             "quote": "因为编译器的设计理念是跳过有问题的代码而不是直接失败。"},
+            {"point": "遇到中断构建的编译器错误应视为编译器 bug 并上报", "span": 1,
+             "quote": "这很可能是编译器中的一个 bug。"},
+        ],
+        "supported": ["语料明确编译错误很罕见、编译器倾向跳过而非报错",
+                       "语料给出遇到构建中断时的处理方式：带错误信息、代码与版本上报"],
+        "unsupported": ["语料未给出编译错误的完整分类清单，也未说明除上报之外的排查路径"],
+        "correction": "前提不成立：编译错误很少见，构建被中断更可能是编译器自身缺陷，应上报而不是按规则违规处理；规则违规通常表现为运行时问题。",
+        "note": "可纠正但含不受支持部分，按规则进入扩展集。",
+    },
+]
+
+PENDING: list[dict] = []

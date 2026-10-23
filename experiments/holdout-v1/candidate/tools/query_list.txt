@@ -1,0 +1,66 @@
+h_0001 [direct] kubelet 的节点心跳到底更新的是什么对象的什么字段？控制面靠它判断节点是否可用吗？
+h_0002 [cross_doc] 一个节点向集群表明自己仍然可用，有哪两种心跳形式？各自的载体是什么？
+h_0003 [paraphrase] 节点联系不上被标记成未知状态后，控制面大概多久才会真正开始动手赶走上面的 Pod？平时又多久巡检一次节点状态？
+h_0004 [direct] 要把 Kubernetes 节点切到 CGroup v2，需要满足哪些硬性前提？
+h_0005 [paraphrase] 云控制器管理器里负责配置路由的那个控制器，为了干活至少得拿到 Node 对象的什么权限？
+h_0006 [direct] 开启混合版本代理后，如果请求被转给对等 API 服务器而对方没能应答，客户端会收到什么响应？
+h_0007 [direct] 用动态资源分配时，DeviceClass 和 ResourceSlice 应该开放给谁？申领相关的 API 又是什么作用范围？
+h_0008 [direct] 文档给出的 100 节点 DRA 集群规模测试中，kube-controller-manager 的 QPS 与 Burst 建议设成多少？
+h_0009 [paraphrase] 节点关机宽限总共设了 30 秒、其中关键 Pod 占 10 秒，那么普通 Pod 能分到多长的体面终止时间？
+h_0010 [direct] kubelet 对未使用的镜像和未使用的容器，分别多久做一次垃圾收集？
+h_0011 [multi_block] 容器日志的单个文件大小与文件数上限由哪两个 kubelet 项控制、默认是多少？kubelet 自身日志在 Linux 与 Windows 节点上默认又写到哪里？
+h_0012 [cross_doc] 除了节点心跳，Lease 在集群里还承担什么角色？要让控制面组件用上协调领导者选举，需要同时打开哪两项开关？
+h_0013 [no_answer] kubelet 的 --node-status-update-frequency 参数默认是多少秒？
+h_0014 [no_answer] kubelet 做镜像垃圾收集时，HighThresholdPercent 与 LowThresholdPercent 默认分别是多少百分比？
+h_0015 [no_answer] kube-state-metrics 默认把指标暴露在哪个端口、哪个 HTTP 路径上？
+h_0016 [no_answer] kubelet 的 imageMaximumGCAge 默认设成多久？
+h_0017 [no_answer] 按 Pod 优先级分阶段关闭节点时，kubelet 默认给每个优先级阶段分配多少秒？
+h_0056 [direct] React 编译器碰到疑似违反 React 规则的代码时，会怎么处理？
+h_0057 [direct] 怀疑某个组件被编译器优化出问题，调试的第一步是什么？修完之后怎么确认它已经被编译了？
+h_0058 [cross_doc] 控制编译器作用范围的两个指令分别是什么？各自用在什么场景？
+h_0059 [direct] 想按目录一批一批接入 React 编译器，应该借助 Babel 的什么机制？
+h_0060 [direct] 想用功能开关在运行时决定要不要走编译器优化，该配什么？它背后的工作方式是什么？
+h_0061 [direct] 现在开始一个新的 React 项目，还应该用 Create React App 吗？
+h_0062 [direct] React 文档首推的全栈框架有哪些？用这些框架写的应用一定要配服务器吗？
+h_0063 [direct] React 项目里文档要求务必启用的是哪个 ESLint 插件规则？
+h_0064 [direct] 不用框架、从零搭一个 React 项目时，文档举例的构建工具有哪些？
+h_0065 [no_answer] React 编译器要求的最低 React 版本是多少？
+h_0066 [no_answer] 项目用 Vite 构建、并没有 Babel 配置时，React 编译器该怎么接进去？
+h_0067 [no_answer] React 编译器默认会编译 node_modules 里的第三方库吗？
+h_0068 [no_answer] 推广 React 编译器时，文档说的“监控采用进度”具体该怎么做？
+h_0069 [no_answer] 从 Create React App 迁到官方推荐的框架，具体要按哪几步做？
+h_0021 [direct] 完全不知道数据库连接池该配多大时，文档给的初始经验公式是什么？CPU 核数该怎么数？
+h_0022 [multi_block] TiDB 会在连接空闲多久之后主动把客户端连接关掉？这个默认行为从哪个版本开始、由哪个变量控制？
+h_0023 [direct] Java 应用想让 TiDB 服务端真正执行预处理语句并复用，需要在 JDBC 上配哪些参数？默认值是多少？
+h_0024 [paraphrase] 开启批量改写后，什么样的插入语句才能被合并成一条 SQL 发给 TiDB？批量更新又是怎么处理的？
+h_0025 [direct] 在 (title, published_at) 上建了组合索引后，只按 published_at 过滤的查询还能用上这个索引吗？
+h_0026 [direct] 为什么 WHERE YEAR(published_at)=2022 用不上 published_at 上的索引？文档给了哪两种改写思路？
+h_0027 [multi_block] 什么叫覆盖索引优化？查询要怎么写才能吃到这个优化？
+h_0028 [direct] 查询里用 IN 做条件时，文档建议后面的匹配值最多不要超过多少个？还有哪种写法是用不上索引的？
+h_0029 [direct] 文档为什么说二级索引并不是越多越好？
+h_0030 [cross_doc] 表里的 account_id 是 varchar 类型的主键，写成 WHERE account_id=6010000000009801 时为什么会退化成全表扫描？
+h_0031 [multi_block] 按对象命名规范，唯一索引和普通索引各用什么前缀？字段名长度和字段个数又有什么上限建议？
+h_0032 [no_answer] TiDB 的 tidb_idle_transaction_timeout 默认是多少秒？
+h_0033 [no_answer] HikariCP 的 minimumIdle 在连 TiDB 时应该配成多少？
+h_0034 [no_answer] TiDB 服务端允许的最大连接数（如 max_connections 之类）默认是多少？
+h_0035 [no_answer] 要在 TiDB 里启用表达式索引，需要在配置文件中设置哪个配置项（开关名）？
+h_0036 [no_answer] 用 Cursor Fetch 方式流式取结果时，FetchSize 建议设成多少？
+h_0038 [paraphrase] 子组件没把 class 声明成 prop，父组件传进去的 class 最后会落到哪个元素上？
+h_0039 [direct] 模板有多个根节点的组件，如果不显式绑定 $attrs 会发生什么？怎么避免？
+h_0040 [direct] 能用 watch 去监听组件透传 attribute 的变化吗？不能的话有什么替代办法？
+h_0041 [paraphrase] 孙子组件触发的事件，爷爷组件能直接监听吗？跨多层级的组件通信该怎么办？
+h_0042 [direct] 把 click 这个原生事件名写进组件的 emits 声明后，父组件上的 @click 还会响应原生点击吗？
+h_0044 [direct] defineAsyncComponent 配了 loadingComponent 之后，它默认要等多久才显示？不配 timeout 时默认值是多少？
+h_0045 [direct] Suspense 初次渲染没碰到异步依赖会怎样？进入完成状态后，更深层新冒出来的异步依赖会让它重新挂起吗？
+h_0046 [cross_doc] 异步组件放进 Suspense 之后，它自己配置的加载组件和超时还有效吗？想让它自己管加载状态要怎么设？
+h_0047 [direct] KeepAlive 的 include/exclude 是按什么来匹配组件的？3.2.34 之后用 script setup 还得手写 name 吗？
+h_0048 [direct] 给 KeepAlive 传了 max 之后，缓存实例数量超了会怎样？
+h_0049 [direct] 在 setTimeout 回调里调用 onMounted 会怎么样？有没有可以放在外部函数里的情况？
+h_0050 [no_answer] KeepAlive 不传 max 的时候，默认最多能缓存多少个组件实例？
+h_0051 [no_answer] Suspense 的 timeout prop 默认是多少毫秒？
+h_0052 [no_answer] 异步组件加载失败后，Vue 默认会重试几次？
+h_0053 [no_answer] 组件用 kebab-case 名字注册后，在模板里能写成 PascalCase 标签来引用吗？
+h_0054 [no_answer] hydrateOnIdle 不传参数时，默认的最大超时是多少？
+
+=== 近重复对（阈值 0.60） ===
+无

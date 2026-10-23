@@ -1,0 +1,66 @@
+{
+ "version": "1.0.0",
+ "sealed_at": "2026-10-23T13:02:23+08:00",
+ "dataset": "rag-holdout",
+ "counts": {
+  "main": 62,
+  "main_by_type": {
+   "cross_doc": 5,
+   "direct": 29,
+   "multi_block": 3,
+   "no_answer": 20,
+   "paraphrase": 5
+  },
+  "challenges": 4,
+  "pending": 2,
+  "excluded": 1
+ },
+ "files": {
+  "sealed/qrels.test.json": "8e3646a21532da400719d6827dec08f7ccd726bf103a9f446fce12d971ae94f8",
+  "sealed/metadata.jsonl": "bdb4ea3410f208f7a4506bcec5a022cf47cab264dc3b3f0a4a626ce87fe953dc",
+  "sealed/challenges.jsonl": "c1407a2e5bff336ec482781d82a4e65138fcda77e8a3fd39a99b9050641ab788",
+  "input/corpus.jsonl": "30a94bb24273451c6fe56a36e4cf771ee751044aa1a977d76fc926df66d780a9",
+  "input/sections.jsonl": "c62b86cda7b7db6c7ad5a8c62813e93f8e70ef7b406052e5244ca476e9c5bcf2",
+  "input/old_queries.jsonl": "b520cedc72f4420e10090bc8aea6e92299a5f8658a839149cd89457bea22871a",
+  "input/corpus_manifest.json": "e1df720b5cee9c259355d965d6aec9ecf570e1ef0f5aa0142052b42e528914ec"
+ },
+ "corpus_docs": 100,
+ "revision_log": [
+  {
+   "at": "2026-10-23T13:02:23+08:00",
+   "id": "h_0022",
+   "change": "type multi_block→direct；answers 收敛为『连接池参数』[212,4553)",
+   "reason": "原标 multi_block 双区间；答案（v5.4 起空闲 28800 秒自动关闭、wait_timeout 控制）完整见于『连接池参数』区间，含 v5.4 前默认不关闭的对照。修订为 direct，仅保留 [212,4553)；第二区间与 h_0023/h_0024 重复且仅余补充信息",
+   "by": "独立审核"
+  },
+  {
+   "at": "2026-10-23T13:02:23+08:00",
+   "id": "h_0038",
+   "change": "从主集排除",
+   "reason": "与开发题 q_0199『传给组件的 class 没在 props 里声明，最后会跑到哪去？』语义近重复（同一事实关系：未声明 class 透传落到根元素），按去重规则排除",
+   "by": "独立审核"
+  }
+ ],
+ "eval_protocol": {
+  "answerable_false_rejection_rate": "可回答题（direct/paraphrase/multi_block/cross_doc，n=42）中被系统整体拒答的比例；越低越好",
+  "no_answer_refusal": "按类别统计正确拒答数/总数（含困难无答案子类：主题在语料中存在但所问具体点缺失，如 h_0013/h_0035/h_0053/h_0068）",
+  "answerable_retrieval": "recall@5 与 MRR，块级命中=检索片段与任一标注区间同文档且存在重叠；k=5",
+  "caveat": "区间/块命中率只衡量检索层面，不得解释为最终回答正确率；最终回答正确率需人工检查返回证据是否充分",
+  "human_verification_subset": [
+   "h_0003",
+   "h_0011",
+   "h_0013",
+   "h_0021",
+   "h_0030",
+   "h_0032",
+   "h_0044",
+   "h_0046",
+   "h_0053",
+   "h_0059",
+   "h_0062",
+   "h_0068"
+  ],
+  "human_subset_note": "验收前固定，按栈×类型分层，含 3 条困难无答案；不看系统表现挑选",
+  "integrity": "审核不参考系统表现；封存后修订须保留 revision_log 并递增版本号"
+ }
+}

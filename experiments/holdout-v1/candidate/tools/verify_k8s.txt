@@ -1,0 +1,127 @@
+================================================================================
+CASE: k8s-node-status-update-frequency-default stack: k8s
+-- pattern: 'node-status-update-frequency' -> 1 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 管理 | 625-4565]
+   ... /docs/reference/access-authn-authz/admission-controllers/#noderestriction)所实施的标签限制)。 - `--node-status-update-frequency` - 指定 kubelet 向 API 服务器发送其节点状态的频率。  当 [Node 鉴权模式](/zh-cn/docs/reference/access-authn-auth
+-- pattern: '节点状态.{0,10}频率' -> 1 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 管理 | 625-4565]
+   ... s/#noderestriction)所实施的标签限制)。 - `--node-status-update-frequency` - 指定 kubelet 向 API 服务器发送其节点状态的频率。  当 [Node 鉴权模式](/zh-cn/docs/reference/access-authn-authz/node/)和 [NodeRestriction 准入插件](/
+-- pattern: '上报频率' -> 0 hit(s)
+================================================================================
+CASE: k8s-image-gc-threshold-default stack: k8s
+-- pattern: 'HighThresholdPercent' -> 2 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 | 3504-5518]
+   ... ary_tooltip text="cadvisor" term_id="cadvisor" >}} 协同。 kubelet 在作出垃圾收集决定时会考虑如下磁盘用量约束:  * `HighThresholdPercent` * `LowThresholdPercent`  磁盘用量超出所配置的 `HighThresholdPercent` 值时会触发垃圾收集, 垃圾收集器会基于镜像上次被使用的时间
+   [k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 | 3504-5518]
+   ... let 在作出垃圾收集决定时会考虑如下磁盘用量约束:  * `HighThresholdPercent` * `LowThresholdPercent`  磁盘用量超出所配置的 `HighThresholdPercent` 值时会触发垃圾收集, 垃圾收集器会基于镜像上次被使用的时间来按顺序删除它们,首先删除的是最近未使用的镜像。 kubelet 会持续删除镜像,直到磁盘用量到达 `LowThres
+-- pattern: 'LowThresholdPercent' -> 2 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 | 3504-5518]
+   ... r" term_id="cadvisor" >}} 协同。 kubelet 在作出垃圾收集决定时会考虑如下磁盘用量约束:  * `HighThresholdPercent` * `LowThresholdPercent`  磁盘用量超出所配置的 `HighThresholdPercent` 值时会触发垃圾收集, 垃圾收集器会基于镜像上次被使用的时间来按顺序删除它们,首先删除的是最近未使用的镜像。
+   [k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 | 3504-5518]
+   ... dPercent` 值时会触发垃圾收集, 垃圾收集器会基于镜像上次被使用的时间来按顺序删除它们,首先删除的是最近未使用的镜像。 kubelet 会持续删除镜像,直到磁盘用量到达 `LowThresholdPercent` 值为止。  #### 未使用容器镜像的垃圾收集     {#image-maximum-age-gc}  不论磁盘使用情况如何,你都可以指定本地镜像未被使用的最长时间。 这是一
+-- pattern: '阈值.{0,10}百分比' -> 0 hit(s)
+================================================================================
+CASE: k8s-ksm-endpoint-port stack: k8s
+-- pattern: 'kube-state-metrics' -> 8 hit(s)
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 插桩 | 4594-4709]
+   ... 节点状况](/zh-cn/docs/concepts/architecture/nodes/#condition)。  ## 插桩  {#instrumentation}  * [kube-state-metrics](/zh-cn/docs/concepts/cluster-administration/kube-state-metrics)  ## 遗留 Add-on   {#legacy
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 插桩 | 4594-4709]
+   ... 桩  {#instrumentation}  * [kube-state-metrics](/zh-cn/docs/concepts/cluster-administration/kube-state-metrics)  ## 遗留 Add-on   {#legacy-addons}  还有一些其它 add-on 归档在已废弃的 [cluster/addons](https://git.k8s
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:使用来自 kube-state-metrics 的指标查询集群状态 | 530-803]
+   ... e="true" %}}  有能力(例如通过 Prometheus)抓取 kube-state-metrics 端点的外部组件现在可用于实现以下使用场景。  ## 示例:使用来自 kube-state-metrics 的指标查询集群状态   {#example-kube-state-metrics-query-1}  通过 kube-state-metrics 生成的系列指标有助于进一步洞察集
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:使用来自 kube-state-metrics 的指标查询集群状态 | 530-803]
+   ... -state-metrics 端点的外部组件现在可用于实现以下使用场景。  ## 示例:使用来自 kube-state-metrics 的指标查询集群状态   {#example-kube-state-metrics-query-1}  通过 kube-state-metrics 生成的系列指标有助于进一步洞察集群,因为这些指标可用于查询。  如果你使用 Prometheus 或其他采用相同查
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:使用来自 kube-state-metrics 的指标查询集群状态 | 530-803]
+   ... 用场景。  ## 示例:使用来自 kube-state-metrics 的指标查询集群状态   {#example-kube-state-metrics-query-1}  通过 kube-state-metrics 生成的系列指标有助于进一步洞察集群,因为这些指标可用于查询。  如果你使用 Prometheus 或其他采用相同查询语言的工具,则以下 PromQL 查询将返回未就绪的 Pod 
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:基于 kube-state-metrics 发出警报 | 803-1382]
+   ... 数:  ``` count(kube_pod_status_ready{condition="false"}) by (namespace, pod) ```  ## 示例:基于 kube-state-metrics 发出警报   {#example-kube-state-metrics-alert-1}  kube-state-metrics 生成的指标还允许在集群中出现问题时发出警报。  
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:基于 kube-state-metrics 发出警报 | 803-1382]
+   ... condition="false"}) by (namespace, pod) ```  ## 示例:基于 kube-state-metrics 发出警报   {#example-kube-state-metrics-alert-1}  kube-state-metrics 生成的指标还允许在集群中出现问题时发出警报。  如果你使用 Prometheus 或类似采用相同警报规则语言的工具,若有
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md | 示例:基于 kube-state-metrics 发出警报 | 803-1382]
+   ... pace, pod) ```  ## 示例:基于 kube-state-metrics 发出警报   {#example-kube-state-metrics-alert-1}  kube-state-metrics 生成的指标还允许在集群中出现问题时发出警报。  如果你使用 Prometheus 或类似采用相同警报规则语言的工具,若有某些 Pod 处于 `Terminating` 状态超过 
+-- pattern: 'HTTP 端点' -> 0 hit(s)
+-- pattern: ':\\d{4,5}/metrics' -> 0 hit(s)
+-- pattern: '端口' -> 8 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 节点到控制面 | 242-1410]
+   ...  所有从节点(或运行于其上的 Pod)发出的 API 调用都终止于 API 服务器。 其它控制面组件都没有被设计为可暴露远程服务。 API 服务器被配置为在一个安全的 HTTPS 端口(通常为 443)上监听远程连接请求, 并启用一种或多种形式的客户端[身份认证](/zh-cn/docs/reference/access-authn-authz/authenti
+   [k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 节点到控制面 | 242-1410]
+   ... y_tooltip text="kube-proxy" term_id="kube-proxy" >}}`)转发请求到 API 服务器的 HTTPS 末端。  控制面组件也通过安全端口与集群的 API 服务器通信。  这样,从集群节点和节点上运行的 Pod 到控制面的连接的缺省操作模式即是安全的, 能够在不可信的网络或公网上运行。  ## 控制面到节点  {#c
+   [k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 控制面到节点 | 1410-3189]
+   ... ubelet}  从 API 服务器到 kubelet 的连接用于:  * 获取 Pod 日志。 * 挂接(通过 kubectl)到运行中的 Pod。 * 提供 kubelet 的端口转发功能。  这些连接终止于 kubelet 的 HTTPS 末端。 默认情况下,API 服务器不检查 kubelet 的服务证书。这使得此类连接容易受到中间人攻击, 在非受信网络
+   [k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md | 控制面到节点 | 1410-3189]
+   ... .ssh.com/academy/ssh/tunneling)来保护从控制面到节点的通信路径。 在这种配置下,API 服务器建立一个到集群中各节点的 SSH 隧道(连接到在 22 端口监听的 SSH 服务器) 并通过这个隧道传输所有到 kubelet、节点、Pod 或服务的请求。 这一隧道保证通信不会被暴露到集群节点所运行的网络之外。  {{< note >}}
+   [k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md |  | 3189-4035]
+   ... pi/) * [设置 Konnectivity 服务](/zh-cn/docs/tasks/extend-kubernetes/setup-konnectivity/) * [使用端口转发来访问集群中的应用](/zh-cn/docs/tasks/access-application-cluster/port-forward-access-application-
+   [k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md |  | 3189-4035]
+   ... docs/tasks/debug/debug-application/debug-running-pod/#examine-pod-logs)   以及如何[使用 kubectl 端口转发](/zh-cn/docs/tasks/access-application-cluster/port-forward-access-application-cluster/#
+   [k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md | 启用对等聚合发现和混合版本代理 | 594-2101]
+   ... se-ip=`应由对等方用于代理请求的 kube-apiserver IP` --peer-advertise-port=`应由对等方用于代理请求的 kube-apiserver 端口`  # ... 和其他常规标志 ```  ### API 服务器之间的代理传输和身份验证   {#transport-and-authn}  * 源 kube-apiserver
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md | 健康检查并发豁免 | 11229-11710]
+   ... k-concurrency-exemption}  推荐配置没有为本地 kubelet 对 kube-apiserver 执行健康检查的请求进行任何特殊处理 ——它们倾向于使用安全端口,但不提供凭据。 在推荐配置中,这些请求将分配 `global-default` FlowSchema 和 `global-default` 优先级, 这样其他流量可以排除健康检查
+================================================================================
+CASE: k8s-cni-plugin-names stack: k8s
+-- pattern: 'CNI' -> 8 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture___index.md | 插件(Addons) | 2688-3948]
+   ... 插件](/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins) 是实现容器网络接口(CNI)规范的软件组件。它们负责为 Pod 分配 IP 地址, 并使这些 Pod 能在集群内部相互通信。  ## 架构变种    {#architecture-variations}  
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... 供额外的、可选的可观察性和安全功能。   Cilium 是一个[毕业级别的 CNCF 项目](https://www.cncf.io/projects/cilium/)。  * [CNI-Genie](https://github.com/cni-genie/CNI-Genie) 使 Kubernetes 无缝连接到   Calico、Canal、Flannel 
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... CF 项目](https://www.cncf.io/projects/cilium/)。  * [CNI-Genie](https://github.com/cni-genie/CNI-Genie) 使 Kubernetes 无缝连接到   Calico、Canal、Flannel 或 Weave 等其中一种 CNI 插件。   CNI-Genie 是一个[沙箱
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... //github.com/cni-genie/CNI-Genie) 使 Kubernetes 无缝连接到   Calico、Canal、Flannel 或 Weave 等其中一种 CNI 插件。   CNI-Genie 是一个[沙箱级的 CNCF 项目](https://www.cncf.io/projects/cni-genie/)。 * [Contiv](ht
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... om/cni-genie/CNI-Genie) 使 Kubernetes 无缝连接到   Calico、Canal、Flannel 或 Weave 等其中一种 CNI 插件。   CNI-Genie 是一个[沙箱级的 CNCF 项目](https://www.cncf.io/projects/cni-genie/)。 * [Contiv](https://cont
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... tps://github.com/k8snetworkplumbingwg/multus-cni) 是一个多插件,   可在 Kubernetes 中提供多种网络支持,以支持所有 CNI 插件(例如 Calico、Cilium、Contiv、Flannel),   而且包含了在 Kubernetes 中基于 SRIOV、DPDK、OVS-DPDK 和 VPP 的工
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... OVS 实现的负载均衡器和网络策略。 * [Nodus](https://github.com/akraino-edge-stack/icn-nodus) 是一个基于 OVN 的 CNI 控制器插件,   提供基于云原生的服务功能链(SFC)。  * [NSX-T](https://docs.vmware.com/en/VMware-NSX-T-Data-Cent
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ...  * [Terway](https://github.com/AliyunContainerService/terway/)   是一套基于阿里云 VPC 和 ECS 网络产品的 CNI 插件,能够在阿里云环境中提供原生的 VPC 网络和网络策略支持。 * [Weave Net](https://github.com/rajch/weave#using-weave
+-- pattern: '网络插件' -> 8 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture___index.md | 节点组件 | 2232-2688]
+   ... y(可选)  {#kube-proxy}  {{< glossary_definition term_id="kube-proxy" length="all" >}} 如果你使用[网络插件](#network-plugins)为 Service 实现本身的数据包转发, 并提供与 kube-proxy 等效的行为,那么你不需要在集群中的节点上运行 kube-proxy
+   [k8s/content__zh-cn__docs__concepts__architecture___index.md | 插件(Addons) | 2688-3948]
+   ... ncepts/cluster-administration/logging/)机制负责将容器的日志数据保存到一个集中的日志存储中, 这种集中日志存储提供搜索和浏览接口。  ### 网络插件   {#network-plugins}  [网络插件](/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/n
+   [k8s/content__zh-cn__docs__concepts__architecture___index.md | 插件(Addons) | 2688-3948]
+   ... n/logging/)机制负责将容器的日志数据保存到一个集中的日志存储中, 这种集中日志存储提供搜索和浏览接口。  ### 网络插件   {#network-plugins}  [网络插件](/zh-cn/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins) 是实现容器网络接口(CN
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md | 变更范围和字段注意事项 | 7420-11264]
+   ... ebhook 相互检查对方的 Pod。如果这两个 Webhook 同时变得不可用,   那么任何一个 Webhook 都无法启动。 * 你的 Webhook 拦截了集群插件组件(如网络插件或存储插件),而这些插件是   Webhook 所依赖的。如果 Webhook 和依赖的插件同时变得不可用,则两个组件都无法正常工作。  为了避免这种循环依赖,可以尝试以下方法: 
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md | Kubernetes IP 地址范围 | 618-997]
+   ... p-address-ranges}  Kubernetes 集群需要从以下组件中配置的可用地址范围中为 Pod、Service 和 Node 分配不重叠的 IP 地址:  - 配置网络插件并向 Pod 分配 IP 地址。 - 配置 kube-apiserver 并向 Service 分配 IP 地址。 - 配置 kubelet 或 cloud-controller-
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md | 集群网络类型 | 997-1687]
+   ... # 集群网络类型   {#cluster-network-ipfamilies}  根据配置的 IP 协议族,Kubernetes 集群可以分为以下几类:  - 仅 IPv4:配置网络插件、kube-apiserver 和 kubelet/cloud-controller-manager 来仅分配 IPv4 地址。 - 仅 IPv6:配置网络插件、kube-apis
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md | 集群网络类型 | 997-1687]
+   ...  仅 IPv4:配置网络插件、kube-apiserver 和 kubelet/cloud-controller-manager 来仅分配 IPv4 地址。 - 仅 IPv6:配置网络插件、kube-apiserver 和 kubelet/cloud-controller-manager 来仅分配 IPv6 地址。 - IPv4/IPv6 或 IPv6/IPv4 [
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md | 集群网络类型 | 997-1687]
+   ... IPv4/IPv6 或 IPv6/IPv4 [双协议栈](/zh-cn/docs/concepts/services-networking/dual-stack/):   - 配置网络插件来分配 IPv4 和 IPv6 地址。   - 配置kube-apiserver 来分配 IPv4 和 IPv6 地址。   - 配置kubelet 或 cloud-control
+-- pattern: 'Calico|Flannel|Cilium|Weave' -> 8 hit(s)
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... en vSwitch 作为网络的数据面。   Antrea 是一个[沙箱级的 CNCF 项目](https://www.cncf.io/projects/antrea/)。 * [Calico](https://www.tigera.io/project-calico/) 是一个联网和网络策略供应商。   Calico 支持一套灵活的网络选项,因此你可以根据自己的情况选
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... .io/projects/antrea/)。 * [Calico](https://www.tigera.io/project-calico/) 是一个联网和网络策略供应商。   Calico 支持一套灵活的网络选项,因此你可以根据自己的情况选择最有效的选项,包括非覆盖和覆盖网络,带或不带 BGP。   Calico 使用相同的引擎为主机、Pod 和(如果使用 Isti
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... -calico/) 是一个联网和网络策略供应商。   Calico 支持一套灵活的网络选项,因此你可以根据自己的情况选择最有效的选项,包括非覆盖和覆盖网络,带或不带 BGP。   Calico 使用相同的引擎为主机、Pod 和(如果使用 Istio 和 Envoy)应用程序在服务网格层执行网络策略。  * [Canal](https://projectcalico.do
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... al](https://projectcalico.docs.tigera.io/getting-started/kubernetes/flannel/flannel)   结合 Flannel 和 Calico,提供联网和网络策略。 * [Cilium](https://github.com/cilium/cilium) 是一种网络、可观察性和安全解决方案,具有基于 e
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... //projectcalico.docs.tigera.io/getting-started/kubernetes/flannel/flannel)   结合 Flannel 和 Calico,提供联网和网络策略。 * [Cilium](https://github.com/cilium/cilium) 是一种网络、可观察性和安全解决方案,具有基于 eBPF 的数据平面
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... tigera.io/getting-started/kubernetes/flannel/flannel)   结合 Flannel 和 Calico,提供联网和网络策略。 * [Cilium](https://github.com/cilium/cilium) 是一种网络、可观察性和安全解决方案,具有基于 eBPF 的数据平面。   Cilium 提供了简单的 3 层
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... 网和网络策略。 * [Cilium](https://github.com/cilium/cilium) 是一种网络、可观察性和安全解决方案,具有基于 eBPF 的数据平面。   Cilium 提供了简单的 3 层扁平网络,   能够以原生路由(routing)和覆盖/封装(overlay/encapsulation)模式跨越多个集群,   并且可以使用与网络寻址分离的
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md | 联网和网络策略 | 105-3820]
+   ... ting)和覆盖/封装(overlay/encapsulation)模式跨越多个集群,   并且可以使用与网络寻址分离的基于身份的安全模型在 L3 至 L7 上实施网络策略。   Cilium 可以作为 kube-proxy 的替代品;它还提供额外的、可选的可观察性和安全功能。   Cilium 是一个[毕业级别的 CNCF 项目](https://www.cncf.i
+================================================================================
+CASE: k8s-node-lease-duration stack: k8s
+-- pattern: 'leaseDurationSeconds' -> 4 hit(s)
+   [k8s/content__zh-cn__docs__concepts__architecture__leases.md | API 服务器身份 | 1200-3302]
+   ... lderIdentity: apiserver-07a5ea9b9b072c4a5f3d1c3702_0c8914f7-0f35-440e-8676-7844977d3a05   leaseDurationSeconds: 3600   renewTime: "2023-07-04T21:58:48.065888Z" ```  kube-apiserver 中不再存续的已到期租约将在到期 1 小时
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md | Kubernetes 组件的领导者选举 | 1050-2926]
+   ... 领导者的标识(例如:Pod 名称或基于主机名的字符串)。  `acquireTime` : 获得领导权时的时间戳。  `renewTime` : 领导者最近一次续约的时间戳。  `leaseDurationSeconds` : 租约的有效期(候选实例在尝试获取过期租约之前,应等待此时间再加上一小段宽限时间)。  `leaseTransitions` : 领导权发生变更的次数。  这些字段表明哪个实
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md | Kubernetes 组件的领导者选举 | 1050-2926]
+   ... 效期。  当 [Lease](/zh-cn/docs/concepts/architecture/leases/) 不存在或已经过期 (当前时间 > `renewTime` + `leaseDurationSeconds`)时,候选实例尝试使用自己的身份更新此 Lease。 Kubernetes 通过对象的 `resourceVersion` 使用 **乐观并发控制**: 在并发更新时,由于版本不
+   [k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md | Kubernetes 组件的领导者选举 | 1050-2926]
+   ... re/leases/),其余候选者将竞争获取领导权并选举新的**领导者**。  一旦当选,领导者通过更新 `renewTime` 字段来周期性地续约其 Lease (例如,每隔 `leaseDurationSeconds` ÷ 2 进行一次续约,以避免在 [Lease](/zh-cn/docs/concepts/architecture/leases/) 即将过期时产生冲突)。 只要在租约过期之前
+-- pattern: '租约时长' -> 0 hit(s)
+-- pattern: '节点心跳.{0,30}秒' -> 0 hit(s)
+-- pattern: 'nodeLeaseDurationSeconds' -> 0 hit(s)

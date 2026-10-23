@@ -1,0 +1,3298 @@
+====================================================================================================
+h_0001 [direct] kubelet 的节点心跳到底更新的是什么对象的什么字段？控制面靠它判断节点是否可用吗？
+--- k8s/content__zh-cn__docs__concepts__architecture__leases.md | 节点心跳 | [266,629) len=363
+## 节点心跳  {#node-heart-beats}
+
+Kubernetes 使用 Lease API 将 kubelet 节点心跳传递到 Kubernetes API 服务器。
+对于每个 `Node`,在 `kube-node-lease` 名字空间中都有一个具有匹配名称的 `Lease` 对象。
+在此基础上,每个 kubelet 心跳都是对该 `Lease` 对象的 **update** 请求,更新该 Lease 的 `spec.renewTime` 字段。
+Kubernetes 控制平面使用此字段的时间戳来确定此 `Node` 的可用性。
+
+更多细节请参阅 [Node Lease 对象](/zh-cn/docs/concepts/architecture/nodes/#node-heartbeats)。
+
+
+====================================================================================================
+h_0002 [cross_doc] 一个节点向集群表明自己仍然可用，有哪两种心跳形式？各自的载体是什么？
+--- k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 节点心跳 | [5011,5329) len=318
+## 节点心跳  {#node-heartbeats}
+
+Kubernetes 节点发送的心跳帮助你的集群确定每个节点的可用性,并在检测到故障时采取行动。
+
+对于节点,有两种形式的心跳:
+
+* 更新节点的 [`.status`](/zh-cn/docs/reference/node/node-status/)
+* `kube-node-lease` {{<glossary_tooltip term_id="namespace" text="名字空间">}}中的
+  [Lease(租约)](/zh-cn/docs/concepts/architecture/leases/)对象。
+  每个节点都有一个关联的 Lease 对象。
+
+
+--- k8s/content__zh-cn__docs__concepts__architecture__leases.md | 节点心跳 | [266,629) len=363
+## 节点心跳  {#node-heart-beats}
+
+Kubernetes 使用 Lease API 将 kubelet 节点心跳传递到 Kubernetes API 服务器。
+对于每个 `Node`,在 `kube-node-lease` 名字空间中都有一个具有匹配名称的 `Lease` 对象。
+在此基础上,每个 kubelet 心跳都是对该 `Lease` 对象的 **update** 请求,更新该 Lease 的 `spec.renewTime` 字段。
+Kubernetes 控制平面使用此字段的时间戳来确定此 `Node` 的可用性。
+
+更多细节请参阅 [Node Lease 对象](/zh-cn/docs/concepts/architecture/nodes/#node-heartbeats)。
+
+
+====================================================================================================
+h_0003 [paraphrase] 节点联系不上被标记成未知状态后，控制面大概多久才会真正开始动手赶走上面的 Pod？平时又多久巡检一次节点状态？
+--- k8s/content__zh-cn__docs__concepts__architecture__nodes.md | 节点控制器 | [5329,6932) len=1603
+## 节点控制器  {#node-controller}
+
+节点{{< glossary_tooltip text="控制器" term_id="controller" >}}是 Kubernetes 控制面组件,
+管理节点的方方面面。
+
+节点控制器在节点的生命周期中扮演多个角色。
+第一个是当节点注册时为它分配一个 CIDR 区段(如果启用了 CIDR 分配)。
+
+第二个是保持节点控制器内的节点列表与云服务商所提供的可用机器列表同步。
+如果在云环境下运行,只要某节点不健康,节点控制器就会询问云服务是否节点的虚拟机仍可用。
+如果不可用,节点控制器会将该节点从它的节点列表删除。
+
+第三个是监控节点的健康状况。节点控制器负责:
+
+- 在节点不可达的情况下,在 Node 的 `.status` 中更新 `Ready` 状况。
+  在这种情况下,节点控制器将 NodeReady 状况更新为 `Unknown`。
+- 如果节点仍然无法访问:对于不可达节点上的所有 Pod 触发
+  [API 发起的逐出](/zh-cn/docs/concepts/scheduling-eviction/api-eviction/)操作。
+  默认情况下,节点控制器在将节点标记为 `Unknown` 后等待 5 分钟提交第一个驱逐请求。
+
+默认情况下,节点控制器每 5 秒检查一次节点状态,可以使用 `kube-controller-manager`
+组件上的 `--node-monitor-period` 参数来配置周期。
+
+### 逐出速率限制  {#rate-limits-on-eviction}
+
+大部分情况下,节点控制器把逐出速率限制在每秒 `--node-eviction-rate` 个(默认为 0.1)。
+这表示它每 10 秒钟内至多从一个节点驱逐 Pod。
+
+当一个可用区域(Availability Zone)中的节点变为不健康时,节点的驱逐行为将发生改变。
+节点控制器会同时检查可用区域中不健康(`Ready` 状况为 `Unknown` 或 `False`)
+的节点的百分比:
+
+- 如果不健康节点的比例超过 `--unhealthy-zone-threshold`(默认为 0.55),
+  驱逐速率将会降低。
+- 如果集群较小(意即小于等于 `--large-cluster-size-threshold` 个节点 - 默认为 50),
+  驱逐操作将会停止。
+- 否则驱逐速率将降为每秒 `--secondary-node-eviction-rate` 个(默认为 0.01)。
+
+在逐个可用区域中实施这些策略的原因是,
+当一个可用区域可能从控制面脱离时其它可用区域可能仍然保持连接。
+如果你的集群没有跨越云服务商的多个可用区域,那(整个集群)就只有一个可用区域。
+
+跨多个可用区域部署你的节点的一个关键原因是当某个可用区域整体出现故障时,
+工作负载可以转移到健康的可用区域。
+因此,如果一个可用区域中的所有节点都不健康时,节点控制器会以正常的速率
+`--node-eviction-rate` 进行驱逐操作。
+在所有的可用区域都不健康(也即集群中没有健康节点)的极端情况下,
+节点控制器将假设控制面与节点间的连接出了某些问题,它将停止所有驱逐动作
+(如果故障后部分节点重新连接,节点控制器会从剩下不健康或者不可达节点中驱逐 Pod)。
+
+节点控制器还负责驱逐运行在拥有 `NoExecute` 污点的节点上的 Pod,
+除非这些 Pod 能够容忍此污点。
+节点控制器还负责根据节点故障(例如节点不可访问或没有就绪)
+为其添加{{< glossary_tooltip text="污点" term_id="taint" >}}。
+这意味着调度器不会将 Pod 调度到不健康的节点上。
+
+
+====================================================================================================
+h_0004 [direct] 要把 Kubernetes 节点切到 CGroup v2，需要满足哪些硬性前提？
+--- k8s/content__zh-cn__docs__concepts__architecture__cgroups.md | 使用 CGroup v2 | [935,3367) len=2432
+## 使用 CGroup v2  {#using-cgroupv2}
+
+使用 CGroup v2 的推荐方法是使用一个默认启用 CGroup v2 的 Linux 发行版。
+
+要检查你的发行版是否使用 CGroup v2,请参阅[识别 Linux 节点上的 CGroup 版本](#check-cgroup-version)。
+
+### 要求  {#requirements}
+
+CGroup v2 具有以下要求:
+
+* 操作系统发行版启用 CGroup v2
+* Linux 内核为 5.8 或更高版本
+* 容器运行时支持 CGroup v2。例如:
+  * [containerd](https://containerd.io/) v1.4 和更高版本
+  * [cri-o](https://cri-o.io/) v1.20 和更高版本
+* kubelet 和容器运行时被配置为使用
+  [systemd CGroup 驱动](/zh-cn/docs/setup/production-environment/container-runtimes#systemd-cgroup-driver)
+
+### Linux 发行版 CGroup v2 支持  {#linux-distribution-cgroup-v2-support}
+
+有关使用 CGroup v2 的 Linux 发行版的列表,请参阅
+[CGroup v2 文档](https://github.com/opencontainers/runc/blob/main/docs/cgroup-v2.md)。
+
+* Container-Optimized OS(从 M97 开始)
+* Ubuntu(从 21.10 开始,推荐 22.04+)
+* Debian GNU/Linux(从 Debian 11 Bullseye 开始)
+* Fedora(从 31 开始)
+* Arch Linux(从 2021 年 4 月开始)
+* RHEL 和类似 RHEL 的发行版(从 9 开始)
+
+要检查你的发行版是否使用 CGroup v2,
+请参阅你的发行版文档或遵循[识别 Linux 节点上的 CGroup 版本](#check-cgroup-version)中的指示说明。
+
+你还可以通过修改内核 cmdline 引导参数在你的 Linux 发行版上手动启用 CGroup v2。
+如果你的发行版使用 GRUB,则应在 `/etc/default/grub` 下的 `GRUB_CMDLINE_LINUX`
+中添加 `systemd.unified_cgroup_hierarchy=1`,
+然后执行 `sudo update-grub`。不过,推荐的方法仍是使用一个默认已启用 CGroup v2 的发行版。
+
+### 迁移到 CGroup v2   {#migrating-cgroupv2}
+
+要迁移到 CGroup v2,需确保满足[要求](#requirements),然后升级到一个默认启用
+CGroup v2 的内核版本。
+
+kubelet 能够自动检测操作系统是否运行在 CGroup v2 上并相应调整其操作,无需额外配置。
+
+切换到 CGroup v2 时,用户体验应没有任何明显差异,
+除非用户直接在节点上或从容器内访问 CGroup 文件系统。
+
+CGroup v2 使用一个与 CGroup v1 不同的 API,因此如果有任何应用直接访问 CGroup 文件系统,
+则需要将这些应用更新为支持 CGroup v2 的版本。例如:
+
+* 一些第三方监控和安全代理可能依赖于 CGroup 文件系统。你要将这些代理更新到支持 CGroup v2 的版本。
+* 如果以独立的 DaemonSet 的形式运行 [cAdvisor](https://github.com/google/cadvisor)
+  以监控 Pod 和容器,需将其更新到 v0.43.0 或更高版本。
+* 如果你部署 Java 应用程序,最好使用完全支持 CGroup v2 的版本:
+    * [OpenJDK / HotSpot](https://bugs.openjdk.org/browse/JDK-8230305):jdk8u372、11.0.16、15
+      及更高的版本
+    * [IBM Semeru Runtimes](https://www.ibm.com/support/pages/apar/IJ46681):8.0.382.0、11.0.20.0、17.0.8.0
+      及更高的版本
+    * [IBM Java](https://www.ibm.com/support/pages/apar/IJ46681):8.0.8.6
+      及更高的版本
+* 如果你正在使用 [uber-go/automaxprocs](https://github.com/uber-go/automaxprocs) 包,
+  确保你使用的版本是 v1.5.1 或者更高。
+
+* 如果你部署 [Node.js](https://nodejs.org/) 应用,建议使用能够检测 CGroup v2
+  内存限制的版本。从 Node.js v20.3.0 开始,Node.js 通过 [libuv](https://libuv.org/)
+  读取 CGroup v2 内存限制。v18 发行线不能可靠地检测 CGroup v2 内存限制。
+  没有此支持的版本可能会读取主机的总内存,而不是应用于 Pod 的限制,
+  这可能导致堆大小不正确和内存不足(OOM)终止。在受影响的版本上,明确设置堆大小,
+  例如使用 `--max-old-space-size` 标志。
+
+
+====================================================================================================
+h_0005 [paraphrase] 云控制器管理器里负责配置路由的那个控制器，为了干活至少得拿到 Node 对象的什么权限？
+--- k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md | 鉴权 | [1581,3161) len=1580
+## 鉴权   {#authorization}
+
+本节分别讲述云控制器管理器为了完成自身工作而产生的对各类 API 对象的访问需求。
+
+### 节点控制器  {#authorization-node-controller}
+
+节点控制器只操作 Node 对象。它需要读取和修改 Node 对象的完全访问权限。
+
+`v1/Node`:
+
+- get
+- list
+- create
+- update
+- patch
+- watch
+- delete
+
+### 路由控制器 {#authorization-route-controller}
+
+路由控制器会监听 Node 对象的创建事件,并据此配置路由设施。
+它需要读取 Node 对象的 Get 权限。
+
+`v1/Node`:
+
+- get
+
+### 服务控制器 {#authorization-service-controller}
+
+服务控制器监测 Service 对象的 **create**、**update** 和 **delete** 事件,
+并配置对应 Service 的负载均衡器。
+
+为了访问 Service 对象,它需要 **list** 和 **watch** 访问权限。
+为了更新 Service 对象,它需要针对 `status` 子资源的 **patch** 和 **update** 访问权限。
+
+`v1/Service`:
+
+- list
+- get
+- watch
+- patch
+- update
+
+### 其他  {#authorization-miscellaneous}
+
+在云控制器管理器的实现中,其核心部分需要创建 Event 对象的访问权限,
+并创建 ServiceAccount 资源以保证操作安全性的权限。
+
+`v1/Event`:
+
+- create
+- patch
+- update
+
+`v1/ServiceAccount`:
+
+- create
+
+用于云控制器管理器 {{< glossary_tooltip term_id="rbac" text="RBAC" >}}
+的 ClusterRole 如下例所示:
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cloud-controller-manager
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - nodes/status
+  verbs:
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  verbs:
+  - create
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumes
+  verbs:
+  - get
+  - list
+  - update
+  - watch
+```
+
+
+====================================================================================================
+h_0006 [direct] 开启混合版本代理后，如果请求被转给对等 API 服务器而对方没能应答，客户端会收到什么响应？
+--- k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md | 混合版本代理 | [2568,3831) len=1263
+## 混合版本代理   {#mixed-version-proxying}
+
+启用混合版本代理时,
+[聚合层](/zh-cn/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/)会加载一个特殊的过滤器,
+完成以下操作:
+
+* 当资源请求到达无法提供该 API 的 API 服务器时
+  (可能的原因是服务器早于该 API 的正式引入日期或该 API 在 API 服务器上被关闭),
+  API 服务器会尝试将请求发送到能够提供所请求 API 的对等 API 服务器。
+  API 服务器通过发现本地服务器无法识别的 API 组/版本/资源来实现这一点,
+  并尝试将这些请求代理到能够处理这些请求的对等 API 服务器。
+* 如果对等 API 服务器无法响应,则**源** API 服务器将以 503("Service Unavailable")错误进行响应。
+
+### 内部工作原理   {#how-it-works-under-the-hood}
+
+当 API 服务器收到一个资源请求时,它首先检查哪些 API 服务器可以提供所请求的资源。
+此检查是使用非对等聚合的发现文档进行的。
+
+* 如果请求中的资源列在从接收请求的 API 服务器(例如,`GET /api/v1/pods/some-pod`)
+  检索到的非对等聚合发现文档中,则该请求将在本地处理。
+
+* 如果请求中的资源(例如,`GET /apis/resource.k8s.io/v1beta1/resourceclaims`)
+  未在尝试处理该请求的 API 服务器(即处理请求的 API 服务器)检索到的非对等聚合发现文档中找到,
+  可能是因为 `resource.k8s.io/v1beta1` API 是在较新的 Kubernetes 版本中引入的,
+  而处理请求的 API 服务器运行的是不支持该 API 的旧版本,
+  则处理请求的 API 服务器会检查所有对等 API 服务器的非对等聚合发现文档,
+  以获取提供相关 API 组/版本/资源(在本例中为 `resource.k8s.io/v1beta1/resourceclaims`)
+  的对等 API 服务器。
+  然后,处理 API 服务器将请求代理到已知所请求资源的匹配对等 kube-apiserver 之一。
+
+* 如果没有对等方了解所给的 API 组/版本/资源,则处理请求的 API 服务器将请求传递给自己的处理程序链,
+  最终应返回 404("Not Found")响应。
+
+* 如果处理请求的 API 服务器已经识别并选择了一个对等 API 服务器,但该对等方无法响应
+  (原因可能是网络连接问题或正接收的请求与向控制平面注册对等信息的控制器之间存在数据竞争等),
+  则处理请求的 API 服务器会以 503("Service Unavailable")错误进行响应。
+
+====================================================================================================
+h_0007 [direct] 用动态资源分配时，DeviceClass 和 ResourceSlice 应该开放给谁？申领相关的 API 又是什么作用范围？
+--- k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md | 分离 DRA 相关 API 的权限 | [60,345) len=285
+## 分离 DRA 相关 API 的权限   {#separate-permissions-to-dra-related-apis}
+
+DRA 是通过多个不同的 API 进行编排的。使用鉴权工具(如 RBAC 或其他方案)根据用户的角色来控制对相关 API 的访问权限。
+
+通常情况下,DeviceClass 和 ResourceSlice 应仅限管理员和 DRA 驱动访问。
+通过申领机制来部署 Pod 的集群运维人员将需要访问 ResourceClaim API 和 ResourceClaimTemplate API。
+这两个 API 的作用范围都是命名空间。
+
+
+====================================================================================================
+h_0008 [direct] 文档给出的 100 节点 DRA 集群规模测试中，kube-controller-manager 的 QPS 与 Burst 建议设成多少？
+--- k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md | 在大规模环境中在高负载场景下监控和调优组件 | [1668,5799) len=4131
+## 在大规模环境中在高负载场景下监控和调优组件  {#monitor-and-tune-components-for-higher-load-especially-in-high-scale-environments}
+
+控制面组件 {{< glossary_tooltip text="kube-scheduler" term_id="kube-scheduler" >}}
+以及 {{< glossary_tooltip text="kube-controller-manager" term_id="kube-controller-manager" >}}
+中的内部 ResourceClaim 控制器在调度使用 DRA 申领的 Pod 时承担了大量任务。与不使用 DRA 的 Pod 相比,
+这些组件所需的 API 服务器调用次数、内存和 CPU 使用率都更高。此外,
+节点本地组件(如 DRA 驱动和 kubelet)也在创建 Pod 沙箱时使用 DRA API 分配硬件请求资源。
+尤其在集群节点数量众多或大量工作负载依赖 DRA 定义的资源申领时,
+集群管理员应当预先为相关组件配置合理参数以应对增加的负载。
+
+组件配置不当可能会直接或连锁地影响 Pod 生命周期中的多个环节。例如,如果 `kube-scheduler`
+组件的 QPS 和 Burst 配置值过低,调度器可能能快速识别适合的节点,但绑定 Pod 到节点的过程则会变慢。
+在使用 DRA 的调度流程中,`kube-controller-manager` 中 client-go 的 QPS 和 Burst 参数尤为关键。
+
+集群调优所需的具体数值取决于多个因素,如节点/Pod 数量、Pod 创建速率、变化频率,甚至与是否使用 DRA 无关。更多信息请参考
+[SIG Scalability README 中的可扩缩性阈值](https://github.com/kubernetes/community/blob/main/sig-scalability/configs-and-limits/thresholds.md)。
+在一项针对启用了 DRA 的 100 节点集群的规模测试中,部署了 720 个长生命周期 Pod(90% 饱和度)和 80
+个短周期 Pod(10% 流失,重复 10 次),作业创建 QPS 为 10。将 `kube-controller-manager` 的 QPS
+设置为 75、Burst 设置为 150,能达到与非 DRA 部署中相同的性能指标。在这个下限设置下,
+客户端速率限制器能有效保护 API 服务器避免突发请求,同时不影响 Pod 启动 SLO。
+这可作为一个良好的起点。你可以通过监控下列指标,进一步判断对 DRA 性能影响最大的组件,从而优化其配置。
+有关 Kubernetes 中所有稳定指标的更多信息,请参阅 [Kubernetes 指标参考](/zh-cn/docs/reference/instrumentation/metrics/)。
+
+### `kube-controller-manager` 指标  {#kube-controller-manager-metrics}
+
+以下指标聚焦于由 `kube-controller-manager` 组件管理的内部 ResourceClaim 控制器:
+
+* 工作队列添加速率:监控 {{< highlight promql "hl_inline=true"  >}}sum(rate(workqueue_adds_total{name="resource_claim"}[5m])){{< /highlight >}},
+  以衡量任务加入 ResourceClaim 控制器的速度。
+* 工作队列深度:跟踪 {{< highlight promql "hl_inline=true" >}}sum(workqueue_depth{endpoint="kube-controller-manager", name="resource_claim"}){{< /highlight >}},
+  识别 ResourceClaim 控制器中是否存在积压。
+* 工作队列处理时长:观察
+  {{< highlight promql "hl_inline=true">}}histogram_quantile(0.99, sum(rate(workqueue_work_duration_seconds_bucket{name="resource_claim"}[5m])) by (le)){{< /highlight >}},
+  以了解 ResourceClaim 控制器的处理速度。
+
+如果你观察到工作队列添加速率低、工作队列深度高和/或工作队列处理时间长,
+则说明控制器性能可能不理想。你可以考虑调优 QPS、Burst 以及 CPU/内存配置。
+
+如果你观察到工作队列添加速率高、工作队列深度高,但工作队列处理时间合理,
+则说明控制器正在有效处理任务,但并发可能不足。由于控制器并发是硬编码的,
+所以集群管理员可以通过降低 Pod 创建 QPS 来减缓资源申领任务队列的压力。
+
+### `kube-scheduler` 指标 {#kube-scheduler-metrics}
+
+以下调度器指标是所有 Pod 的整体性能聚合指标,不仅限于使用 DRA 的 Pod。需注意,
+这些端到端指标最终也会受到 `kube-controller-manager` 创建 ResourceClaim
+的性能影响,尤其在广泛使用 ResourceClaimTemplate 的部署中。
+
+* 调度器端到端耗时:监控
+  {{< highlight promql "hl_inline=true" >}}histogram_quantile(0.99, sum(increase(scheduler_pod_scheduling_sli_duration_seconds_bucket[5m])) by (le)){{< /highlight >}}。
+* 调度器算法延迟:跟踪
+  {{< highlight promql "hl_inline=true" >}}histogram_quantile(0.99, sum(increase(scheduler_scheduling_algorithm_duration_seconds_bucket[5m])) by (le)){{< /highlight >}}。
+
+### `kubelet` 指标  {#kubelet-metrics}
+
+当绑定到节点的 Pod 必须满足 ResourceClaim 时,kubelet 会调用 DRA 驱动的
+`NodePrepareResources` 和 `NodeUnprepareResources` 方法。你可以通过以下指标从 kubelet 的角度观察其行为。
+
+* kubelet 调用 PrepareResources:监控
+  {{< highlight promql "hl_inline=true" >}}histogram_quantile(0.99, sum(rate(dra_operations_duration_seconds_bucket{operation_name="PrepareResources"}[5m])) by (le)){{< /highlight >}}。
+* kubelet 调用 UnprepareResources:跟踪
+  {{< highlight promql "hl_inline=true" >}}histogram_quantile(0.99, sum(rate(dra_operations_duration_seconds_bucket{operation_name="UnprepareResources"}[5m])) by (le)){{< /highlight >}}。
+
+### DRA kubeletplugin 操作  {#dra-kubeletplugin-operations}
+
+DRA 驱动实现 [`kubeletplugin` 包接口](https://pkg.go.dev/k8s.io/dynamic-resource-allocation/kubeletplugin),
+该接口会针对底层 gRPC 操作 `NodePrepareResources` 和 `NodeUnprepareResources` 暴露指标。
+你可以从内部 kubeletplugin 的角度通过以下指标观察其行为:
+
+* DRA kubeletplugin 的 NodePrepareResources 操作:观察
+  {{< highlight promql "hl_inline=true" >}}histogram_quantile(0.99, sum(rate(dra_grpc_operations_duration_seconds_bucket{method_name=~".*NodePrepareResources"}[5m])) by (le)){{< /highlight >}}。
+* DRA kubeletplugin 的 NodeUnprepareResources 操作:观察
+  {{< highlight promql "hl_inline=true" >}}histogram_quantile(0.99, sum(rate(dra_grpc_operations_duration_seconds_bucket{method_name=~".*NodeUnprepareResources"}[5m])) by (le)){{< /highlight >}}。
+
+
+====================================================================================================
+h_0009 [paraphrase] 节点关机宽限总共设了 30 秒、其中关键 Pod 占 10 秒，那么普通 Pod 能分到多长的体面终止时间？
+--- k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md | 节点体面关闭 | [619,6901) len=6282
+## 节点体面关闭 {#graceful-node-shutdown}
+
+kubelet 会尝试检测节点系统关闭事件并终止在节点上运行的所有 Pod。
+
+在节点终止期间,kubelet 保证 Pod 遵从常规的
+[Pod 终止流程](/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination),
+且不接受新的 Pod(即使这些 Pod 已经绑定到该节点)。
+
+### 启用节点体面关闭 {#enabling-graceful-node-shutdown}
+
+{{< tabs name="graceful_shutdown_os" >}}
+{{% tab name="Linux" %}}
+{{< feature-state feature_gate_name="GracefulNodeShutdown" >}}
+
+在 Linux 上,节点体面关闭特性受 `GracefulNodeShutdown`
+[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)控制,
+此特性在 1.21 版本中默认启用。
+
+{{< note >}}
+
+节点体面关闭特性依赖于 systemd,因为它要利用
+[systemd 抑制器锁](https://www.freedesktop.org/wiki/Software/systemd/inhibit/)机制,
+在给定的期限内延迟节点关闭。
+{{</ note >}}
+{{% /tab %}}
+
+{{% tab name="Windows" %}}
+{{< feature-state feature_gate_name="WindowsGracefulNodeShutdown" >}}
+
+在 Windows 上,节点体面关闭特性受 `WindowsGracefulNodeShutdown`
+[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)控制,
+此特性在 1.32 版本中作为 Alpha 特性引入,在 1.34 版本中变为 Beta 并且默认启用。
+
+此服务会使用一个注册的[服务控制处理程序函数](https://learn.microsoft.com/zh-cn/windows/win32/services/service-control-handler-function)将
+preshutdown 事件延迟一段时间。
+
+Windows 节点体面关闭无法被取消。
+
+如果 kubelet 不是作为 Windows 服务运行,它将不能设置和监控
+[Preshutdown](https://learn.microsoft.com/zh-cn/windows/win32/api/winsvc/ns-winsvc-service_preshutdown_info)
+事件,对应节点将不得不跑完上述[节点非体面关闭](#non-graceful-node-shutdown)的流程。
+
+在启用 Windows 节点体面关闭特性但 kubelet 未作为 Windows 服务运行的情况下,kubelet 将继续运行而不会失败。
+但是,kubelet 将在日志中记录一个错误,表明它需要作为一个 Windows 服务来运行。
+{{% /tab %}}
+
+{{< /tabs >}}
+
+### 配置节点体面关闭 {#configuring-graceful-node-shutdown}
+
+注意,默认情况下,下面描述的两个配置选项,`shutdownGracePeriod` 和
+`shutdownGracePeriodCriticalPods` 都是被设置为 0 的,因此不会激活节点体面关闭特性。
+要激活此功能特性,这两个选项要适当配置,并设置为非零值。
+
+一旦 kubelet 收到节点关闭的通知,就会在节点上设置一个
+`NotReady` 状况,并将 `reason` 设置为 `"node is shutting down"`。
+kube-scheduler 会重视此状况,不将 Pod 调度到受影响的节点上;
+其他第三方调度程序也应当遵循相同的逻辑。这意味着新的 Pod 不会被调度到该节点上,
+因此不会有新 Pod 启动。
+
+如果检测到节点关闭正在进行中,kubelet **也会**在 `PodAdmission`
+阶段拒绝 Pod,即使是该 Pod 带有 `node.kubernetes.io/not-ready:NoSchedule`
+的{{< glossary_tooltip text="容忍度" term_id="toleration" >}},也不会在此节点上启动。
+
+当 kubelet 通过 API 在其 Node 上设置该状况时,kubelet
+也开始终止在本地运行的所有 Pod。
+
+在体面关闭过程中,kubelet 分两个阶段来终止 Pod:
+
+1. 终止在节点上运行的常规 Pod。
+2. 终止在节点上运行的[关键 Pod](/zh-cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical)。
+
+节点体面关闭的特性对应两个
+[`KubeletConfiguration`](/zh-cn/docs/tasks/administer-cluster/kubelet-config-file/) 选项:
+
+- `shutdownGracePeriod`:
+
+  指定节点应延迟关闭的总持续时间。这是 Pod 体面终止的时间总和,不区分常规 Pod
+  还是[关键 Pod](/zh-cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical)。
+
+- `shutdownGracePeriodCriticalPods`:
+
+  在节点关闭期间指定用于终止[关键 Pod](/zh-cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical)
+  的持续时间。该值应小于 `shutdownGracePeriod`。
+
+{{< note >}}
+
+在某些情况下,节点终止过程会被系统取消(或者可能由管理员手动取消)。
+无论哪种情况下,节点都将返回到 `Ready` 状态。然而,已经开始终止进程的
+Pod 将不会被 kubelet 恢复,需要被重新调度。
+{{< /note >}}
+
+例如,如果设置了 `shutdownGracePeriod=30s` 和 `shutdownGracePeriodCriticalPods=10s`,
+则 kubelet 将延迟 30 秒关闭节点。在关闭期间,将保留前 20(30 - 10)秒用于体面终止常规 Pod,
+而保留最后 10 秒用于终止[关键 Pod](/zh-cn/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/#marking-pod-as-critical)。
+
+{{< note >}}
+
+当 Pod 在正常节点关闭期间被驱逐时,它们会被标记为关闭。
+运行 `kubectl get pods` 时,被驱逐的 Pod 的状态显示为 `Terminated`。
+并且 `kubectl describe pod` 表示 Pod 因节点关闭而被驱逐:
+
+```
+Reason:         Terminated
+Message:        Pod was terminated in response to imminent node shutdown.
+```
+{{< /note >}}
+
+### 基于 Pod 优先级的节点体面关闭    {#pod-priority-graceful-node-shutdown}
+
+{{< feature-state feature_gate_name="GracefulNodeShutdownBasedOnPodPriority" >}}
+
+为了在节点体面关闭期间提供更多的灵活性,尤其是处理关闭期间的 Pod 排序问题,
+节点体面关闭机制能够关注 Pod 的 PriorityClass 设置,前提是你已经在集群中启用了此功能特性。
+此特性允许集群管理员基于 Pod
+的[优先级类(Priority Class)](/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass)
+显式地定义节点体面关闭期间 Pod 的处理顺序。
+
+前文所述的[节点体面关闭](#graceful-node-shutdown)特性能够分两个阶段关闭 Pod,
+首先关闭的是非关键的 Pod,之后再处理关键 Pod。
+如果需要显式地以更细粒度定义关闭期间 Pod 的处理顺序,需要一定的灵活度,
+这时可以使用基于 Pod 优先级的体面关闭机制。
+
+当节点体面关闭能够处理 Pod 优先级时,节点体面关闭的处理可以分为多个阶段,
+每个阶段关闭特定优先级类的 Pod。可以配置 kubelet 按确切的阶段处理 Pod,
+且每个阶段可以独立设置关闭时间。
+
+假设集群中存在以下自定义的 Pod
+[优先级类](/zh-cn/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass)。
+
+| Pod 优先级类名称        | Pod 优先级类数值       |
+|-------------------------|------------------------|
+|`custom-class-a`         | 100000                 |
+|`custom-class-b`         | 10000                  |
+|`custom-class-c`         | 1000                   |
+|`regular/unset`          | 0                      |
+
+在 [kubelet 配置](/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/)中,
+`shutdownGracePeriodByPodPriority` 看起来可能是这样:
+
+| Pod 优先级类数值       | 关闭期限  |
+|------------------------|-----------|
+| 100000                 | 10 秒     |
+| 10000                  | 180 秒    |
+| 1000                   | 120 秒    |
+| 0                      | 60 秒     |
+
+对应的 kubelet 配置 YAML 将会是:
+
+```yaml
+shutdownGracePeriodByPodPriority:
+  - priority: 100000
+    shutdownGracePeriodSeconds: 10
+  - priority: 10000
+    shutdownGracePeriodSeconds: 180
+  - priority: 1000
+    shutdownGracePeriodSeconds: 120
+  - priority: 0
+    shutdownGracePeriodSeconds: 60
+```
+
+上面的表格表明,所有 `priority` 值大于等于 100000 的 Pod 关闭期限只有 10 秒,
+所有 `priority` 值介于 10000 和 100000 之间的 Pod 关闭期限是 180 秒,
+所有 `priority` 值介于 1000 和 10000 之间的 Pod 关闭期限是 120 秒,
+其他所有 Pod 关闭期限是 60 秒。
+
+用户不需要为所有的优先级类都设置数值。例如,你也可以使用下面这种配置:
+
+| Pod 优先级类数值       | 关闭期限  |
+|------------------------|-----------|
+| 100000                 | 300 秒    |
+| 1000                   | 120 秒    |
+| 0                      | 60 秒     |
+
+在上面这个场景中,优先级类为 `custom-class-b` 的 Pod 会与优先级类为 `custom-class-c`
+的 Pod 在关闭时按相同期限处理。
+
+如果在特定的范围内不存在 Pod,则 kubelet 不会等待对应优先级范围的 Pod。
+kubelet 会直接跳到下一个优先级数值范围进行处理。
+
+如果此功能特性被启用,但没有提供配置数据,则不会出现排序操作。
+
+使用此功能特性需要启用 `GracefulNodeShutdownBasedOnPodPriority`
+[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/),
+并将 [kubelet 配置](/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/)中的
+`shutdownGracePeriodByPodPriority` 设置为期望的配置,
+其中包含 Pod 的优先级类数值以及对应的关闭期限。
+
+{{< note >}}
+
+在节点体面关闭期间考虑 Pod 优先级的能力是作为 Kubernetes v1.23 中的 Alpha 特性引入的。
+在 Kubernetes {{< skew currentVersion >}} 中此特性处于 Beta 阶段,默认启用。
+{{< /note >}}
+
+kubelet 子系统中会生成 `graceful_shutdown_start_time_seconds` 和
+`graceful_shutdown_end_time_seconds` 度量指标以便监视节点关闭行为。
+
+
+====================================================================================================
+h_0010 [direct] kubelet 对未使用的镜像和未使用的容器，分别多久做一次垃圾收集？
+--- k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md | 未使用容器和镜像的垃圾收集 | [3504,5518) len=2014
+## 未使用容器和镜像的垃圾收集     {#containers-images}
+
+{{<glossary_tooltip text="kubelet" term_id="kubelet">}} 会每五分钟对未使用的镜像执行一次垃圾收集,
+每分钟对未使用的容器执行一次垃圾收集。
+你应该避免使用外部的垃圾收集工具,因为外部工具可能会破坏 kubelet
+的行为,移除应该保留的容器。
+
+要配置对未使用容器和镜像的垃圾收集选项,
+可以使用一个[配置文件](/zh-cn/docs/tasks/administer-cluster/kubelet-config-file/),基于
+[`KubeletConfiguration`](/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/)
+资源类型来调整与垃圾收集相关的 kubelet 行为。
+
+### 容器镜像生命周期     {#container-image-lifecycle}
+
+Kubernetes 通过其**镜像管理器(Image Manager)** 来管理所有镜像的生命周期,
+该管理器是 kubelet 的一部分,工作时与
+{{< glossary_tooltip text="cadvisor" term_id="cadvisor" >}} 协同。
+kubelet 在作出垃圾收集决定时会考虑如下磁盘用量约束:
+
+* `HighThresholdPercent`
+* `LowThresholdPercent`
+
+磁盘用量超出所配置的 `HighThresholdPercent` 值时会触发垃圾收集,
+垃圾收集器会基于镜像上次被使用的时间来按顺序删除它们,首先删除的是最近未使用的镜像。
+kubelet 会持续删除镜像,直到磁盘用量到达 `LowThresholdPercent` 值为止。
+
+#### 未使用容器镜像的垃圾收集     {#image-maximum-age-gc}
+
+不论磁盘使用情况如何,你都可以指定本地镜像未被使用的最长时间。
+这是一个可以为每个节点配置的 kubelet 设置。
+
+要配置该设置,你需要在 kubelet 配置文件中为 `imageMaximumGCAge`
+字段设置一个值。
+
+该值应遵循 Kubernetes {{< glossary_tooltip text="持续时间(Duration)" term_id="duration" >}}格式;
+有关更多详细信息,请参阅词汇表中的[持续时间(Duration)](/zh-cn/docs/reference/glossary/?all=true#term-duration)。
+
+例如,你可以将配置字段设置为 `12h45m`,代表 12 小时 45 分钟。
+
+{{< note >}}
+
+这个特性不会跟踪 kubelet 重新启动后的镜像使用情况。
+如果 kubelet 被重新启动,所跟踪的镜像年龄会被重置,
+导致 kubelet 在根据镜像年龄进行垃圾收集时需要等待完整的
+`imageMaximumGCAge` 时长。
+{{< /note>}}
+
+### 容器垃圾收集    {#container-image-garbage-collection}
+
+kubelet 会基于如下变量对所有未使用的容器执行垃圾收集操作,这些变量都是你可以定义的:
+
+* `MinAge`:kubelet 可以垃圾回收某个容器时该容器的最小年龄。设置为 `0`
+  表示禁止使用此规则。
+* `MaxPerPodContainer`:每个 Pod 可以包含的已死亡的容器个数上限。设置为小于 `0`
+  的值表示禁止使用此规则。
+* `MaxContainers`:集群中可以存在的已死亡的容器个数上限。设置为小于 `0`
+  的值意味着禁止应用此规则。
+
+除以上变量之外,kubelet 还会垃圾收集除无标识的以及已删除的容器,通常从最长时间未使用的容器开始。
+
+当保持每个 Pod 的最大数量的容器(`MaxPerPodContainer`)会使得全局的已死亡容器个数超出上限
+(`MaxContainers`)时,`MaxPerPodContainer` 和 `MaxContainers` 之间可能会出现冲突。
+在这种情况下,kubelet 会调整 `MaxPerPodContainer` 来解决这一冲突。
+最坏的情形是将 `MaxPerPodContainer` 降格为 `1`,并驱逐最近未使用的容器。
+此外,当隶属于某已被删除的 Pod 的容器的年龄超过 `MinAge` 时,它们也会被删除。
+
+{{<note>}}
+
+kubelet 仅会回收由它所管理的容器。
+{{</note>}}
+
+
+====================================================================================================
+h_0011 [multi_block] 容器日志的单个文件大小与文件数上限由哪两个 kubelet 项控制、默认是多少？kubelet 自身日志在 Linux 与 Windows 节点上默认又写到哪里？
+--- k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md | Pod 和容器日志 | [417,3519) len=3102
+## Pod 和容器日志   {#basic-logging-in-kubernetes}
+
+Kubernetes 从正在运行的 Pod 中捕捉每个容器的日志。
+
+此示例使用带有一个容器的 `Pod` 的清单,该容器每秒将文本写入标准输出一次。
+
+{{% code_sample file="debug/counter-pod.yaml" %}}
+
+要运行此 Pod,请执行以下命令:
+
+```shell
+kubectl apply -f https://k8s.io/examples/debug/counter-pod.yaml
+```
+
+输出为:
+
+```console
+pod/counter created
+```
+
+要获取这些日志,请执行以下 `kubectl logs` 命令:
+
+```shell
+kubectl logs counter
+```
+
+输出类似于:
+
+```console
+0: Fri Apr  1 11:42:23 UTC 2022
+1: Fri Apr  1 11:42:24 UTC 2022
+2: Fri Apr  1 11:42:25 UTC 2022
+```
+
+你可以使用 `kubectl logs --previous` 从容器的先前实例中检索日志。
+如果你的 Pod 有多个容器,请如下通过将容器名称追加到该命令并使用 `-c`
+标志来指定要访问哪个容器的日志:
+
+```shell
+kubectl logs counter -c count
+```
+
+### 容器日志流  {#container-log-streams}
+
+{{< feature-state feature_gate_name="PodLogsQuerySplitStreams" >}}
+
+作为一种 Alpha 特性,kubelet 可以将容器产生的两个标准流的日志分开:
+[标准输出](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout))和
+[标准错误](https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr))输出。
+要使用此行为,你必须启用 `PodLogsQuerySplitStreams`
+[特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)。
+启用该特性门控后,Kubernetes {{< skew currentVersion >}} 允许通过 Pod API 直接访问这些日志流。
+你可以通过指定流名称(`Stdout` 或 `Stderr`)使用 `stream` 查询字符串来获取特定的流。
+你必须具有读取该 Pod 的 `log` 子资源的权限。
+
+要演示此特性,你可以创建一个定期向标准输出和标准错误流中写入文本的 Pod。
+
+{{% code_sample file="debug/counter-pod-err.yaml" %}}
+
+要运行此 Pod,使用以下命令:
+
+```shell
+kubectl apply -f https://k8s.io/examples/debug/counter-pod-err.yaml
+```
+
+要仅获取 stderr 日志流,你可以运行以下命令:
+
+```shell
+kubectl get --raw "/api/v1/namespaces/default/pods/counter-err/log?stream=Stderr"
+```
+
+详见 [`kubectl logs` 文档](/docs/reference/generated/kubectl/kubectl-commands#logs)。
+
+### 节点的容器日志处理方式   {#how-nodes-handle-container-logs}
+
+![节点级别的日志记录](/images/docs/user-guide/logging/logging-node-level.png)
+
+容器运行时对写入到容器化应用程序的 `stdout` 和 `stderr` 流的所有输出进行处理和转发。
+不同的容器运行时以不同的方式实现这一点;不过它们与 kubelet 的集成都被标准化为 **CRI 日志格式**。
+
+默认情况下,如果容器重新启动,kubelet 会保留一个终止的容器及其日志。
+如果一个 Pod 被逐出节点,所对应的所有容器及其日志也会被逐出。
+
+kubelet 通过 Kubernetes API 的特殊功能将日志提供给客户端访问。
+访问这个日志的常用方法是运行 `kubectl logs`。
+
+### 日志轮换   {#log-rotation}
+
+{{< feature-state for_k8s_version="v1.21" state="stable" >}}
+
+kubelet 负责轮换容器日志并管理日志目录结构。
+kubelet(使用 CRI)将此信息发送到容器运行时,而运行时则将容器日志写到给定位置。
+
+你可以使用 [kubelet 配置文件](/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/)配置两个
+kubelet [配置选项](/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/#kubelet-config-k8s-io-v1beta1-KubeletConfiguration)、
+`containerLogMaxSize` (默认 10Mi)和 `containerLogMaxFiles`(默认 5)。
+这些设置分别允许你分别配置每个日志文件大小的最大值和每个容器允许的最大文件数。
+
+为了在工作负载生成的日志量较大的集群中执行高效的日志轮换,kubelet
+还提供了一种机制,基于可以执行多少并发日志轮换以及监控和轮换日志所需要的间隔来调整日志的轮换方式。
+你可以使用 [kubelet 配置文件](/zh-cn/docs/reference/config-api/kubelet-config.v1beta1/)
+配置两个 kubelet [配置选项](/zh-cn/docs/tasks/administer-cluster/kubelet-config-file/):
+`containerLogMaxWorkers` 和 `containerLogMonitorInterval`。
+
+当类似于基本日志示例一样运行 [`kubectl logs`](/docs/reference/generated/kubectl/kubectl-commands#logs) 时,
+节点上的 kubelet 会处理请求并直接从日志文件读取。kubelet 将返回该日志文件的内容。
+
+{{< note >}}
+
+只有最新的日志文件的内容可以通过 `kubectl logs` 获得。
+
+例如,如果 Pod 写入 40 MiB 的日志,并且 kubelet 在 10 MiB 之后轮换日志,
+则运行 `kubectl logs` 将最多返回 10 MiB 的数据。
+{{< /note >}}
+
+
+--- k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md | 系统组件日志 | [3519,5737) len=2218
+## 系统组件日志   {#system-component-logs}
+
+系统组件有两种类型:通常在容器中运行的组件和直接参与容器运行的组件。例如:
+
+* kubelet 和容器运行时不在容器中运行。kubelet 运行你的容器
+  (一起按 {{< glossary_tooltip text="Pod" term_id="pod" >}} 分组)
+* Kubernetes 调度器、控制器管理器和 API 服务器在 Pod 中运行
+  (通常是{{< glossary_tooltip text="静态 Pod" term_id="static-pod" >}}。
+  etcd 组件在控制平面中运行,最常见的也是作为静态 Pod。
+  如果你的集群使用 kube-proxy,则通常将其作为 `DaemonSet` 运行。
+
+### 日志位置   {#log-location-node}
+
+kubelet 和容器运行时写入日志的方式取决于节点使用的操作系统:
+
+{{< tabs name="log_location_node_tabs" >}}
+{{% tab name="Linux" %}}
+
+在使用 systemd 的 Linux 节点上,kubelet 和容器运行时默认写入 journald。
+你要使用 `journalctl` 来阅读 systemd 日志;例如:`journalctl -u kubelet`。
+
+如果 systemd 不存在,kubelet 和容器运行时将写入到 `/var/log` 目录中的 `.log` 文件。
+如果你想将日志写入其他地方,你可以通过辅助工具 `kube-log-runner` 间接运行 kubelet,
+并使用该工具将 kubelet 日志重定向到你所选择的目录。
+
+默认情况下,kubelet 指示你的容器运行时将日志写入 `/var/log/pods` 中的目录。
+
+有关 `kube-log-runner` 的更多信息,请阅读[系统日志](/zh-cn/docs/concepts/cluster-administration/system-logs/#klog)。
+
+{{% /tab %}}
+{{% tab name="Windows" %}}
+
+默认情况下,kubelet 将日志写入目录 `C:\var\logs` 中的文件(注意这不是 `C:\var\log`)。
+
+尽管 `C:\var\log` 是这些日志的 Kubernetes 默认位置,
+但一些集群部署工具会将 Windows 节点设置为将日志放到 `C:\var\log\kubelet`。
+
+如果你想将日志写入其他地方,你可以通过辅助工具 `kube-log-runner` 间接运行 kubelet,
+并使用该工具将 kubelet 日志重定向到你所选择的目录。
+
+但是,kubelet 默认指示你的容器运行时在目录 `C:\var\log\pods` 中写入日志。
+
+有关 `kube-log-runner` 的更多信息,请阅读[系统日志](/zh-cn/docs/concepts/cluster-administration/system-logs/#klog)。
+{{% /tab %}}
+{{< /tabs >}}
+
+<br />
+
+对于在 Pod 中运行的 Kubernetes 集群组件,其日志会写入 `/var/log` 目录中的文件,
+相当于绕过默认的日志机制(组件不会写入 systemd 日志)。
+你可以使用 Kubernetes 的存储机制将持久存储映射到运行该组件的容器中。
+
+kubelet 允许将 Pod 日志目录从默认的 `/var/log/pods` 更改为自定义路径。
+可以通过在 kubelet 的配置文件中配置 `podLogsDir` 参数来进行此调整。
+
+{{< caution >}}
+
+需要注意的是,默认位置 `/var/log/pods` 已使用很长一段时间,并且某些进程可能会隐式使用此路径。
+因此,更改此参数必须谨慎,并自行承担风险。
+
+另一个需要留意的问题是 kubelet 支持日志写入位置与 `/var` 位于同一磁盘上。
+否则,如果日志位于与 `/var` 不同的文件系统上,kubelet
+将不会跟踪该文件系统的使用情况。如果文件系统已满,则可能会出现问题。
+{{< /caution >}}
+
+有关 etcd 及其日志的详细信息,请查阅 [etcd 文档](https://etcd.io/docs/)。
+同样,你可以使用 Kubernetes 的存储机制将持久存储映射到运行该组件的容器中。
+
+{{< note >}}
+
+如果你部署 Kubernetes 集群组件(例如调度器)以将日志记录到从父节点共享的卷中,
+则需要考虑并确保这些日志被轮换。**Kubernetes 不管理这种日志轮换**。
+
+你的操作系统可能会自动实现一些日志轮换。例如,如果你将目录 `/var/log` 共享到一个组件的静态 Pod 中,
+则节点级日志轮换会将该目录中的文件视同为 Kubernetes 之外的组件所写入的文件。
+
+一些部署工具会考虑日志轮换并将其自动化;而其他一些工具会将此留给你来处理。
+{{< /note >}}
+
+
+====================================================================================================
+h_0012 [cross_doc] 除了节点心跳，Lease 在集群里还承担什么角色？要让控制面组件用上协调领导者选举，需要同时打开哪两项开关？
+--- k8s/content__zh-cn__docs__concepts__architecture__leases.md | 领导者选举 | [629,1200) len=571
+## 领导者选举  {#leader-election}
+
+Kubernetes 也使用 Lease 确保在任何给定时间某个组件只有一个实例在运行。
+这在高可用配置中由 `kube-controller-manager` 和 `kube-scheduler` 等控制平面组件进行使用,
+这些组件只应有一个实例激活运行,而其他实例待机。
+
+参阅[协调领导者选举](/zh-cn/docs/concepts/cluster-administration/coordinated-leader-election)以了解
+Kubernetes 如何基于 Lease API 来选择哪个组件实例充当领导者。
+
+### Kube 控制器管理器在退出时释放锁定
+
+{{< feature-state feature_gate_name="ControllerManagerReleaseLeaderElectionLockOnExit" >}}
+
+启用 `ControllerManagerReleaseLeaderElectionLockOnExit` 特性门后,
+`kube-controller-manager` 会在领导者切换期间主动释放其领导者选举锁,
+而不是等待锁的 TTL 过期。这使得新领导者能够更快地被选出,
+从而降低领导者切换延迟。
+
+
+--- k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md | 启用协调领导者选举 | [341,745) len=404
+## 启用协调领导者选举   {#enabling-coordinated-leader-election}
+
+确保你在启动 {{< glossary_tooltip text="API 服务器" term_id="kube-apiserver" >}}时
+`CoordinatedLeaderElection` [特性门控](/zh-cn/docs/reference/command-line-tools-reference/feature-gates/)被启用,
+并且 `coordination.k8s.io/v1beta1` API 组被启用。
+
+此操作可以通过设置 `--feature-gates="CoordinatedLeaderElection=true"`
+和 `--runtime-config="coordination.k8s.io/v1beta1=true"` 标志来完成。
+
+
+====================================================================================================
+h_0056 [direct] React 编译器碰到疑似违反 React 规则的代码时，会怎么处理？
+--- react/src__content__learn__react-compiler__debugging.md | 了解编译器行为 | [94,586) len=492
+## 了解编译器行为 {/*understanding-compiler-behavior*/}
+
+React 编译器旨在处理遵循 [React 规则](/reference/rules) 的代码。当遇到可能违反这些规则的代码时,它会安全地跳过优化,而不是冒险改变应用程序的行为。
+
+### 编译器错误与运行时问题 {/*compiler-errors-vs-runtime-issues*/}
+
+**编译错误** 发生在构建时,并会阻止你的代码编译。这类错误很少见,因为编译器的设计理念是跳过有问题的代码而不是直接失败。
+
+**运行时问题** 发生在已编译的代码行为与预期不符时。大多数情况下,如果你遇到了与 React 编译器相关的问题,这通常是运行时问题。这通常是因为你的代码以编译器无法检测到的方式轻微违反了 React 的规则,而编译器错误地编译了一个本应跳过的组件。
+
+在调试运行时问题时,应集中精力在受影响的组件中查找 ESLint 规则未能检测到的 React 规则违规情况。编译器依赖于你的代码遵循这些规则,当规则被违反且编译器无法检测到时,就会出现运行时问题。
+
+
+====================================================================================================
+h_0057 [direct] 怀疑某个组件被编译器优化出问题，调试的第一步是什么？修完之后怎么确认它已经被编译了？
+--- react/src__content__learn__react-compiler__debugging.md | 调试工作流程 | [930,1722) len=792
+## 调试工作流程 {/*debugging-workflow*/}
+
+遇到问题时,请按照以下步骤操作:
+
+### 编译器构建错误 {/*compiler-build-errors*/}
+
+如果你遇到一个意外中断构建的编译器错误,这很可能是编译器中的一个 bug。请将以下信息报告到 [facebook/react](https://github.com/facebook/react/issues) 仓库:
+- 错误信息
+- 导致错误的代码
+- 你使用的 React 和编译器版本
+
+### 运行时问题 {/*runtime-issues*/}
+
+关于运行时行为问题:
+
+### 1. 临时禁用编译 {/*temporarily-disable-compilation*/}
+
+使用 `"use no memo"` 来确定问题是否与编译器相关:
+
+```js
+function ProblematicComponent() {
+  "use no memo"; // 跳过该组件的编译
+  // ... 其余的组件
+}
+```
+
+如果问题消失,则很可能与违反 React 规则有关。
+
+你还可以尝试从问题组件中移除手动的 memoization(useMemo、useCallback 和 memo),以验证在没有任何 memoization 的情况下应用程序是否能正常工作。如果在所有 memoization 都被移除后问题仍然存在,则说明存在需要修复的 React 规则违反情况。
+
+### 2. 逐步修复问题 {/*fix-issues-step-by-step*/}
+
+1. 识别根本原因(通常是为了正确性的记忆化问题)
+2. 每次修复后进行测试
+3. 修复完成后移除 `"use no memo"`
+4. 在 React DevTools 中验证组件是否显示 ✨ 徽章
+
+
+====================================================================================================
+h_0058 [cross_doc] 控制编译器作用范围的两个指令分别是什么？各自用在什么场景？
+--- react/src__content__learn__react-compiler__incremental-adoption.md | 使用 "use memo" 的选择加入模式 | [2162,3083) len=921
+## 使用 "use memo" 的选择加入模式 {/*opt-in-mode-with-use-memo*/}
+
+如需最大程度的控制,你可以使用 `compilationMode: 'annotation'`,仅编译那些通过 `"use memo"` 指令显式选择加入的组件和 Hook。
+
+这种方法可以让你对各个组件和挂钩进行细粒度的控制。当你希望在不影响整个目录的情况下,针对特定组件测试编译器时,这种方法非常有用。
+
+### 选择加入模式配置 {/*annotation-mode-configuration*/}
+
+```js
+// babel.config.js
+module.exports = {
+  plugins: [
+    ['babel-plugin-react-compiler', {
+      compilationMode: 'annotation',
+    }],
+  ],
+};
+```
+
+### 选择加入指令 {/*using-the-directive*/}
+
+在要编译的函数开头添加 `"use memo"`:
+
+```js
+function TodoList({ todos }) {
+  "use memo"; // 这个组件在编译里的选项
+
+  const sortedTodos = todos.slice().sort();
+
+  return (
+    <ul>
+      {sortedTodos.map(todo => (
+
+      ))}
+    </ul>
+  );
+}
+
+function useSortedData(data) {
+  "use memo"; // 这个组件在编译里的选项
+
+  return data.slice().sort();
+}
+```
+
+使用 `compilationMode: 'annotation'` 时,你必须:
+- 在每个需要优化的组件中添加 `"use memo"`
+- 在每个自定义 Hook 中添加 `"use memo"`
+- 记得在新组件中也添加它
+
+这可以在你评估编译器影响的同时,精确控制哪些组件会被编译。
+
+
+--- react/src__content__learn__react-compiler__debugging.md | 调试工作流程 | [930,1722) len=792
+## 调试工作流程 {/*debugging-workflow*/}
+
+遇到问题时,请按照以下步骤操作:
+
+### 编译器构建错误 {/*compiler-build-errors*/}
+
+如果你遇到一个意外中断构建的编译器错误,这很可能是编译器中的一个 bug。请将以下信息报告到 [facebook/react](https://github.com/facebook/react/issues) 仓库:
+- 错误信息
+- 导致错误的代码
+- 你使用的 React 和编译器版本
+
+### 运行时问题 {/*runtime-issues*/}
+
+关于运行时行为问题:
+
+### 1. 临时禁用编译 {/*temporarily-disable-compilation*/}
+
+使用 `"use no memo"` 来确定问题是否与编译器相关:
+
+```js
+function ProblematicComponent() {
+  "use no memo"; // 跳过该组件的编译
+  // ... 其余的组件
+}
+```
+
+如果问题消失,则很可能与违反 React 规则有关。
+
+你还可以尝试从问题组件中移除手动的 memoization(useMemo、useCallback 和 memo),以验证在没有任何 memoization 的情况下应用程序是否能正常工作。如果在所有 memoization 都被移除后问题仍然存在,则说明存在需要修复的 React 规则违反情况。
+
+### 2. 逐步修复问题 {/*fix-issues-step-by-step*/}
+
+1. 识别根本原因(通常是为了正确性的记忆化问题)
+2. 每次修复后进行测试
+3. 修复完成后移除 `"use no memo"`
+4. 在 React DevTools 中验证组件是否显示 ✨ 徽章
+
+
+====================================================================================================
+h_0059 [direct] 想按目录一批一批接入 React 编译器，应该借助 Babel 的什么机制？
+--- react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 | [817,2162) len=1345
+## 基于目录的采用与 Babel 覆盖 {/*directory-based-adoption*/}
+
+Babel 的 `overrides` 选项允许你将不同的插件应用于代码库的不同部分。这对于逐步在各个目录中采用 React 编译器非常理想。
+
+### 基本配置 {/*basic-configuration*/}
+
+首先将编译器应用到特定目录:
+
+```js
+// babel.config.js
+module.exports = {
+  plugins: [
+    // Global plugins that apply to all files
+  ],
+  overrides: [
+    {
+      test: './src/modern/**/*.{js,jsx,ts,tsx}',
+      plugins: [
+        'babel-plugin-react-compiler'
+      ]
+    }
+  ]
+};
+```
+
+### 扩展覆盖范围 {/*expanding-coverage*/}
+
+随着你信心的增加,添加更多目录:
+
+```js
+// babel.config.js
+module.exports = {
+  plugins: [
+    // 全局插件
+  ],
+  overrides: [
+    {
+      test: ['./src/modern/**/*.{js,jsx,ts,tsx}', './src/features/**/*.{js,jsx,ts,tsx}'],
+      plugins: [
+        'babel-plugin-react-compiler'
+      ]
+    },
+    {
+      test: './src/legacy/**/*.{js,jsx,ts,tsx}',
+      plugins: [
+        // 针对旧代码的不同插件
+      ]
+    }
+  ]
+};
+```
+
+### 使用配置编译器选项 {/*with-compiler-options*/}
+
+你还可以使用重写来配置编译器选项:
+
+```js
+// babel.config.js
+module.exports = {
+  plugins: [],
+  overrides: [
+    {
+      test: './src/experimental/**/*.{js,jsx,ts,tsx}',
+      plugins: [
+        ['babel-plugin-react-compiler', {
+          // 选项 ...
+        }]
+      ]
+    },
+    {
+      test: './src/production/**/*.{js,jsx,ts,tsx}',
+      plugins: [
+        ['babel-plugin-react-compiler', {
+          // 选项  ...
+        }]
+      ]
+    }
+  ]
+};
+```
+
+
+====================================================================================================
+h_0060 [direct] 想用功能开关在运行时决定要不要走编译器优化，该配什么？它背后的工作方式是什么？
+--- react/src__content__learn__react-compiler__incremental-adoption.md | 运行时控制 | [3083,3776) len=693
+## 运行时控制 {/*runtime-feature-flags-with-gating*/}
+
+`gating`选项使你能够在运行时使用功能标志控制编译。这对于运行 A/B 测试或根据用户细分逐步推出编译器非常有用。
+
+### 运行时控制工作原理 {/*how-gating-works*/}
+
+编译器会在优化后的代码周围添加运行时检查。如果开关返回 `true`,则运行优化版本;否则运行原始代码。
+
+### 控制配置 {/*gating-configuration*/}
+
+```js
+// babel.config.js
+module.exports = {
+  plugins: [
+    ['babel-plugin-react-compiler', {
+      gating: {
+        source: 'ReactCompilerFeatureFlags',
+        importSpecifierName: 'isCompilerEnabled',
+      },
+    }],
+  ],
+};
+```
+
+### 实现功能标志 {/*implementing-the-feature-flag*/}
+
+创建一个模块来导出你的门控函数:
+
+```js
+// ReactCompilerFeatureFlags.js
+export function isCompilerEnabled() {
+  // 使用你的特性开关系统
+  return getFeatureFlag('react-compiler-enabled');
+}
+```
+
+
+====================================================================================================
+h_0061 [direct] 现在开始一个新的 React 项目，还应该用 Create React App 吗？
+--- react/src__content__learn__installation.md | 添加 React 到一个已有的项目 | [1058,1381) len=323
+## 添加 React 到一个已有的项目 {/*add-react-to-an-existing-project*/}
+
+#### 我还应该用 Create React App 么? {/*should-i-use-create-react-app*/}
+
+不, Create React App 已经不建议使用。更多信息可参照 [Sunsetting Create React App](/blog/2025/02/14/sunsetting-create-react-app).
+
+更多信息,参见 [逐步淘汰 Create React App](/blog/2025/02/14/sunsetting-create-react-app)。
+
+
+====================================================================================================
+h_0062 [direct] React 文档首推的全栈框架有哪些？用这些框架写的应用一定要配服务器吗？
+--- react/src__content__learn__creating-a-react-app.md | 全栈框架 | [163,2023) len=1860
+## 全栈框架 {/*full-stack-frameworks*/}
+
+这些推荐的框架支持你在生产环境中部署和扩展应用所需的所有功能。它们集成了 React 的最新特性,并充分利用了 React 的架构。
+
+#### 全栈框架不需要服务器 {/*react-frameworks-do-not-require-a-server*/}
+
+本页列出的所有框架都支持客户端渲染([CSR](https://developer.mozilla.org/en-US/docs/Glossary/CSR))、单页应用([SPA](https://developer.mozilla.org/en-US/docs/Glossary/SPA))和静态站点生成([SSG](https://developer.mozilla.org/en-US/docs/Glossary/SSG))。这些应用可以部署到 [CDN](https://developer.mozilla.org/en-US/docs/Glossary/CDN) 或静态托管服务(无需服务器)。此外,这些框架允许你根据实际需求,针对特定路由单独启用服务端渲染。
+
+这意味着你可以从纯客户端应用开始构建,后续需求变更时,无需重写整个应用,即可在特定路由上启用服务端功能。具体渲染策略的配置方法,请参考各框架的官方文档。
+
+### Next.js (App Router) {/*nextjs-app-router*/}
+
+**[Next.js 的 App Router](https://nextjs.org/docs) 是一个 React 框架,充分利用了 React 的架构,支持全栈 React 应用。**
+
+npx create-next-app@latest
+
+Next.js 由 [Vercel](https://vercel.com/) 维护。你可以 [将 Next.js 应用部署](https://nextjs.org/docs/app/building-your-application/deploying) 到任何支持 Node.js 或 Docker 容器的托管平台,或者部署到你自己的服务器。 Next.js 也支持 [静态导出](https://nextjs.org/docs/app/building-your-application/deploying/static-exports) 无需服务器。
+
+### React Router (v7) {/*react-router-v7*/}
+
+**[React Router](https://reactrouter.com/start/framework/installation) 是 React 最流行的路由库,可以与 Vite 结合创建一个全栈 React 框架**。它强调标准的 Web API 并提供了多个 [可部署的模板](https://github.com/remix-run/react-router-templates) 适用于各种 JavaScript 运行时和平台。
+
+要创建一个新的 React Router 框架项目,请运行:
+
+npx create-react-router@latest
+
+React Router 由 [Shopify](https://www.shopify.com) 维护。
+
+### Expo (for native apps) {/*expo*/}
+
+**[Expo](https://expo.dev/) 是一个 React 框架,让你可以创建支持真正原生 UI 的通用 Android、iOS 和 Web 应用**。它为 [React Native](https://reactnative.dev/) 提供了一个 SDK,让原生部分更易于使用。要创建一个新的 Expo 项目,请运行:
+
+npx create-expo-app@latest
+
+如果你是 Expo 新手,请查看 [Expo 教程](https://docs.expo.dev/tutorial/introduction/).
+
+Expo 由 [Expo 公司](https://expo.dev/about) 维护。使用 Expo 构建应用是免费的,你可以将应用提交到 Google 和 Apple 应用商店,没有任何限制。Expo 还提供可选的付费云服务。
+
+
+====================================================================================================
+h_0063 [direct] React 项目里文档要求务必启用的是哪个 ESLint 插件规则？
+--- react/src__content__learn__editor-setup.md | 推荐的文本编辑器功能 | [607,2316) len=1709
+## 推荐的文本编辑器功能 {/*recommended-text-editor-features*/}
+
+有些编辑器内置了这些功能,但某些编辑器可能需要添加扩展。你需要确认你的编辑器支持了哪些能力。
+
+### 代码检查(Linting) {/*linting*/}
+
+代码检查(Code linters)可以在你编写代码时,发现代码中的问题,以帮你尽早修复。[ESLint](https://eslint.org/) 是一款流行且开源的 JavaScript 代码检查工具。
+
+* [使用 React 的推荐配置安装 ESLint](https://www.npmjs.com/package/eslint-config-react-app) (确保你已经安装了 [Node](https://nodejs.org/en/download/current/))
+* [安装 VSCode 中的官方 ESLint 扩展](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+
+**请确保你已经为你的项目启用了 [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks) 规则**。这在 React 项目中是必备的,同时能帮助你及早的捕获较为严重的 bug。我们推荐的 [`eslint-config-react-app`](https://www.npmjs.com/package/eslint-config-react-app) preset 中已经集成了该规则。
+
+### 格式化 {/*formatting*/}
+
+与其他贡献者共享代码时,你最不想做的事就是争论代码缩进应该使用 [tabs 还是空格](https://www.google.com/search?q=tabs+vs+spaces)!幸好,[Prettier](https://prettier.io/) 会根据预设配置的规则重新格式化代码,以保证代码整洁。运行 Prettier,你的所有 tabs 都将转换为空格,同时缩进、引号等也都将根据你的配置而改变。理想状态下,当你保存文件时,Prettier 会自动执行格式化操作。
+
+你可以为 [VSCode 安装 Prettier 扩展](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode),具体步骤如下:
+
+1. 启动 VS Code
+2. 使用快速打开(使用快捷键 `Ctrl/Cmd + P`)
+3. 粘贴 `ext install esbenp.prettier-vscode`
+4. 按回车键
+
+#### 保存并自动格式化 {/*formatting-on-save*/}
+
+理想情况下,你应该在每次保存时自动格式化代码。VS Code 就包含该配置!
+
+1. 在 VS Code, 按快捷键 `Ctrl/Cmd + Shift + P`.
+2. 输入 "settings"
+3. 按回车键
+4. 在搜索栏, 输入 "format on save"
+5. 确保勾选 "format on save" 选项!
+
+> 如果你的 ESLint 预设包含格式化规则,它们可能会与 Prettier 发生冲突。我们建议使用[`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) 禁用你 ESLint 预设中的所有格式化规则,这样 ESLint 就只用于捕捉逻辑错误。如果你想在合并 PR 前强制执行文件的格式化,请在你的 CI 中使用 [`prettier --check`](https://prettier.io/docs/en/cli.html#--check) 命令。
+
+====================================================================================================
+h_0064 [direct] 不用框架、从零搭一个 React 项目时，文档举例的构建工具有哪些？
+--- react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 | [589,2094) len=1505
+## 步骤 1: 安装构建工具 {/*step-1-install-a-build-tool*/}
+
+第一步是安装一个构建工具,如 Vite、Parcel 或 rsbuild。这些构建工具提供了打包和运行源代码的功能,提供本地开发的开发服务器,以及部署应用到生产服务器的构建命令。
+
+### Vite {/*vite*/}
+
+[Vite](https://vite.dev/) 是一个构建工具,旨在为现代网络项目提供更快更简洁的开发体验。
+
+npm create vite@latest my-app -- --template react-ts
+
+Vite 采用约定式设计,开箱即提供合理的默认配置。它拥有丰富的插件生态系统,能够支持快速热更新、JSX、Babel/SWC 等常见功能。你可以查看 Vite 的 [React 插件](https://vite.dev/plugins/#vitejs-plugin-react) 或 [React SWC 插件](https://vite.dev/plugins/#vitejs-plugin-react-swc) 和 [React 服务器端渲染示例项目](https://vite.dev/guide/ssr.html#example-projects) 来开始使用。
+
+Vite 已经作为构建工具在我们 [推荐的框架](/learn/creating-a-react-app) 之一 [React Router](https://reactrouter.com/start/framework/installation) 中使用。
+
+### Parcel {/*parcel*/}
+
+[Parcel](https://parceljs.org/) 结合了出色的开箱即用开发体验和可扩展的架构,可以将你的项目从刚开始的阶段推向大规模的生产应用。
+
+npm install --save-dev parcel
+
+Parcel 支持快速刷新、JSX、TypeScript、Flow 和开箱即用的样式。请查看 [Parcel 的 React 教程](https://parceljs.org/recipes/react/#getting-started) 以开始。
+
+### Rsbuild {/*rsbuild*/}
+
+[Rsbuild](https://rsbuild.dev/) 是一个基于 Rspack 的构建工具,旨在为 React 应用程序提供无缝的开发体验。它配备了精心调优的默认设置和现成的性能优化。
+
+npx create-rsbuild --template react
+
+Rsbuild 内置了对 React 特性的支持,如快速刷新、JSX、TypeScript 和样式。请查看 [Rsbuild 的 React 指南](https://rsbuild.dev/zh/guide/framework/react) 以开始使用。
+
+#### React Native 的 Metro {/*react-native*/}
+
+如果你从头开始使用 React Native,你将需要使用 [Metro](https://metrobundler.dev/), 这是 React Native 的 JavaScript 打包工具。Metro 支持 iOS 和 Android 等平台的打包,但与这里提到的工具相比,它缺少许多功能。除非你的项目需要 React Native 支持,否则我们建议从 Vite、Parcel 或 Rsbuild 开始。
+
+
+====================================================================================================
+h_0021 [direct] 完全不知道数据库连接池该配多大时，文档给的初始经验公式是什么？CPU 核数该怎么数？
+--- tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | [212,4553) len=4341
+## 连接池参数
+
+TiDB (MySQL) 连接建立是比较昂贵的操作(至少对于 OLTP 来讲),除了建立 TCP 连接外还需要进行连接鉴权操作,所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
+
+Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/)),TiDB 不会限定使用的连接池,应用可以根据业务特点自行选择连接池实现。
+
+### 连接数配置
+
+比较常见的是应用需要根据自身情况配置合适的连接池大小,以 HikariCP 为例:
+
+**maximumPoolSize**:连接池最大连接数,配置过大会导致 TiDB 消耗资源维护无用连接,配置过小则会导致应用获取连接变慢,所以需根据应用自身特点配置合适的值,可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
+
+**minimumIdle**:连接池最小空闲连接数,主要用于在应用空闲时存留一些连接以应对突发请求,同样是需要根据业务情况进行配置。
+
+应用在使用连接池时,需要注意连接使用完成后归还连接,推荐应用使用对应的连接池相关监控(如 **metricRegistry**),通过监控能及时定位连接池问题。
+
+### 配置连接的生命周期
+
+TiDB Server 在关闭、因维护而重启,或发生异常(如硬件故障或网络问题)时,现有的客户端连接可能会被重置,导致应用程序出现中断或异常。为避免此类问题,对于长期保持的数据库连接,建议每天至少主动关闭并重新建立一次连接。
+
+常见的连接池库通常提供参数,用于控制连接的最长存活时间。
+
+<div label="HikariCP">
+
+- **`maxLifetime`**:连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="tomcat-jdbc">
+
+- **`maxAge`**:连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="c3p0">
+
+- **`maxConnectionAge`**:连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="dbcp">
+
+- **`maxConnLifetimeMillis`**:连接在连接池中的最长存活时间(单位为毫秒)。
+
+</div>
+
+### 探活配置
+
+连接池维护客户端到 TiDB 的长连接的方式如下:
+
+- v5.4 版本前,TiDB 默认不会主动关闭客户端连接,除非出现报错情况。
+- 从 v5.4 起,TiDB 默认会在连接空闲超过 `28800` 秒(即 8 小时)后,自动关闭客户端连接。你可以使用 TiDB 与 MySQL 兼容的 `wait_timeout` 变量控制此超时时间,详见 [JDBC 查询超时](/develop/dev-guide-timeouts-in-tidb.md#jdbc-查询超时)文档。
+
+此外,客户端到 TiDB 之间通常还会有 [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) 或 [HAProxy](https://en.wikipedia.org/wiki/HAProxy) 之类的网络代理。这些代理通常会在连接空闲超过特定时间(由代理的 idle 配置决定)后主动清理连接。除了关注代理的 idle 配置外,连接池还需要进行保活或探测连接。
+
+如果常在 Java 应用中看到以下错误:
+
+```
+The last packet sent successfully to the server was 3600000 milliseconds ago. The driver has not received any packets from the server. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+```
+
+如果 `n milliseconds ago` 中的 n 如果是 0 或很小的值,则通常是执行的 SQL 导致 TiDB 异常退出引起的报错,推荐查看 TiDB stderr 日志;如果 n 是一个非常大的值(比如这里的 3600000),很可能是因为这个连接空闲太久然后被中间 proxy 关闭了,通常解决方式除了调大 proxy 的 idle 配置,还可以让连接池执行以下操作:
+
+- 每次使用连接前检查连接是否可用。
+- 使用单独线程定期检查连接是否可用。
+- 定期发送 test query 保活连接。
+
+不同的连接池实现可能会支持其中一种或多种方式,可以查看所使用的连接池文档来寻找对应配置。
+
+### 经验公式
+
+在 HikariCP 的 [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) 一文中可以了解到,在完全不知道如何设置数据库连接池大小的时候,可以考虑以以下[经验公式](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing#connections--core_count--2--effective_spindle_count)为起点,在此基础上,围绕该结果进行尝试,以得到最高性能的连接池大小。
+
+该经验公式描述如下:
+
+```
+connections = ((core_count * 2) + effective_spindle_count)
+```
+
+解释一下参数含义:
+
+- **connections**: 得出的连接数大小。
+- **core_count**: CPU 核心数。
+- **effective_spindle_count**: 直译为**有效主轴数**,实际上是说你有多少个硬盘(非 [SSD](https://en.wikipedia.org/wiki/Solid-state_drive)),因为每个旋转的硬盘可以被称为是一个旋转轴。例如,你使用的是一个有 16 个磁盘组成的 [RAID](https://en.wikipedia.org/wiki/RAID) 阵列的服务器,那么 **effective_spindle_count** 应为 16。此处经验公式,实际上是衡量你的服务器可以管理多少 I/O 并发请求,因为 **HDD** 通常只能串行请求。
+
+要特别说明的是,在这个经验公式的下方,也看到了一处说明:
+
+> ```
+> A formula which has held up pretty well across a lot of benchmarks for years is
+> that for optimal throughput the number of active connections should be somewhere
+> near ((core_count * 2) + effective_spindle_count). Core count should not include
+> HT threads, even if hyperthreading is enabled. Effective spindle count is zero if
+> the active data set is fully cached, and approaches the actual number of spindles
+> as the cache hit rate falls. ... There hasn't been any analysis so far regarding
+> how well the formula works with SSDs.
+> ```
+
+这个说明指出:
+
+1. **core_count** 就是_物理核心数_,与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
+2. 数据被全量缓存时,**effective_spindle_count** 应被设置为 0,随着命中率的下降,会更加接近实际的 HDD 个数。
+3. **这里没有任何基于 _SSD_ 的经验公式。**
+
+这里的说明让你在使用 SSD 时,需探求其他的经验公式。
+
+可以参考 CockroachDB 对[数据库连接池](https://www.cockroachlabs.com/docs/stable/connection-pooling.html?#sizing-connection-pools)中的描述,推荐的连接数大小公式为:
+
+```
+connections = (number of cores * 4)
+```
+
+因此,你在使用 SSD 的情况下可以将连接数设置为 `CPU 核心数 * 4`。以此来达到初始的连接池最大连接数大小,并以此数据周围进行进一步的调整。
+
+### 调整方向
+
+可以看到,在上方的[经验公式](#经验公式)中得到的,是一个推荐的初始值,若需得到某台具体机器上的最佳值,需在推荐值周围,通过尝试,得到最佳值。
+
+此最佳值的获取,会有一些基本规律,此处罗列如下:
+
+1. 如果你的网络或存储延迟较大,请增大你的最大连接数,可以进行等待,从而让线程在被阻塞时,其他的线程可继续进行处理。
+2. 如果你的服务器上部署了多个服务,并且每个服务拥有独立的连接池时,请关注它们的连接池的最大连接数总和。
+
+
+====================================================================================================
+h_0022 [multi_block] TiDB 会在连接空闲多久之后主动把客户端连接关掉？这个默认行为从哪个版本开始、由哪个变量控制？
+--- tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | [212,4553) len=4341
+## 连接池参数
+
+TiDB (MySQL) 连接建立是比较昂贵的操作(至少对于 OLTP 来讲),除了建立 TCP 连接外还需要进行连接鉴权操作,所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
+
+Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-10.1-doc/jdbc-pool.html), [druid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/)),TiDB 不会限定使用的连接池,应用可以根据业务特点自行选择连接池实现。
+
+### 连接数配置
+
+比较常见的是应用需要根据自身情况配置合适的连接池大小,以 HikariCP 为例:
+
+**maximumPoolSize**:连接池最大连接数,配置过大会导致 TiDB 消耗资源维护无用连接,配置过小则会导致应用获取连接变慢,所以需根据应用自身特点配置合适的值,可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
+
+**minimumIdle**:连接池最小空闲连接数,主要用于在应用空闲时存留一些连接以应对突发请求,同样是需要根据业务情况进行配置。
+
+应用在使用连接池时,需要注意连接使用完成后归还连接,推荐应用使用对应的连接池相关监控(如 **metricRegistry**),通过监控能及时定位连接池问题。
+
+### 配置连接的生命周期
+
+TiDB Server 在关闭、因维护而重启,或发生异常(如硬件故障或网络问题)时,现有的客户端连接可能会被重置,导致应用程序出现中断或异常。为避免此类问题,对于长期保持的数据库连接,建议每天至少主动关闭并重新建立一次连接。
+
+常见的连接池库通常提供参数,用于控制连接的最长存活时间。
+
+<div label="HikariCP">
+
+- **`maxLifetime`**:连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="tomcat-jdbc">
+
+- **`maxAge`**:连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="c3p0">
+
+- **`maxConnectionAge`**:连接在连接池中的最长存活时间。
+
+</div>
+
+<div label="dbcp">
+
+- **`maxConnLifetimeMillis`**:连接在连接池中的最长存活时间(单位为毫秒)。
+
+</div>
+
+### 探活配置
+
+连接池维护客户端到 TiDB 的长连接的方式如下:
+
+- v5.4 版本前,TiDB 默认不会主动关闭客户端连接,除非出现报错情况。
+- 从 v5.4 起,TiDB 默认会在连接空闲超过 `28800` 秒(即 8 小时)后,自动关闭客户端连接。你可以使用 TiDB 与 MySQL 兼容的 `wait_timeout` 变量控制此超时时间,详见 [JDBC 查询超时](/develop/dev-guide-timeouts-in-tidb.md#jdbc-查询超时)文档。
+
+此外,客户端到 TiDB 之间通常还会有 [LVS](https://en.wikipedia.org/wiki/Linux_Virtual_Server) 或 [HAProxy](https://en.wikipedia.org/wiki/HAProxy) 之类的网络代理。这些代理通常会在连接空闲超过特定时间(由代理的 idle 配置决定)后主动清理连接。除了关注代理的 idle 配置外,连接池还需要进行保活或探测连接。
+
+如果常在 Java 应用中看到以下错误:
+
+```
+The last packet sent successfully to the server was 3600000 milliseconds ago. The driver has not received any packets from the server. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+```
+
+如果 `n milliseconds ago` 中的 n 如果是 0 或很小的值,则通常是执行的 SQL 导致 TiDB 异常退出引起的报错,推荐查看 TiDB stderr 日志;如果 n 是一个非常大的值(比如这里的 3600000),很可能是因为这个连接空闲太久然后被中间 proxy 关闭了,通常解决方式除了调大 proxy 的 idle 配置,还可以让连接池执行以下操作:
+
+- 每次使用连接前检查连接是否可用。
+- 使用单独线程定期检查连接是否可用。
+- 定期发送 test query 保活连接。
+
+不同的连接池实现可能会支持其中一种或多种方式,可以查看所使用的连接池文档来寻找对应配置。
+
+### 经验公式
+
+在 HikariCP 的 [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) 一文中可以了解到,在完全不知道如何设置数据库连接池大小的时候,可以考虑以以下[经验公式](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing#connections--core_count--2--effective_spindle_count)为起点,在此基础上,围绕该结果进行尝试,以得到最高性能的连接池大小。
+
+该经验公式描述如下:
+
+```
+connections = ((core_count * 2) + effective_spindle_count)
+```
+
+解释一下参数含义:
+
+- **connections**: 得出的连接数大小。
+- **core_count**: CPU 核心数。
+- **effective_spindle_count**: 直译为**有效主轴数**,实际上是说你有多少个硬盘(非 [SSD](https://en.wikipedia.org/wiki/Solid-state_drive)),因为每个旋转的硬盘可以被称为是一个旋转轴。例如,你使用的是一个有 16 个磁盘组成的 [RAID](https://en.wikipedia.org/wiki/RAID) 阵列的服务器,那么 **effective_spindle_count** 应为 16。此处经验公式,实际上是衡量你的服务器可以管理多少 I/O 并发请求,因为 **HDD** 通常只能串行请求。
+
+要特别说明的是,在这个经验公式的下方,也看到了一处说明:
+
+> ```
+> A formula which has held up pretty well across a lot of benchmarks for years is
+> that for optimal throughput the number of active connections should be somewhere
+> near ((core_count * 2) + effective_spindle_count). Core count should not include
+> HT threads, even if hyperthreading is enabled. Effective spindle count is zero if
+> the active data set is fully cached, and approaches the actual number of spindles
+> as the cache hit rate falls. ... There hasn't been any analysis so far regarding
+> how well the formula works with SSDs.
+> ```
+
+这个说明指出:
+
+1. **core_count** 就是_物理核心数_,与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
+2. 数据被全量缓存时,**effective_spindle_count** 应被设置为 0,随着命中率的下降,会更加接近实际的 HDD 个数。
+3. **这里没有任何基于 _SSD_ 的经验公式。**
+
+这里的说明让你在使用 SSD 时,需探求其他的经验公式。
+
+可以参考 CockroachDB 对[数据库连接池](https://www.cockroachlabs.com/docs/stable/connection-pooling.html?#sizing-connection-pools)中的描述,推荐的连接数大小公式为:
+
+```
+connections = (number of cores * 4)
+```
+
+因此,你在使用 SSD 的情况下可以将连接数设置为 `CPU 核心数 * 4`。以此来达到初始的连接池最大连接数大小,并以此数据周围进行进一步的调整。
+
+### 调整方向
+
+可以看到,在上方的[经验公式](#经验公式)中得到的,是一个推荐的初始值,若需得到某台具体机器上的最佳值,需在推荐值周围,通过尝试,得到最佳值。
+
+此最佳值的获取,会有一些基本规律,此处罗列如下:
+
+1. 如果你的网络或存储延迟较大,请增大你的最大连接数,可以进行等待,从而让线程在被阻塞时,其他的线程可继续进行处理。
+2. 如果你的服务器上部署了多个服务,并且每个服务拥有独立的连接池时,请关注它们的连接池的最大连接数总和。
+
+
+--- tidb/develop__dev-guide-connection-parameters.md | 连接参数 | [4553,11771) len=7218
+## 连接参数
+
+Java 应用尽管可以选择在不同的框架中封装,但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC,需要关注的主要有:API 的使用选择和 API Implementer 的参数配置。
+
+### JDBC API
+
+对于基本的 JDBC API 使用可以参考 [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/),本文主要强调几个比较重要的 API 选择。
+
+### 使用 Prepare API
+
+对于 OLTP 场景,程序发送给数据库的 SQL 语句在去除参数变化后都是可穷举的某几类,因此建议使用[预处理语句 (Prepared Statements)](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries),并复用预处理语句来直接执行,从而避免 TiDB 重复解析和生成 SQL 执行计划的开销。
+
+目前多数上层框架都会调用 Prepare API 进行 SQL 执行,如果直接使用 JDBC API 进行开发,注意选择使用 Prepare API。
+
+另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理,会将 `?` 在客户端替换后以文本形式发送到服务端,所以除了要使用 Prepare API,还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`,才能在 TiDB 服务器端进行语句预处理(下面参数配置章节有详细介绍)。
+
+### 使用 Batch 批量插入更新
+
+对于批量插入更新,如果插入记录较多,可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)。通过 addBatch 的方式将多条 SQL 的插入更新记录先缓存在客户端,然后在 executeBatch 时一起发送到数据库服务器。
+
+> **注意:**
+>
+> 对于 MySQL Connector/J 实现,默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候,但实际网络发送还是会一条条的发送,通常不会降低与数据库服务器的网络交互次数。
+>
+> 如果希望 Batch 网络发送,需要在 JDBC 连接参数中配置 `rewriteBatchedStatements = true`(下面参数配置章节有详细介绍)。
+
+### 使用 StreamingResult 流式获取执行结果
+
+一般情况下,为提升执行效率,JDBC 会默认提前获取查询结果并将其保存在客户端内存中。但在查询返回超大结果集的场景中,客户端会希望数据库服务器减少向客户端一次返回的记录数,等客户端在有限内存处理完一部分后再去向服务器要下一批。
+
+在 JDBC 中通常有以下两种处理方式:
+
+- 方式一:设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存,客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
+- 方式二:使用 Cursor Fetch,首先需[设置 **FetchSize**](https://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数,且在 JDBC URL 中配置 `useCursorFetch = true`。
+
+TiDB 同时支持以上两种方式,但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式,比第二种功能实现更简单且执行效率更高。
+
+对于第二种方式,TiDB 会先将所有数据加载到 TiDB 节点上,然后根据 `FetchSize` 依次返回给客户端。因此,通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`,可能会触发落盘临时将结果写入硬盘。
+
+如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`,TiDB 将尝试仅在客户端请求数据时读取部分数据,以使用更少的内存。更多信息和使用限制,参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细描述。
+
+### MySQL JDBC 参数
+
+JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)(如果使用的是 MariaDB,可以参考 [MariaDB 的类似配置](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#optional-url-parameters))。因为配置项较多,这里主要关注几个可能影响到性能的参数。
+
+#### Prepare 相关参数
+
+- **useServerPrepStmts**
+
+    默认情况下,**useServerPrepStmts** 的值为 `false`,即尽管使用了 Prepare API,也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销,如果同一条 SQL 语句需要多次使用 Prepare API,则建议设置该选项为 `true`。
+
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
+
+- **cachePrepStmts**
+
+    虽然 `useServerPrepStmts = true` 能让服务端执行预处理语句,但默认情况下客户端每次执行完后会 close 预处理语句,并不会复用,这样预处理的效率甚至不如文本执行。所以建议开启 `useServerPrepStmts = true` 后同时配置 `cachePrepStmts = true`,这会让客户端缓存预处理语句。
+
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
+
+    另外,通过 `useConfigs = maxPerformance` 配置会同时配置多个参数,其中也包括 `cachePrepStmts = true`。
+
+- **prepStmtCacheSqlLimit**
+
+    在配置 **cachePrepStmts** 后还需要注意 **prepStmtCacheSqlLimit** 配置(默认为 `256`),该配置控制客户端缓存预处理语句的最大长度,超过该长度将不会被缓存。
+
+    在一些场景 SQL 的长度可能超过该配置,导致预处理 SQL 不能复用,建议根据应用 SQL 长度情况决定是否需要调大该值。
+
+    在 TiDB 监控中通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果已经配置了 `cachePrepStmts = true`,但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`,需要检查这个配置项是否设置得太小。
+
+- **prepStmtCacheSize**
+
+    控制缓存的预处理语句数目(默认为 `25`),如果应用需要预处理的 SQL 种类很多且希望复用预处理语句,可以调大该值。
+
+    和上一条类似,在监控中通过 **Query Summary > CPS By Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
+
+#### Batch 相关参数
+
+在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`,在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送,例如:
+
+```java
+pstmt = prepare("INSERT INTO `t` (`a`) VALUES(?)");
+pstmt.setInt(1, 10);
+pstmt.addBatch();
+pstmt.setInt(1, 11);
+pstmt.addBatch();
+pstmt.setInt(1, 12);
+pstmt.executeBatch();
+```
+
+虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert:
+
+```sql
+INSERT INTO `t` (`a`) VALUES(10);
+INSERT INTO `t` (`a`) VALUES(11);
+INSERT INTO `t` (`a`) VALUES(12);
+```
+
+如果设置 `rewriteBatchedStatements = true`,发送到 TiDB 的 SQL 将是:
+
+```sql
+INSERT INTO `t` (`a`) VALUES(10),(11),(12);
+```
+
+需要注意的是,insert 语句的改写,只能将多个 values 后的值拼接成一整条 SQL, insert 语句如果有其他差异将无法被改写。例如:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = 10;
+INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = 11;
+INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = 12;
+```
+
+上述 insert 语句将无法被改写成一条语句。该例子中,如果将 SQL 改写成如下形式:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+```
+
+即可满足改写条件,最终被改写成:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+```
+
+批量更新时如果有 3 处或 3 处以上更新,则 SQL 语句会改写为 multiple-queries 的形式并发送,这样可以有效减少客户端到服务器的请求开销,但副作用是会产生较大的 SQL 语句,例如这样:
+
+```sql
+UPDATE `t` SET `a` = 10 WHERE `id` = 1;
+UPDATE `t` SET `a` = 11 WHERE `id` = 2;
+UPDATE `t` SET `a` = 12 WHERE `id` = 3;
+```
+
+另外,因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623),批量更新时如果要配置 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true`,推荐同时配置 `allowMultiQueries = true` 参数来避免这个 bug。
+
+#### 集成参数
+
+通过监控可能会发现,虽然业务只向集群进行 insert 操作,却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句(例如 `select @@session.transaction_read_only`)。这些 SQL 对 TiDB 无用,推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
+
+`useConfigs = maxPerformance` 会包含一组配置,可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties)或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties)来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
+
+配置后查看监控,可以看到多余语句减少。
+
+#### 超时参数
+
+TiDB 提供两个与 MySQL 兼容的超时控制参数,[`wait_timeout`](/system-variables.md#wait_timeout) 和 [`max_execution_time`](/system-variables.md#max_execution_time)。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间,即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。在 TiDB v5.4 及以上版本中,`wait_timeout` 参数默认值为 `28800` 秒,即空闲超时为 8 小时。在 v5.4 之前,`wait_timeout` 参数的默认值为 `0`,即没有时间限制。 `max_execution_time` 参数的默认值为 `0`,即不限制一条 SQL 语句的执行时间,该参数适用于所有 `SELECT` 语句(包括 `SELECT ... FOR UPDATE`)。
+
+但是 [`wait_timeout`](/system-variables.md#wait_timeout) 的默认值比较大,在事务已启动但未提交或回滚的情况下,你可能需要更细粒度的控制和更短的超时,以避免持有锁的时间过长。此时,你可以使用 TiDB 在 v7.6.0 引入的 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。
+
+但在实际生产环境中,空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如,设置 `sessionVariables=wait_timeout=3600`(1 小时)和 `sessionVariables=max_execution_time=300000`(5 分钟)。
+
+====================================================================================================
+h_0023 [direct] Java 应用想让 TiDB 服务端真正执行预处理语句并复用，需要在 JDBC 上配哪些参数？默认值是多少？
+--- tidb/develop__dev-guide-connection-parameters.md | 连接参数 | [4553,11771) len=7218
+## 连接参数
+
+Java 应用尽管可以选择在不同的框架中封装,但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC,需要关注的主要有:API 的使用选择和 API Implementer 的参数配置。
+
+### JDBC API
+
+对于基本的 JDBC API 使用可以参考 [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/),本文主要强调几个比较重要的 API 选择。
+
+### 使用 Prepare API
+
+对于 OLTP 场景,程序发送给数据库的 SQL 语句在去除参数变化后都是可穷举的某几类,因此建议使用[预处理语句 (Prepared Statements)](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries),并复用预处理语句来直接执行,从而避免 TiDB 重复解析和生成 SQL 执行计划的开销。
+
+目前多数上层框架都会调用 Prepare API 进行 SQL 执行,如果直接使用 JDBC API 进行开发,注意选择使用 Prepare API。
+
+另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理,会将 `?` 在客户端替换后以文本形式发送到服务端,所以除了要使用 Prepare API,还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`,才能在 TiDB 服务器端进行语句预处理(下面参数配置章节有详细介绍)。
+
+### 使用 Batch 批量插入更新
+
+对于批量插入更新,如果插入记录较多,可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)。通过 addBatch 的方式将多条 SQL 的插入更新记录先缓存在客户端,然后在 executeBatch 时一起发送到数据库服务器。
+
+> **注意:**
+>
+> 对于 MySQL Connector/J 实现,默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候,但实际网络发送还是会一条条的发送,通常不会降低与数据库服务器的网络交互次数。
+>
+> 如果希望 Batch 网络发送,需要在 JDBC 连接参数中配置 `rewriteBatchedStatements = true`(下面参数配置章节有详细介绍)。
+
+### 使用 StreamingResult 流式获取执行结果
+
+一般情况下,为提升执行效率,JDBC 会默认提前获取查询结果并将其保存在客户端内存中。但在查询返回超大结果集的场景中,客户端会希望数据库服务器减少向客户端一次返回的记录数,等客户端在有限内存处理完一部分后再去向服务器要下一批。
+
+在 JDBC 中通常有以下两种处理方式:
+
+- 方式一:设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存,客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
+- 方式二:使用 Cursor Fetch,首先需[设置 **FetchSize**](https://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数,且在 JDBC URL 中配置 `useCursorFetch = true`。
+
+TiDB 同时支持以上两种方式,但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式,比第二种功能实现更简单且执行效率更高。
+
+对于第二种方式,TiDB 会先将所有数据加载到 TiDB 节点上,然后根据 `FetchSize` 依次返回给客户端。因此,通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`,可能会触发落盘临时将结果写入硬盘。
+
+如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`,TiDB 将尝试仅在客户端请求数据时读取部分数据,以使用更少的内存。更多信息和使用限制,参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细描述。
+
+### MySQL JDBC 参数
+
+JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)(如果使用的是 MariaDB,可以参考 [MariaDB 的类似配置](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#optional-url-parameters))。因为配置项较多,这里主要关注几个可能影响到性能的参数。
+
+#### Prepare 相关参数
+
+- **useServerPrepStmts**
+
+    默认情况下,**useServerPrepStmts** 的值为 `false`,即尽管使用了 Prepare API,也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销,如果同一条 SQL 语句需要多次使用 Prepare API,则建议设置该选项为 `true`。
+
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
+
+- **cachePrepStmts**
+
+    虽然 `useServerPrepStmts = true` 能让服务端执行预处理语句,但默认情况下客户端每次执行完后会 close 预处理语句,并不会复用,这样预处理的效率甚至不如文本执行。所以建议开启 `useServerPrepStmts = true` 后同时配置 `cachePrepStmts = true`,这会让客户端缓存预处理语句。
+
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
+
+    另外,通过 `useConfigs = maxPerformance` 配置会同时配置多个参数,其中也包括 `cachePrepStmts = true`。
+
+- **prepStmtCacheSqlLimit**
+
+    在配置 **cachePrepStmts** 后还需要注意 **prepStmtCacheSqlLimit** 配置(默认为 `256`),该配置控制客户端缓存预处理语句的最大长度,超过该长度将不会被缓存。
+
+    在一些场景 SQL 的长度可能超过该配置,导致预处理 SQL 不能复用,建议根据应用 SQL 长度情况决定是否需要调大该值。
+
+    在 TiDB 监控中通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果已经配置了 `cachePrepStmts = true`,但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`,需要检查这个配置项是否设置得太小。
+
+- **prepStmtCacheSize**
+
+    控制缓存的预处理语句数目(默认为 `25`),如果应用需要预处理的 SQL 种类很多且希望复用预处理语句,可以调大该值。
+
+    和上一条类似,在监控中通过 **Query Summary > CPS By Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
+
+#### Batch 相关参数
+
+在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`,在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送,例如:
+
+```java
+pstmt = prepare("INSERT INTO `t` (`a`) VALUES(?)");
+pstmt.setInt(1, 10);
+pstmt.addBatch();
+pstmt.setInt(1, 11);
+pstmt.addBatch();
+pstmt.setInt(1, 12);
+pstmt.executeBatch();
+```
+
+虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert:
+
+```sql
+INSERT INTO `t` (`a`) VALUES(10);
+INSERT INTO `t` (`a`) VALUES(11);
+INSERT INTO `t` (`a`) VALUES(12);
+```
+
+如果设置 `rewriteBatchedStatements = true`,发送到 TiDB 的 SQL 将是:
+
+```sql
+INSERT INTO `t` (`a`) VALUES(10),(11),(12);
+```
+
+需要注意的是,insert 语句的改写,只能将多个 values 后的值拼接成一整条 SQL, insert 语句如果有其他差异将无法被改写。例如:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = 10;
+INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = 11;
+INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = 12;
+```
+
+上述 insert 语句将无法被改写成一条语句。该例子中,如果将 SQL 改写成如下形式:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+```
+
+即可满足改写条件,最终被改写成:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+```
+
+批量更新时如果有 3 处或 3 处以上更新,则 SQL 语句会改写为 multiple-queries 的形式并发送,这样可以有效减少客户端到服务器的请求开销,但副作用是会产生较大的 SQL 语句,例如这样:
+
+```sql
+UPDATE `t` SET `a` = 10 WHERE `id` = 1;
+UPDATE `t` SET `a` = 11 WHERE `id` = 2;
+UPDATE `t` SET `a` = 12 WHERE `id` = 3;
+```
+
+另外,因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623),批量更新时如果要配置 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true`,推荐同时配置 `allowMultiQueries = true` 参数来避免这个 bug。
+
+#### 集成参数
+
+通过监控可能会发现,虽然业务只向集群进行 insert 操作,却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句(例如 `select @@session.transaction_read_only`)。这些 SQL 对 TiDB 无用,推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
+
+`useConfigs = maxPerformance` 会包含一组配置,可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties)或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties)来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
+
+配置后查看监控,可以看到多余语句减少。
+
+#### 超时参数
+
+TiDB 提供两个与 MySQL 兼容的超时控制参数,[`wait_timeout`](/system-variables.md#wait_timeout) 和 [`max_execution_time`](/system-variables.md#max_execution_time)。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间,即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。在 TiDB v5.4 及以上版本中,`wait_timeout` 参数默认值为 `28800` 秒,即空闲超时为 8 小时。在 v5.4 之前,`wait_timeout` 参数的默认值为 `0`,即没有时间限制。 `max_execution_time` 参数的默认值为 `0`,即不限制一条 SQL 语句的执行时间,该参数适用于所有 `SELECT` 语句(包括 `SELECT ... FOR UPDATE`)。
+
+但是 [`wait_timeout`](/system-variables.md#wait_timeout) 的默认值比较大,在事务已启动但未提交或回滚的情况下,你可能需要更细粒度的控制和更短的超时,以避免持有锁的时间过长。此时,你可以使用 TiDB 在 v7.6.0 引入的 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。
+
+但在实际生产环境中,空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如,设置 `sessionVariables=wait_timeout=3600`(1 小时)和 `sessionVariables=max_execution_time=300000`(5 分钟)。
+
+====================================================================================================
+h_0024 [paraphrase] 开启批量改写后，什么样的插入语句才能被合并成一条 SQL 发给 TiDB？批量更新又是怎么处理的？
+--- tidb/develop__dev-guide-connection-parameters.md | 连接参数 | [4553,11771) len=7218
+## 连接参数
+
+Java 应用尽管可以选择在不同的框架中封装,但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC,需要关注的主要有:API 的使用选择和 API Implementer 的参数配置。
+
+### JDBC API
+
+对于基本的 JDBC API 使用可以参考 [JDBC 官方教程](https://docs.oracle.com/javase/tutorial/jdbc/),本文主要强调几个比较重要的 API 选择。
+
+### 使用 Prepare API
+
+对于 OLTP 场景,程序发送给数据库的 SQL 语句在去除参数变化后都是可穷举的某几类,因此建议使用[预处理语句 (Prepared Statements)](https://docs.oracle.com/javase/tutorial/jdbc/basics/prepared.html) 代替普通的[文本执行](https://docs.oracle.com/javase/tutorial/jdbc/basics/processingsqlstatements.html#executing_queries),并复用预处理语句来直接执行,从而避免 TiDB 重复解析和生成 SQL 执行计划的开销。
+
+目前多数上层框架都会调用 Prepare API 进行 SQL 执行,如果直接使用 JDBC API 进行开发,注意选择使用 Prepare API。
+
+另外需要注意 MySQL Connector/J 实现中默认只会做客户端的语句预处理,会将 `?` 在客户端替换后以文本形式发送到服务端,所以除了要使用 Prepare API,还需要在 JDBC 连接参数中配置 `useServerPrepStmts = true`,才能在 TiDB 服务器端进行语句预处理(下面参数配置章节有详细介绍)。
+
+### 使用 Batch 批量插入更新
+
+对于批量插入更新,如果插入记录较多,可以选择使用 [addBatch/executeBatch API](https://www.tutorialspoint.com/jdbc/jdbc-batch-processing)。通过 addBatch 的方式将多条 SQL 的插入更新记录先缓存在客户端,然后在 executeBatch 时一起发送到数据库服务器。
+
+> **注意:**
+>
+> 对于 MySQL Connector/J 实现,默认 Batch 只是将多次 addBatch 的 SQL 发送时机延迟到调用 executeBatch 的时候,但实际网络发送还是会一条条的发送,通常不会降低与数据库服务器的网络交互次数。
+>
+> 如果希望 Batch 网络发送,需要在 JDBC 连接参数中配置 `rewriteBatchedStatements = true`(下面参数配置章节有详细介绍)。
+
+### 使用 StreamingResult 流式获取执行结果
+
+一般情况下,为提升执行效率,JDBC 会默认提前获取查询结果并将其保存在客户端内存中。但在查询返回超大结果集的场景中,客户端会希望数据库服务器减少向客户端一次返回的记录数,等客户端在有限内存处理完一部分后再去向服务器要下一批。
+
+在 JDBC 中通常有以下两种处理方式:
+
+- 方式一:设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-implementation-notes.html#ResultSet) 让客户端不缓存,客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。
+- 方式二:使用 Cursor Fetch,首先需[设置 **FetchSize**](https://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数,且在 JDBC URL 中配置 `useCursorFetch = true`。
+
+TiDB 同时支持以上两种方式,但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式,比第二种功能实现更简单且执行效率更高。
+
+对于第二种方式,TiDB 会先将所有数据加载到 TiDB 节点上,然后根据 `FetchSize` 依次返回给客户端。因此,通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`,可能会触发落盘临时将结果写入硬盘。
+
+如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`,TiDB 将尝试仅在客户端请求数据时读取部分数据,以使用更少的内存。更多信息和使用限制,参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细描述。
+
+### MySQL JDBC 参数
+
+JDBC 实现通常通过 JDBC URL 参数的形式来提供实现相关的配置。这里以 MySQL 官方的 Connector/J 来介绍[参数配置](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-configuration-properties.html)(如果使用的是 MariaDB,可以参考 [MariaDB 的类似配置](https://mariadb.com/docs/connectors/mariadb-connector-j/about-mariadb-connector-j#optional-url-parameters))。因为配置项较多,这里主要关注几个可能影响到性能的参数。
+
+#### Prepare 相关参数
+
+- **useServerPrepStmts**
+
+    默认情况下,**useServerPrepStmts** 的值为 `false`,即尽管使用了 Prepare API,也只会在客户端做 “prepare”。因此为了避免服务器重复解析的开销,如果同一条 SQL 语句需要多次使用 Prepare API,则建议设置该选项为 `true`。
+
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果请求中 `COM_QUERY` 被 `COM_STMT_EXECUTE` 或 `COM_STMT_PREPARE` 代替即生效。
+
+- **cachePrepStmts**
+
+    虽然 `useServerPrepStmts = true` 能让服务端执行预处理语句,但默认情况下客户端每次执行完后会 close 预处理语句,并不会复用,这样预处理的效率甚至不如文本执行。所以建议开启 `useServerPrepStmts = true` 后同时配置 `cachePrepStmts = true`,这会让客户端缓存预处理语句。
+
+    在 TiDB 监控中可以通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果请求中 `COM_STMT_EXECUTE` 数目远远多于 `COM_STMT_PREPARE` 即生效。
+
+    另外,通过 `useConfigs = maxPerformance` 配置会同时配置多个参数,其中也包括 `cachePrepStmts = true`。
+
+- **prepStmtCacheSqlLimit**
+
+    在配置 **cachePrepStmts** 后还需要注意 **prepStmtCacheSqlLimit** 配置(默认为 `256`),该配置控制客户端缓存预处理语句的最大长度,超过该长度将不会被缓存。
+
+    在一些场景 SQL 的长度可能超过该配置,导致预处理 SQL 不能复用,建议根据应用 SQL 长度情况决定是否需要调大该值。
+
+    在 TiDB 监控中通过 **Query Summary > CPS By Instance** 查看请求命令类型,如果已经配置了 `cachePrepStmts = true`,但 `COM_STMT_PREPARE` 还是和 `COM_STMT_EXECUTE` 基本相等且有 `COM_STMT_CLOSE`,需要检查这个配置项是否设置得太小。
+
+- **prepStmtCacheSize**
+
+    控制缓存的预处理语句数目(默认为 `25`),如果应用需要预处理的 SQL 种类很多且希望复用预处理语句,可以调大该值。
+
+    和上一条类似,在监控中通过 **Query Summary > CPS By Instance** 查看请求中 `COM_STMT_EXECUTE` 数目是否远远多于 `COM_STMT_PREPARE` 来确认是否正常。
+
+#### Batch 相关参数
+
+在进行 batch 写入处理时推荐配置 `rewriteBatchedStatements = true`,在已经使用 `addBatch` 或 `executeBatch` 后默认 JDBC 还是会一条条 SQL 发送,例如:
+
+```java
+pstmt = prepare("INSERT INTO `t` (`a`) VALUES(?)");
+pstmt.setInt(1, 10);
+pstmt.addBatch();
+pstmt.setInt(1, 11);
+pstmt.addBatch();
+pstmt.setInt(1, 12);
+pstmt.executeBatch();
+```
+
+虽然使用了 batch 但发送到 TiDB 语句还是单独的多条 insert:
+
+```sql
+INSERT INTO `t` (`a`) VALUES(10);
+INSERT INTO `t` (`a`) VALUES(11);
+INSERT INTO `t` (`a`) VALUES(12);
+```
+
+如果设置 `rewriteBatchedStatements = true`,发送到 TiDB 的 SQL 将是:
+
+```sql
+INSERT INTO `t` (`a`) VALUES(10),(11),(12);
+```
+
+需要注意的是,insert 语句的改写,只能将多个 values 后的值拼接成一整条 SQL, insert 语句如果有其他差异将无法被改写。例如:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = 10;
+INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = 11;
+INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = 12;
+```
+
+上述 insert 语句将无法被改写成一条语句。该例子中,如果将 SQL 改写成如下形式:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+INSERT INTO `t` (`a`) VALUES (11) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+INSERT INTO `t` (`a`) VALUES (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+```
+
+即可满足改写条件,最终被改写成:
+
+```sql
+INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE `a` = values(`a`);
+```
+
+批量更新时如果有 3 处或 3 处以上更新,则 SQL 语句会改写为 multiple-queries 的形式并发送,这样可以有效减少客户端到服务器的请求开销,但副作用是会产生较大的 SQL 语句,例如这样:
+
+```sql
+UPDATE `t` SET `a` = 10 WHERE `id` = 1;
+UPDATE `t` SET `a` = 11 WHERE `id` = 2;
+UPDATE `t` SET `a` = 12 WHERE `id` = 3;
+```
+
+另外,因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623),批量更新时如果要配置 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true`,推荐同时配置 `allowMultiQueries = true` 参数来避免这个 bug。
+
+#### 集成参数
+
+通过监控可能会发现,虽然业务只向集群进行 insert 操作,却看到有很多多余的 select 语句。通常这是因为 JDBC 发送了一些查询设置类的 SQL 语句(例如 `select @@session.transaction_read_only`)。这些 SQL 对 TiDB 无用,推荐配置 `useConfigs = maxPerformance` 来避免额外开销。
+
+`useConfigs = maxPerformance` 会包含一组配置,可查看 MySQL Connector/J [8.0 版本](https://github.com/mysql/mysql-connector-j/blob/release/8.0/src/main/resources/com/mysql/cj/configurations/maxPerformance.properties)或 [5.1 版本](https://github.com/mysql/mysql-connector-j/blob/release/5.1/src/com/mysql/jdbc/configs/maxPerformance.properties)来确认当前 MySQL Connector/J 中 `maxPerformance` 包含的具体配置。
+
+配置后查看监控,可以看到多余语句减少。
+
+#### 超时参数
+
+TiDB 提供两个与 MySQL 兼容的超时控制参数,[`wait_timeout`](/system-variables.md#wait_timeout) 和 [`max_execution_time`](/system-variables.md#max_execution_time)。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间,即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。在 TiDB v5.4 及以上版本中,`wait_timeout` 参数默认值为 `28800` 秒,即空闲超时为 8 小时。在 v5.4 之前,`wait_timeout` 参数的默认值为 `0`,即没有时间限制。 `max_execution_time` 参数的默认值为 `0`,即不限制一条 SQL 语句的执行时间,该参数适用于所有 `SELECT` 语句(包括 `SELECT ... FOR UPDATE`)。
+
+但是 [`wait_timeout`](/system-variables.md#wait_timeout) 的默认值比较大,在事务已启动但未提交或回滚的情况下,你可能需要更细粒度的控制和更短的超时,以避免持有锁的时间过长。此时,你可以使用 TiDB 在 v7.6.0 引入的 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。
+
+但在实际生产环境中,空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如,设置 `sessionVariables=wait_timeout=3600`(1 小时)和 `sessionVariables=max_execution_time=300000`(5 分钟)。
+
+====================================================================================================
+h_0025 [direct] 在 (title, published_at) 上建了组合索引后，只按 published_at 过滤的查询还能用上这个索引吗？
+--- tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | [1350,4027) len=2677
+## 使用索引的最佳实践
+
+- 建立索引的目的是为了加速查询,所以请确保索引能在一些查询中被用上。如果一个索引不会被任何查询语句用到,那这个索引是没有意义的,请删除这个索引。
+- 使用组合索引时,需要满足最左前缀原则。
+
+    例如假设在列 `title, published_at` 上新建一个组合索引索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX title_published_at_idx ON books (title, published_at);
+    ```
+
+    下面这个查询依然能用上这个组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+    但下面这个查询由于未指定组合索引中最左边第一列的条件,所以无法使用组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at = '2018-08-18 21:42:08';
+    ```
+
+- 在查询条件中使用索引列作为条件时,不要在索引列上做计算,函数,或者类型转换的操作,会导致优化器无法使用该索引。
+
+    例如假设在时间类型的列 `published_at` 上新建一个索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_at_idx ON books (published_at);
+    ```
+
+    但下面查询是无法使用 `published_at` 上的索引的:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE YEAR(published_at)=2022;
+    ```
+
+    可以改写成下面查询,避免在索引列上做函数计算后,即可使用 `published_at` 上的索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';
+    ```
+
+    也可以使用表达式索引,例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
+    ```
+
+    然后通过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
+
+    > **注意:**
+    >
+    > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。
+
+- 尽量使用覆盖索引,即索引列包含查询列,避免总是 `SELECT *` 查询所有列的语句。
+
+    例如下面查询只需扫描索引 `title_published_at_idx` 数据即可获取查询列的数据:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT title, published_at FROM books WHERE title = 'database';
+    ```
+
+    但下面查询语句虽然能用上组合索引 `(title, published_at)`,但会多一个回表查询非索引列数据的额外开销,回表查询是指根据索引数据中存储的引用(一般是主键信息),到表中查询相应行的数据。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+- 查询条件使用 `!=`,`NOT IN` 时,无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title != 'database';
+    ```
+
+- 使用 `LIKE` 时如果条件是以通配符 `%` 开头,也无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title LIKE '%database';
+    ```
+
+- 当查询条件有多个索引可供使用,但你知道用哪一个索引是最优的时,推荐使用[优化器 Hint](/optimizer-hints.md) 来强制优化器使用这个索引,这样可以避免优化器因为统计信息不准或其他问题时,选错索引。
+
+    例如下面查询中,假设在列 `id` 和列 `title` 上都各自有索引 `id_idx` 和 `title_idx`,你知道 `id_idx` 的过滤性更好,就可以在 SQL 中使用 `USE INDEX` Hint 来强制优化器使用 `id_idx` 索引。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM t USE INDEX(id_idx) WHERE id = 1 and title = 'database';
+    ```
+
+- 查询条件使用 `IN` 表达式时,后面匹配的条件数量建议不要超过 300 个,否则执行效率会较差。
+
+====================================================================================================
+h_0026 [direct] 为什么 WHERE YEAR(published_at)=2022 用不上 published_at 上的索引？文档给了哪两种改写思路？
+--- tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | [1350,4027) len=2677
+## 使用索引的最佳实践
+
+- 建立索引的目的是为了加速查询,所以请确保索引能在一些查询中被用上。如果一个索引不会被任何查询语句用到,那这个索引是没有意义的,请删除这个索引。
+- 使用组合索引时,需要满足最左前缀原则。
+
+    例如假设在列 `title, published_at` 上新建一个组合索引索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX title_published_at_idx ON books (title, published_at);
+    ```
+
+    下面这个查询依然能用上这个组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+    但下面这个查询由于未指定组合索引中最左边第一列的条件,所以无法使用组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at = '2018-08-18 21:42:08';
+    ```
+
+- 在查询条件中使用索引列作为条件时,不要在索引列上做计算,函数,或者类型转换的操作,会导致优化器无法使用该索引。
+
+    例如假设在时间类型的列 `published_at` 上新建一个索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_at_idx ON books (published_at);
+    ```
+
+    但下面查询是无法使用 `published_at` 上的索引的:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE YEAR(published_at)=2022;
+    ```
+
+    可以改写成下面查询,避免在索引列上做函数计算后,即可使用 `published_at` 上的索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';
+    ```
+
+    也可以使用表达式索引,例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
+    ```
+
+    然后通过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
+
+    > **注意:**
+    >
+    > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。
+
+- 尽量使用覆盖索引,即索引列包含查询列,避免总是 `SELECT *` 查询所有列的语句。
+
+    例如下面查询只需扫描索引 `title_published_at_idx` 数据即可获取查询列的数据:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT title, published_at FROM books WHERE title = 'database';
+    ```
+
+    但下面查询语句虽然能用上组合索引 `(title, published_at)`,但会多一个回表查询非索引列数据的额外开销,回表查询是指根据索引数据中存储的引用(一般是主键信息),到表中查询相应行的数据。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+- 查询条件使用 `!=`,`NOT IN` 时,无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title != 'database';
+    ```
+
+- 使用 `LIKE` 时如果条件是以通配符 `%` 开头,也无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title LIKE '%database';
+    ```
+
+- 当查询条件有多个索引可供使用,但你知道用哪一个索引是最优的时,推荐使用[优化器 Hint](/optimizer-hints.md) 来强制优化器使用这个索引,这样可以避免优化器因为统计信息不准或其他问题时,选错索引。
+
+    例如下面查询中,假设在列 `id` 和列 `title` 上都各自有索引 `id_idx` 和 `title_idx`,你知道 `id_idx` 的过滤性更好,就可以在 SQL 中使用 `USE INDEX` Hint 来强制优化器使用 `id_idx` 索引。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM t USE INDEX(id_idx) WHERE id = 1 and title = 'database';
+    ```
+
+- 查询条件使用 `IN` 表达式时,后面匹配的条件数量建议不要超过 300 个,否则执行效率会较差。
+
+====================================================================================================
+h_0027 [multi_block] 什么叫覆盖索引优化？查询要怎么写才能吃到这个优化？
+--- tidb/develop__dev-guide-index-best-practice.md | 创建索引的最佳实践 | [590,1350) len=760
+## 创建索引的最佳实践
+
+- 建立你需要使用的数据的所有列的组合索引,这种优化技巧被称为[覆盖索引优化 (covering index optimization)](/explain-indexes.md#indexreader)。**覆盖索引优化**将使得 TiDB 可以直接在索引上得到该查询所需的所有数据,可以大幅提升性能。
+- 避免创建你不需要的二级索引,有用的二级索引能加速查询,但是要注意新增一个索引是有副作用的。每增加一个索引,在插入一条数据的时候,就要额外新增一个 Key-Value,所以索引越多,写入越慢,并且空间占用越大。另外过多的索引也会影响优化器运行时间,并且不合适的索引会误导优化器。所以索引并不是越多越好。
+- 根据具体的业务特点创建合适的索引。原则上需要对查询中需要用到的列创建索引,目的是提高性能。下面几种情况适合创建索引:
+
+    - 区分度比较大的列,通过索引能显著地减少过滤后的行数。例如推荐在人的身份证号码这一列上创建索引,但不推荐在人的性别这一列上创建索引。
+    - 有多个查询条件时,可以选择组合索引,注意需要把等值条件的列放在组合索引的前面。这里举一个例子,假设常用的查询是 `SELECT * FROM t where c1 = 10 and c2 = 100 and c3 > 10`,那么可以考虑建立组合索引 `Index cidx (c1, c2, c3)`,这样可以用查询条件构造出一个索引前缀进行 Scan。
+
+- 请使用有意义的二级索引名,推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范,可参考[索引命名规范](/develop/dev-guide-object-naming-guidelines.md#索引命名规范)。
+
+
+--- tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | [1350,4027) len=2677
+## 使用索引的最佳实践
+
+- 建立索引的目的是为了加速查询,所以请确保索引能在一些查询中被用上。如果一个索引不会被任何查询语句用到,那这个索引是没有意义的,请删除这个索引。
+- 使用组合索引时,需要满足最左前缀原则。
+
+    例如假设在列 `title, published_at` 上新建一个组合索引索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX title_published_at_idx ON books (title, published_at);
+    ```
+
+    下面这个查询依然能用上这个组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+    但下面这个查询由于未指定组合索引中最左边第一列的条件,所以无法使用组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at = '2018-08-18 21:42:08';
+    ```
+
+- 在查询条件中使用索引列作为条件时,不要在索引列上做计算,函数,或者类型转换的操作,会导致优化器无法使用该索引。
+
+    例如假设在时间类型的列 `published_at` 上新建一个索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_at_idx ON books (published_at);
+    ```
+
+    但下面查询是无法使用 `published_at` 上的索引的:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE YEAR(published_at)=2022;
+    ```
+
+    可以改写成下面查询,避免在索引列上做函数计算后,即可使用 `published_at` 上的索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';
+    ```
+
+    也可以使用表达式索引,例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
+    ```
+
+    然后通过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
+
+    > **注意:**
+    >
+    > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。
+
+- 尽量使用覆盖索引,即索引列包含查询列,避免总是 `SELECT *` 查询所有列的语句。
+
+    例如下面查询只需扫描索引 `title_published_at_idx` 数据即可获取查询列的数据:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT title, published_at FROM books WHERE title = 'database';
+    ```
+
+    但下面查询语句虽然能用上组合索引 `(title, published_at)`,但会多一个回表查询非索引列数据的额外开销,回表查询是指根据索引数据中存储的引用(一般是主键信息),到表中查询相应行的数据。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+- 查询条件使用 `!=`,`NOT IN` 时,无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title != 'database';
+    ```
+
+- 使用 `LIKE` 时如果条件是以通配符 `%` 开头,也无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title LIKE '%database';
+    ```
+
+- 当查询条件有多个索引可供使用,但你知道用哪一个索引是最优的时,推荐使用[优化器 Hint](/optimizer-hints.md) 来强制优化器使用这个索引,这样可以避免优化器因为统计信息不准或其他问题时,选错索引。
+
+    例如下面查询中,假设在列 `id` 和列 `title` 上都各自有索引 `id_idx` 和 `title_idx`,你知道 `id_idx` 的过滤性更好,就可以在 SQL 中使用 `USE INDEX` Hint 来强制优化器使用 `id_idx` 索引。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM t USE INDEX(id_idx) WHERE id = 1 and title = 'database';
+    ```
+
+- 查询条件使用 `IN` 表达式时,后面匹配的条件数量建议不要超过 300 个,否则执行效率会较差。
+
+====================================================================================================
+h_0028 [direct] 查询里用 IN 做条件时，文档建议后面的匹配值最多不要超过多少个？还有哪种写法是用不上索引的？
+--- tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | [1350,4027) len=2677
+## 使用索引的最佳实践
+
+- 建立索引的目的是为了加速查询,所以请确保索引能在一些查询中被用上。如果一个索引不会被任何查询语句用到,那这个索引是没有意义的,请删除这个索引。
+- 使用组合索引时,需要满足最左前缀原则。
+
+    例如假设在列 `title, published_at` 上新建一个组合索引索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX title_published_at_idx ON books (title, published_at);
+    ```
+
+    下面这个查询依然能用上这个组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+    但下面这个查询由于未指定组合索引中最左边第一列的条件,所以无法使用组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at = '2018-08-18 21:42:08';
+    ```
+
+- 在查询条件中使用索引列作为条件时,不要在索引列上做计算,函数,或者类型转换的操作,会导致优化器无法使用该索引。
+
+    例如假设在时间类型的列 `published_at` 上新建一个索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_at_idx ON books (published_at);
+    ```
+
+    但下面查询是无法使用 `published_at` 上的索引的:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE YEAR(published_at)=2022;
+    ```
+
+    可以改写成下面查询,避免在索引列上做函数计算后,即可使用 `published_at` 上的索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';
+    ```
+
+    也可以使用表达式索引,例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
+    ```
+
+    然后通过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
+
+    > **注意:**
+    >
+    > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。
+
+- 尽量使用覆盖索引,即索引列包含查询列,避免总是 `SELECT *` 查询所有列的语句。
+
+    例如下面查询只需扫描索引 `title_published_at_idx` 数据即可获取查询列的数据:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT title, published_at FROM books WHERE title = 'database';
+    ```
+
+    但下面查询语句虽然能用上组合索引 `(title, published_at)`,但会多一个回表查询非索引列数据的额外开销,回表查询是指根据索引数据中存储的引用(一般是主键信息),到表中查询相应行的数据。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+- 查询条件使用 `!=`,`NOT IN` 时,无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title != 'database';
+    ```
+
+- 使用 `LIKE` 时如果条件是以通配符 `%` 开头,也无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title LIKE '%database';
+    ```
+
+- 当查询条件有多个索引可供使用,但你知道用哪一个索引是最优的时,推荐使用[优化器 Hint](/optimizer-hints.md) 来强制优化器使用这个索引,这样可以避免优化器因为统计信息不准或其他问题时,选错索引。
+
+    例如下面查询中,假设在列 `id` 和列 `title` 上都各自有索引 `id_idx` 和 `title_idx`,你知道 `id_idx` 的过滤性更好,就可以在 SQL 中使用 `USE INDEX` Hint 来强制优化器使用 `id_idx` 索引。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM t USE INDEX(id_idx) WHERE id = 1 and title = 'database';
+    ```
+
+- 查询条件使用 `IN` 表达式时,后面匹配的条件数量建议不要超过 300 个,否则执行效率会较差。
+
+====================================================================================================
+h_0029 [direct] 文档为什么说二级索引并不是越多越好？
+--- tidb/develop__dev-guide-index-best-practice.md | 创建索引的最佳实践 | [590,1350) len=760
+## 创建索引的最佳实践
+
+- 建立你需要使用的数据的所有列的组合索引,这种优化技巧被称为[覆盖索引优化 (covering index optimization)](/explain-indexes.md#indexreader)。**覆盖索引优化**将使得 TiDB 可以直接在索引上得到该查询所需的所有数据,可以大幅提升性能。
+- 避免创建你不需要的二级索引,有用的二级索引能加速查询,但是要注意新增一个索引是有副作用的。每增加一个索引,在插入一条数据的时候,就要额外新增一个 Key-Value,所以索引越多,写入越慢,并且空间占用越大。另外过多的索引也会影响优化器运行时间,并且不合适的索引会误导优化器。所以索引并不是越多越好。
+- 根据具体的业务特点创建合适的索引。原则上需要对查询中需要用到的列创建索引,目的是提高性能。下面几种情况适合创建索引:
+
+    - 区分度比较大的列,通过索引能显著地减少过滤后的行数。例如推荐在人的身份证号码这一列上创建索引,但不推荐在人的性别这一列上创建索引。
+    - 有多个查询条件时,可以选择组合索引,注意需要把等值条件的列放在组合索引的前面。这里举一个例子,假设常用的查询是 `SELECT * FROM t where c1 = 10 and c2 = 100 and c3 > 10`,那么可以考虑建立组合索引 `Index cidx (c1, c2, c3)`,这样可以用查询条件构造出一个索引前缀进行 Scan。
+
+- 请使用有意义的二级索引名,推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范,可参考[索引命名规范](/develop/dev-guide-object-naming-guidelines.md#索引命名规范)。
+
+
+====================================================================================================
+h_0030 [cross_doc] 表里的 account_id 是 varchar 类型的主键，写成 WHERE account_id=6010000000009801 时为什么会退化成全表扫描？
+--- tidb/develop__dev-guide-implicit-type-conversion.md | 隐式类型转换引起的后果 | [516,3414) len=2898
+## 隐式类型转换引起的后果
+
+隐式类型转换增强了人机交互的易用性,但在应用代码中,应尽量避免隐式类型转换出现,这是由于隐式类型转换会导致:
+
+- 索引失效
+- 精度丢失
+
+### 索引失效
+
+如下案例,account_id 为主键,其数据类型为 `varchar`。通过执行计划可见,该 SQL 发生了隐式类型转换,无法使用索引。
+
+```sql
+DESC SELECT * FROM `account` WHERE `account_id`=6010000000009801;
++-------------------------+----------------+-----------+---------------+------------------------------------------------------------+
+| id                      | estRows        | task      | access object | operator info                                              |
++-------------------------+----------------+-----------+---------------+------------------------------------------------------------+
+| TableReader_7           | 8000628000.00  | root      |               | data:Selection_6                                           |
+| └─Selection_6           | 8000628000.00  | cop[tikv] |               | eq(cast(findpt.account.account_id), 6.010000000009801e+15) |
+|   └─TableFullScan_5     | 10000785000.00 | cop[tikv] | table:account | keep order:false                                           |
++-------------------------+----------------+-----------+---------------+------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+**运行结果简述**:从以上执行计划中,可见 Cast 算子。
+
+### 精度丢失
+
+如下案例,字段 a 的数据类型为 `decimal(32,0)`,从执行计划可以得知,出现了隐式类型转换,decimal 字段和字符串常值都被转换为 double 类型,而 `double` 类型的精度没有 `decimal` 高,出现了精度丢失,在这个 case 中,造成了筛选出范围之外的结果集的错误。
+
+```sql
+DESC SELECT * FROM `t1` WHERE `a` BETWEEN '12123123' AND '1111222211111111200000';
++-------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------+
+| id                      | estRows | task      | access object | operator info                                                                       |
++-------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------+
+| TableReader_7           | 0.80    | root      |               | data:Selection_6                                                                    |
+| └─Selection_6           | 0.80    | cop[tikv] |               | ge(cast(findpt.t1.a), 1.2123123e+07), le(cast(findpt.t1.a), 1.1112222111111112e+21) |
+|   └─TableFullScan_5     | 1.00    | cop[tikv] | table:t1      | keep order:false, stats:pseudo                                                      |
++-------------------------+---------+-----------+---------------+-------------------------------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+**运行结果简述**:从以上执行计划中,可见 Cast 算子。
+
+```sql
+SELECT * FROM `t1` WHERE `a` BETWEEN '12123123' AND '1111222211111111200000';
++------------------------+
+| a                      |
++------------------------+
+| 1111222211111111222211 |
++------------------------+
+1 row in set (0.01 sec)
+
+```
+
+**运行结果简述**:以上执行出现了错误结果。
+
+--- tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | [1350,4027) len=2677
+## 使用索引的最佳实践
+
+- 建立索引的目的是为了加速查询,所以请确保索引能在一些查询中被用上。如果一个索引不会被任何查询语句用到,那这个索引是没有意义的,请删除这个索引。
+- 使用组合索引时,需要满足最左前缀原则。
+
+    例如假设在列 `title, published_at` 上新建一个组合索引索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX title_published_at_idx ON books (title, published_at);
+    ```
+
+    下面这个查询依然能用上这个组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+    但下面这个查询由于未指定组合索引中最左边第一列的条件,所以无法使用组合索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at = '2018-08-18 21:42:08';
+    ```
+
+- 在查询条件中使用索引列作为条件时,不要在索引列上做计算,函数,或者类型转换的操作,会导致优化器无法使用该索引。
+
+    例如假设在时间类型的列 `published_at` 上新建一个索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_at_idx ON books (published_at);
+    ```
+
+    但下面查询是无法使用 `published_at` 上的索引的:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE YEAR(published_at)=2022;
+    ```
+
+    可以改写成下面查询,避免在索引列上做函数计算后,即可使用 `published_at` 上的索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';
+    ```
+
+    也可以使用表达式索引,例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
+    ```
+
+    然后通过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
+
+    > **注意:**
+    >
+    > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。
+
+- 尽量使用覆盖索引,即索引列包含查询列,避免总是 `SELECT *` 查询所有列的语句。
+
+    例如下面查询只需扫描索引 `title_published_at_idx` 数据即可获取查询列的数据:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT title, published_at FROM books WHERE title = 'database';
+    ```
+
+    但下面查询语句虽然能用上组合索引 `(title, published_at)`,但会多一个回表查询非索引列数据的额外开销,回表查询是指根据索引数据中存储的引用(一般是主键信息),到表中查询相应行的数据。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title = 'database';
+    ```
+
+- 查询条件使用 `!=`,`NOT IN` 时,无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title != 'database';
+    ```
+
+- 使用 `LIKE` 时如果条件是以通配符 `%` 开头,也无法使用索引。例如下面查询无法使用任何索引:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM books WHERE title LIKE '%database';
+    ```
+
+- 当查询条件有多个索引可供使用,但你知道用哪一个索引是最优的时,推荐使用[优化器 Hint](/optimizer-hints.md) 来强制优化器使用这个索引,这样可以避免优化器因为统计信息不准或其他问题时,选错索引。
+
+    例如下面查询中,假设在列 `id` 和列 `title` 上都各自有索引 `id_idx` 和 `title_idx`,你知道 `id_idx` 的过滤性更好,就可以在 SQL 中使用 `USE INDEX` Hint 来强制优化器使用 `id_idx` 索引。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SELECT * FROM t USE INDEX(id_idx) WHERE id = 1 and title = 'database';
+    ```
+
+- 查询条件使用 `IN` 表达式时,后面匹配的条件数量建议不要超过 300 个,否则执行效率会较差。
+
+====================================================================================================
+h_0031 [multi_block] 按对象命名规范，唯一索引和普通索引各用什么前缀？字段名长度和字段个数又有什么上限建议？
+--- tidb/develop__dev-guide-object-naming-guidelines.md | 索引命名规范 | [847,977) len=130
+## 索引命名规范
+
+- 主键索引:`pk_{表名称简写}_{字段名简写}`
+- 唯一索引:`uk_{表名称简写}_{字段名简写}`
+- 普通索引:`idx_{表名称简写}_{字段名简写}`
+- 多单词组成的 column_name,取尽可能代表意义的缩写。
+
+--- tidb/develop__dev-guide-object-naming-guidelines.md | 字段命名规范 | [595,847) len=252
+## 字段命名规范
+
+- 字段命名需要表示其实际含义的英文单词或简写。
+- 建议各表之间相同意义的字段应同名。
+- 字段也尽量添加注释,枚举型需指明主要值的含义,如”0 - 离线,1 - 在线”。
+- 布尔值列命名为 `is_{description}`。如 member 表上表示为 enabled 的会员的列命名为 is_enabled。
+- 字段名不建议超过 30 个字符,字段个数不建议大于 60。
+- 尽量避免使用保留字,如 order、from、desc 等,请参考附录部分的官方保留字。
+
+
+====================================================================================================
+h_0038 [paraphrase] 子组件没把 class 声明成 prop，父组件传进去的 class 最后会落到哪个元素上？
+--- vue/src__guide__components__attrs.md | Attributes 继承 | [122,1582) len=1460
+## Attributes 继承 {#attribute-inheritance}
+
+“透传 attribute”指的是传递给一个组件,却没有被该组件声明为 [props](./props) 或 [emits](./events#declaring-emitted-events) 的 attribute 或者 `v-on` 事件监听器。最常见的例子就是 `class`、`style` 和 `id`。
+
+当一个组件以单个元素为根作渲染时,透传的 attribute 会自动被添加到根元素上。举例来说,假如我们有一个 `<MyButton>` 组件,它的模板长这样:
+
+```vue-html
+
+<button>Click Me</button>
+```
+
+一个父组件使用了这个组件,并且传入了 `class`:
+
+```vue-html
+
+```
+
+最后渲染出的 DOM 结果是:
+
+```html
+<button class="large">Click Me</button>
+```
+
+这里,`<MyButton>` 并没有将 `class` 声明为一个它所接受的 prop,所以 `class` 被视作透传 attribute,自动透传到了 `<MyButton>` 的根元素上。
+
+### 对 `class` 和 `style` 的合并 {#class-and-style-merging}
+
+如果一个子组件的根元素已经有了 `class` 或 `style` attribute,它会和从父组件上继承的值合并。如果我们将之前的 `<MyButton>` 组件的模板改成这样:
+
+```vue-html
+
+<button class="btn">Click Me</button>
+```
+
+则最后渲染出的 DOM 结果会变成:
+
+```html
+<button class="btn large">Click Me</button>
+```
+
+### `v-on` 监听器继承 {#v-on-listener-inheritance}
+
+同样的规则也适用于 `v-on` 事件监听器:
+
+```vue-html
+
+```
+
+`click` 监听器会被添加到 `<MyButton>` 的根元素,即那个原生的 `<button>` 元素之上。当原生的 `<button>` 被点击,会触发父组件的 `onClick` 方法。同样的,如果原生 `button` 元素自身也通过 `v-on` 绑定了一个事件监听器,则这个监听器和从父组件继承的监听器都会被触发。
+
+### 深层组件继承 {#nested-component-inheritance}
+
+有些情况下一个组件会在根节点上渲染另一个组件。例如,我们重构一下 `<MyButton>`,让它在根节点上渲染 `<BaseButton>`:
+
+```vue-html
+
+```
+
+此时 `<MyButton>` 接收的透传 attribute 会直接继续传给 `<BaseButton>`。
+
+请注意:
+
+1. 透传的 attribute 不会包含 `<MyButton>` 上声明过的 props 或是针对 `emits` 声明事件的 `v-on` 侦听函数,换句话说,声明过的 props 和侦听函数被 `<MyButton>`“消费”了。
+
+2. 透传的 attribute 若符合声明,也可以作为 props 传入 `<BaseButton>`。
+
+
+====================================================================================================
+h_0039 [direct] 模板有多个根节点的组件，如果不显式绑定 $attrs 会发生什么？怎么避免？
+--- vue/src__guide__components__attrs.md | 多根节点的 Attributes 继承 | [3025,3463) len=438
+## 多根节点的 Attributes 继承 {#attribute-inheritance-on-multiple-root-nodes}
+
+和单根节点组件有所不同,有着多个根节点的组件没有自动 attribute 透传行为。如果 `$attrs` 没有被显式绑定,将会抛出一个运行时警告。
+
+```vue-html
+
+```
+
+如果 `<CustomLayout>` 有下面这样的多根节点模板,由于 Vue 不知道要将 attribute 透传到哪里,所以会抛出一个警告。
+
+```vue-html
+<header>...</header>
+<main>...</main>
+<footer>...</footer>
+```
+
+如果 `$attrs` 被显式绑定,则不会有警告:
+
+```vue-html{2}
+<header>...</header>
+<main v-bind="$attrs">...</main>
+<footer>...</footer>
+```
+
+
+====================================================================================================
+h_0040 [direct] 能用 watch 去监听组件透传 attribute 的变化吗？不能的话有什么替代办法？
+--- vue/src__guide__components__attrs.md | 在 JavaScript 中访问透传 Attributes | [3463,4244) len=781
+## 在 JavaScript 中访问透传 Attributes {#accessing-fallthrough-attributes-in-javascript}
+
+<div class="composition-api">
+
+如果需要,你可以在 `<script setup>` 中使用 `useAttrs()` API 来访问一个组件的所有透传 attribute:
+
+```vue
+<script setup>
+import { useAttrs } from 'vue'
+
+const attrs = useAttrs()
+</script>
+```
+
+如果没有使用 `<script setup>`,`attrs` 会作为 `setup()` 上下文对象的一个属性暴露:
+
+```js
+export default {
+  setup(props, ctx) {
+    // 透传 attribute 被暴露为 ctx.attrs
+    console.log(ctx.attrs)
+  }
+}
+```
+
+需要注意的是,虽然这里的 `attrs` 对象总是反映为最新的透传 attribute,但它并不是响应式的 (考虑到性能因素)。你不能通过侦听器去监听它的变化。如果你需要响应性,可以使用 prop。或者你也可以使用 `onUpdated()` 使得在每次更新时结合最新的 `attrs` 执行副作用。
+
+</div>
+
+<div class="options-api">
+
+如果需要,你可以通过 `$attrs` 这个实例属性来访问组件的所有透传 attribute:
+
+```js
+export default {
+  created() {
+    console.log(this.$attrs)
+  }
+}
+```
+
+</div>
+
+====================================================================================================
+h_0041 [paraphrase] 孙子组件触发的事件，爷爷组件能直接监听吗？跨多层级的组件通信该怎么办？
+--- vue/src__guide__components__events.md | 触发与监听事件 | [565,1349) len=784
+## 触发与监听事件 {#emitting-and-listening-to-events}
+
+在组件的模板表达式中,可以直接使用 `$emit` 方法触发自定义事件 (例如:在 `v-on` 的处理函数中):
+
+```vue-html
+
+<button @click="$emit('someEvent')">Click Me</button>
+```
+
+<div class="options-api">
+
+`$emit()` 方法在组件实例上也同样以 `this.$emit()` 的形式可用:
+
+```js
+export default {
+  methods: {
+    submit() {
+      this.$emit('someEvent')
+    }
+  }
+}
+```
+
+</div>
+
+父组件可以通过 `v-on` (缩写为 `@`) 来监听事件:
+
+```vue-html
+
+```
+
+同样,组件的事件监听器也支持 `.once` 修饰符:
+
+```vue-html
+
+```
+
+像组件与 prop 一样,事件的名字也提供了自动的格式转换。注意这里我们触发了一个以 camelCase 形式命名的事件,但在父组件中可以使用 kebab-case 形式来监听。与 [prop 大小写格式](/guide/components/props#prop-name-casing)一样,在模板中我们也推荐使用 kebab-case 形式来编写监听器。
+
+:::tip
+和原生 DOM 事件不一样,组件触发的事件**没有冒泡机制**。你只能监听直接子组件触发的事件。平级组件或是跨越多层嵌套的组件间通信,应使用一个外部的事件总线,或是使用一个[全局状态管理方案](/guide/scaling-up/state-management)。
+:::
+
+
+====================================================================================================
+h_0042 [direct] 把 click 这个原生事件名写进组件的 emits 声明后，父组件上的 @click 还会响应原生点击吗？
+--- vue/src__guide__components__events.md | 声明触发的事件 | [2028,4402) len=2374
+## 声明触发的事件 {#declaring-emitted-events}
+
+组件可以显式地通过 <span class="composition-api">[`defineEmits()`](/api/sfc-script-setup#defineprops-defineemits) 宏</span><span class="options-api">[`emits`](/api/options-state#emits) 选项</span>来声明它要触发的事件:
+
+<div class="composition-api">
+
+```vue
+<script setup>
+defineEmits(['inFocus', 'submit'])
+</script>
+```
+
+我们在 `<template>` 中使用的 `$emit` 方法不能在组件的 `<script setup>` 部分中使用,但 `defineEmits()` 会返回一个相同作用的函数供我们使用:
+
+```vue
+<script setup>
+const emit = defineEmits(['inFocus', 'submit'])
+
+function buttonClick() {
+  emit('submit')
+}
+</script>
+```
+
+`defineEmits()` 宏**不能**在子函数中使用。如上所示,它必须直接放置在 `<script setup>` 的顶级作用域下。
+
+如果你显式地使用了 `setup` 函数而不是 `<script setup>`,则事件需要通过 [`emits`](/api/options-state#emits) 选项来定义,`emit` 函数也被暴露在 `setup()` 的上下文对象上:
+
+```js
+export default {
+  emits: ['inFocus', 'submit'],
+  setup(props, ctx) {
+    ctx.emit('submit')
+  }
+}
+```
+
+与 `setup()` 上下文对象中的其他属性一样,`emit` 可以安全地被解构:
+
+```js
+export default {
+  emits: ['inFocus', 'submit'],
+  setup(props, { emit }) {
+    emit('submit')
+  }
+}
+```
+
+</div>
+<div class="options-api">
+
+```js
+export default {
+  emits: ['inFocus', 'submit']
+}
+```
+
+</div>
+
+这个 `emits` 选项和 `defineEmits()` 宏还支持对象语法。通过 TypeScript 为参数指定类型,它允许我们对触发事件的参数进行验证:
+
+<div class="composition-api">
+
+```vue
+<script setup lang="ts">
+const emit = defineEmits({
+  submit(payload: { email: string, password: string }) {
+    // 通过返回值为 `true` 还是为 `false` 来判断
+    // 验证是否通过
+  }
+})
+</script>
+```
+
+如果你正在搭配 TypeScript 使用 `<script setup>`,也可以使用纯类型标注来声明触发的事件:
+
+```vue
+<script setup lang="ts">
+const emit = defineEmits<{
+  (e: 'change', id: number): void
+  (e: 'update', value: string): void
+}>()
+</script>
+```
+
+TypeScript 用户请参考:[如何为组件所抛出事件标注类型](/guide/typescript/composition-api#typing-component-emits) <sup class="vt-badge ts" />
+
+</div>
+<div class="options-api">
+
+```ts
+export default {
+  emits: {
+    submit(payload: { email: string, password: string }) {
+      // 通过返回值为 `true` 还是为 `false` 来判断
+      // 验证是否通过
+    }
+  }
+}
+```
+
+TypeScript 用户请参考:[如何为组件所抛出的事件标注类型](/guide/typescript/options-api#typing-component-emits)。<sup class="vt-badge ts" />
+
+</div>
+
+尽管事件声明是可选的,我们还是推荐你完整地声明所有要触发的事件,以此在代码中作为文档记录组件的用法。同时,事件声明能让 Vue 更好地将事件和[透传 attribute](/guide/components/attrs#v-on-listener-inheritance) 作出区分,从而避免一些由第三方代码触发的自定义 DOM 事件所导致的边界情况。
+
+:::tip
+如果一个原生事件的名字 (例如 `click`) 被定义在 `emits` 选项中,则监听器只会监听组件触发的 `click` 事件而不会再响应原生的 `click` 事件。
+:::
+
+
+====================================================================================================
+h_0044 [direct] defineAsyncComponent 配了 loadingComponent 之后，它默认要等多久才显示？不配 timeout 时默认值是多少？
+--- vue/src__guide__components__async.md | 加载与错误状态 | [1852,2475) len=623
+## 加载与错误状态 {#loading-and-error-states}
+
+异步操作不可避免地会涉及到加载和错误状态,因此 `defineAsyncComponent()` 也支持在高级选项中处理这些状态:
+
+```js
+const AsyncComp = defineAsyncComponent({
+  // 加载函数
+  loader: () => import('./Foo.vue'),
+
+  // 加载异步组件时使用的组件
+  loadingComponent: LoadingComponent,
+  // 展示加载组件前的延迟时间,默认为 200ms
+  delay: 200,
+
+  // 加载失败后展示的组件
+  errorComponent: ErrorComponent,
+  // 如果提供了一个 timeout 时间限制,并超时了
+  // 也会显示这里配置的报错组件,默认值是:Infinity
+  timeout: 3000
+})
+```
+
+如果提供了一个加载组件,它将在内部组件加载时先行显示。在加载组件显示之前有一个默认的 200ms 延迟——这是因为在网络状况较好时,加载完成得很快,加载组件和最终组件之间的替换太快可能产生闪烁,反而影响用户感受。
+
+如果提供了一个报错组件,则它会在加载器函数返回的 Promise 抛错时被渲染。你还可以指定一个超时时间,在请求耗时超过指定时间时也会渲染报错组件。
+
+
+====================================================================================================
+h_0045 [direct] Suspense 初次渲染没碰到异步依赖会怎样？进入完成状态后，更深层新冒出来的异步依赖会让它重新挂起吗？
+--- vue/src__guide__built-ins__suspense.md | 加载中状态 | [1442,2112) len=670
+## 加载中状态 {#loading-state}
+
+`<Suspense>` 组件有两个插槽:`#default` 和 `#fallback`。两个插槽都只允许**一个**直接子节点。在可能的时候都将显示默认插槽中的节点。否则将显示后备插槽中的节点。
+
+```vue-html
+
+  <template #fallback>
+    Loading...
+  </template>
+
+```
+
+在初始渲染时,`<Suspense>` 将在内存中渲染其默认的插槽内容。如果在这个过程中遇到任何异步依赖,则会进入**挂起**状态。在挂起状态期间,展示的是后备内容。当所有遇到的异步依赖都完成后,`<Suspense>` 会进入**完成**状态,并将展示出默认插槽的内容。
+
+如果在初次渲染时没有遇到异步依赖,`<Suspense>` 会直接进入完成状态。
+
+进入完成状态后,只有当默认插槽的根节点被替换时,`<Suspense>` 才会回到挂起状态。组件树中新的更深层次的异步依赖**不会**造成 `<Suspense>` 回退到挂起状态。
+
+发生回退时,后备内容不会立即展示出来。相反,`<Suspense>` 在等待新内容和异步依赖完成时,会展示之前 `#default` 插槽的内容。这个行为可以通过一个 `timeout` prop 进行配置:在等待渲染新内容耗时超过 `timeout` 毫秒之后,`<Suspense>` 将会切换为展示后备内容。若 `timeout` 值为 `0` 将导致在替换默认内容时立即显示后备内容。
+
+
+====================================================================================================
+h_0046 [cross_doc] 异步组件放进 Suspense 之后，它自己配置的加载组件和超时还有效吗？想让它自己管加载状态要怎么设？
+--- vue/src__guide__built-ins__suspense.md | 异步依赖 | [195,1442) len=1247
+## 异步依赖 {#async-dependencies}
+
+要了解 `<Suspense>` 所解决的问题和它是如何与异步依赖进行交互的,我们需要想象这样一种组件层级结构:
+
+```
+
+└─ <Dashboard>
+   ├─ <Profile>
+   │  └─ <FriendStatus> (组件有异步的 setup())
+   └─ <Content>
+      ├─ <ActivityFeed> (异步组件)
+      └─ <Stats> (异步组件)
+```
+
+在这个组件树中有多个嵌套组件,要渲染出它们,首先得解析一些异步资源。如果没有 `<Suspense>`,则它们每个都需要处理自己的加载、报错和完成状态。在最坏的情况下,我们可能会在页面上看到三个旋转的加载态,在不同的时间显示出内容。
+
+有了 `<Suspense>` 组件后,我们就可以在等待整个多层级组件树中的各个异步依赖获取结果时,在顶层展示出加载中或加载失败的状态。
+
+`<Suspense>` 可以等待的异步依赖有两种:
+
+1. 带有异步 `setup()` 钩子的组件。这也包含了使用 `<script setup>` 时有顶层 `await` 表达式的组件。
+
+2. [异步组件](/guide/components/async)。
+
+### `async setup()` {#async-setup}
+
+组合式 API 中组件的 `setup()` 钩子可以是异步的:
+
+```js
+export default {
+  async setup() {
+    const res = await fetch(...)
+    const posts = await res.json()
+    return {
+      posts
+    }
+  }
+}
+```
+
+如果使用 `<script setup>`,那么顶层 `await` 表达式会自动让该组件成为一个异步依赖:
+
+```vue
+<script setup>
+const res = await fetch(...)
+const posts = await res.json()
+</script>
+
+<template>
+  {{ posts }}
+</template>
+```
+
+### 异步组件 {#async-components}
+
+异步组件默认就是<strong>“suspensible”</strong>的。这意味着如果组件关系链上有一个 `<Suspense>`,那么这个异步组件就会被当作这个 `<Suspense>` 的一个异步依赖。在这种情况下,加载状态是由 `<Suspense>` 控制,而该组件自己的加载、报错、延时和超时等选项都将被忽略。
+
+异步组件也可以通过在选项中指定 `suspensible: false` 表明不用 `Suspense` 控制,并让组件始终自己控制其加载状态。
+
+
+--- vue/src__guide__components__async.md | 加载与错误状态 | [1852,2475) len=623
+## 加载与错误状态 {#loading-and-error-states}
+
+异步操作不可避免地会涉及到加载和错误状态,因此 `defineAsyncComponent()` 也支持在高级选项中处理这些状态:
+
+```js
+const AsyncComp = defineAsyncComponent({
+  // 加载函数
+  loader: () => import('./Foo.vue'),
+
+  // 加载异步组件时使用的组件
+  loadingComponent: LoadingComponent,
+  // 展示加载组件前的延迟时间,默认为 200ms
+  delay: 200,
+
+  // 加载失败后展示的组件
+  errorComponent: ErrorComponent,
+  // 如果提供了一个 timeout 时间限制,并超时了
+  // 也会显示这里配置的报错组件,默认值是:Infinity
+  timeout: 3000
+})
+```
+
+如果提供了一个加载组件,它将在内部组件加载时先行显示。在加载组件显示之前有一个默认的 200ms 延迟——这是因为在网络状况较好时,加载完成得很快,加载组件和最终组件之间的替换太快可能产生闪烁,反而影响用户感受。
+
+如果提供了一个报错组件,则它会在加载器函数返回的 Promise 抛错时被渲染。你还可以指定一个超时时间,在请求耗时超过指定时间时也会渲染报错组件。
+
+
+====================================================================================================
+h_0047 [direct] KeepAlive 的 include/exclude 是按什么来匹配组件的？3.2.34 之后用 script setup 还得手写 name 吗？
+--- vue/src__guide__built-ins__keep-alive.md | 包含/排除 | [1981,2424) len=443
+## 包含/排除 {#include-exclude}
+
+`<KeepAlive>` 默认会缓存内部的所有组件实例,但我们可以通过 `include` 和 `exclude` prop 来定制该行为。这两个 prop 的值都可以是一个以英文逗号分隔的字符串、一个正则表达式,或是包含这两种类型的一个数组:
+
+```vue-html
+
+  <component :is="view" />
+
+  <component :is="view" />
+
+  <component :is="view" />
+
+```
+
+它会根据组件的 [`name`](/api/options-misc#name) 选项进行匹配,所以组件如果想要条件性地被 `KeepAlive` 缓存,就必须显式声明一个 `name` 选项。
+
+:::tip
+在 3.2.34 或以上的版本中,使用 `<script setup>` 的单文件组件会自动根据文件名生成对应的 `name` 选项,无需再手动声明。
+:::
+
+
+====================================================================================================
+h_0048 [direct] 给 KeepAlive 传了 max 之后，缓存实例数量超了会怎样？
+--- vue/src__guide__built-ins__keep-alive.md | 最大缓存实例数 | [2424,2737) len=313
+## 最大缓存实例数 {#max-cached-instances}
+
+我们可以通过传入 `max` prop 来限制可被缓存的最大组件实例数。`<KeepAlive>` 的行为在指定了 `max` 后类似一个 [LRU 缓存](<https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_Recently_Used_(LRU)>):如果缓存的实例数量即将超过指定的那个最大数量,则最久没有被访问的缓存实例将被销毁,以便为新的实例腾出空间。
+
+```vue-html
+
+  <component :is="activeComponent" />
+
+```
+
+
+====================================================================================================
+h_0049 [direct] 在 setTimeout 回调里调用 onMounted 会怎么样？有没有可以放在外部函数里的情况？
+--- vue/src__guide__essentials__lifecycle.md | 注册周期钩子 | [145,1591) len=1446
+## 注册周期钩子 {#registering-lifecycle-hooks}
+
+举例来说,<span class="composition-api">`onMounted`</span><span class="options-api">`mounted`</span> 钩子可以用来在组件完成初始渲染并创建 DOM 节点后运行代码:
+
+<div class="composition-api">
+
+```vue
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  console.log(`the component is now mounted.`)
+})
+</script>
+```
+
+</div>
+<div class="options-api">
+
+```js
+export default {
+  mounted() {
+    console.log(`the component is now mounted.`)
+  }
+}
+```
+
+</div>
+
+还有其他一些钩子,会在实例生命周期的不同阶段被调用,最常用的是 <span class="composition-api">[`onMounted`](/api/composition-api-lifecycle#onmounted)、[`onUpdated`](/api/composition-api-lifecycle#onupdated) 和 [`onUnmounted`](/api/composition-api-lifecycle#onunmounted)。所有生命周期钩子的完整参考及其用法请参考 [API 索引](/api/composition-api-lifecycle.html)。</span><span class="options-api">[`mounted`](/api/options-lifecycle#mounted)、[`updated`](/api/options-lifecycle#updated) 和 [`unmounted`](/api/options-lifecycle#unmounted)。</span>
+
+<div class="options-api">
+
+所有生命周期钩子函数的 `this` 上下文都会自动指向当前调用它的组件实例。注意:避免用箭头函数来定义生命周期钩子,因为如果这样的话你将无法在函数中通过 `this` 获取组件实例。
+
+</div>
+
+<div class="composition-api">
+
+当调用 `onMounted` 时,Vue 会自动将回调函数注册到当前正被初始化的组件实例上。这意味着这些钩子应当在组件初始化时被**同步**注册。例如,请不要这样做:
+
+```js
+setTimeout(() => {
+  onMounted(() => {
+    // 异步注册时当前组件实例已丢失
+    // 这将不会正常工作
+  })
+}, 100)
+```
+
+注意这并不意味着对 `onMounted` 的调用必须放在 `setup()` 或 `<script setup>` 内的词法上下文中。`onMounted()` 也可以在一个外部函数中调用,只要调用栈是同步的,且最终起源自 `setup()` 就可以。
+
+</div>
+
+

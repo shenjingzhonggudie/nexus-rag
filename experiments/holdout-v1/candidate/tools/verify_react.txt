@@ -1,0 +1,98 @@
+================================================================================
+CASE: react-compiler-min-react-version stack: react
+-- pattern: 'React 版本兼容性' -> 1 hit(s)
+   [react/src__content__learn__react-compiler__index.md | 配置与参考 | 563-831]
+   ... }  有关详细的配置选项和 API 参考:  - [配置选项](/reference/react-compiler/configuration) - 包含所有编译器配置选项,包括 React 版本兼容性 - [指令](/reference/react-compiler/directives) - 用于函数级别的编译控制 - [编译库](/reference/react-compi
+-- pattern: '最低.{0,6}版本' -> 0 hit(s)
+-- pattern: 'React \\d+\\.\\d+' -> 0 hit(s)
+-- pattern: '支持.{0,10}React 版本' -> 0 hit(s)
+================================================================================
+CASE: react-compiler-vite-config stack: react
+-- pattern: 'Vite' -> 8 hit(s)
+   [react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React | 1137-4936]
+   ... ps://babeljs.io/docs/babel-preset-react) 来使用 JSX。  * **如果你的应用没有用于编译 JavaScript 模块的配置,请使用 [Vite](https://cn.vitejs.dev/) 进行配置**。Vite 社区维护了与后端框架(包括 Rails、Django 和 Laravel)的 [许多集成项目](http
+   [react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React | 1137-4936]
+   ... ct) 来使用 JSX。  * **如果你的应用没有用于编译 JavaScript 模块的配置,请使用 [Vite](https://cn.vitejs.dev/) 进行配置**。Vite 社区维护了与后端框架(包括 Rails、Django 和 Laravel)的 [许多集成项目](https://github.com/vitejs/awesome-vite#in
+   [react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React | 1137-4936]
+   ... ackends)。如果你的后端框架没有列出,请 [按照此指南](https://cn.vitejs.dev/guide/backend-integration.html) 手动将 Vite 构建集成到你的后端。  如果想要检查你的配置是否有效,可以在项目文件夹中运行以下命令:  npm install react react-dom  然后在你的 JavaScrip
+   [react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React | 1137-4936]
+   ... 么继续阅读。  第一次将模块化 JavaScript 环境集成到现有项目中可能会让人感到害怕,但这是值得的!如果遇到困难,请尝试我们的 [社区资源](/community) 或 [Vite Chat](https://chat.vite.dev/)。  ### 步骤 2:在页面的任何位置渲染 React 组件 {/*step-2-render-react-compo
+   [react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 | 589-2094]
+   ... creating-a-react-app)。  ## 步骤 1: 安装构建工具 {/*step-1-install-a-build-tool*/}  第一步是安装一个构建工具,如 Vite、Parcel 或 rsbuild。这些构建工具提供了打包和运行源代码的功能,提供本地开发的开发服务器,以及部署应用到生产服务器的构建命令。  ### Vite {/*vite*/
+   [react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 | 589-2094]
+   ... 装一个构建工具,如 Vite、Parcel 或 rsbuild。这些构建工具提供了打包和运行源代码的功能,提供本地开发的开发服务器,以及部署应用到生产服务器的构建命令。  ### Vite {/*vite*/}  [Vite](https://vite.dev/) 是一个构建工具,旨在为现代网络项目提供更快更简洁的开发体验。  npm create vite@lat
+   [react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 | 589-2094]
+   ... cel 或 rsbuild。这些构建工具提供了打包和运行源代码的功能,提供本地开发的开发服务器,以及部署应用到生产服务器的构建命令。  ### Vite {/*vite*/}  [Vite](https://vite.dev/) 是一个构建工具,旨在为现代网络项目提供更快更简洁的开发体验。  npm create vite@latest my-app -- --te
+   [react/src__content__learn__build-a-react-app-from-scratch.md | 步骤 1: 安装构建工具 | 589-2094]
+   ... v/) 是一个构建工具,旨在为现代网络项目提供更快更简洁的开发体验。  npm create vite@latest my-app -- --template react-ts  Vite 采用约定式设计,开箱即提供合理的默认配置。它拥有丰富的插件生态系统,能够支持快速热更新、JSX、Babel/SWC 等常见功能。你可以查看 Vite 的 [React 插件](h
+-- pattern: 'vite\\.config' -> 0 hit(s)
+-- pattern: 'babel-plugin-react-compiler' -> 6 hit(s)
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 | 817-2162]
+   ... rides: [     {       test: './src/modern/**/*.{js,jsx,ts,tsx}',       plugins: [         'babel-plugin-react-compiler'       ]     }   ] }; ```  ### 扩展覆盖范围 {/*expanding-coverage*/}  随着你信心的增加,添加更多目录:  ```js /
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 | 817-2162]
+   ... /**/*.{js,jsx,ts,tsx}', './src/features/**/*.{js,jsx,ts,tsx}'],       plugins: [         'babel-plugin-react-compiler'       ]     },     {       test: './src/legacy/**/*.{js,jsx,ts,tsx}',       plugins: [  
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 | 817-2162]
+   ... [     {       test: './src/experimental/**/*.{js,jsx,ts,tsx}',       plugins: [         ['babel-plugin-react-compiler', {           // 选项 ...         }]       ]     },     {       test: './src/production/**/
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 基于目录的采用与 Babel 覆盖 | 817-2162]
+   ...  },     {       test: './src/production/**/*.{js,jsx,ts,tsx}',       plugins: [         ['babel-plugin-react-compiler', {           // 选项  ...         }]       ]     }   ] }; ```  ## 使用 "use memo" 的选择加入模式 {/
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 使用 "use memo" 的选择加入模式 | 2162-3083]
+   ... ion-mode-configuration*/}  ```js // babel.config.js module.exports = {   plugins: [     ['babel-plugin-react-compiler', {       compilationMode: 'annotation',     }],   ], }; ```  ### 选择加入指令 {/*using-the-dir
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 运行时控制 | 3083-3776]
+   ... /*gating-configuration*/}  ```js // babel.config.js module.exports = {   plugins: [     ['babel-plugin-react-compiler', {       gating: {         source: 'ReactCompilerFeatureFlags',         importSpecifierN
+================================================================================
+CASE: react-compiler-node-modules stack: react
+-- pattern: 'node_modules' -> 0 hit(s)
+-- pattern: '编译库' -> 1 hit(s)
+   [react/src__content__learn__react-compiler__index.md | 配置与参考 | 563-831]
+   ...  包含所有编译器配置选项,包括 React 版本兼容性 - [指令](/reference/react-compiler/directives) - 用于函数级别的编译控制 - [编译库](/reference/react-compiler/compiling-libraries) - 提供预编译的库  ## 额外的资源 {/*additional-resourc
+-- pattern: '预编译的库' -> 1 hit(s)
+   [react/src__content__learn__react-compiler__index.md | 配置与参考 | 563-831]
+   ... iler/directives) - 用于函数级别的编译控制 - [编译库](/reference/react-compiler/compiling-libraries) - 提供预编译的库  ## 额外的资源 {/*additional-resources*/}  除了本文档之外,我们建议你关注 [React 编译器工作组](https://github.com/r
+-- pattern: '第三方库' -> 0 hit(s)
+================================================================================
+CASE: react-eslint-rule-names stack: react
+-- pattern: 'eslint-plugin-react-hooks' -> 2 hit(s)
+   [react/src__content__learn__editor-setup.md | 推荐的文本编辑器功能 | 607-2316]
+   ... //marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)  **请确保你已经为你的项目启用了 [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks) 规则**。这在 React 项目中是必备的,同时能帮助你及早
+   [react/src__content__learn__editor-setup.md | 推荐的文本编辑器功能 | 607-2316]
+   ... ode-eslint)  **请确保你已经为你的项目启用了 [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks) 规则**。这在 React 项目中是必备的,同时能帮助你及早的捕获较为严重的 bug。我们推荐的 [`eslint-config-react-app`](https://www
+-- pattern: 'rules-of-hooks' -> 0 hit(s)
+-- pattern: 'exhaustive-deps' -> 3 hit(s)
+   [react/src__content__learn__lifecycle-of-reactive-effects.md | Effect 会“响应”于响应式值 | 9863-51228]
+   ... seEffect(() => {   // ...   // 🔴 避免这样禁用静态代码分析工具:   // eslint-ignore-next-line react-hooks/exhaustive-deps }, []); ```  在 [下一页](/learn/separating-events-from-effects) 和 [之后的页面](/learn/removing-eff
+   [react/src__content__learn__lifecycle-of-reactive-effects.md | Effect 会“响应”于响应式值 | 9863-51228]
+   ... moveEventListener('pointermove', handleMove);     // eslint-disable-next-line react-hooks/exhaustive-deps   }, []);    return (     <>       <label>         <input type="checkbox"           check
+   [react/src__content__learn__lifecycle-of-reactive-effects.md | Effect 会“响应”于响应式值 | 9863-51228]
+   ... ();     return () => connection.disconnect();     // eslint-disable-next-line react-hooks/exhaustive-deps   }, [roomId]);    return <h1>欢迎来到 {roomId} 聊天室!</h1>; } ```  ```js src/chat.js export fu
+-- pattern: 'ESLint 规则' -> 1 hit(s)
+   [react/src__content__learn__react-compiler__debugging.md | 了解编译器行为 | 94-586]
+   ... 时问题。这通常是因为你的代码以编译器无法检测到的方式轻微违反了 React 的规则,而编译器错误地编译了一个本应跳过的组件。  在调试运行时问题时,应集中精力在受影响的组件中查找 ESLint 规则未能检测到的 React 规则违规情况。编译器依赖于你的代码遵循这些规则,当规则被违反且编译器无法检测到时,就会出现运行时问题。  ## 常见的破坏性模式 {/*common-br
+================================================================================
+CASE: react-cra-migration-steps stack: react
+-- pattern: 'Create React App' -> 4 hit(s)
+   [react/src__content__learn__installation.md | 添加 React 到一个已有的项目 | 1058-1381]
+   ... p-from-scratch).  ## 添加 React 到一个已有的项目 {/*add-react-to-an-existing-project*/}  #### 我还应该用 Create React App 么? {/*should-i-use-create-react-app*/}  不, Create React App 已经不建议使用。更多信息可参照 [Sunsetting C
+   [react/src__content__learn__installation.md | 添加 React 到一个已有的项目 | 1058-1381]
+   ... isting-project*/}  #### 我还应该用 Create React App 么? {/*should-i-use-create-react-app*/}  不, Create React App 已经不建议使用。更多信息可参照 [Sunsetting Create React App](/blog/2025/02/14/sunsetting-create-react-ap
+   [react/src__content__learn__installation.md | 添加 React 到一个已有的项目 | 1058-1381]
+   ... p 么? {/*should-i-use-create-react-app*/}  不, Create React App 已经不建议使用。更多信息可参照 [Sunsetting Create React App](/blog/2025/02/14/sunsetting-create-react-app).  更多信息,参见 [逐步淘汰 Create React App](/blog/20
+   [react/src__content__learn__installation.md | 添加 React 到一个已有的项目 | 1058-1381]
+   ... unsetting Create React App](/blog/2025/02/14/sunsetting-create-react-app).  更多信息,参见 [逐步淘汰 Create React App](/blog/2025/02/14/sunsetting-create-react-app)。  ## 下一节 {/*next-steps*/}  前往 [快速入门](/lear
+-- pattern: '迁移' -> 7 hit(s)
+   [react/src__content__learn__add-react-to-an-existing-project.md | 在现有页面的一部分中使用 React | 1137-4936]
+   ... act 组件。  当在现有项目中采用 React 时,通常会从小型交互式组件(例如按钮)开始,然后逐渐“向上移动”,直到最终整个页面都由 React 构建。到那个时候,我们建议立即迁移到 [一个 React 框架](/learn/creating-a-react-app),以充分利用 React 的优势。  ## 在现有的原生移动应用中使用 React Nati
+   [react/src__content__learn__extracting-state-logic-into-a-reducer.md | 使用 reducer 整合状态逻辑 | 183-16146]
+   ... 于理解的地方,你可以将这些状态逻辑移到组件之外的一个称为 **reducer** 的函数中。  Reducer 是处理状态的另一种方式。你可以通过三个步骤将 `useState` 迁移到 `useReducer`:  1. 将设置状态的逻辑 **修改** 成 dispatch 的一个 action; 2. **编写** 一个 reducer 函数; 3. 在你的
+   [react/src__content__learn__extracting-state-logic-into-a-reducer.md | 使用 reducer 整合状态逻辑 | 183-16146]
+   ... 参数; 2. 声明 `action` 对象作为第二个参数; 3. 从 `reducer` 返回 **下一个** 状态(React 会将旧的状态设置为这个最新的状态)。  下面是所有迁移到 `reducer` 函数的状态设置逻辑:  ```js function tasksReducer(tasks, action) {   if (action.type ===
+   [react/src__content__learn__managing-state.md | 迁移状态逻辑至 Reducer 中 | 9516-13213]
+   ... `  阅读 **[对 State 进行保留和重置](/learn/preserving-and-resetting-state)** 来学习状态的生命周期以及如何控制它。  ## 迁移状态逻辑至 Reducer 中 {/*extracting-state-logic-into-a-reducer*/}  对于那些需要更新多个状态的组件来说,过于分散的事件处理程序
+   [react/src__content__learn__managing-state.md | 迁移状态逻辑至 Reducer 中 | 9516-13213]
+   ... margin: 5px; } li { list-style-type: none; } ul, li { margin: 0; padding: 0; } ```  阅读 **[迁移状态逻辑至 Reducer 中](/learn/extracting-state-logic-into-a-reducer)** 来学习如何在 reducer 函数中整合逻辑。  
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 为何采用渐进式迁移? | 187-603]
+   ... "use memo" 指令进行选择性编译 * 使用 "use no memo" 指令排除组件 * 带有 gating 的运行时特性标志 * 监控你的采用进度  ## 为何采用渐进式迁移? {/*why-incremental-adoption*/}  React 编译器的设计目的是自动优化你的整个代码库,但你不必一次性全部采用。渐进式采用让你能够控制推行过程,在
+   [react/src__content__learn__react-compiler__incremental-adoption.md | 为何采用渐进式迁移? | 187-603]
+   ...   渐进式采用还使得更容易处理编译器可能发现的任何违反 React 规则的问题。你可以在扩展编译器覆盖范围的同时有条不紊地解决这些问题,而不是一次性修复整个代码库中的违规问题。这使迁移过程更易于管理,并降低了引入错误的风险。  通过控制代码中哪些部分被编译,你还可以运行 A/B 测试以衡量编译器优化在实际应用中的效果。这些数据有助于你做出是否全面采用的明智决策,
+-- pattern: 'Sunsetting' -> 1 hit(s)
+   [react/src__content__learn__installation.md | 添加 React 到一个已有的项目 | 1058-1381]
+   ... te React App 么? {/*should-i-use-create-react-app*/}  不, Create React App 已经不建议使用。更多信息可参照 [Sunsetting Create React App](/blog/2025/02/14/sunsetting-create-react-app).  更多信息,参见 [逐步淘汰 Create Re

@@ -1,0 +1,798 @@
+[
+  {
+    "id": "h_0001",
+    "query": "kubelet 的节点心跳到底更新的是什么对象的什么字段？控制面靠它判断节点是否可用吗？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+        "section": "节点心跳",
+        "start": 266,
+        "end": 629
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0002",
+    "query": "一个节点向集群表明自己仍然可用，有哪两种心跳形式？各自的载体是什么？",
+    "type": "cross_doc",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+        "section": "节点心跳",
+        "start": 5011,
+        "end": 5329
+      },
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+        "section": "节点心跳",
+        "start": 266,
+        "end": 629
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0003",
+    "query": "节点联系不上被标记成未知状态后，控制面大概多久才会真正开始动手赶走上面的 Pod？平时又多久巡检一次节点状态？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+        "section": "节点控制器",
+        "start": 5329,
+        "end": 6932
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0004",
+    "query": "要把 Kubernetes 节点切到 CGroup v2，需要满足哪些硬性前提？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+        "section": "使用 CGroup v2",
+        "start": 935,
+        "end": 3367
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0005",
+    "query": "云控制器管理器里负责配置路由的那个控制器，为了干活至少得拿到 Node 对象的什么权限？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+        "section": "鉴权",
+        "start": 1581,
+        "end": 3161
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0006",
+    "query": "开启混合版本代理后，如果请求被转给对等 API 服务器而对方没能应答，客户端会收到什么响应？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+        "section": "混合版本代理",
+        "start": 2568,
+        "end": 3831
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0007",
+    "query": "用动态资源分配时，DeviceClass 和 ResourceSlice 应该开放给谁？申领相关的 API 又是什么作用范围？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+        "section": "分离 DRA 相关 API 的权限",
+        "start": 60,
+        "end": 345
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0008",
+    "query": "文档给出的 100 节点 DRA 集群规模测试中，kube-controller-manager 的 QPS 与 Burst 建议设成多少？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+        "section": "在大规模环境中在高负载场景下监控和调优组件",
+        "start": 1668,
+        "end": 5799
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0009",
+    "query": "节点关机宽限总共设了 30 秒、其中关键 Pod 占 10 秒，那么普通 Pod 能分到多长的体面终止时间？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+        "section": "节点体面关闭",
+        "start": 619,
+        "end": 6901
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0010",
+    "query": "kubelet 对未使用的镜像和未使用的容器，分别多久做一次垃圾收集？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+        "section": "未使用容器和镜像的垃圾收集",
+        "start": 3504,
+        "end": 5518
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0011",
+    "query": "容器日志的单个文件大小与文件数上限由哪两个 kubelet 项控制、默认是多少？kubelet 自身日志在 Linux 与 Windows 节点上默认又写到哪里？",
+    "type": "multi_block",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+        "section": "Pod 和容器日志",
+        "start": 417,
+        "end": 3519
+      },
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+        "section": "系统组件日志",
+        "start": 3519,
+        "end": 5737
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0012",
+    "query": "除了节点心跳，Lease 在集群里还承担什么角色？要让控制面组件用上协调领导者选举，需要同时打开哪两项开关？",
+    "type": "cross_doc",
+    "answers": [
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+        "section": "领导者选举",
+        "start": 629,
+        "end": 1200
+      },
+      {
+        "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md",
+        "section": "启用协调领导者选举",
+        "start": 341,
+        "end": 745
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0013",
+    "query": "kubelet 的 --node-status-update-frequency 参数默认是多少秒？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0014",
+    "query": "kubelet 做镜像垃圾收集时，HighThresholdPercent 与 LowThresholdPercent 默认分别是多少百分比？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0015",
+    "query": "kube-state-metrics 默认把指标暴露在哪个端口、哪个 HTTP 路径上？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0016",
+    "query": "kubelet 的 imageMaximumGCAge 默认设成多久？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0017",
+    "query": "按 Pod 优先级分阶段关闭节点时，kubelet 默认给每个优先级阶段分配多少秒？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0056",
+    "query": "React 编译器碰到疑似违反 React 规则的代码时，会怎么处理？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__react-compiler__debugging.md",
+        "section": "了解编译器行为",
+        "start": 94,
+        "end": 586
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0057",
+    "query": "怀疑某个组件被编译器优化出问题，调试的第一步是什么？修完之后怎么确认它已经被编译了？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__react-compiler__debugging.md",
+        "section": "调试工作流程",
+        "start": 930,
+        "end": 1722
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0058",
+    "query": "控制编译器作用范围的两个指令分别是什么？各自用在什么场景？",
+    "type": "cross_doc",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+        "section": "使用 \"use memo\" 的选择加入模式",
+        "start": 2162,
+        "end": 3083
+      },
+      {
+        "doc": "react/src__content__learn__react-compiler__debugging.md",
+        "section": "调试工作流程",
+        "start": 930,
+        "end": 1722
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0059",
+    "query": "想按目录一批一批接入 React 编译器，应该借助 Babel 的什么机制？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+        "section": "基于目录的采用与 Babel 覆盖",
+        "start": 817,
+        "end": 2162
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0060",
+    "query": "想用功能开关在运行时决定要不要走编译器优化，该配什么？它背后的工作方式是什么？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+        "section": "运行时控制",
+        "start": 3083,
+        "end": 3776
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0061",
+    "query": "现在开始一个新的 React 项目，还应该用 Create React App 吗？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__installation.md",
+        "section": "添加 React 到一个已有的项目",
+        "start": 1058,
+        "end": 1381
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0062",
+    "query": "React 文档首推的全栈框架有哪些？用这些框架写的应用一定要配服务器吗？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__creating-a-react-app.md",
+        "section": "全栈框架",
+        "start": 163,
+        "end": 2023
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0063",
+    "query": "React 项目里文档要求务必启用的是哪个 ESLint 插件规则？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__editor-setup.md",
+        "section": "推荐的文本编辑器功能",
+        "start": 607,
+        "end": 2316
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0064",
+    "query": "不用框架、从零搭一个 React 项目时，文档举例的构建工具有哪些？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "react/src__content__learn__build-a-react-app-from-scratch.md",
+        "section": "步骤 1: 安装构建工具",
+        "start": 589,
+        "end": 2094
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0065",
+    "query": "React 编译器要求的最低 React 版本是多少？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0066",
+    "query": "项目用 Vite 构建、并没有 Babel 配置时，React 编译器该怎么接进去？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0067",
+    "query": "React 编译器默认会编译 node_modules 里的第三方库吗？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0068",
+    "query": "推广 React 编译器时，文档说的“监控采用进度”具体该怎么做？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0069",
+    "query": "从 Create React App 迁到官方推荐的框架，具体要按哪几步做？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0021",
+    "query": "完全不知道数据库连接池该配多大时，文档给的初始经验公式是什么？CPU 核数该怎么数？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-connection-parameters.md",
+        "section": "连接池参数",
+        "start": 212,
+        "end": 4553
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0022",
+    "query": "TiDB 会在连接空闲多久之后主动把客户端连接关掉？这个默认行为从哪个版本开始、由哪个变量控制？",
+    "type": "multi_block",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-connection-parameters.md",
+        "section": "连接池参数",
+        "start": 212,
+        "end": 4553
+      },
+      {
+        "doc": "tidb/develop__dev-guide-connection-parameters.md",
+        "section": "连接参数",
+        "start": 4553,
+        "end": 11771
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0023",
+    "query": "Java 应用想让 TiDB 服务端真正执行预处理语句并复用，需要在 JDBC 上配哪些参数？默认值是多少？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-connection-parameters.md",
+        "section": "连接参数",
+        "start": 4553,
+        "end": 11771
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0024",
+    "query": "开启批量改写后，什么样的插入语句才能被合并成一条 SQL 发给 TiDB？批量更新又是怎么处理的？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-connection-parameters.md",
+        "section": "连接参数",
+        "start": 4553,
+        "end": 11771
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0025",
+    "query": "在 (title, published_at) 上建了组合索引后，只按 published_at 过滤的查询还能用上这个索引吗？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "使用索引的最佳实践",
+        "start": 1350,
+        "end": 4027
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0026",
+    "query": "为什么 WHERE YEAR(published_at)=2022 用不上 published_at 上的索引？文档给了哪两种改写思路？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "使用索引的最佳实践",
+        "start": 1350,
+        "end": 4027
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0027",
+    "query": "什么叫覆盖索引优化？查询要怎么写才能吃到这个优化？",
+    "type": "multi_block",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "创建索引的最佳实践",
+        "start": 590,
+        "end": 1350
+      },
+      {
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "使用索引的最佳实践",
+        "start": 1350,
+        "end": 4027
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0028",
+    "query": "查询里用 IN 做条件时，文档建议后面的匹配值最多不要超过多少个？还有哪种写法是用不上索引的？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "使用索引的最佳实践",
+        "start": 1350,
+        "end": 4027
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0029",
+    "query": "文档为什么说二级索引并不是越多越好？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "创建索引的最佳实践",
+        "start": 590,
+        "end": 1350
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0030",
+    "query": "表里的 account_id 是 varchar 类型的主键，写成 WHERE account_id=6010000000009801 时为什么会退化成全表扫描？",
+    "type": "cross_doc",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-implicit-type-conversion.md",
+        "section": "隐式类型转换引起的后果",
+        "start": 516,
+        "end": 3414
+      },
+      {
+        "doc": "tidb/develop__dev-guide-index-best-practice.md",
+        "section": "使用索引的最佳实践",
+        "start": 1350,
+        "end": 4027
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0031",
+    "query": "按对象命名规范，唯一索引和普通索引各用什么前缀？字段名长度和字段个数又有什么上限建议？",
+    "type": "multi_block",
+    "answers": [
+      {
+        "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
+        "section": "索引命名规范",
+        "start": 847,
+        "end": 977
+      },
+      {
+        "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
+        "section": "字段命名规范",
+        "start": 595,
+        "end": 847
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0032",
+    "query": "TiDB 的 tidb_idle_transaction_timeout 默认是多少秒？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0033",
+    "query": "HikariCP 的 minimumIdle 在连 TiDB 时应该配成多少？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0034",
+    "query": "TiDB 服务端允许的最大连接数（如 max_connections 之类）默认是多少？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0035",
+    "query": "要在 TiDB 里启用表达式索引，需要在配置文件中设置哪个配置项（开关名）？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0036",
+    "query": "用 Cursor Fetch 方式流式取结果时，FetchSize 建议设成多少？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0038",
+    "query": "子组件没把 class 声明成 prop，父组件传进去的 class 最后会落到哪个元素上？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__attrs.md",
+        "section": "Attributes 继承",
+        "start": 122,
+        "end": 1582
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0039",
+    "query": "模板有多个根节点的组件，如果不显式绑定 $attrs 会发生什么？怎么避免？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__attrs.md",
+        "section": "多根节点的 Attributes 继承",
+        "start": 3025,
+        "end": 3463
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0040",
+    "query": "能用 watch 去监听组件透传 attribute 的变化吗？不能的话有什么替代办法？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__attrs.md",
+        "section": "在 JavaScript 中访问透传 Attributes",
+        "start": 3463,
+        "end": 4244
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0041",
+    "query": "孙子组件触发的事件，爷爷组件能直接监听吗？跨多层级的组件通信该怎么办？",
+    "type": "paraphrase",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__events.md",
+        "section": "触发与监听事件",
+        "start": 565,
+        "end": 1349
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0042",
+    "query": "把 click 这个原生事件名写进组件的 emits 声明后，父组件上的 @click 还会响应原生点击吗？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__events.md",
+        "section": "声明触发的事件",
+        "start": 2028,
+        "end": 4402
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0044",
+    "query": "defineAsyncComponent 配了 loadingComponent 之后，它默认要等多久才显示？不配 timeout 时默认值是多少？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__components__async.md",
+        "section": "加载与错误状态",
+        "start": 1852,
+        "end": 2475
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0045",
+    "query": "Suspense 初次渲染没碰到异步依赖会怎样？进入完成状态后，更深层新冒出来的异步依赖会让它重新挂起吗？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__built-ins__suspense.md",
+        "section": "加载中状态",
+        "start": 1442,
+        "end": 2112
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0046",
+    "query": "异步组件放进 Suspense 之后，它自己配置的加载组件和超时还有效吗？想让它自己管加载状态要怎么设？",
+    "type": "cross_doc",
+    "answers": [
+      {
+        "doc": "vue/src__guide__built-ins__suspense.md",
+        "section": "异步依赖",
+        "start": 195,
+        "end": 1442
+      },
+      {
+        "doc": "vue/src__guide__components__async.md",
+        "section": "加载与错误状态",
+        "start": 1852,
+        "end": 2475
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0047",
+    "query": "KeepAlive 的 include/exclude 是按什么来匹配组件的？3.2.34 之后用 script setup 还得手写 name 吗？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__built-ins__keep-alive.md",
+        "section": "包含/排除",
+        "start": 1981,
+        "end": 2424
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0048",
+    "query": "给 KeepAlive 传了 max 之后，缓存实例数量超了会怎样？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__built-ins__keep-alive.md",
+        "section": "最大缓存实例数",
+        "start": 2424,
+        "end": 2737
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0049",
+    "query": "在 setTimeout 回调里调用 onMounted 会怎么样？有没有可以放在外部函数里的情况？",
+    "type": "direct",
+    "answers": [
+      {
+        "doc": "vue/src__guide__essentials__lifecycle.md",
+        "section": "注册周期钩子",
+        "start": 145,
+        "end": 1591
+      }
+    ],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0050",
+    "query": "KeepAlive 不传 max 的时候，默认最多能缓存多少个组件实例？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0051",
+    "query": "Suspense 的 timeout prop 默认是多少毫秒？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0052",
+    "query": "异步组件加载失败后，Vue 默认会重试几次？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0053",
+    "query": "组件用 kebab-case 名字注册后，在模板里能写成 PascalCase 标签来引用吗？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  },
+  {
+    "id": "h_0054",
+    "query": "hydrateOnIdle 不传参数时，默认的最大超时是多少？",
+    "type": "no_answer",
+    "answers": [],
+    "source": "holdout"
+  }
+]

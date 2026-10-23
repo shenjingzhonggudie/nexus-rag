@@ -1,0 +1,477 @@
+{"doc_id": "k8s/content__zh-cn__docs__concepts___index.md", "section": "", "start": 0, "end": 150}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture___index.md", "section": "控制平面组件", "start": 762, "end": 2232}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture___index.md", "section": "节点组件", "start": 2232, "end": 2688}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture___index.md", "section": "插件(Addons)", "start": 2688, "end": 3948}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture___index.md", "section": "架构变种", "start": 3948, "end": 5019}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture___index.md", "section": "", "start": 5019, "end": 5718}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md", "section": "什么是 CGroup v2?", "start": 346, "end": 935}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md", "section": "使用 CGroup v2", "start": 935, "end": 3367}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md", "section": "识别 Linux 节点上的 CGroup 版本", "start": 3367, "end": 3638}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md", "section": "弃用 CGroup v1", "start": 3638, "end": 3980}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md", "section": "", "start": 3980, "end": 4233}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md", "section": "设计", "start": 358, "end": 765}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md", "section": "云控制器管理器的功能", "start": 765, "end": 1581}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md", "section": "鉴权", "start": 1581, "end": 3161}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md", "section": "", "start": 3161, "end": 4018}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md", "section": "节点到控制面", "start": 242, "end": 1410}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md", "section": "控制面到节点", "start": 1410, "end": 3189}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md", "section": "", "start": 3189, "end": 4035}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__controller.md", "section": "控制器模式", "start": 253, "end": 1945}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__controller.md", "section": "期望状态与当前状态", "start": 1945, "end": 2113}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__controller.md", "section": "设计", "start": 2113, "end": 2637}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__controller.md", "section": "运行控制器的方式", "start": 2637, "end": 3013}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__controller.md", "section": "", "start": 3013, "end": 3448}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md", "section": "属主与依赖", "start": 803, "end": 1947}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md", "section": "级联删除", "start": 1947, "end": 3504}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md", "section": "未使用容器和镜像的垃圾收集", "start": 3504, "end": 5518}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md", "section": "配置垃圾收集", "start": 5518, "end": 5772}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md", "section": "", "start": 5772, "end": 6103}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__leases.md", "section": "节点心跳", "start": 266, "end": 629}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__leases.md", "section": "领导者选举", "start": 629, "end": 1200}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__leases.md", "section": "API 服务器身份", "start": 1200, "end": 3302}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__leases.md", "section": "工作负载", "start": 3302, "end": 3731}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md", "section": "启用对等聚合发现和混合版本代理", "start": 594, "end": 2101}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md", "section": "对等聚合发现", "start": 2101, "end": 2568}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md", "section": "混合版本代理", "start": 2568, "end": 3831}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md", "section": "管理", "start": 625, "end": 4565}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md", "section": "节点状态", "start": 4565, "end": 5011}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md", "section": "节点心跳", "start": 5011, "end": 5329}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md", "section": "节点控制器", "start": 5329, "end": 6932}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md", "section": "资源容量跟踪", "start": 6932, "end": 7470}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md", "section": "节点拓扑", "start": 7470, "end": 7763}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md", "section": "", "start": 7763, "end": 8414}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__self-healing.md", "section": "自我修复能力", "start": 86, "end": 1083}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__self-healing.md", "section": "注意事项", "start": 1083, "end": 1197}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__architecture__self-healing.md", "section": "", "start": 1197, "end": 1541}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md", "section": "规划集群", "start": 94, "end": 876}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md", "section": "管理集群", "start": 876, "end": 1116}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md", "section": "加固集群", "start": 1116, "end": 2379}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md", "section": "可选集群服务", "start": 2379, "end": 2631}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md", "section": "联网和网络策略", "start": 105, "end": 3820}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md", "section": "服务发现", "start": 3820, "end": 3968}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md", "section": "可视化管理", "start": 3968, "end": 4222}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md", "section": "基础设施", "start": 4222, "end": 4594}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md", "section": "插桩", "start": 4594, "end": 4709}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md", "section": "遗留 Add-on", "start": 4709, "end": 4864}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "良好的 Webhook 设计的重要性", "start": 337, "end": 1130}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "识别是否使用 Admission Webhook", "start": 1130, "end": 1493}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "选择准入控制机制", "start": 1493, "end": 3764}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "性能和延迟", "start": 3764, "end": 5570}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "请求过滤", "start": 5570, "end": 7420}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "变更范围和字段注意事项", "start": 7420, "end": 11264}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "变更性质 Webhook 的顺序与幂等性", "start": 11264, "end": 13061}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "变更的测试与验证", "start": 13061, "end": 14523}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "变更性 Webhook 的部署", "start": 14523, "end": 15550}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "良好实现的示例", "start": 15550, "end": 15920}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md", "section": "", "start": 15920, "end": 16232}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__certificates.md", "section": "", "start": 0, "end": 76}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__compatibility-version.md", "section": "仿真版本", "start": 93, "end": 447}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md", "section": "启用协调领导者选举", "start": 341, "end": 745}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md", "section": "组件配置", "start": 745, "end": 1050}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md", "section": "Kubernetes 组件的领导者选举", "start": 1050, "end": 2926}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md", "section": "分离 DRA 相关 API 的权限", "start": 60, "end": 345}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md", "section": "部署与维护 DRA 驱动", "start": 345, "end": 1668}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md", "section": "在大规模环境中在高负载场景下监控和调优组件", "start": 1668, "end": 5799}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md", "section": "", "start": 5799, "end": 5986}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "启用/禁用 API 优先级和公平性", "start": 889, "end": 1500}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "递归服务器场景", "start": 1500, "end": 2097}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "概念", "start": 2097, "end": 4188}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "资源", "start": 4188, "end": 8574}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "默认值", "start": 8574, "end": 11229}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "健康检查并发豁免", "start": 11229, "end": 11710}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "可观察性", "start": 11710, "end": 16819}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "使用 API 优先级和公平性的最佳实践", "start": 16819, "end": 19713}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md", "section": "", "start": 19713, "end": 20164}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md", "section": "示例:使用来自 kube-state-metrics 的指标查询集群状态", "start": 530, "end": 803}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md", "section": "示例:基于 kube-state-metrics 发出警报", "start": 803, "end": 1382}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md", "section": "Pod 和容器日志", "start": 417, "end": 3519}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md", "section": "系统组件日志", "start": 3519, "end": 5737}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md", "section": "集群级日志架构", "start": 5737, "end": 9154}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md", "section": "", "start": 9154, "end": 9508}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md", "section": "Kubernetes IP 地址范围", "start": 618, "end": 997}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md", "section": "集群网络类型", "start": 997, "end": 1687}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md", "section": "如何实现 Kubernetes 的网络模型", "start": 1687, "end": 2109}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md", "section": "", "start": 2109, "end": 2381}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Node provisioning", "start": 844, "end": 1412}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Node 制备", "start": 1412, "end": 6053}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Node consolidation", "start": 6053, "end": 6485}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Node 整合", "start": 6485, "end": 9787}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Autoscalers", "start": 9787, "end": 10231}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Autoscaler", "start": 10231, "end": 17338}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Combine workload and Node autoscaling", "start": 17338, "end": 17635}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "组合使用负载自动扩缩容与 Node 自动扩缩容", "start": 17635, "end": 20996}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "Related components", "start": 20996, "end": 21392}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "相关组件", "start": 21392, "end": 22488}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-autoscaling.md", "section": "", "start": 22488, "end": 22672}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md", "section": "节点体面关闭", "start": 619, "end": 6901}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md", "section": "处理节点非体面关闭", "start": 6901, "end": 8960}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md", "section": "", "start": 8960, "end": 9145}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "Metrics", "start": 1643, "end": 1658}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "指标", "start": 1658, "end": 6682}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "Logs", "start": 6682, "end": 6847}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "日志", "start": 6847, "end": 10813}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "Traces", "start": 10813, "end": 11164}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "链路", "start": 11164, "end": 13206}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "Common observability tools", "start": 13206, "end": 13240}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "常见可观测性工具", "start": 13240, "end": 16344}
+{"doc_id": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md", "section": "", "start": 16344, "end": 17249}
+{"doc_id": "react/src__content__learn__add-react-to-an-existing-project.md", "section": "在现有网站的子路由中使用 React", "start": 244, "end": 1137}
+{"doc_id": "react/src__content__learn__add-react-to-an-existing-project.md", "section": "在现有页面的一部分中使用 React", "start": 1137, "end": 4936}
+{"doc_id": "react/src__content__learn__add-react-to-an-existing-project.md", "section": "在现有的原生移动应用中使用 React Native", "start": 4936, "end": 5240}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "响应事件", "start": 493, "end": 1223}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "State: 组件的记忆", "start": 1223, "end": 6157}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "渲染和提交", "start": 6157, "end": 6468}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "state 如同一张快照", "start": 6468, "end": 7734}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "把一系列 state 更新加入队列", "start": 7734, "end": 9385}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "更新 state 中的对象", "start": 9385, "end": 13733}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "更新 state 中的数组", "start": 13733, "end": 16814}
+{"doc_id": "react/src__content__learn__adding-interactivity.md", "section": "下节预告", "start": 16814, "end": 16940}
+{"doc_id": "react/src__content__learn__build-a-react-app-from-scratch.md", "section": "步骤 1: 安装构建工具", "start": 589, "end": 2094}
+{"doc_id": "react/src__content__learn__build-a-react-app-from-scratch.md", "section": "步骤 2: 构建常见的应用程序模式", "start": 2094, "end": 5323}
+{"doc_id": "react/src__content__learn__choosing-the-state-structure.md", "section": "构建 state 的原则", "start": 135, "end": 928}
+{"doc_id": "react/src__content__learn__choosing-the-state-structure.md", "section": "合并关联的 state", "start": 928, "end": 2345}
+{"doc_id": "react/src__content__learn__choosing-the-state-structure.md", "section": "避免矛盾的 state", "start": 2345, "end": 4799}
+{"doc_id": "react/src__content__learn__choosing-the-state-structure.md", "section": "避免冗余的 state", "start": 4799, "end": 8050}
+{"doc_id": "react/src__content__learn__choosing-the-state-structure.md", "section": "避免重复的 state", "start": 8050, "end": 12009}
+{"doc_id": "react/src__content__learn__choosing-the-state-structure.md", "section": "避免深度嵌套的 state", "start": 12009, "end": 52183}
+{"doc_id": "react/src__content__learn__conditional-rendering.md", "section": "条件返回 JSX", "start": 173, "end": 2653}
+{"doc_id": "react/src__content__learn__conditional-rendering.md", "section": "选择性地包含 JSX", "start": 2653, "end": 13392}
+{"doc_id": "react/src__content__learn__creating-a-react-app.md", "section": "全栈框架", "start": 163, "end": 2023}
+{"doc_id": "react/src__content__learn__creating-a-react-app.md", "section": "其他框架", "start": 2023, "end": 3395}
+{"doc_id": "react/src__content__learn__creating-a-react-app.md", "section": "从零开始", "start": 3395, "end": 4040}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "你的第一个组件", "start": 682, "end": 1260}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "组件的导入与导出", "start": 1260, "end": 2003}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "使用 JSX 书写标签语言", "start": 2003, "end": 3229}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "在 JSX 中通过大括号使用 JavaScript", "start": 3229, "end": 4242}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "将 Props 传递给组件", "start": 4242, "end": 5469}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "条件渲染", "start": 5469, "end": 6248}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "渲染列表", "start": 6248, "end": 8330}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "保持组件纯粹", "start": 8330, "end": 9080}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "将 UI 视为树", "start": 9080, "end": 9517}
+{"doc_id": "react/src__content__learn__describing-the-ui.md", "section": "接下来应该......", "start": 9517, "end": 9662}
+{"doc_id": "react/src__content__learn__editor-setup.md", "section": "你的编辑器", "start": 106, "end": 607}
+{"doc_id": "react/src__content__learn__editor-setup.md", "section": "推荐的文本编辑器功能", "start": 607, "end": 2316}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "使用 ref 引用值", "start": 627, "end": 1473}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "使用 ref 操作 DOM", "start": 1473, "end": 2171}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "使用 Effect 进行同步", "start": 2171, "end": 4007}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "你可能不需要 Effect", "start": 4007, "end": 5052}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "响应式 Effect 的生命周期", "start": 5052, "end": 6715}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "将事件从 Effect 中分开", "start": 6715, "end": 12711}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "移除 Effect 依赖", "start": 12711, "end": 16147}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "使用自定义 Hook 复用逻辑", "start": 16147, "end": 18221}
+{"doc_id": "react/src__content__learn__escape-hatches.md", "section": "下节预告", "start": 18221, "end": 18315}
+{"doc_id": "react/src__content__learn__extracting-state-logic-into-a-reducer.md", "section": "使用 reducer 整合状态逻辑", "start": 183, "end": 16146}
+{"doc_id": "react/src__content__learn__extracting-state-logic-into-a-reducer.md", "section": "对比 `useState` 和 `useReducer`", "start": 16146, "end": 17071}
+{"doc_id": "react/src__content__learn__extracting-state-logic-into-a-reducer.md", "section": "编写一个好的 reducer", "start": 17071, "end": 17731}
+{"doc_id": "react/src__content__learn__extracting-state-logic-into-a-reducer.md", "section": "使用 Immer 简化 reducer", "start": 17731, "end": 52591}
+{"doc_id": "react/src__content__learn__importing-and-exporting-components.md", "section": "根组件文件", "start": 172, "end": 738}
+{"doc_id": "react/src__content__learn__importing-and-exporting-components.md", "section": "导出和导入一个组件", "start": 738, "end": 3454}
+{"doc_id": "react/src__content__learn__importing-and-exporting-components.md", "section": "从同一文件中导出和导入多个组件", "start": 3454, "end": 7617}
+{"doc_id": "react/src__content__learn__index.md", "section": "创建和嵌套组件", "start": 124, "end": 994}
+{"doc_id": "react/src__content__learn__index.md", "section": "使用 JSX 编写标签", "start": 994, "end": 1460}
+{"doc_id": "react/src__content__learn__index.md", "section": "添加样式", "start": 1460, "end": 1943}
+{"doc_id": "react/src__content__learn__index.md", "section": "显示数据", "start": 1943, "end": 3166}
+{"doc_id": "react/src__content__learn__index.md", "section": "条件渲染", "start": 3166, "end": 4004}
+{"doc_id": "react/src__content__learn__index.md", "section": "渲染列表", "start": 4004, "end": 5197}
+{"doc_id": "react/src__content__learn__index.md", "section": "响应事件", "start": 5197, "end": 5547}
+{"doc_id": "react/src__content__learn__index.md", "section": "更新界面", "start": 5547, "end": 6885}
+{"doc_id": "react/src__content__learn__index.md", "section": "使用 Hook", "start": 6885, "end": 7157}
+{"doc_id": "react/src__content__learn__index.md", "section": "组件间共享数据", "start": 7157, "end": 9247}
+{"doc_id": "react/src__content__learn__index.md", "section": "下一节", "start": 9247, "end": 9377}
+{"doc_id": "react/src__content__learn__installation.md", "section": "Try React", "start": 119, "end": 761}
+{"doc_id": "react/src__content__learn__installation.md", "section": "创建一个 React 应用", "start": 761, "end": 885}
+{"doc_id": "react/src__content__learn__installation.md", "section": "从零构建一个 React 应用", "start": 885, "end": 1058}
+{"doc_id": "react/src__content__learn__installation.md", "section": "添加 React 到一个已有的项目", "start": 1058, "end": 1381}
+{"doc_id": "react/src__content__learn__installation.md", "section": "下一节", "start": 1381, "end": 1454}
+{"doc_id": "react/src__content__learn__javascript-in-jsx-with-curly-braces.md", "section": "使用引号传递字符串", "start": 238, "end": 1281}
+{"doc_id": "react/src__content__learn__javascript-in-jsx-with-curly-braces.md", "section": "使用大括号:一扇进入 JavaScript 世界的窗户", "start": 1281, "end": 2292}
+{"doc_id": "react/src__content__learn__javascript-in-jsx-with-curly-braces.md", "section": "使用 \"双大括号\":JSX 中的 CSS 和 对象", "start": 2292, "end": 3381}
+{"doc_id": "react/src__content__learn__javascript-in-jsx-with-curly-braces.md", "section": "JavaScript 对象和大括号的更多可能", "start": 3381, "end": 10566}
+{"doc_id": "react/src__content__learn__keeping-components-pure.md", "section": "纯函数:组件作为公式", "start": 207, "end": 1886}
+{"doc_id": "react/src__content__learn__keeping-components-pure.md", "section": "副作用:(不符合)预期的后果", "start": 1886, "end": 4716}
+{"doc_id": "react/src__content__learn__keeping-components-pure.md", "section": "哪些地方 **可能** 引发副作用", "start": 4716, "end": 16812}
+{"doc_id": "react/src__content__learn__lifecycle-of-reactive-effects.md", "section": "Effect 的生命周期", "start": 355, "end": 9863}
+{"doc_id": "react/src__content__learn__lifecycle-of-reactive-effects.md", "section": "Effect 会“响应”于响应式值", "start": 9863, "end": 51228}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "用 State 响应输入", "start": 538, "end": 2368}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "选择 State 结构", "start": 2368, "end": 4444}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "在组件间共享状态", "start": 4444, "end": 5779}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "对 State 进行保留和重置", "start": 5779, "end": 9516}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "迁移状态逻辑至 Reducer 中", "start": 9516, "end": 13213}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "使用 Context 深层传递参数", "start": 13213, "end": 15261}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "使用 Reducer 和 Context 拓展你的应用", "start": 15261, "end": 19240}
+{"doc_id": "react/src__content__learn__managing-state.md", "section": "下节预告", "start": 19240, "end": 19391}
+{"doc_id": "react/src__content__learn__manipulating-the-dom-with-refs.md", "section": "获取指向节点的 ref", "start": 373, "end": 7359}
+{"doc_id": "react/src__content__learn__manipulating-the-dom-with-refs.md", "section": "访问另一个组件的 DOM 节点", "start": 7359, "end": 9531}
+{"doc_id": "react/src__content__learn__manipulating-the-dom-with-refs.md", "section": "React 何时添加 refs", "start": 9531, "end": 12780}
+{"doc_id": "react/src__content__learn__manipulating-the-dom-with-refs.md", "section": "使用 refs 操作 DOM 的最佳实践", "start": 12780, "end": 23404}
+{"doc_id": "react/src__content__learn__passing-data-deeply-with-context.md", "section": "传递 props 带来的问题", "start": 231, "end": 609}
+{"doc_id": "react/src__content__learn__passing-data-deeply-with-context.md", "section": "Context:传递 props 的另一种方法", "start": 609, "end": 10501}
+{"doc_id": "react/src__content__learn__passing-data-deeply-with-context.md", "section": "在相同的组件中使用并提供 context", "start": 10501, "end": 12992}
+{"doc_id": "react/src__content__learn__passing-data-deeply-with-context.md", "section": "Context 会穿过中间层级的组件", "start": 12992, "end": 15794}
+{"doc_id": "react/src__content__learn__passing-data-deeply-with-context.md", "section": "写在你使用 context 之前", "start": 15794, "end": 16521}
+{"doc_id": "react/src__content__learn__passing-data-deeply-with-context.md", "section": "Context 的使用场景", "start": 16521, "end": 22821}
+{"doc_id": "react/src__content__learn__passing-props-to-a-component.md", "section": "熟悉的 props", "start": 205, "end": 888}
+{"doc_id": "react/src__content__learn__passing-props-to-a-component.md", "section": "向组件传递 props", "start": 888, "end": 3760}
+{"doc_id": "react/src__content__learn__passing-props-to-a-component.md", "section": "给 prop 指定一个默认值", "start": 3760, "end": 4115}
+{"doc_id": "react/src__content__learn__passing-props-to-a-component.md", "section": "使用 JSX 展开语法传递 props", "start": 4115, "end": 4815}
+{"doc_id": "react/src__content__learn__passing-props-to-a-component.md", "section": "将 JSX 作为子组件传递", "start": 4815, "end": 6307}
+{"doc_id": "react/src__content__learn__passing-props-to-a-component.md", "section": "Props 如何随时间变化", "start": 6307, "end": 20806}
+{"doc_id": "react/src__content__learn__preserving-and-resetting-state.md", "section": "状态与渲染树中的位置相关", "start": 155, "end": 3792}
+{"doc_id": "react/src__content__learn__preserving-and-resetting-state.md", "section": "相同位置的相同组件会使得 state 被保留下来", "start": 3792, "end": 7208}
+{"doc_id": "react/src__content__learn__preserving-and-resetting-state.md", "section": "相同位置的不同组件会使 state 重置", "start": 7208, "end": 11108}
+{"doc_id": "react/src__content__learn__preserving-and-resetting-state.md", "section": "在相同位置重置 state", "start": 11108, "end": 37049}
+{"doc_id": "react/src__content__learn__queueing-a-series-of-state-updates.md", "section": "React 会对 state 更新进行批处理", "start": 161, "end": 1554}
+{"doc_id": "react/src__content__learn__queueing-a-series-of-state-updates.md", "section": "在下次渲染前多次更新同一个 state", "start": 1554, "end": 11795}
+{"doc_id": "react/src__content__learn__react-compiler__debugging.md", "section": "了解编译器行为", "start": 94, "end": 586}
+{"doc_id": "react/src__content__learn__react-compiler__debugging.md", "section": "常见的破坏性模式", "start": 586, "end": 930}
+{"doc_id": "react/src__content__learn__react-compiler__debugging.md", "section": "调试工作流程", "start": 930, "end": 1722}
+{"doc_id": "react/src__content__learn__react-compiler__debugging.md", "section": "报告编译器错误", "start": 1722, "end": 2046}
+{"doc_id": "react/src__content__learn__react-compiler__debugging.md", "section": "下一步", "start": 2046, "end": 2181}
+{"doc_id": "react/src__content__learn__react-compiler__incremental-adoption.md", "section": "为何采用渐进式迁移?", "start": 187, "end": 603}
+{"doc_id": "react/src__content__learn__react-compiler__incremental-adoption.md", "section": "渐进式采用的方法", "start": 603, "end": 817}
+{"doc_id": "react/src__content__learn__react-compiler__incremental-adoption.md", "section": "基于目录的采用与 Babel 覆盖", "start": 817, "end": 2162}
+{"doc_id": "react/src__content__learn__react-compiler__incremental-adoption.md", "section": "使用 \"use memo\" 的选择加入模式", "start": 2162, "end": 3083}
+{"doc_id": "react/src__content__learn__react-compiler__incremental-adoption.md", "section": "运行时控制", "start": 3083, "end": 3776}
+{"doc_id": "react/src__content__learn__react-compiler__incremental-adoption.md", "section": "故障排除", "start": 3776, "end": 4000}
+{"doc_id": "react/src__content__learn__react-compiler__incremental-adoption.md", "section": "下一步", "start": 4000, "end": 4198}
+{"doc_id": "react/src__content__learn__react-compiler__index.md", "section": "介绍", "start": 1, "end": 175}
+{"doc_id": "react/src__content__learn__react-compiler__index.md", "section": "安装", "start": 175, "end": 278}
+{"doc_id": "react/src__content__learn__react-compiler__index.md", "section": "渐进式采用", "start": 278, "end": 415}
+{"doc_id": "react/src__content__learn__react-compiler__index.md", "section": "调试与故障排除", "start": 415, "end": 563}
+{"doc_id": "react/src__content__learn__react-compiler__index.md", "section": "配置与参考", "start": 563, "end": 831}
+{"doc_id": "react/src__content__learn__react-compiler__index.md", "section": "额外的资源", "start": 831, "end": 961}
+{"doc_id": "tidb/develop___index.md", "section": "按语言和框架分类", "start": 442, "end": 1248}
+{"doc_id": "tidb/develop___index.md", "section": "使用 MySQL 客户端软件", "start": 1248, "end": 1580}
+{"doc_id": "tidb/develop___index.md", "section": "其他资源", "start": 1580, "end": 1841}
+{"doc_id": "tidb/develop__dev-guide-aws-appflow-integration.md", "section": "前提条件", "start": 535, "end": 1838}
+{"doc_id": "tidb/develop__dev-guide-aws-appflow-integration.md", "section": "第 1 步:注册 TiDB 连接器", "start": 1838, "end": 3472}
+{"doc_id": "tidb/develop__dev-guide-aws-appflow-integration.md", "section": "第 2 步:创建 flow", "start": 3472, "end": 7374}
+{"doc_id": "tidb/develop__dev-guide-aws-appflow-integration.md", "section": "第 3 步:运行 flow", "start": 7374, "end": 9785}
+{"doc_id": "tidb/develop__dev-guide-aws-appflow-integration.md", "section": "注意事项", "start": 9785, "end": 10248}
+{"doc_id": "tidb/develop__dev-guide-aws-appflow-integration.md", "section": "需要帮助?", "start": 10248, "end": 10460}
+{"doc_id": "tidb/develop__dev-guide-bookshop-schema-design.md", "section": "导入表结构和数据", "start": 186, "end": 4338}
+{"doc_id": "tidb/develop__dev-guide-bookshop-schema-design.md", "section": "数据表详解", "start": 4338, "end": 6929}
+{"doc_id": "tidb/develop__dev-guide-bookshop-schema-design.md", "section": "数据库初始化 `dbinit.sql` 脚本", "start": 6929, "end": 9249}
+{"doc_id": "tidb/develop__dev-guide-build-cluster-in-cloud.md", "section": "第 1 步:创建 {{{ .starter }}} 实例", "start": 228, "end": 1090}
+{"doc_id": "tidb/develop__dev-guide-build-cluster-in-cloud.md", "section": "第 2 步:连接到 {{{ .starter }}} 实例", "start": 1090, "end": 3065}
+{"doc_id": "tidb/develop__dev-guide-build-cluster-in-cloud.md", "section": "第 3 步:运行 SQL", "start": 3065, "end": 3340}
+{"doc_id": "tidb/develop__dev-guide-choose-driver-or-orm.md", "section": "Java", "start": 506, "end": 6035}
+{"doc_id": "tidb/develop__dev-guide-choose-driver-or-orm.md", "section": "Golang", "start": 6035, "end": 6623}
+{"doc_id": "tidb/develop__dev-guide-choose-driver-or-orm.md", "section": "Python", "start": 6623, "end": 8609}
+{"doc_id": "tidb/develop__dev-guide-connect-to-tidb.md", "section": "需要帮助?", "start": 645, "end": 856}
+{"doc_id": "tidb/develop__dev-guide-connection-parameters.md", "section": "连接池参数", "start": 212, "end": 4553}
+{"doc_id": "tidb/develop__dev-guide-connection-parameters.md", "section": "连接参数", "start": 4553, "end": 11771}
+{"doc_id": "tidb/develop__dev-guide-create-database.md", "section": "在开始之前", "start": 287, "end": 454}
+{"doc_id": "tidb/develop__dev-guide-create-database.md", "section": "什么是数据库", "start": 454, "end": 568}
+{"doc_id": "tidb/develop__dev-guide-create-database.md", "section": "创建数据库过程", "start": 568, "end": 871}
+{"doc_id": "tidb/develop__dev-guide-create-database.md", "section": "查看数据库", "start": 871, "end": 1259}
+{"doc_id": "tidb/develop__dev-guide-create-database.md", "section": "数据库创建时应遵守的规则", "start": 1259, "end": 1669}
+{"doc_id": "tidb/develop__dev-guide-create-database.md", "section": "更进一步", "start": 1669, "end": 1780}
+{"doc_id": "tidb/develop__dev-guide-create-secondary-indexes.md", "section": "在开始之前", "start": 153, "end": 425}
+{"doc_id": "tidb/develop__dev-guide-create-secondary-indexes.md", "section": "什么是二级索引", "start": 425, "end": 702}
+{"doc_id": "tidb/develop__dev-guide-create-secondary-indexes.md", "section": "在已有表中添加二级索引", "start": 702, "end": 1031}
+{"doc_id": "tidb/develop__dev-guide-create-secondary-indexes.md", "section": "新建表的同时创建二级索引", "start": 1031, "end": 1291}
+{"doc_id": "tidb/develop__dev-guide-create-secondary-indexes.md", "section": "创建二级索引时应遵守的规则", "start": 1291, "end": 1365}
+{"doc_id": "tidb/develop__dev-guide-create-secondary-indexes.md", "section": "例子", "start": 1365, "end": 7883}
+{"doc_id": "tidb/develop__dev-guide-create-secondary-indexes.md", "section": "更进一步", "start": 7883, "end": 8037}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "在开始之前", "start": 256, "end": 475}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "什么是表", "start": 475, "end": 709}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "命名表", "start": 709, "end": 1065}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "定义列", "start": 1065, "end": 3127}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "选择主键", "start": 3127, "end": 4439}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "选择聚簇索引", "start": 4439, "end": 5473}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "添加列约束", "start": 5473, "end": 6986}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "使用 HTAP 能力", "start": 6986, "end": 14330}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "执行 `CREATE TABLE` 语句", "start": 14330, "end": 15071}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "创建表时应遵守的规则", "start": 15071, "end": 17371}
+{"doc_id": "tidb/develop__dev-guide-create-table.md", "section": "更进一步", "start": 17371, "end": 17476}
+{"doc_id": "tidb/develop__dev-guide-delete-data.md", "section": "在开始之前", "start": 165, "end": 538}
+{"doc_id": "tidb/develop__dev-guide-delete-data.md", "section": "SQL 语法", "start": 538, "end": 832}
+{"doc_id": "tidb/develop__dev-guide-delete-data.md", "section": "最佳实践", "start": 832, "end": 1290}
+{"doc_id": "tidb/develop__dev-guide-delete-data.md", "section": "例子", "start": 1290, "end": 4430}
+{"doc_id": "tidb/develop__dev-guide-delete-data.md", "section": "性能注意事项", "start": 4430, "end": 4931}
+{"doc_id": "tidb/develop__dev-guide-delete-data.md", "section": "批量删除", "start": 4931, "end": 9807}
+{"doc_id": "tidb/develop__dev-guide-delete-data.md", "section": "非事务批量删除", "start": 9807, "end": 10674}
+{"doc_id": "tidb/develop__dev-guide-get-data-from-single-table.md", "section": "开始之前", "start": 48, "end": 439}
+{"doc_id": "tidb/develop__dev-guide-get-data-from-single-table.md", "section": "简单的查询", "start": 439, "end": 2786}
+{"doc_id": "tidb/develop__dev-guide-get-data-from-single-table.md", "section": "对结果进行筛选", "start": 2786, "end": 3949}
+{"doc_id": "tidb/develop__dev-guide-get-data-from-single-table.md", "section": "对结果进行排序", "start": 3949, "end": 5656}
+{"doc_id": "tidb/develop__dev-guide-get-data-from-single-table.md", "section": "限制查询结果数量", "start": 5656, "end": 7541}
+{"doc_id": "tidb/develop__dev-guide-get-data-from-single-table.md", "section": "聚合查询", "start": 7541, "end": 9423}
+{"doc_id": "tidb/develop__dev-guide-gui-mysql-workbench.md", "section": "前置需求", "start": 618, "end": 1015}
+{"doc_id": "tidb/develop__dev-guide-gui-mysql-workbench.md", "section": "连接到 TiDB", "start": 1015, "end": 6490}
+{"doc_id": "tidb/develop__dev-guide-gui-mysql-workbench.md", "section": "常见问题", "start": 6490, "end": 7073}
+{"doc_id": "tidb/develop__dev-guide-gui-mysql-workbench.md", "section": "下一步", "start": 7073, "end": 7675}
+{"doc_id": "tidb/develop__dev-guide-gui-mysql-workbench.md", "section": "需要帮助?", "start": 7675, "end": 7841}
+{"doc_id": "tidb/develop__dev-guide-gui-navicat.md", "section": "前置需求", "start": 332, "end": 772}
+{"doc_id": "tidb/develop__dev-guide-gui-navicat.md", "section": "连接到 TiDB", "start": 772, "end": 6165}
+{"doc_id": "tidb/develop__dev-guide-gui-navicat.md", "section": "下一步", "start": 6165, "end": 6668}
+{"doc_id": "tidb/develop__dev-guide-gui-navicat.md", "section": "需要帮助?", "start": 6668, "end": 6834}
+{"doc_id": "tidb/develop__dev-guide-hybrid-oltp-and-olap-queries.md", "section": "数据准备", "start": 532, "end": 937}
+{"doc_id": "tidb/develop__dev-guide-hybrid-oltp-and-olap-queries.md", "section": "窗口函数", "start": 937, "end": 4182}
+{"doc_id": "tidb/develop__dev-guide-hybrid-oltp-and-olap-queries.md", "section": "混合负载", "start": 4182, "end": 8520}
+{"doc_id": "tidb/develop__dev-guide-hybrid-oltp-and-olap-queries.md", "section": "扩展阅读", "start": 8520, "end": 8822}
+{"doc_id": "tidb/develop__dev-guide-implicit-type-conversion.md", "section": "转换规则", "start": 52, "end": 516}
+{"doc_id": "tidb/develop__dev-guide-implicit-type-conversion.md", "section": "隐式类型转换引起的后果", "start": 516, "end": 3414}
+{"doc_id": "tidb/develop__dev-guide-index-best-practice.md", "section": "准备工作", "start": 40, "end": 590}
+{"doc_id": "tidb/develop__dev-guide-index-best-practice.md", "section": "创建索引的最佳实践", "start": 590, "end": 1350}
+{"doc_id": "tidb/develop__dev-guide-index-best-practice.md", "section": "使用索引的最佳实践", "start": 1350, "end": 4027}
+{"doc_id": "tidb/develop__dev-guide-insert-data.md", "section": "在开始之前", "start": 50, "end": 364}
+{"doc_id": "tidb/develop__dev-guide-insert-data.md", "section": "插入行", "start": 364, "end": 7596}
+{"doc_id": "tidb/develop__dev-guide-insert-data.md", "section": "批量插入", "start": 7596, "end": 9105}
+{"doc_id": "tidb/develop__dev-guide-insert-data.md", "section": "避免热点", "start": 9105, "end": 9348}
+{"doc_id": "tidb/develop__dev-guide-insert-data.md", "section": "主键为 `AUTO_RANDOM` 表插入数据", "start": 9348, "end": 10442}
+{"doc_id": "tidb/develop__dev-guide-insert-data.md", "section": "使用 HTAP", "start": 10442, "end": 10610}
+{"doc_id": "tidb/develop__dev-guide-join-tables.md", "section": "Join 类型", "start": 75, "end": 6475}
+{"doc_id": "tidb/develop__dev-guide-join-tables.md", "section": "隐式连接", "start": 6475, "end": 6629}
+{"doc_id": "tidb/develop__dev-guide-join-tables.md", "section": "Join 相关算法", "start": 6629, "end": 7715}
+{"doc_id": "tidb/develop__dev-guide-join-tables.md", "section": "Join 顺序", "start": 7715, "end": 8120}
+{"doc_id": "tidb/develop__dev-guide-join-tables.md", "section": "扩展阅读", "start": 8120, "end": 8218}
+{"doc_id": "tidb/develop__dev-guide-mysql-tools.md", "section": "", "start": 0, "end": 1471}
+{"doc_id": "tidb/develop__dev-guide-object-naming-guidelines.md", "section": "原则", "start": 75, "end": 192}
+{"doc_id": "tidb/develop__dev-guide-object-naming-guidelines.md", "section": "数据库命名规范", "start": 192, "end": 272}
+{"doc_id": "tidb/develop__dev-guide-object-naming-guidelines.md", "section": "表命名规范", "start": 272, "end": 595}
+{"doc_id": "tidb/develop__dev-guide-object-naming-guidelines.md", "section": "字段命名规范", "start": 595, "end": 847}
+{"doc_id": "tidb/develop__dev-guide-object-naming-guidelines.md", "section": "索引命名规范", "start": 847, "end": 977}
+{"doc_id": "tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md", "section": "悲观事务", "start": 545, "end": 31542}
+{"doc_id": "tidb/develop__dev-guide-optimistic-and-pessimistic-transaction.md", "section": "乐观事务", "start": 31542, "end": 45386}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-best-practices.md", "section": "DML 最佳实践", "start": 40, "end": 1998}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-best-practices.md", "section": "DDL 最佳实践", "start": 1998, "end": 2123}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-best-practices.md", "section": "索引的最佳实践", "start": 2123, "end": 3011}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-best-practices.md", "section": "事务冲突", "start": 3011, "end": 3087}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-best-practices.md", "section": "Java 数据库应用开发最佳实践", "start": 3087, "end": 3268}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-overview.md", "section": "SQL 性能调优", "start": 134, "end": 529}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-overview.md", "section": "Schema 设计", "start": 529, "end": 765}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql-overview.md", "section": "推荐阅读", "start": 765, "end": 918}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql.md", "section": "准备工作", "start": 54, "end": 371}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql.md", "section": "问题:全表扫描", "start": 371, "end": 9452}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql.md", "section": "选择合适的 Join 执行计划", "start": 9452, "end": 9510}
+{"doc_id": "tidb/develop__dev-guide-optimize-sql.md", "section": "推荐阅读", "start": 9510, "end": 9615}
+{"doc_id": "vue/src__guide__best-practices__accessibility.md", "section": "跳过链接", "start": 334, "end": 1540}
+{"doc_id": "vue/src__guide__best-practices__accessibility.md", "section": "内容结构", "start": 1540, "end": 3209}
+{"doc_id": "vue/src__guide__best-practices__accessibility.md", "section": "语义化表单", "start": 3209, "end": 10934}
+{"doc_id": "vue/src__guide__best-practices__accessibility.md", "section": "规范", "start": 10934, "end": 12201}
+{"doc_id": "vue/src__guide__best-practices__accessibility.md", "section": "资源", "start": 12201, "end": 15276}
+{"doc_id": "vue/src__guide__best-practices__performance.md", "section": "概述", "start": 24, "end": 811}
+{"doc_id": "vue/src__guide__best-practices__performance.md", "section": "分析选项", "start": 811, "end": 1288}
+{"doc_id": "vue/src__guide__best-practices__performance.md", "section": "页面加载优化", "start": 1288, "end": 3521}
+{"doc_id": "vue/src__guide__best-practices__performance.md", "section": "更新优化", "start": 3521, "end": 6112}
+{"doc_id": "vue/src__guide__best-practices__performance.md", "section": "通用优化", "start": 6112, "end": 7864}
+{"doc_id": "vue/src__guide__best-practices__production-deployment.md", "section": "开发环境 vs. 生产环境", "start": 33, "end": 316}
+{"doc_id": "vue/src__guide__best-practices__production-deployment.md", "section": "不使用构建工具", "start": 316, "end": 672}
+{"doc_id": "vue/src__guide__best-practices__production-deployment.md", "section": "使用构建工具", "start": 672, "end": 1141}
+{"doc_id": "vue/src__guide__best-practices__production-deployment.md", "section": "追踪运行时错误", "start": 1141, "end": 1541}
+{"doc_id": "vue/src__guide__best-practices__security.md", "section": "报告漏洞", "start": 18, "end": 228}
+{"doc_id": "vue/src__guide__best-practices__security.md", "section": "首要规则:不要使用无法信赖的模板", "start": 228, "end": 688}
+{"doc_id": "vue/src__guide__best-practices__security.md", "section": "Vue 自身的安全机制", "start": 688, "end": 1471}
+{"doc_id": "vue/src__guide__best-practices__security.md", "section": "潜在的危险", "start": 1471, "end": 4161}
+{"doc_id": "vue/src__guide__best-practices__security.md", "section": "最佳实践", "start": 4161, "end": 4583}
+{"doc_id": "vue/src__guide__best-practices__security.md", "section": "后端协调", "start": 4583, "end": 4754}
+{"doc_id": "vue/src__guide__best-practices__security.md", "section": "服务端渲染 (SSR)", "start": 4754, "end": 4880}
+{"doc_id": "vue/src__guide__built-ins__keep-alive.md", "section": "基本使用", "start": 172, "end": 1981}
+{"doc_id": "vue/src__guide__built-ins__keep-alive.md", "section": "包含/排除", "start": 1981, "end": 2424}
+{"doc_id": "vue/src__guide__built-ins__keep-alive.md", "section": "最大缓存实例数", "start": 2424, "end": 2737}
+{"doc_id": "vue/src__guide__built-ins__keep-alive.md", "section": "缓存实例的生命周期", "start": 2737, "end": 3981}
+{"doc_id": "vue/src__guide__built-ins__suspense.md", "section": "异步依赖", "start": 195, "end": 1442}
+{"doc_id": "vue/src__guide__built-ins__suspense.md", "section": "加载中状态", "start": 1442, "end": 2112}
+{"doc_id": "vue/src__guide__built-ins__suspense.md", "section": "事件", "start": 2112, "end": 2330}
+{"doc_id": "vue/src__guide__built-ins__suspense.md", "section": "错误处理", "start": 2330, "end": 2562}
+{"doc_id": "vue/src__guide__built-ins__suspense.md", "section": "和其他组件结合", "start": 2562, "end": 3226}
+{"doc_id": "vue/src__guide__built-ins__suspense.md", "section": "嵌套使用", "start": 3226, "end": 4071}
+{"doc_id": "vue/src__guide__built-ins__teleport.md", "section": "基本用法", "start": 86, "end": 3137}
+{"doc_id": "vue/src__guide__built-ins__teleport.md", "section": "搭配组件使用", "start": 3137, "end": 3379}
+{"doc_id": "vue/src__guide__built-ins__teleport.md", "section": "禁用 Teleport", "start": 3379, "end": 3593}
+{"doc_id": "vue/src__guide__built-ins__teleport.md", "section": "多个 Teleport 共享目标", "start": 3593, "end": 3911}
+{"doc_id": "vue/src__guide__built-ins__teleport.md", "section": "延迟解析的 Teleport <sup class=\"vt-badge\" data-text=\"3.5+\" />", "start": 3911, "end": 4432}
+{"doc_id": "vue/src__guide__built-ins__transition-group.md", "section": "和 `<Transition>` 的区别", "start": 306, "end": 797}
+{"doc_id": "vue/src__guide__built-ins__transition-group.md", "section": "进入 / 离开动画", "start": 797, "end": 1142}
+{"doc_id": "vue/src__guide__built-ins__transition-group.md", "section": "移动动画", "start": 1142, "end": 1812}
+{"doc_id": "vue/src__guide__built-ins__transition-group.md", "section": "渐进延迟列表动画", "start": 1812, "end": 4299}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "`<Transition>` 组件", "start": 797, "end": 2417}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "基于 CSS 的过渡效果", "start": 2417, "end": 11240}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "JavaScript 钩子", "start": 11240, "end": 15133}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "可复用过渡效果", "start": 15133, "end": 15623}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "出现时过渡", "start": 15623, "end": 15727}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "元素间过渡", "start": 15727, "end": 16701}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "过渡模式", "start": 16701, "end": 17036}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "组件间过渡", "start": 17036, "end": 18375}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "动态过渡", "start": 18375, "end": 18693}
+{"doc_id": "vue/src__guide__built-ins__transition.md", "section": "使用 Key Attribute 过渡", "start": 18693, "end": 21029}
+{"doc_id": "vue/src__guide__components__async.md", "section": "基本用法", "start": 28, "end": 1852}
+{"doc_id": "vue/src__guide__components__async.md", "section": "加载与错误状态", "start": 1852, "end": 2475}
+{"doc_id": "vue/src__guide__components__async.md", "section": "惰性激活 <sup class=\"vt-badge\" data-text=\"3.5+\" />", "start": 2475, "end": 4481}
+{"doc_id": "vue/src__guide__components__async.md", "section": "搭配 Suspense 使用", "start": 4481, "end": 4633}
+{"doc_id": "vue/src__guide__components__attrs.md", "section": "Attributes 继承", "start": 122, "end": 1582}
+{"doc_id": "vue/src__guide__components__attrs.md", "section": "禁用 Attributes 继承", "start": 1582, "end": 3025}
+{"doc_id": "vue/src__guide__components__attrs.md", "section": "多根节点的 Attributes 继承", "start": 3025, "end": 3463}
+{"doc_id": "vue/src__guide__components__attrs.md", "section": "在 JavaScript 中访问透传 Attributes", "start": 3463, "end": 4244}
+{"doc_id": "vue/src__guide__components__events.md", "section": "触发与监听事件", "start": 565, "end": 1349}
+{"doc_id": "vue/src__guide__components__events.md", "section": "事件参数", "start": 1349, "end": 2028}
+{"doc_id": "vue/src__guide__components__events.md", "section": "声明触发的事件", "start": 2028, "end": 4402}
+{"doc_id": "vue/src__guide__components__events.md", "section": "事件校验", "start": 4402, "end": 5462}
+{"doc_id": "vue/src__guide__components__props.md", "section": "Props 声明", "start": 96, "end": 2054}
+{"doc_id": "vue/src__guide__components__props.md", "section": "响应式 Props 解构 <sup class=\"vt-badge\" data-text=\"3.5+\" /> \\*\\*", "start": 2054, "end": 3459}
+{"doc_id": "vue/src__guide__components__props.md", "section": "传递 prop 的细节", "start": 3459, "end": 6006}
+{"doc_id": "vue/src__guide__components__props.md", "section": "单向数据流", "start": 6006, "end": 7955}
+{"doc_id": "vue/src__guide__components__props.md", "section": "Prop 校验", "start": 7955, "end": 12110}
+{"doc_id": "vue/src__guide__components__props.md", "section": "Boolean 类型转换", "start": 12110, "end": 13359}
+{"doc_id": "vue/src__guide__components__provide-inject.md", "section": "Prop 逐级透传问题", "start": 104, "end": 741}
+{"doc_id": "vue/src__guide__components__provide-inject.md", "section": "Provide (提供)", "start": 741, "end": 2048}
+{"doc_id": "vue/src__guide__components__provide-inject.md", "section": "应用层 Provide", "start": 2048, "end": 2332}
+{"doc_id": "vue/src__guide__components__provide-inject.md", "section": "Inject (注入)", "start": 2332, "end": 5357}
+{"doc_id": "vue/src__guide__components__provide-inject.md", "section": "和响应式数据配合使用", "start": 5357, "end": 7232}
+{"doc_id": "vue/src__guide__components__provide-inject.md", "section": "使用 Symbol 作注入名", "start": 7232, "end": 8449}
+{"doc_id": "vue/src__guide__components__registration.md", "section": "全局注册", "start": 180, "end": 862}
+{"doc_id": "vue/src__guide__components__registration.md", "section": "局部注册", "start": 862, "end": 2037}
+{"doc_id": "vue/src__guide__components__registration.md", "section": "组件名格式", "start": 2037, "end": 2644}
+{"doc_id": "vue/src__guide__components__slots.md", "section": "插槽内容与出口", "start": 99, "end": 3467}
+{"doc_id": "vue/src__guide__components__slots.md", "section": "渲染作用域", "start": 3467, "end": 3809}
+{"doc_id": "vue/src__guide__components__slots.md", "section": "默认内容", "start": 3809, "end": 5119}
+{"doc_id": "vue/src__guide__components__slots.md", "section": "具名插槽", "start": 5119, "end": 8480}
+{"doc_id": "vue/src__guide__components__slots.md", "section": "条件插槽", "start": 8480, "end": 9804}
+{"doc_id": "vue/src__guide__components__slots.md", "section": "动态插槽名", "start": 9804, "end": 10199}
+{"doc_id": "vue/src__guide__components__slots.md", "section": "作用域插槽", "start": 10199, "end": 17083}
+{"doc_id": "vue/src__guide__components__v-model.md", "section": "基本用法", "start": 57, "end": 4405}
+{"doc_id": "vue/src__guide__components__v-model.md", "section": "`v-model` 的参数", "start": 4405, "end": 6858}
+{"doc_id": "vue/src__guide__components__v-model.md", "section": "多个 `v-model` 绑定", "start": 6858, "end": 9796}
+{"doc_id": "vue/src__guide__components__v-model.md", "section": "处理 `v-model` 修饰符", "start": 9796, "end": 16136}
+{"doc_id": "vue/src__guide__essentials__application.md", "section": "应用实例", "start": 45, "end": 243}
+{"doc_id": "vue/src__guide__essentials__application.md", "section": "根组件", "start": 243, "end": 779}
+{"doc_id": "vue/src__guide__essentials__application.md", "section": "挂载应用", "start": 779, "end": 1553}
+{"doc_id": "vue/src__guide__essentials__application.md", "section": "应用配置", "start": 1553, "end": 1954}
+{"doc_id": "vue/src__guide__essentials__application.md", "section": "多个应用实例", "start": 1954, "end": 2340}
+{"doc_id": "vue/src__guide__essentials__class-and-style.md", "section": "绑定 HTML class", "start": 275, "end": 3762}
+{"doc_id": "vue/src__guide__essentials__class-and-style.md", "section": "绑定内联样式", "start": 3762, "end": 5597}
+{"doc_id": "vue/src__guide__essentials__component-basics.md", "section": "定义一个组件", "start": 349, "end": 1673}
+{"doc_id": "vue/src__guide__essentials__component-basics.md", "section": "使用组件", "start": 1673, "end": 3895}
+{"doc_id": "vue/src__guide__essentials__component-basics.md", "section": "传递 props", "start": 3895, "end": 7044}
+{"doc_id": "vue/src__guide__essentials__component-basics.md", "section": "监听事件", "start": 7044, "end": 10997}
+{"doc_id": "vue/src__guide__essentials__component-basics.md", "section": "通过插槽来分配内容", "start": 10997, "end": 12520}
+{"doc_id": "vue/src__guide__essentials__component-basics.md", "section": "动态组件", "start": 12520, "end": 14761}
+{"doc_id": "vue/src__guide__essentials__component-basics.md", "section": "DOM 内模板解析注意事项", "start": 14761, "end": 16836}
+{"doc_id": "vue/src__guide__essentials__computed.md", "section": "基础示例", "start": 105, "end": 3682}
+{"doc_id": "vue/src__guide__essentials__computed.md", "section": "计算属性缓存 vs 方法", "start": 3682, "end": 4724}
+{"doc_id": "vue/src__guide__essentials__computed.md", "section": "可写计算属性", "start": 4724, "end": 5845}
+{"doc_id": "vue/src__guide__essentials__computed.md", "section": "获取上一个值", "start": 5845, "end": 7472}
+{"doc_id": "vue/src__guide__essentials__computed.md", "section": "最佳实践", "start": 7472, "end": 7914}
+{"doc_id": "vue/src__guide__essentials__conditional.md", "section": "`v-if`", "start": 111, "end": 234}
+{"doc_id": "vue/src__guide__essentials__conditional.md", "section": "`v-else`", "start": 234, "end": 1296}
+{"doc_id": "vue/src__guide__essentials__conditional.md", "section": "`v-else-if`", "start": 1296, "end": 1627}
+{"doc_id": "vue/src__guide__essentials__conditional.md", "section": "`<template>` 上的 `v-if`", "start": 1627, "end": 1962}
+{"doc_id": "vue/src__guide__essentials__conditional.md", "section": "`v-show`", "start": 1962, "end": 2197}
+{"doc_id": "vue/src__guide__essentials__conditional.md", "section": "`v-if` vs. `v-show`", "start": 2197, "end": 2531}
+{"doc_id": "vue/src__guide__essentials__conditional.md", "section": "`v-if` 和 `v-for`", "start": 2531, "end": 2766}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "监听事件", "start": 26, "end": 291}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "内联事件处理器", "start": 291, "end": 1191}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "方法事件处理器", "start": 1191, "end": 3195}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "在内联处理器中调用方法", "start": 3195, "end": 4163}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "在内联事件处理器中访问事件参数", "start": 4163, "end": 4839}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "事件修饰符", "start": 4839, "end": 6072}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "按键修饰符", "start": 6072, "end": 7463}
+{"doc_id": "vue/src__guide__essentials__event-handling.md", "section": "鼠标按键修饰符", "start": 7463, "end": 7844}
+{"doc_id": "vue/src__guide__essentials__forms.md", "section": "基本用法", "start": 1267, "end": 12026}
+{"doc_id": "vue/src__guide__essentials__forms.md", "section": "值绑定", "start": 12026, "end": 13360}
+{"doc_id": "vue/src__guide__essentials__forms.md", "section": "修饰符", "start": 13360, "end": 14047}
+{"doc_id": "vue/src__guide__essentials__forms.md", "section": "组件上的 `v-model`", "start": 14047, "end": 14274}
+{"doc_id": "vue/src__guide__essentials__lifecycle.md", "section": "注册周期钩子", "start": 145, "end": 1591}
+{"doc_id": "vue/src__guide__essentials__lifecycle.md", "section": "生命周期图示", "start": 1591, "end": 1942}

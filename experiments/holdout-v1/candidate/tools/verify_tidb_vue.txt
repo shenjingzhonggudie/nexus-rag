@@ -1,0 +1,195 @@
+================================================================================
+CASE: tidb-idle-transaction-timeout-default stack: tidb
+-- pattern: 'tidb_idle_transaction_timeout' -> 2 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... ut) 的默认值比较大,在事务已启动但未提交或回滚的情况下,你可能需要更细粒度的控制和更短的超时,以避免持有锁的时间过长。此时,你可以使用 TiDB 在 v7.6.0 引入的 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。  但在实际
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... 有锁的时间过长。此时,你可以使用 TiDB 在 v7.6.0 引入的 [`tidb_idle_transaction_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。  但在实际生产环境中,空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中
+-- pattern: '事务.{0,6}空闲超时' -> 1 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... action_timeout`](/system-variables.md#tidb_idle_transaction_timeout-从-v760-版本开始引入) 控制用户会话中事务的空闲超时。  但在实际生产环境中,空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。
+================================================================================
+CASE: tidb-minimum-idle-value stack: tidb
+-- pattern: 'minimumIdle' -> 1 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | 212-4553]
+   ... 点配置合适的值,可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。  **minimumIdle**:连接池最小空闲连接数,主要用于在应用空闲时存留一些连接以应对突发请求,同样是需要根据业务情况进行配置。  应用在使用连接池时,需要注意连接使用完成后归还连接,推荐应用使用对应
+-- pattern: '最小空闲连接' -> 1 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | 212-4553]
+   ... (https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。  **minimumIdle**:连接池最小空闲连接数,主要用于在应用空闲时存留一些连接以应对突发请求,同样是需要根据业务情况进行配置。  应用在使用连接池时,需要注意连接使用完成后归还连接,推荐应用使用对应的连接池相关监控(如 *
+================================================================================
+CASE: tidb-max-connections stack: tidb
+-- pattern: 'max_connections' -> 0 hit(s)
+-- pattern: '最大连接数' -> 4 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | 212-4553]
+   ... 点自行选择连接池实现。  ### 连接数配置  比较常见的是应用需要根据自身情况配置合适的连接池大小,以 HikariCP 为例:  **maximumPoolSize**:连接池最大连接数,配置过大会导致 TiDB 消耗资源维护无用连接,配置过小则会导致应用获取连接变慢,所以需根据应用自身特点配置合适的值,可参考[这篇文章](https://github.com/b
+   [tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | 212-4553]
+   ... nnections = (number of cores * 4) ```  因此,你在使用 SSD 的情况下可以将连接数设置为 `CPU 核心数 * 4`。以此来达到初始的连接池最大连接数大小,并以此数据周围进行进一步的调整。  ### 调整方向  可以看到,在上方的[经验公式](#经验公式)中得到的,是一个推荐的初始值,若需得到某台具体机器上的最佳值,需在推荐值周
+   [tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | 212-4553]
+   ... 的初始值,若需得到某台具体机器上的最佳值,需在推荐值周围,通过尝试,得到最佳值。  此最佳值的获取,会有一些基本规律,此处罗列如下:  1. 如果你的网络或存储延迟较大,请增大你的最大连接数,可以进行等待,从而让线程在被阻塞时,其他的线程可继续进行处理。 2. 如果你的服务器上部署了多个服务,并且每个服务拥有独立的连接池时,请关注它们的连接池的最大连接数总和。  ##
+   [tidb/develop__dev-guide-connection-parameters.md | 连接池参数 | 212-4553]
+   ... 大,请增大你的最大连接数,可以进行等待,从而让线程在被阻塞时,其他的线程可继续进行处理。 2. 如果你的服务器上部署了多个服务,并且每个服务拥有独立的连接池时,请关注它们的连接池的最大连接数总和。  ## 连接参数  Java 应用尽管可以选择在不同的框架中封装,但在最底层一般会通过调用 JDBC 来与数据库服务器进行交互。对于 JDBC,需要关注的主要有:API 的
+-- pattern: '连接数上限' -> 0 hit(s)
+================================================================================
+CASE: tidb-expression-index-switch stack: tidb
+-- pattern: '表达式索引' -> 6 hit(s)
+   [tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | 1350-4027]
+   ... oks WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';     ```      也可以使用表达式索引,例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引:      {{< copyable "sql" >}}      ```sql     CRE
+   [tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | 1350-4027]
+   ... D published_at < '2023-01-01';     ```      也可以使用表达式索引,例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引:      {{< copyable "sql" >}}      ```sql     CREATE INDEX published_year_idx ON books ((Y
+   [tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | 1350-4027]
+   ... EAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。      > **注意:**     >     > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-creat
+   [tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | 1350-4027]
+   ... lished_year_idx` 索引来加速查询了。      > **注意:**     >     > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。  - 尽量使用覆盖索引,即索引列包
+   [tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | 1350-4027]
+   ... ` 索引来加速查询了。      > **注意:**     >     > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。  - 尽量使用覆盖索引,即索引列包含查询列,避免总是 `SELE
+   [tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | 1350-4027]
+   ... 验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。  - 尽量使用覆盖索引,即索引列包含查询列,避免总是 `SELECT *` 查询所有列的语句。      例如下面查询只需扫描索引 `title_published_at_i
+-- pattern: 'tidb_enable' -> 8 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... 率更高。  对于第二种方式,TiDB 会先将所有数据加载到 TiDB 节点上,然后根据 `FetchSize` 依次返回给客户端。因此,通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`,可能会触发落
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... ` 依次返回给客户端。因此,通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`,可能会触发落盘临时将结果写入硬盘。  如果系统变量 [`tidb_enable_lazy_cursor_fetch`](
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... /system-variables.md#tidb_enable_tmp_storage_on_oom) 设置为 `ON`,可能会触发落盘临时将结果写入硬盘。  如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... 设置为 `ON`,可能会触发落盘临时将结果写入硬盘。  如果系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 设置为 `ON`,TiDB 将尝试仅在客户端请求数据时读取部分数据,以使用更少的内存。更多信息和使用限制,参见系
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... cursor_fetch-从-v830-版本开始引入) 设置为 `ON`,TiDB 将尝试仅在客户端请求数据时读取部分数据,以使用更少的内存。更多信息和使用限制,参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... 据时读取部分数据,以使用更少的内存。更多信息和使用限制,参见系统变量 [`tidb_enable_lazy_cursor_fetch`](/system-variables.md#tidb_enable_lazy_cursor_fetch-从-v830-版本开始引入) 的详细描述。  ### MySQL JDBC 参数  JDBC 实现通常通过 JDBC URL 参数的形式来提供
+   [tidb/develop__dev-guide-create-table.md | 选择主键 | 3127-4439]
+   ... *。而是由另一组关键字 `CLUSTERED`、`NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引,若不指定,则由系统变量 `@@global.tidb_enable_clustered_index` 影响,具体说明请看[此文档](/clustered-indexes.md)。  主键在 `CREATE TABLE` 语句中定义。[主键约束](
+   [tidb/develop__dev-guide-create-table.md | 创建表时应遵守的规则 | 15071-17371]
+   ... 于 64 位的数据类型作为主键时,可能导致表数据需要占用更多的存储空间。该现象在存在多个二级索引时尤为明显。  - 显式指定是否使用聚簇索引,而非使用系统变量 `@@global.tidb_enable_clustered_index` 及配置项 `alter-primary-key` 控制是否使用[聚簇索引的默认行为](/clustered-indexes.md#创建聚簇索引表
+-- pattern: '实验特性' -> 1 hit(s)
+   [tidb/develop__dev-guide-index-best-practice.md | 使用索引的最佳实践 | 1350-4027]
+   ... t)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。      > **注意:**     >     > 表达式索引目前是 TiDB 的实验特性,需要在 TiDB 配置文件中开启表达式索引特性,详情可以参考[表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式
+================================================================================
+CASE: tidb-cursor-fetch-size stack: tidb
+-- pattern: 'useCursorFetch' -> 1 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... kejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数,且在 JDBC URL 中配置 `useCursorFetch = true`。  TiDB 同时支持以上两种方式,但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式,比第二种功能实现更简单且
+-- pattern: 'FetchSize' -> 4 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... 客户端会希望数据库服务器减少向客户端一次返回的记录数,等客户端在有限内存处理完一部分后再去向服务器要下一批。  在 JDBC 中通常有以下两种处理方式:  - 方式一:设置 [**FetchSize** 为 `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/en/connector-j-reference-i
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... esultSet) 让客户端不缓存,客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。 - 方式二:使用 Cursor Fetch,首先需[设置 **FetchSize**](https://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数,且在 
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... formance.html) 为正整数,且在 JDBC URL 中配置 `useCursorFetch = true`。  TiDB 同时支持以上两种方式,但更推荐使用第一种将 `FetchSize` 设置为 `Integer.MIN_VALUE` 的方式,比第二种功能实现更简单且执行效率更高。  对于第二种方式,TiDB 会先将所有数据加载到 TiDB 节点上,然后根据 `
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... ` 设置为 `Integer.MIN_VALUE` 的方式,比第二种功能实现更简单且执行效率更高。  对于第二种方式,TiDB 会先将所有数据加载到 TiDB 节点上,然后根据 `FetchSize` 依次返回给客户端。因此,通常会比第一种方式使用更多内存。如果将 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#
+-- pattern: 'Cursor Fetch' -> 1 hit(s)
+   [tidb/develop__dev-guide-connection-parameters.md | 连接参数 | 4553-11771]
+   ... mentation-notes.html#ResultSet) 让客户端不缓存,客户端通过 StreamingResult 的方式从网络连接上流式读取执行结果。 - 方式二:使用 Cursor Fetch,首先需[设置 **FetchSize**](https://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-perform
+================================================================================
+CASE: vue-keepalive-max-default stack: vue
+-- pattern: '\\bmax\\b' -> 4 hit(s)
+   [vue/src__guide__built-ins__keep-alive.md | 最大缓存实例数 | 2424-2737]
+   ... 2.34 或以上的版本中,使用 `<script setup>` 的单文件组件会自动根据文件名生成对应的 `name` 选项,无需再手动声明。 :::  ## 最大缓存实例数 {#max-cached-instances}  我们可以通过传入 `max` prop 来限制可被缓存的最大组件实例数。`<KeepAlive>` 的行为在指定了 `max` 后类似一个 
+   [vue/src__guide__built-ins__keep-alive.md | 最大缓存实例数 | 2424-2737]
+   ... 的单文件组件会自动根据文件名生成对应的 `name` 选项,无需再手动声明。 :::  ## 最大缓存实例数 {#max-cached-instances}  我们可以通过传入 `max` prop 来限制可被缓存的最大组件实例数。`<KeepAlive>` 的行为在指定了 `max` 后类似一个 [LRU 缓存](<https://en.wikipedia.or
+   [vue/src__guide__built-ins__keep-alive.md | 最大缓存实例数 | 2424-2737]
+   ... 缓存实例数 {#max-cached-instances}  我们可以通过传入 `max` prop 来限制可被缓存的最大组件实例数。`<KeepAlive>` 的行为在指定了 `max` 后类似一个 [LRU 缓存](<https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_Recently_
+   [vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> | 2475-4481]
+   ... neAsyncComponent({   loader: () => import('./Comp.vue'),   hydrate: hydrateOnMediaQuery('(max-width:500px)') }) ```  ### 交互时激活 {#hydrate-on-interaction}  当组件元素上触发指定事件时进行激活。完成激活后,触发激活的
+-- pattern: '最大缓存' -> 1 hit(s)
+   [vue/src__guide__built-ins__keep-alive.md | 最大缓存实例数 | 2424-2737]
+   ... ::tip 在 3.2.34 或以上的版本中,使用 `<script setup>` 的单文件组件会自动根据文件名生成对应的 `name` 选项,无需再手动声明。 :::  ## 最大缓存实例数 {#max-cached-instances}  我们可以通过传入 `max` prop 来限制可被缓存的最大组件实例数。`<KeepAlive>` 的行为在指定了 `ma
+-- pattern: '缓存实例数' -> 1 hit(s)
+   [vue/src__guide__built-ins__keep-alive.md | 最大缓存实例数 | 2424-2737]
+   ... tip 在 3.2.34 或以上的版本中,使用 `<script setup>` 的单文件组件会自动根据文件名生成对应的 `name` 选项,无需再手动声明。 :::  ## 最大缓存实例数 {#max-cached-instances}  我们可以通过传入 `max` prop 来限制可被缓存的最大组件实例数。`<KeepAlive>` 的行为在指定了 `max` 
+================================================================================
+CASE: vue-suspense-timeout-default stack: vue
+-- pattern: 'timeout' -> 5 hit(s)
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... 状态。  发生回退时,后备内容不会立即展示出来。相反,`<Suspense>` 在等待新内容和异步依赖完成时,会展示之前 `#default` 插槽的内容。这个行为可以通过一个 `timeout` prop 进行配置:在等待渲染新内容耗时超过 `timeout` 毫秒之后,`<Suspense>` 将会切换为展示后备内容。若 `timeout` 值为 `0` 将导致在替换
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... ense>` 在等待新内容和异步依赖完成时,会展示之前 `#default` 插槽的内容。这个行为可以通过一个 `timeout` prop 进行配置:在等待渲染新内容耗时超过 `timeout` 毫秒之后,`<Suspense>` 将会切换为展示后备内容。若 `timeout` 值为 `0` 将导致在替换默认内容时立即显示后备内容。  ## 事件 {#events}  
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... 内容。这个行为可以通过一个 `timeout` prop 进行配置:在等待渲染新内容耗时超过 `timeout` 毫秒之后,`<Suspense>` 将会切换为展示后备内容。若 `timeout` 值为 `0` 将导致在替换默认内容时立即显示后备内容。  ## 事件 {#events}  `<Suspense>` 组件会触发三个事件:`pending`、`resolve`
+   [vue/src__guide__components__async.md | 加载与错误状态 | 1852-2475]
+   ... 间,默认为 200ms   delay: 200,    // 加载失败后展示的组件   errorComponent: ErrorComponent,   // 如果提供了一个 timeout 时间限制,并超时了   // 也会显示这里配置的报错组件,默认值是:Infinity   timeout: 3000 }) ```  如果提供了一个加载组件,它将在内部组件加载时
+   [vue/src__guide__components__async.md | 加载与错误状态 | 1852-2475]
+   ... ponent: ErrorComponent,   // 如果提供了一个 timeout 时间限制,并超时了   // 也会显示这里配置的报错组件,默认值是:Infinity   timeout: 3000 }) ```  如果提供了一个加载组件,它将在内部组件加载时先行显示。在加载组件显示之前有一个默认的 200ms 延迟——这是因为在网络状况较好时,加载完成得很快,加
+-- pattern: '后备内容' -> 4 hit(s)
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... late>  ```  在初始渲染时,`<Suspense>` 将在内存中渲染其默认的插槽内容。如果在这个过程中遇到任何异步依赖,则会进入**挂起**状态。在挂起状态期间,展示的是后备内容。当所有遇到的异步依赖都完成后,`<Suspense>` 会进入**完成**状态,并将展示出默认插槽的内容。  如果在初次渲染时没有遇到异步依赖,`<Suspense>` 会直接进
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... 有当默认插槽的根节点被替换时,`<Suspense>` 才会回到挂起状态。组件树中新的更深层次的异步依赖**不会**造成 `<Suspense>` 回退到挂起状态。  发生回退时,后备内容不会立即展示出来。相反,`<Suspense>` 在等待新内容和异步依赖完成时,会展示之前 `#default` 插槽的内容。这个行为可以通过一个 `timeout` prop 进
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... ult` 插槽的内容。这个行为可以通过一个 `timeout` prop 进行配置:在等待渲染新内容耗时超过 `timeout` 毫秒之后,`<Suspense>` 将会切换为展示后备内容。若 `timeout` 值为 `0` 将导致在替换默认内容时立即显示后备内容。  ## 事件 {#events}  `<Suspense>` 组件会触发三个事件:`pending
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... 配置:在等待渲染新内容耗时超过 `timeout` 毫秒之后,`<Suspense>` 将会切换为展示后备内容。若 `timeout` 值为 `0` 将导致在替换默认内容时立即显示后备内容。  ## 事件 {#events}  `<Suspense>` 组件会触发三个事件:`pending`、`resolve` 和 `fallback`。`pending` 事件是在
+-- pattern: '挂起' -> 5 hit(s)
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... Loading...   </template>  ```  在初始渲染时,`<Suspense>` 将在内存中渲染其默认的插槽内容。如果在这个过程中遇到任何异步依赖,则会进入**挂起**状态。在挂起状态期间,展示的是后备内容。当所有遇到的异步依赖都完成后,`<Suspense>` 会进入**完成**状态,并将展示出默认插槽的内容。  如果在初次渲染时没有遇到异
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... ..   </template>  ```  在初始渲染时,`<Suspense>` 将在内存中渲染其默认的插槽内容。如果在这个过程中遇到任何异步依赖,则会进入**挂起**状态。在挂起状态期间,展示的是后备内容。当所有遇到的异步依赖都完成后,`<Suspense>` 会进入**完成**状态,并将展示出默认插槽的内容。  如果在初次渲染时没有遇到异步依赖,`<Su
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... 槽的内容。  如果在初次渲染时没有遇到异步依赖,`<Suspense>` 会直接进入完成状态。  进入完成状态后,只有当默认插槽的根节点被替换时,`<Suspense>` 才会回到挂起状态。组件树中新的更深层次的异步依赖**不会**造成 `<Suspense>` 回退到挂起状态。  发生回退时,后备内容不会立即展示出来。相反,`<Suspense>` 在等待新内
+   [vue/src__guide__built-ins__suspense.md | 加载中状态 | 1442-2112]
+   ... 态。  进入完成状态后,只有当默认插槽的根节点被替换时,`<Suspense>` 才会回到挂起状态。组件树中新的更深层次的异步依赖**不会**造成 `<Suspense>` 回退到挂起状态。  发生回退时,后备内容不会立即展示出来。相反,`<Suspense>` 在等待新内容和异步依赖完成时,会展示之前 `#default` 插槽的内容。这个行为可以通过一个 `
+   [vue/src__guide__built-ins__suspense.md | 事件 | 2112-2330]
+   ...  ## 事件 {#events}  `<Suspense>` 组件会触发三个事件:`pending`、`resolve` 和 `fallback`。`pending` 事件是在进入挂起状态时触发。`resolve` 事件是在 `default` 插槽完成获取新内容时触发。`fallback` 事件则是在 `fallback` 插槽的内容显示时触发。  例如,可以
+================================================================================
+CASE: vue-async-retry-count stack: vue
+-- pattern: '重试|retry' -> 0 hit(s)
+-- pattern: '加载失败' -> 3 hit(s)
+   [vue/src__guide__built-ins__suspense.md | 异步依赖 | 195-1442]
+   ... 会在页面上看到三个旋转的加载态,在不同的时间显示出内容。  有了 `<Suspense>` 组件后,我们就可以在等待整个多层级组件树中的各个异步依赖获取结果时,在顶层展示出加载中或加载失败的状态。  `<Suspense>` 可以等待的异步依赖有两种:  1. 带有异步 `setup()` 钩子的组件。这也包含了使用 `<script setup>` 时有顶层 `a
+   [vue/src__guide__components__async.md | 基本用法 | 28-1852]
+   ... 收一个返回 Promise 的加载函数。这个 Promise 的 `resolve` 回调方法应该在从服务器获得组件定义时调用。你也可以调用 `reject(reason)` 表明加载失败。  [ES 模块动态导入](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators
+   [vue/src__guide__components__async.md | 加载与错误状态 | 1852-2475]
+   ... 的组件   loadingComponent: LoadingComponent,   // 展示加载组件前的延迟时间,默认为 200ms   delay: 200,    // 加载失败后展示的组件   errorComponent: ErrorComponent,   // 如果提供了一个 timeout 时间限制,并超时了   // 也会显示这里配置的报错组件
+-- pattern: 'errorComponent' -> 1 hit(s)
+   [vue/src__guide__components__async.md | 加载与错误状态 | 1852-2475]
+   ... Component: LoadingComponent,   // 展示加载组件前的延迟时间,默认为 200ms   delay: 200,    // 加载失败后展示的组件   errorComponent: ErrorComponent,   // 如果提供了一个 timeout 时间限制,并超时了   // 也会显示这里配置的报错组件,默认值是:Infinity   timeou
+================================================================================
+CASE: vue-kebab-registered-pascal-usage stack: vue
+-- pattern: 'kebab-case' -> 8 hit(s)
+   [vue/src__guide__components__events.md | 触发与监听事件 | 565-1349]
+   ... ```vue-html  ```  像组件与 prop 一样,事件的名字也提供了自动的格式转换。注意这里我们触发了一个以 camelCase 形式命名的事件,但在父组件中可以使用 kebab-case 形式来监听。与 [prop 大小写格式](/guide/components/props#prop-name-casing)一样,在模板中我们也推荐使用 kebab-case 形
+   [vue/src__guide__components__events.md | 触发与监听事件 | 565-1349]
+   ... 用 kebab-case 形式来监听。与 [prop 大小写格式](/guide/components/props#prop-name-casing)一样,在模板中我们也推荐使用 kebab-case 形式来编写监听器。  :::tip 和原生 DOM 事件不一样,组件触发的事件**没有冒泡机制**。你只能监听直接子组件触发的事件。平级组件或是跨越多层嵌套的组件间通信,应使用一
+   [vue/src__guide__components__props.md | 传递 prop 的细节 | 3459-6006]
+   ... component-basics#in-dom-template-parsing-caveats)时例外),但实际上为了和 HTML attribute 对齐,我们通常会将其写为 kebab-case 形式:  ```vue-html  ```  对于组件名我们推荐使用 [PascalCase](/guide/components/registration#component-
+   [vue/src__guide__components__registration.md | 组件名格式 | 2037-2644]
+   ... ](/guide/essentials/component-basics#in-dom-template-parsing-caveats)。  为了方便,Vue 支持将模板中使用 kebab-case 的标签解析为使用 PascalCase 注册的组件。这意味着一个以 `MyComponent` 为名注册的组件,在模板 (或由 Vue 渲染的 HTML 元素) 中可以通过 `<
+   [vue/src__guide__essentials__class-and-style.md | 绑定内联样式 | 3762-5597]
+   ... or: activeColor, fontSize: fontSize + 'px' }"></div> ```  尽管推荐使用 camelCase,但 `:style` 也支持 kebab-cased 形式的 CSS 属性 key (对应其 CSS 中的实际名称),例如:  ```vue-html <div :style="{ 'font-size': fontSize + 
+   [vue/src__guide__essentials__component-basics.md | 使用组件 | 1673-3895]
+   ... 标签。  如果你是直接在 DOM 中书写模板 (例如原生 `<template>` 元素的内容),模板的编译需要遵从浏览器中 HTML 的解析行为。在这种情况下,你应该需要使用 `kebab-case` 形式并显式地关闭这些组件的标签。  ```vue-html  <button-counter></button-counter> <button-counter></butto
+   [vue/src__guide__essentials__component-basics.md | DOM 内模板解析注意事项 | 14761-16836]
+   ... 。这意味着当你使用 DOM 内的模板时,无论是 PascalCase 形式的组件名称、camelCase 形式的 prop 名称还是 v-on 的事件名称,都需要转换为相应等价的 kebab-case (短横线连字符) 形式:  ```js // JavaScript 中的 camelCase const BlogPost = {   props: ['postTitle'],
+   [vue/src__guide__essentials__event-handling.md | 按键修饰符 | 6072-7463]
+   ... er.mozilla.org/zh-CN/docs/Web/API/UI_Events/Keyboard_event_key_values) 暴露的按键名称作为修饰符,但需要转为 kebab-case 形式。  ```vue-html <input @keyup.page-down="onPageDown" /> ```  在上面的例子中,仅会在 `$event.key` 为 
+-- pattern: 'PascalCase' -> 8 hit(s)
+   [vue/src__guide__components__props.md | 传递 prop 的细节 | 3459-6006]
+   ... s)时例外),但实际上为了和 HTML attribute 对齐,我们通常会将其写为 kebab-case 形式:  ```vue-html  ```  对于组件名我们推荐使用 [PascalCase](/guide/components/registration#component-name-casing),因为这提高了模板的可读性,能帮助我们区分 Vue 组件和原生 HTM
+   [vue/src__guide__components__registration.md | 组件名格式 | 2037-2644]
+   ... entA` 注册后仅在当前组件可用,而在任何的子组件或更深层的子组件中都不可用。  ## 组件名格式 {#component-name-casing}  在整个指引中,我们都使用 PascalCase 作为组件名的注册格式,这是因为:  1. PascalCase 是合法的 JavaScript 标识符。这使得在 JavaScript 中导入和注册组件都很容易,同时 IDE 也
+   [vue/src__guide__components__registration.md | 组件名格式 | 2037-2644]
+   ... 组件中都不可用。  ## 组件名格式 {#component-name-casing}  在整个指引中,我们都使用 PascalCase 作为组件名的注册格式,这是因为:  1. PascalCase 是合法的 JavaScript 标识符。这使得在 JavaScript 中导入和注册组件都很容易,同时 IDE 也能提供较好的自动补全。  2. `<PascalCase />`
+   [vue/src__guide__components__registration.md | 组件名格式 | 2037-2644]
+   ...  1. PascalCase 是合法的 JavaScript 标识符。这使得在 JavaScript 中导入和注册组件都很容易,同时 IDE 也能提供较好的自动补全。  2. `<PascalCase />` 在模板中更明显地表明了这是一个 Vue 组件,而不是原生 HTML 元素。同时也能够将 Vue 组件和自定义元素 (web components) 区分开来。  在单文件
+   [vue/src__guide__components__registration.md | 组件名格式 | 2037-2644]
+   ...  组件,而不是原生 HTML 元素。同时也能够将 Vue 组件和自定义元素 (web components) 区分开来。  在单文件组件和内联字符串模板中,我们都推荐这样做。但是,PascalCase 的标签名在 DOM 内模板中是不可用的,详情参见 [DOM 内模板解析注意事项](/guide/essentials/component-basics#in-dom-templa
+   [vue/src__guide__components__registration.md | 组件名格式 | 2037-2644]
+   ... component-basics#in-dom-template-parsing-caveats)。  为了方便,Vue 支持将模板中使用 kebab-case 的标签解析为使用 PascalCase 注册的组件。这意味着一个以 `MyComponent` 为名注册的组件,在模板 (或由 Vue 渲染的 HTML 元素) 中可以通过 `<MyComponent>` 或 `<my
+   [vue/src__guide__essentials__component-basics.md | 使用组件 | 1673-3895]
+   ... 意到,每当点击这些按钮时,每一个组件都维护着自己的状态,是不同的 `count`。这是因为每当你使用一个组件,就创建了一个新的**实例**。  在单文件组件中,推荐为子组件使用 `PascalCase` 的标签名,以此来和原生的 HTML 元素作区分。虽然原生 HTML 标签名是不区分大小写的,但 Vue 单文件组件是可以在编译中区分大小写的。我们也可以使用 `/>` 来关闭一
+   [vue/src__guide__essentials__component-basics.md | DOM 内模板解析注意事项 | 14761-16836]
+   ... 写区分 {#case-insensitivity}  HTML 标签和属性名称是不分大小写的,所以浏览器会把任何大写的字符解释为小写。这意味着当你使用 DOM 内的模板时,无论是 PascalCase 形式的组件名称、camelCase 形式的 prop 名称还是 v-on 的事件名称,都需要转换为相应等价的 kebab-case (短横线连字符) 形式:  ```js // 
+================================================================================
+CASE: vue-hydrate-on-idle-timeout stack: vue
+-- pattern: 'hydrateOnIdle' -> 2 hit(s)
+   [vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> | 2475-4481]
+   ...  {#hydrate-on-idle}  通过 `requestIdleCallback` 进行激活:  ```js import { defineAsyncComponent, hydrateOnIdle } from 'vue'  const AsyncComp = defineAsyncComponent({   loader: () => import('./Comp.vue
+   [vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> | 2475-4481]
+   ... const AsyncComp = defineAsyncComponent({   loader: () => import('./Comp.vue'),   hydrate: hydrateOnIdle(/* 传递可选的最大超时 */) }) ```  ### 在可见时激活 {#hydrate-on-visible}  通过 `IntersectionObserver` 在元素变
+-- pattern: '最大超时' -> 1 hit(s)
+   [vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> | 2475-4481]
+   ... neAsyncComponent({   loader: () => import('./Comp.vue'),   hydrate: hydrateOnIdle(/* 传递可选的最大超时 */) }) ```  ### 在可见时激活 {#hydrate-on-visible}  通过 `IntersectionObserver` 在元素变为可见时进行激活。  ``
+-- pattern: 'requestIdleCallback' -> 1 hit(s)
+   [vue/src__guide__components__async.md | 惰性激活 <sup class="vt-badge" data-text="3.5+" /> | 2475-4481]
+   ... 方案 (如 [Vue 框架](/guide/quick-start#frameworks)) 中实现。  ### 在空闲时进行激活 {#hydrate-on-idle}  通过 `requestIdleCallback` 进行激活:  ```js import { defineAsyncComponent, hydrateOnIdle } from 'vue'  const AsyncComp 
