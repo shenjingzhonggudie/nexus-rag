@@ -7,7 +7,7 @@
 从零手搓的**中文 RAG 系统**（检索增强生成），**不用 LangChain/LlamaIndex 等框架**，核心算法（BM25、RRF/加权融合、重排、拒答、评测指标）全部自己实现。默认模式**离线可运行、不需要 API Key、不联网**。
 
 - 版本：`1.0.0`（`src/ragkit/__init__.py` 的 `__version__`）
-- 测试：**278 条全绿**（`pytest -q`）
+- 测试：**279 条全绿**（`pytest -q`）
 - Python：3.12（虚拟环境 `.venv`）
 - GitHub：`https://github.com/shenjingzhonggudie/nexus-rag`（分支 `master`）
 
@@ -21,7 +21,7 @@ hashing 字面级 embedding（离线零依赖）。真语义模型是**可选依
 
 ```powershell
 cd path/to/nexus-rag                             # 换成你 clone 下来的目录
-.\.venv\Scripts\python.exe -m pytest -q          # 跑测试（预期 278 passed）
+.\.venv\Scripts\python.exe -m pytest -q          # 跑测试（预期 279 passed）
 .\.venv\Scripts\ragkit.exe build                  # 建库（data/raw → data/index）
 .\.venv\Scripts\ragkit.exe ask "问题"             # 问答
 .\.venv\Scripts\ragkit.exe serve --port 8000      # HTTP API（POST /ask、GET /healthz）

@@ -819,9 +819,9 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | `tests/test_metrics.py` | 覆盖式 recall 手算、单答案、重复命中只算一次、k 越界、零答案/空命中、k<=0 抛、first_hit_mrr 手算/无命中/空 | 9 |
 | `tests/test_evaluation.py` | **区间重叠算命中（不绑切分）**、跨文档不算、无偏移安全判未命中、端到端跑评测、拒答指标（准确率/误拒率/recall 不稀释）、空 qrels 返回全 0 | 7 |
 | `tests/test_ablation.py` | 对照组开关契约（4 组单变量）、run_ablation 跑通与指标范围 | 2 |
-| **合计** | | **278** |
+| **合计** | | **279** |
 
-**当前结果**：**278 passed**（2026-10-21）
+**当前结果**：**279 passed**（2026-10-23）
 **历史自证**：先在真实环境里设 `RAG__RETRIEVAL__TOP_K=99`，再跑 `pytest -q` → 结果不变（2026-10-07 于 64 条时验证，可随时重跑）
 
 ## 十六、阶段状态
@@ -843,7 +843,7 @@ BM25 目前**内存驻留、不持久化**：进程重启后 `__init__` 要重�
 | 9 | 生成层（`generation/`） | ✅ 完成（第 15 轮，231 passed）：`RetrievalResult` 的第一个生产消费者就位；`openai_compatible` 为扩展（触发信号：拿到密钥 + 网络可用） |
 | 10 | CLI（`ragkit build` / `ragkit ask`） | ✅ 完成（第 16 轮，239 passed）：全链路暴露成命令；`--json` / REPL 为扩展 |
 | 11 | HTTP API + 请求日志 | ✅ 完成（第 17 轮，252 passed）：`POST /ask` / `GET /healthz`，索引常驻；FastAPI 迁移 / 鉴权为扩展 |
-| 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮起，278 passed）：覆盖式 recall@k / MRR / 拒答指标 / 耗时表；**小节级标注（文档 + 字符区间，不绑切分）** |
+| 12 | 评测集与指标（`evaluation/`） | ✅ 完成（第 18~19 轮起，279 passed）：覆盖式 recall@k / MRR / 拒答指标 / 耗时表；**小节级标注（文档 + 字符区间，不绑切分）** |
 | 13 | 消融实验（`evaluation/ablation.py`） | ✅ 完成（第 19 轮；在 248 条上重测并扩到 6 组）：hashing 下 dense 腿 **−0.008**（负资产，纯 BM25 最优）、bge 下 **+0.072**；rerank **+0.028 / +0.007** |
 | 16 | 真实语料 + 人工标注 | ✅ 完成：`scripts/fetch_docs.py` 拉公开文档 → 人工标注 248 条 → `check_qrels.py` 质检 |
 | 14 | 交付：README 收尾 + 打包 | ✅ 完成（第 21 轮）：README 重写（四命令/架构/评测结论）、版本升 1.0.0、pyproject 加 readme 字段 |
