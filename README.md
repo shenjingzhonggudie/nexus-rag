@@ -2,415 +2,135 @@
 
 [![tests](https://github.com/shenjingzhonggudie/nexus-rag/actions/workflows/tests.yml/badge.svg)](https://github.com/shenjingzhonggudie/nexus-rag/actions/workflows/tests.yml)
 
-> 仓库名为 `nexus-rag`，项目与 Python 包名统一为 **RAGKit**（`ragkit`）。
+中文文档检索与抽取式问答项目。仓库名为 `nexus-rag`，Python 包和命令名为 `ragkit`。未使用 LangChain 或 LlamaIndex；BM25、排名融合、规则拒答和检索指标在本项目中实现，向量计算使用 NumPy，BGE 模型通过 sentence-transformers 接入。
 
-从零手搓的中文 RAG（检索增强生成）系统，覆盖 **加载 → 分块 → 向量化 → 建库 → 混合检索 → 重排 → 生成 → 评测 → 消融** 全链路。核心算法（BM25、RRF 融合、重排、拒答、评测指标）全部自己实现。
+## 能力范围
 
-**设计前提**：不使用 LangChain、LlamaIndex 等 RAG 框架；默认模式**离线可运行、不需要 API Key、不联网**。embedding 与生成都以适配器形式接入：当前索引使用 **BGE-small-zh**（配置默认写 `hashing`，实际实现由索引 manifest 决定），回答为**抽取式**（`llm.provider=none`，取最高分块原文，不调用生成模型）。
+- 加载 `.txt/.md/.markdown`，规范化后按标题或固定长度分块，建立 BM25 和向量索引。
+- 支持 hashing 向量和可选 BGE 模型。默认新建索引使用 hashing；加载已有索引时以 manifest 记录的模型为准。
+- `rerank_enabled=True` 使用加权排名融合，关闭时使用等权 RRF；当前没有 cross-encoder 重排。
+- 回答为最高分块的原文，并附检索块引用；`openai_compatible` 生成接口尚未实现。
+- 拒答依据英文标识符检查和实词覆盖率，不能可靠判断证据是否足以回答问题。
 
-## 当前状态
-
-**全链路已贯通，四入口可用。** 279 条测试全绿。
-
-- 四个 CLI 子命令：`build` / `ask` / `serve` / `eval`；
-- HTTP API：`POST /ask`、`GET /healthz`（索引常驻内存，只付一次冷启动）；
-- 评测语料：**公开中文技术文档**（Kubernetes / TiDB / Vue / React 共 100 篇、
-  125.6 万字，由脚本按需拉取、正文不进仓库）+ **小节级标注**（248 条，五类配比）；
-- 拒答：两层判据（语料外英文技术名 / 实词覆盖率），评测同时报准确率与误拒率；
-- 检索配置与实测指标见下一节，消融结论见「评测与消融」。
-
-## 当前配置与实测
-
-| 项 | 值 |
-|---|---|
-| 切块 | **1553 块**；长度按有效长度计（汉字 1 字、英文字母 3 个算 1 字、空白不计） |
-| 召回 | BM25 与 BGE-small-zh（512 维）双路，各取 top 20 |
-| 融合 | 加权排名融合 `S(d)=α·S1(d)+(1−α)·S2(d)`，α=0.7，输出 top 5 |
-| 拒答 | 语料外英文技术名 → 直接拒；否则实词覆盖率 < 0.05 → 拒 |
-| 生成 | 抽取式（`llm.provider=none`），取最高分块的原文 |
-| 索引 | `data/index`（bge，1553 块）／ `data/index.hashing`（同批块、字面哈希，仅用于消融对照） |
-| 配置 | 不传 `--config` 即用模型默认值；`configs/default.yaml` 与之一致（有测试逐字段保证），两者等价 |
-
-> `embedding.provider` 以**索引 manifest 的自描述**为准：配置默认写 `hashing`，加载 bge 索引时会自动切到 `bge`，因此报告里的 `config` 同时记录 `provider`（实际）与 `provider_configured`（声明）。
-
-**开发集**（248 条：`internal` 100 / `external` 100 / `no_answer` 48）：
-
-| 组 | n | recall@1 | recall@3 | recall@5 | MRR |
-|---|---|---|---|---|---|
-| `internal`（读正文出题） | 100 | **0.550** | 0.695 | 0.765 | **0.683** |
-| `external`（只看标题出题） | 100 | **0.390** | 0.480 | 0.560 | **0.449** |
-
-**拒答**（48 条无答案）按子集拆开：
-
-| 子集 | 条数 | 正确拒答 |
-|---|---|---|
-| 语料外英文技术名（Kafka / JVM / ZooKeeper…） | 18 | **18 / 18** |
-| 同领域、术语都在、正文没有所问细节 | 30 | **0 / 30** |
-
-误拒率 **1.0%**（2/200 条可回答题）。拒答合计 18/48 = 37.5%，全部由第一类贡献：
-判据能识别「语料里完全没有的英文技术名」，识别不了「术语都在、但所问细节缺失」。
-
-> **指标口径**：本文出现的 `recall@k` 都是**同一个覆盖式指标**——前 k 个块命中的答案
-> 小节数 ÷ 该题标注的答案小节总数（多答案题部分命中按比例计）。开发集、独立留出集、
-> 消融实验都由 `evaluation.metrics.coverage_recall` 计算，只是 k 的取值不同。
-
-**独立留出集**（62 条，开发者未接触题目，详见 [`experiments/holdout-v1/`](experiments/holdout-v1/README.md)）：
-
-| 配置 | recall@5 | MRR | 误拒 | 无答案正确拒答 |
-|---|---|---|---|---|
-| bge + 加权融合 α=0.7 | **0.964** | **0.893** | 0 / 42 | 0 / 20 |
-| hashing + 等权 RRF | 0.929 | 0.831 | 0 / 42 | 0 / 20 |
-
-| 项 | 值 |
-|---|---|
-| 版本 | 1.0.0 |
-| Python | >= 3.11（开发环境使用 3.12） |
-| 运行平台 | 主要面向 Windows + PowerShell，代码本身跨平台 |
-| 运行时依赖 | `pyyaml` `pydantic` `jieba` `numpy` |
+Python 要求 >= 3.11，本次使用 3.12.10。基础依赖为 `pyyaml`、`pydantic`、`jieba`、`numpy`。依赖与语料准备好后，hashing 路径无需联网或 API Key；BGE 离线运行还需要本地模型文件。
 
 ## 快速开始
 
+在仓库根目录执行。以下示例使用独立目录，不覆盖 `data/index`：
+
 ```powershell
-# 1. 进入项目目录
-cd path/to/nexus-rag          # 换成你 clone 下来的目录
-
-# 2. 创建虚拟环境（用 3.12；不要用 3.14，部分依赖可能缺少预编译包）
 py -3.12 -m venv .venv
-
-# 3. 可编辑安装（-e 表示不复制代码，只写路径映射；.[dev] 一并装 pytest）
-.\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 
-# 4. 建库（索引 data/raw → data/index）
-.\.venv\Scripts\ragkit.exe build
+New-Item -ItemType Directory -Force data/demo | Out-Null
+Set-Content -LiteralPath data/demo/example.md -Encoding utf8 -Value "容器镜像越小，拉取镜像的时间通常越短。"
+@"
+data_dir: data/demo
+index_dir: data/index.demo
+"@ | Set-Content -LiteralPath configs/demo.yaml -Encoding utf8
 
-# 5. 问答（回答 + 编号引用来源）
-.\.venv\Scripts\ragkit.exe ask "容器冷启动怎么优化？"
-
-# 6. 评测（打印摘要 + 落盘 reports/eval.json）
-.\.venv\Scripts\ragkit.exe eval
+.\.venv\Scripts\ragkit.exe build --config configs/demo.yaml
+.\.venv\Scripts\ragkit.exe ask "如何减少拉取容器镜像的时间？" --config configs/demo.yaml
+.\.venv\Scripts\python.exe -m pytest -q
 ```
 
-> 为什么不先激活虚拟环境？PowerShell 的默认执行策略可能禁止运行 `Activate.ps1`，直接调用 `.\.venv\Scripts\python.exe` 效果相同，且不必改动系统设置。
+公开文档和开发评测题的使用方式见 [数据说明](data/README.md)。`data/raw/` 和索引未随仓库分发，不能在新克隆后直接运行默认建库、问答或评测。
 
-### 启动 HTTP API
+### BGE
+
+安装可选依赖：
 
 ```powershell
-.\.venv\Scripts\ragkit.exe serve --port 8000
-# 另开终端：
-# curl -X POST http://127.0.0.1:8000/ask -d '{"query": "容器冷启动"}'
-# curl http://127.0.0.1:8000/healthz
+.\.venv\Scripts\python.exe -m pip install -e ".[dev,embedding]"
 ```
 
-### 验收命令
+准备自己的 YAML 配置，例如：
+
+```yaml
+data_dir: data/raw
+index_dir: data/index.bge
+embedding:
+  provider: bge
+  dim: 512
+  model_name: BAAI/bge-small-zh-v1.5
+```
+
+保存为 `configs/bge.local.yaml` 后，使用 `build --config configs/bge.local.yaml` 建库，问答和服务也传入该配置。首次使用模型名可能联网下载；离线运行应先准备缓存或将 `model_name` 设为本地路径，并设置 `HF_HUB_OFFLINE=1`、`TRANSFORMERS_OFFLINE=1`。
+
+`build` 会写入配置指定的索引目录；比较不同模型时使用不同目录。切换 YAML 中的 provider 不会转换已有向量，须重新建库。
+
+## 命令和服务
+
+| 命令 | 作用 | 参数 |
+|---|---|---|
+| `ragkit build` | 从文档建索引 | `--config`、`--root` |
+| `ragkit ask QUERY` | 返回块原文和引用，或拒答提示 | `--config` |
+| `ragkit serve` | 启动本地 HTTP API 和 Web UI | `--config`、`--host`、`--port` |
+| `ragkit eval` | 运行题集并写 JSON 报告 | `--config`、`--qrels`、`--out` |
+
+配置加载顺序为环境变量（`RAG__*`）> 显式指定的 YAML > 模型默认值；不传 `--config` 时不会自动读取 `configs/default.yaml`。`build --root` 单独覆盖语料目录，`serve --host/--port` 控制监听地址。相对路径按当前工作目录解析。
 
 ```powershell
-.\.venv\Scripts\python.exe -m pytest -q          # 预期：279 passed
-.\.venv\Scripts\ragkit.exe --help                # 预期：列出 build/ask/serve/eval 四子命令
-.\.venv\Scripts\ragkit.exe --version             # 预期：ragkit 1.0.0
+.\.venv\Scripts\ragkit.exe serve --config configs/demo.yaml --port 8000
 ```
 
-## Web UI
+浏览器访问 `http://127.0.0.1:8000/`。服务启动时加载索引并尝试预热 embedding；预热失败会记日志，后续查询仍可能失败。接口如下：
 
-`ragkit serve` 启动后打开 **http://127.0.0.1:8000/** ：
-
-| 区域 | 内容 |
+| 接口 | 内容 |
 |---|---|
-| 左栏 | 知识库结构：100 篇文档按技术栈分组，显示每篇块数；点击展开该文档的全部块 |
-| 右侧 | 输入问题 → 返回**前 5 个块**（排名 / 融合分 / 来源 / 块原文，命中词高亮） |
+| `GET /healthz` | 服务健康信息 |
+| `POST /ask` | `{"query":"问题"}` → 抽取式回答、引用及拒答状态 |
+| `POST /api/search` | 同样的请求体 → 检索块和分数 |
+| `GET /api/knowledge` | 文档与块数 |
+| `GET /api/chunks?doc=...` | 指定文档的块 |
 
-页面是单个 HTML（`src/ragkit/api/static/index.html`），零构建、零前端依赖，由
-`GET /` 直接返回。它调用的三个端点：
+CLI 拒答退出码为 0；用法错误通常为 2，已处理的配置或索引错误为 1。未处理异常的提示和退出行为不保证统一。
+
+## 当前实测
+
+2026-10-23 在本地 Python 3.12.10 环境核验，代码基线为 `7553d86`。自动测试结果为 **279 passed in 12.49s**；测试通过不代表所有模型路径和回答质量均已覆盖。现有 CLI 评测测试有旧格式夹具，未验证有答案题的正确命中；此次另外运行了真实 BGE 检索。
+
+本地 `data/index` 包含 100 篇文档、1553 个块，模型为 `BAAI/bge-small-zh-v1.5`，512 维。检索配置为两路候选上限各 20、加权融合 α=0.7、最终取 5，拒答阈值 0.05。声明配置默认 provider 是 hashing，实际 provider 由索引 manifest 覆盖，报告同时记录两者。
+
+以下为已有 **248 道开发题**的结果：200 道有答案、48 道无答案。按来源统计有答案题：
+
+| 来源 | 有答案题数 | Recall@1 | Recall@3 | Recall@5 | MRR |
+|---|---:|---:|---:|---:|---:|
+| `internal`：读正文出题 | 100 | 0.550 | 0.695 | 0.765 | 0.6835 |
+| `external`：只看标题出题 | 100 | 0.390 | 0.480 | 0.560 | 0.4485 |
+
+无答案题正确拒答 **18/48（37.5%）**，其余 30 道未拒答；有答案题误拒 **2/200（1.0%）**。这说明当前拒答规则在本题集上仍有明显漏拒。
+
+后续查询检索阶段 P50 为 39.6 ms、P95 为 52.6 ms；首查为 25.93 秒。首查指标包含首次检索的模型加载开销，不含之前的解释器启动和索引加载；这些数值仅代表本机本次运行。
+
+指标定义与限制：
+
+- 命中是“同文档、检索块与答案字符区间相交”，不要求包含完整答案。
+- Recall@k 是前 k 个块覆盖的答案小节比例；MRR 是首个命中块的排名倒数。二者仅统计有答案题，不能解释为最终回答正确率。
+- 默认 `final_k=5`，报告中的 @6～@10 与 @5 相同，不能据此判断前 10 个候选的召回能力。
+- 248 道题已参与开发反馈；两种出题来源也不是训练/测试划分，均不能据此宣称独立泛化表现。
+- 本地 editable 安装元数据仍为 0.0.1，源码和 `pyproject.toml` 为 1.0.0；导入位置已确认是本项目源码。
+
+## 复现评测与消融
+
+先准备与标注匹配的语料和索引，再运行：
+
+```powershell
+.\.venv\Scripts\python.exe scripts/check_qrels.py data/eval/qrels.json
+.\.venv\Scripts\ragkit.exe eval --qrels data/eval/qrels.json --out reports/eval.json
+.\.venv\Scripts\python.exe demo_ablation.py --index-dir data/index --out reports/ablation.json
+```
+
+`demo_ablation.py` 比较默认加权融合、α=0.9、α=0.5、等权 RRF、BM25 单路和 dense 单路，使用脚本内的默认检索配置。报告应随代码、题集、索引与有效配置一起解释；本次未重跑消融，不沿用旧数字断言某组件或参数最优。
+
+[历史留出实验归档](experiments/holdout-v1/README.md)保留既有资料；本轮没有读取封存题目，也未复核该实验的独立性、标签质量或成绩。
+
+## 代码与文档
 
 ```text
-GET  /api/knowledge        文档列表 + 每篇块数
-GET  /api/chunks?doc=xxx   某篇文档的全部块
-POST /api/search           {"query": "..."} → 前 final_k 个块的原始结果
+文档 → loaders → chunking → embeddings → index / stores
+问题 → BM25 + dense → 加权排名融合或等权 RRF → 拒答 → 块原文与引用
+题集 → 检索 → 字符区间命中 → 分组指标
 ```
 
-`/api/search` 与 `/ask` 的区别：前者返回**检索结果本身**（块原文 + 分数），
-后者返回**生成后的答案 + 引用**。UI 需要前者，所以单列端点。
-
-> **启动预热**：`serve` 启动时会跑一次 `dense_search` 预热 embedding 模型。
-> 否则第一次搜索要等 20–30 秒（模型懒加载）。预热后首次查询约 **50–100ms**
-> （取决于机器负载；冷启动加载模型本身要 40 秒~3 分钟）。
-
-## 四个命令详解
-
-| 命令 | 作用 | 关键参数 |
-|---|---|---|
-| `ragkit build` | 建库：`data/raw` → `data/index`，打印统计 | `--config PATH`（YAML 配置）、`--root PATH`（覆盖语料目录） |
-| `ragkit ask QUERY` | 问答：回答原文 + `[1] 来源` 引用；拒答提示"未找到相关内容" | `--config PATH` |
-| `ragkit serve` | 启动 HTTP API（`POST /ask`、`GET /healthz`） | `--host`、`--port`、`--config` |
-| `ragkit eval` | 跑评测集：打印 recall@1~10 / MRR / 耗时，落盘 `reports/eval.json` | `--config`、`--qrels`、`--out` |
-
-**退出码约定**：`0` = 成功（**含拒答**——拒答是业务正常结果，不是错误）；`1` = 运行错误（配置非法 / 索引缺失损坏 / 语料目录不存在）；`2` = 用法错误（argparse 自带）。
-
-**配置优先级**：命令行参数 > 环境变量（`RAG__*` 前缀）> YAML 配置 > 模型默认值。默认 `data_dir = data/raw`、`index_dir = data/index`。
-
-## 架构分层
-
-### 离线：建库与标注
-
-```
-语料 → 索引
-  公开文档 100 篇（125.6 万字）
-    → loaders      剥 front matter、清标题锚点
-    → chunking     按小节标题切，超长再用 fixed 切
-    → embeddings   BGE-small-zh，512 维
-    → data/index   1553 块
-
-标注
-  section_index   列出小节与字符区间
-    → build_skeleton   挑 248 条候选
-    → 内部出题 100 条（读正文写） ／ 外部出题 100 条（只看标题写）
-    → check_qrels      质检区间与配比
-    → qrels.json       248 条
-```
-
-### 在线：一次查询
-
-```
-query
-  ├─→ BM25 召回 top20    （jieba 分词 + idf 词权重）
-  └─→ dense 召回 top20   （BGE 编码 + 点积）
-          ↓
-     加权排名融合   S = α·S1 + (1−α)·S2   （α = 0.7，BM25 为主）
-          ↓
-        top 5 块
-
-拒答判定（不参与排序，只决定要不要回答）
-  ① query 含语料外英文实体（Kafka / JVM）→ 拒答
-  ② 实词 idf 覆盖率低于 0.05            → 拒答
-  否则 → 生成答案 + 编号引用（抽取式）
-```
-
-### 分层职责
-
-```
-loaders/      文本加载：.txt/.md/.markdown，UTF-8 + GBK 回退，坏文件隔离
-chunking/     分块：heading（按 ## 标题，超长小节 fixed 再切）+ fixed，稳定 chunk_id（内容哈希）
-embeddings/   hashing 字面级（配置默认，离线零依赖）/ bge 本地语义模型（当前索引实际使用）
-stores/       NumPy 向量库：五文件落盘（manifest 最后写）+ 加载校验（manifest 记录 provider）
-retrieval/    BM25（idf 词权重）→ dense（向量点积）→ 等权 RRF / 加权排名融合（rerank）
-index/        建库编排 build / load_index（chunks.jsonl 落盘 + id 一致性校验）
-generation/   answer_question：证据→引用、两类拒答（空结果 / 覆盖率低于阈值）、抽取式回答
-api/          HTTP API：壳芯分离、错误翻译表、请求日志
-evaluation/   覆盖式 recall@k / MRR + 拒答指标 + 小节级标注（区间重叠，不绑切分）
-```
-
-每层的契约（公开 API、边界规则、责任归属）详见配套文档 `docs/PROJECT_LAYOUT.md`。
-
-## 评测与消融
-
-**指标**（开发集与独立留出集同口径）：
-
-| 指标 | 定义 |
-|---|---|
-| `recall@k` | **覆盖式**：前 k 个块命中的答案小节数 ÷ 该题标注的答案小节总数。多答案题部分命中按比例计（命中 1/2 记 0.5）。`ragkit eval` 统计 k = 1~10 |
-| `MRR` | 第一个命中任意答案小节的块的 rank 的倒数（未命中记 0） |
-| 拒答准确率 | 无答案题中被正确拒答的比例 |
-| 误拒率 | 有答案题中被错误拒答的比例 |
-| 耗时 | 冷启动（进程内首查）+ 热启动 P50 / P95 |
-
-**按来源分组报告**：
-
-| 来源 | 数量 | 怎么来的 | recall@1 | recall@3 | MRR |
-|---|---|---|---|---|---|
-| `internal` | 100 | 读过正文后出题，**答案保证能被该节回答** | **0.550** | 0.695 | **0.683** |
-| `external` | 100 | 只给标题、不看正文出题，更接近真实用户问法 | **0.390** | 0.480 | **0.449** |
-
-两组的定位不同，缺一不可：
-
-- `internal` 是**能力基准**——换 embedding / 调融合参数时用它对比，不受提问方式干扰；
-- `external` 是**真实用户视角**——它比 internal 低 **29%**（recall@1）、**34%**（MRR），
-  说明检索器相当依赖文档措辞；
-- **小样本偏乐观**：外部组 27 条时 recall@1 是 0.333；扩到 100 条后为 0.390。
-  这是扩样的直接价值——27 条那种量级得出的"差距不大"是不可靠的。
-
-**两个已知限制**：
-
-1. 外部组只含 `direct` / `paraphrase`，因为「只看标题」写不出 `multi_block`（答案分散在
-   2~3 节）和 `cross_doc`（跨文档对比）——这两类必须知道内容才能出。它们仍全部来自
-   内部组（16 + 5 条），测的是"能力"而非"用户视角"。
-2. 外部组抓出过两个判据 bug（`AUTO_RANDOM` 被误判为语料外技术、阈值过严），
-   内部组永远看不到——这是独立样本的额外价值。
-
-**标注口径：不绑切分。** 答案标的是「文档 + 小节字符区间」，评测时判断召回的
-块与该区间**是否重叠**（同文档且区间相交）。换 `chunk_size`、换分块策略都不
-需要重标，也不会因为块边界挪动而误判——这是本轮最重要的设计决定。
-
-**拒答口径（两层判据）**：
-
-1. **外来实体（强信号）**：查询里首字母大写的英文专有名词（Kafka / JVM /
-   ZooKeeper）如果语料中从未出现，直接判拒答——真实文档里这类"问完全没收录的
-   技术"是最常见的无答案场景；
-2. **实词覆盖率（兜底）**：查询实词的 idf 加权覆盖率低于阈值则拒答，用于覆盖
-   "同领域但确实没答案"的情况。**实词 = 长度 ≥ 2 且不在停用词表里的词**
-   （见 `bm25._STOPWORDS`）：停用词只收「什么 / 怎么 / 哪些 / 是否 / 可以」这类
-   纯疑问指代词，不收「区别 / 方法 / 原理」这类可能承载语义的词。
-
-阈值 `refuse_threshold` 默认 **0.05**。
-
-**实测必须拆成两个子集看**（248 条标注，48 条 `no_answer`）：
-
-| 子集 | 条数 | 拒答成功 | 典型 query |
-|---|---|---|---|
-| 语料外英文技术名 | 18 | **18/18 = 100%** | Kafka 出现消息积压时应该怎么处理？ |
-| **同领域、术语都在、正文没答案** | 30 | **0/30 = 0%** | TiDB GC 的 safe_point 默认保留多长时间？ |
-| **合计** | 48 | **18/48 = 37.5%** | 误拒率 1.0%（2/200） |
-
-拒答的正确率全部来自强信号路径。后 30 条的实词覆盖率在 **0.20~0.90** 之间
-（术语都在语料里），全部高于 0.05 阈值，兜底路径**未触发任何拒答**。
-
-**当前能力边界**：能拒「问到完全没收录的技术」；不能拒「问到收录了但没答案的细节」。
-后者需要**答案可满足性判断**（entailment / LLM），不是词覆盖率阈值能解决的。
-
-**三个已知的判据细节**：① `v-model` / `v-if` 这类小写框架指令不能当"外来实体"
-（分词形式不稳定，会误拒正常问题）；② 融合分不能做阈值——RRF 分数只是排名分
-（0.012~0.017），不反映匹配质量；③ **停用词必须过滤**：不过滤时 `什么` 的 idf
-能占总权重 31%，让「我的电话号码是什么」「微生物是什么」拿到 0.311 的覆盖率
-（远高于 0.05），**双双逃过拒答**。
-
-**消融**（248 条标注，单变量对照；6 组 = α 扫描 0.5/0.7/0.9 + 单腿 + 关 rerank）：
-
-> 索引为 **1553 块**（按有效长度切分：汉字 1 字、英文 3 字母 1 字）。
-> 表中 `@k` 即 `recall@k`（与前文同一定义：覆盖式，前 k 个块命中的答案小节占比）。
-
-**① BGE 语义向量（当前默认）**
-
-| 组 | @1 | @2 | @3 | @4 | @5 | @6~10 | MRR |
-|---|---|---|---|---|---|---|---|
-| **baseline（加权 α=0.7）** | **0.470** | 0.550 | 0.588 | 0.630 | 0.662 | 0.662 | **0.566** |
-| α=0.9（更偏 BM25） | 0.438 | 0.532 | 0.580 | 0.605 | 0.637 | 0.637 | 0.538 |
-| α=0.5（等权） | 0.463 | 0.540 | 0.583 | **0.640** | **0.672** | 0.672 | 0.561 |
-| no_rerank（等权 RRF） | 0.463 | 0.540 | 0.583 | 0.640 | 0.672 | 0.672 | 0.561 |
-| bm25_only（纯 BM25） | 0.398 | 0.502 | 0.547 | 0.585 | 0.600 | 0.600 | 0.503 |
-| dense_only（纯 dense） | 0.395 | 0.505 | 0.562 | 0.593 | 0.618 | 0.618 | 0.512 |
-
-**② hashing 字面级向量（离线零依赖的退路）**
-
-| 组 | @1 | @2 | @3 | @4 | @5 | @6~10 | MRR |
-|---|---|---|---|---|---|---|---|
-| baseline（加权 α=0.7） | 0.390 | 0.495 | 0.505 | 0.568 | 0.580 | 0.580 | 0.484 |
-| α=0.9 | 0.395 | **0.502** | **0.530** | **0.578** | **0.598** | 0.598 | **0.497** |
-| α=0.5（等权） | 0.362 | 0.458 | 0.502 | 0.547 | 0.573 | 0.573 | 0.463 |
-| no_rerank（等权 RRF） | 0.362 | 0.458 | 0.502 | 0.547 | 0.573 | 0.573 | 0.463 |
-| **bm25_only（纯 BM25）** | **0.398** | 0.502 | 0.547 | 0.585 | 0.600 | 0.600 | **0.503** |
-| dense_only（纯 dense） | 0.255 | 0.352 | 0.432 | 0.455 | 0.475 | 0.475 | 0.361 |
-
-> **自洽性检查**：`α=0.5` 与 `no_rerank` 的每一列完全相同——α=0.5 的加权融合就是等权 RRF，
-> 两张表都印证了实现正确。
-
-**边际贡献（按 recall@1）**：
-
-| 组件 | hashing | BGE |
-|---|---|---|
-| dense 腿（关掉它的损失） | **−0.008**（负资产） | **+0.072** |
-| BM25 腿（关掉它的损失） | +0.135 | +0.075 |
-| rerank（加权 0.7 vs 等权） | +0.028 | +0.007 |
-
-**四个结论**：
-
-1. **hashing 下 dense 腿是负资产**（−0.008）：纯 BM25 的 `MRR = 0.503` 高于任何融合组
-   （baseline 0.484、α=0.9 0.497）。字面哈希只能匹配"词面重叠"，对语义相近但用词不同的
-   查询无能为力——这是"必须换真语义向量"的最强证据。
-2. **BGE 下 dense 腿贡献 +0.072**，`dense_only` 的 MRR 从 0.361 升到 **0.512**，
-   已追平纯 BM25 的 0.503。
-3. **加权融合（rerank）在两种 embedding 下都是正贡献**（+0.007 / +0.028），
-   但 BGE 下已接近打平（+0.007，n=200 时 ≈ 0.2 个标准误）——**双路召回才是主体**。
-   精排没有用 embedding 重排：那种做法与 dense 腿同函数（同一次 `embed_text` 加点积），
-   等于让一条腿对另一条一票否决，实测为负贡献，已移除。
-4. **α 的最优值随 embedding 变**：BGE 下 α=0.7 的 MRR 最高（0.566）、α=0.5 的 `@5`
-   最高（0.672）；hashing 下 α=0.9 最好（MRR 0.497）。**没有跨 embedding 通用的 α**。
-
-**方法论约束**：每次只改一个开关；单腿组必须同时关 rerank（隔离变量）；
-对照组必须与默认值相反——`rerank_enabled` 默认 `True`，所以对照是 `no_rerank`（等权 RRF）。
-
-**标注质检**：`check_qrels.py` 同时校验**区间合法性**与 **query 唯一性**。两项都不能省——
-重复题会被计入两次，`query` 与 `answers` 错位的记录则必然全错，却会被指标记成"检索能力不足"。
-
-**结论的样本敏感性**：α 的最优值依赖样本量。外部组只有 27 条时，α=0.9 看起来更优
-（+0.039）；扩到 100 条（更多口语化提问）后，α=0.7 才最优。因此任何「最优参数」都要
-标注它是在多少条样本上得到的，调参与报告也要分开。
-
-## 独立留出集评测
-
-`experiments/holdout-v1/` 是一轮**开发者不接触题目**的独立评测记录：独立 agent 出题、
-另一个独立 agent 审核封存、两个预登记配置各跑一次，运行后未调参、未删题。
-
-| 项 | 配置 A（bge + 加权 α=0.7） | 配置 B（hashing + 等权 RRF） |
-|---|---|---|
-| 可回答题 42 条 · recall@5 / MRR | **0.964 / 0.893** | 0.929 / 0.831 |
-| 误拒（可回答题） | 0 / 42 | 0 / 42 |
-| **无答案 20 条 · 正确拒答** | **0 / 20** | **0 / 20** |
-
-**拒答在留出集上完全失效**：20 条无答案题的实词覆盖率落在 **0.367~1.000**，全部高于
-`0.05` 阈值，没有一条触发拒答。这与开发集 48 条无答案题的表现一致（越界题 18/18 靠强
-信号拒绝，同领域困难负例 0/30）——**当前拒答只覆盖「语料里从未出现过的英文技术名」**，
-不覆盖「术语都在、但所问细节缺失」。
-
-> 留出集的 recall 不能与开发集直接比较：holdout 里 `direct` 占 69%（开发集 internal 是
-> 39%）、`paraphrase` 占 12%（开发集 41%）。题型配比决定了绝对水平，两边各自在其配比
-> 下有效，混着比会得出错误结论。
-
-详见 [`experiments/holdout-v1/README.md`](experiments/holdout-v1/README.md)——含题量流转
-（63 候选 → 62 封存）、哈希核对、已知局限，以及「本集已进入开发反馈循环」的使用约束。
-
-## 目录结构
-
-```text
-项目/
-├── pyproject.toml          # 构建配置、CLI 入口点、pytest 配置
-├── README.md               # 本文件
-├── .gitignore
-├── AGENTS.md               # 交接指南（给下一个接手的人/agent）
-├── configs/default.yaml    # 默认配置模板（值须与模型默认值一致）
-├── data/                   # 语料与评测数据（详细说明见 data/README.md）
-│   ├── raw/                # 公开技术文档正文（脚本拉取，gitignore，不进仓库）
-│   ├── eval/qrels.json     # 小节级标注：文档 + 小节字符区间（不绑切分）
-│   ├── eval/qrels.example.json  # 五类标注的格式示例
-│   └── SOURCES.md          # 数据来源与许可证
-├── docs/                   # 契约 / 学习记录 / 总结报告
-├── experiments/holdout-v1/ # 独立留出集评测归档（协议/标注/审核/冻结配置/验收结果）
-├── reports/                # 评测报告落盘（eval.json / ablation.json）
-├── scripts/                # 数据工具：fetch_docs / section_index / gen_queries / check_qrels
-├── src/ragkit/             # 唯一被 import 的代码（分层见上）
-└── tests/                  # 契约测试（279 条）
-```
-
-**数据来源与许可证**：语料取自 Kubernetes / TiDB / Vue / React 的公开
-文档仓库，各自许可证见 `data/SOURCES.md`。仓库只提交**下载脚本与来源清单**，
-不提交第三方正文——既避免体积膨胀，也规避再分发许可风险。
-
-## 开发说明
-
-- **代码放在 `src/ragkit/`**，测试在 `tests/`；改动 `pyproject.toml` 后须重新 `pip install -e ".[dev]"`。
-- **测试即契约**：每层的公开 API、边界行为都由 `tests/` 锁定；改默认值、改契约都要同步测试。
-- **`.env` 防范意识**：将来接 LLM 时 API Key 放 `.env`，绝不能提交进 Git。
-- **可再生的重建优于修补**：`data/index/` 是 `ragkit build` 的产物、`data/raw/` 是可按来源重新拉取的语料，两者都可再生；真正值得进版本控制的是 `data/eval/`（人工筛选过的标注）与 `data/SOURCES.md`（来源与许可证）。
-- **标注不要绑切分**：答案标「文档 + 小节字符区间」，不要标 `chunk_id`——切分策略一改，`chunk_id` 全部失效，标注就白做了。
-- **评测要有盲测集**：调参只看 80% 的题，剩下 20% 留到最后报告，防止把噪声调成"最优参数"（样本只有几十条时尤其重要）。
-
-## 常见问题
-
-| 现象 | 原因与处理 |
-|---|---|
-| `ModuleNotFoundError: No module named 'ragkit'` | 未执行可编辑安装，重新 `pip install -e ".[dev]"` |
-| 命令行找不到 `ragkit` | 安装时没带 `-e`，或 `[project.scripts]` 未声明 |
-| `ragkit ask` 提示"先运行 ragkit build" | 索引缺失或损坏，先执行 `ragkit build` |
-| `ragkit eval` 全 0 | `data_dir` 与评测集 doc_id 口径不一致，确认 `data_dir = data/raw` |
-| `Activate.ps1 无法加载` | 不必改执行策略，直接 `.\.venv\Scripts\python.exe` 调用 |
-| 中文输出乱码 | 读写显式 `encoding="utf-8"`；可设 `PYTHONUTF8=1` |
-| 安装 3.14 后依赖装不上 | 开发环境固定用 Python 3.12 |
-
-## 路线图
-
-| 状态 | 内容 |
-|---|---|
-| ✅ 已完成 | 骨架 → 领域模型/配置 → 加载/分块 → 向量化/向量库 → BM25/混合检索/融合/重排 → 建库 → 生成 → CLI → HTTP API → 评测 → 消融 → **真实语料（100 篇）+ BGE 语义向量 + 加权排名融合 + 双层拒答 + CI** |
-| ⬜ 扩展（触发信号驱动） | cross-encoder rerank、`openai_compatible` 真实生成、增量更新、HTML/PDF 加载器、FastAPI 迁移、鉴权、盲测集 80/20 |
-
-## 说明
-
-本项目是学习项目，目标是"能独立解释并重写每个核心模块"，而不是"尽快得到一个能跑的仓库"。每个阶段先写测试、再写实现；评测与消融结论如实记录，不隐瞒失败样本与已知局限。开发全程的决策、踩坑、通用规律见 `docs/LEARNING_LOG.md`，系统契约见 `docs/PROJECT_LAYOUT.md`。
+[模块契约](docs/PROJECT_LAYOUT.md) · [协作指南](AGENTS.md) · [项目概览](docs/SUMMARY.md) · [历史开发记录](docs/LEARNING_LOG.md) · [数据来源](data/SOURCES.md)

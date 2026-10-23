@@ -1,146 +1,105 @@
-# data/ 目录说明
+# 数据与评测标注
 
-## 结构
+## 文件
 
-```
-data/
-├── raw/                        # 语料正文（第三方公开文档，gitignore，由脚本拉取）
-├── eval/
-│   ├── qrels.json                     # 评测标注（248 条，人工筛选后提交）
-│   ├── qrels.example.json             # 格式示例（五类各一条）
-│   ├── independent_titles_batch2.json # 外部出题的输入（150 个标题，只有 doc/section，没有 query）
-│   └── external_queries_batch2.json   # 外部产出（150 条：103 条有效 + 47 条 skip）
-├── index/                      # 建库产物（gitignore，可重建）
-└── SOURCES.md                  # 数据来源与许可证（fetch 时生成，要提交）
-```
+| 路径 | 内容 |
+|---|---|
+| `raw/` | 第三方文档正文，未跟踪；来源见 [SOURCES.md](SOURCES.md) |
+| `eval/qrels.json` | 现有 248 道开发题及答案区间 |
+| `eval/qrels.example.json` | 标注格式示例 |
+| `eval/review_log.jsonl` | 样本复核记录，格式见 `review_log.example.jsonl` |
+| `eval/independent_titles_batch2.json` | 外部出题使用的标题资料 |
+| `eval/external_queries_batch2.json` | 外部出题候选与 skip 记录 |
+| `index*/` | 本地索引产物，未跟踪，可由匹配的语料与配置重建 |
 
-> **为什么不提交 `raw/`**：正文是第三方文档，再分发受各自许可证约束；同时几十
-> 万字的正文会把仓库撑大。所以仓库里只放**下载脚本 + 来源清单**，谁需要谁拉。
-> 来源、仓库、许可证都记在 `SOURCES.md` 里。
+`raw/` 正文按各来源许可证使用。下载脚本访问上游文档，重拉可能改变内容和字符坐标，不能保证复现既有语料快照。
 
-## 标注格式（不绑切分）
+## 标注格式
 
-`qrels.json` 的每一条：
+下面仅展示字段格式，示例区间不对应现有文档：
 
 ```json
 {
-  "query": "为什么组合索引要把选择性高的列放左边？",
+  "id": "q_example",
+  "query": "示例问题",
   "type": "paraphrase",
+  "source": "internal",
   "answers": [
-    {"doc": "mysql/组合索引.md", "section": "最左前缀原则", "start": 1234, "end": 2345}
+    {"doc": "example.md", "section": "示例小节", "start": 10, "end": 100}
   ]
 }
 ```
 
-- `doc`：相对 `data/raw/` 的路径，与 `Chunk.doc_id` 同口径；
-- `section`：小节标题，**仅供人工核对与报告展示**，不参与匹配；
-- `start` / `end`：小节在 `normalize_text(文档原文)` 中的字符区间（左闭右开）；
-- `answers` 为空列表 → 无答案 query（测拒答）；
-- `source`：题目来源，`internal`（读正文出题，答案保证可被该节回答）或
-  `external`（只看标题出题，更接近真实用户问法）。`ragkit eval` 会按它分组打印。
+- `id`：稳定样本标识，用于关联复核日志；加载器允许缺省，新题应填写唯一 ID。
+- `doc`：相对语料根目录的路径，与 `Chunk.doc_id` 一致。
+- `section`：供人工核对的小节标题，不参与命中计算。
+- `start/end`：`normalize_text(load_file(path).text)` 中的字符区间，左闭右开。`load_file` 会处理 front matter、注释等，不能直接用原始文件字符坐标代替。
+- `type`：`direct`、`paraphrase`、`multi_block`、`cross_doc` 或 `no_answer`。
+- `answers=[]` 表示无答案题，类型应为 `no_answer`。加载器以答案是否为空判定有无答案，`check_qrels.py` 另检查题型一致性。
+- `source`：出题来源。`internal` 表示参考正文出题，`external` 表示只参考标题出题；缺省为 `internal`。它不保证标注正确，也不表示 dev/test 划分。
 
-**为什么不用 chunk_id**：chunk_id 是切分产物，换 `chunk_size` 或换分块策略
-（`fixed` / `heading` / 未来的 `recursive`）就全部失效，标注得重做。字符区间
-是文档的固有属性，评测时只判断「召回的块与答案区间是否重叠」，所以**换切分
-不用重标**。
+答案以文档区间标注，不绑定 chunk_id。在规范化文档内容保持不变时，更换分块参数不需要重新定位答案；文档、加载器清理规则或规范化规则变化后，须重新校验区间。
 
-## 从零到有标注：完整流程
+## 当前开发集
+
+2026-10-23 核对 `qrels.json`：
+
+| 来源 | 有答案 | 无答案 | 合计 |
+|---|---:|---:|---:|
+| `internal` | 100 | 48 | 148 |
+| `external` | 100 | 0 | 100 |
+| 合计 | 200 | 48 | 248 |
+
+题型为 direct 91、paraphrase 88、multi_block 16、cross_doc 5、no_answer 48。外部组现有题型仅 direct/paraphrase；两组题型构成不同，分数差异不能全部归因于提问措辞。
+
+当前实测和指标定义统一见 [项目 README](../README.md#当前实测)。题集结构检查通过，只说明格式和区间等检查未报错，不证明答案充分性或无答案标签已逐题成立。
+
+## 准备数据与运行
+
+在仓库根目录执行：
 
 ```powershell
-# 1. 拉语料（需联网；来源与许可证见 data/SOURCES.md）
-.\.venv\Scripts\python.exe scripts/fetch_docs.py --list   # 先看清单
-.\.venv\Scripts\python.exe scripts/fetch_docs.py          # 下载
+# 下载公开文档，需要联网；先查看来源清单
+.\.venv\Scripts\python.exe scripts/fetch_docs.py --list
+.\.venv\Scripts\python.exe scripts/fetch_docs.py
 
-# 2. 列出小节 + 字符区间（人工选题用）
+# 浏览小节候选；输出偏移不能直接用作正式标注
 .\.venv\Scripts\python.exe scripts/section_index.py
 
-# 3. 为某个小节生成"出题 prompt"，贴给任意 LLM
+# 为候选小节生成出题提示
 .\.venv\Scripts\python.exe scripts/gen_queries.py --prompt 3 --type paraphrase
 
-# 4. 人工筛选（关键，不能省）：
-#    - 删掉照抄原文术语的题（direct 占 30% 就够）
-#    - 删掉答案不唯一、有歧义的题
-#    - 把保留的题连同 doc/section/start/end 填进 data/eval/qrels.json
-
-# 5. 质检（格式、区间合法性、小节对齐、类型配比）
+# 校验题集后，使用与语料匹配的配置建库和评测
 .\.venv\Scripts\python.exe scripts/check_qrels.py data/eval/qrels.json
-
-# 6. 建库 + 评测
 .\.venv\Scripts\ragkit.exe build
 .\.venv\Scripts\ragkit.exe eval
 ```
 
-## 当前构成（248 条）
+`section_index.py`、`gen_queries.py` 和 `build_skeleton.py` 目前直接对 `read_text()` 的结果做规范化，未经过 `load_file` 清洗。它们仅供浏览和生成候选，输出偏移不能直接写入 qrels。正式标注须在 `normalize_text(load_file(path).text)` 上重新定位区间，再运行 `check_qrels.py`；结构检查通过也不能代替原文证据核验。
 
-| 来源 | 数量 | 说明 |
-|---|---|---|
-| `internal` | 100 | 读过正文出题，答案保证能被该节回答 |
-| `external` | 100 | 只给标题、不看正文出题（提交 150 条，skip 47 条 → 103 条有效；剔除 3 条区间过长的，留 100 条） |
-| `no_answer` | **48** | 两类：**18** 条问完全没收录的技术（Kafka / JVM，靠强信号判定）+ **30** 条同领域硬负例（术语都在、正文没答案：问具体参数值、要两节之间的对比结论、问取值范围、主观判断题） |
+建库默认写 `data/index` 并使用 hashing。需要保留已有 BGE 或实验索引时，先用 YAML 指定另一个 `index_dir`，并对 build/eval 传入同一配置。
 
-三点说明：
+出题后应核对题干的对象、条件和范围，确认全部回答要点都有证据；无答案题要检查全库相关文档及可能的跨段推导，不能仅凭关键词未命中下结论。`check_qrels.py` 检查格式、重复 query、文档存在、区间范围与小节相交，并打印题型配比；配比建议不构成标签质量保证。
 
-- **有答案部分是 100 : 100（精确 50:50）**；另有 18 条越界题 + 30 条同领域硬负例（共 48 条 `no_answer`）；
-- **`external` 只含 `direct` / `paraphrase`**——“只看标题”写不出 `multi_block`（答案分散在
-  2~3 节）和 `cross_doc`（跨文档对比），这两类仍全部来自内部组（16 + 5 条）。
-- **早期一批 40 个标题的试点已移除**：当时 32 条有效、剔掉 5 条超纲后留 27 条。样本太小
-  （27 条时 external recall@1 = 0.333，扩到 100 条后为 0.390），已由当前
-  100 条**整体替换**（不是追加），原始文件随之删除。演进过程见 `docs/LEARNING_LOG.md`。
+## 复核日志
 
-## 复核日志（`review_log.jsonl`）
-
-`data/eval/review_log.jsonl` **每个样本保留一行 JSON**，以 `sample_id` 为唯一键。
-补充或修正复核结论时更新该样本所在行，保留最新结论与完整建议，并按样本编号排序。
-格式见 `data/eval/review_log.example.jsonl`。
-
-**每个样本都要有明确结论**：通过简记，发现问题详记；没有日志表示未复核，不能当作通过。
-不在本次复核范围内的样本（例如只检查答案匹配时的 `no_answer`）也要登记为 `跳过`，说明原因，不能冒充通过。
+`review_log.jsonl` 每个 `sample_id` 保留一条记录，更新时保留核验依据。字段如下：
 
 | 字段 | 含义 |
 |---|---|
-| `sample_id` | 稳定样本 ID（`q_0042`）。**改了 query 或答案也保留同一个 ID**——它标识"这道题"，不是"这版标注" |
-| `query` | 复核时的题干（写进日志便于自解释，不用回查 qrels） |
-| `original_label` | 复核前的答案绑定：`[{doc, section, start, end}]`；通过简记时也是支持答案的原文位置 |
-| `issue` | 发现的问题（一句话说清"为什么不对"）；通过或跳过时为 `""` |
-| `decision` | `通过` / `修正答案绑定` / `删除该条` / `待定` / `跳过` |
-| `corrected_label` | 修正后的答案绑定；通过、删除、待定或跳过时为 `[]` |
-| `evidence` | 问题详记时**粘贴实际支持回答的原文句子**（不是转述）；确实没有支持内容时为 `""`。通过简记允许为 `""`，用 `original_label` 定位原文 |
-| `rationale` | 通过时简记匹配依据；问题详记时说明引文回应了哪些具体要求；待定时写清**缺少什么证据、需要谁进一步确认**；跳过时说明范围和原因 |
-| `reviewer` | `{name, saw_fulltext}`——模型名或 `human`；仅确实读完整篇文档时 `saw_fulltext=true`，只读片段或完整相关小节仍为 `false` |
-| `data_version` | `{qrels_commit, doc_sha256_prefix}`——标注的 Git commit + 原文内容哈希前 8 位 |
-| `reviewed_at` | ISO 8601 时间 |
+| `sample_id` / `query` | 样本标识及复核时题干 |
+| `original_label` / `corrected_label` | 原答案区间与修正区间 |
+| `decision` | 通过、修正答案绑定、删除该条、待定或跳过 |
+| `issue` / `rationale` | 问题说明、核验理由及范围 |
+| `evidence` | 实际支持判断的原文；通过简记允许为空，可通过原标签定位 |
+| `reviewer` | 复核者及 `saw_fulltext`；只有实际读完整篇时才为 true |
+| `data_version` | 题集 commit、文档哈希前缀 |
+| `reviewed_at` | 最近复核时间 |
 
-**为什么记这么细**：复核的价值不在"判了对错"，而在"以后能复查这个判断的依据"。
-只有 `OK / ✗` 的日志，三个月后没人知道当时为什么这么判。
+2026-10-23 核对：日志有 218 行、218 个唯一 ID，覆盖当前题集的 218 道题；其余 30 道没有对应日志。记录结论为通过 190、修正答案绑定 9、跳过 18、待定 1。这是记录状态统计，本轮未重新审查逐题证据，也未确认所有修正建议已应用，不能据此称全题均已复核通过。
 
-**约定**：一条样本一行，`sample_id` 不重复；本轮 218 个样本对应 218 行记录。
-统计前校验行数、唯一 ID 数及样本覆盖范围一致；更新建议合并到原记录中，`reviewed_at` 记最近复核时间。
+## 开发集与独立验收
 
-## 类型配比（建议）
+现有 248 道题已用于观察行为和开发调整，全部按开发集使用。现在追加 `split` 字段或重新抽取 20% 不能恢复未见测试的独立性；加载器当前也不使用 `split`。
 
-| 类型 | 含义 | 建议占比 |
-|---|---|---|
-| `direct` | 直接用术语问 | 30% |
-| `paraphrase` | 换说法、不照抄术语 | 30% |
-| `multi_block` | 答案分散在 2~3 个小节 | 15% |
-| `cross_doc` | 需要跨文档对比 | 10% |
-| `no_answer` | 语料里没有答案（测拒答），**务必分两类**：越界题 + 同领域硬负例 | 15~20% |
-
-`check_qrels.py` 会把实际配比和建议配比并排打印，偏离超过 8 个百分点会标出来。
-
-## 规模参考
-
-- 文档 **30–100 篇**，总量 **50 万–200 万字**：太少了测不出区分度，太多了
-  建库和评测都变慢；
-- 要有**相似主题的干扰文档**（比如 MySQL 索引 vs Redis 持久化），否则检索
-  只要认出领域就能得分，测不出真正的区分能力；
-- 长短不一、结构不一（有的带 `##` 层级、有的是纯段落），这样才能考验切分。
-
-## 防过拟合：盲测集
-
-调参（`fusion_alpha`、`top_k`、`chunk_size`、`refuse_threshold`）只看
-**80% 的题**，剩下 **20% 留作盲测**，最终数字在盲测集上报告。样本只有几十条时
-这一点尤其重要——否则调出来的"最优参数"只是在拟合噪声。
-
-建议在 qrels 里给每条加一个 `split` 字段（`dev` / `test`），或将两个集合拆成
-`qrels.dev.json` 与 `qrels.test.json` 分开跑。
+独立验收须在看成绩前固定新题、标注、代码、语料、索引和有效配置，并记录测试反馈是否参与后续修改。[历史实验归档](../experiments/holdout-v1/README.md)保留既有流程与记录，本轮未复核其标签或成绩。若某题集反馈已用于修改系统，后续分数应作为该集上的回归结果。
