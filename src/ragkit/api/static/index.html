@@ -94,6 +94,22 @@
   button:disabled { opacity: .55; cursor: default; }
   #meta { color: var(--muted); font-size: 12px; margin-bottom: 10px; min-height: 18px; }
   #meta code { background: var(--hover); padding: 1px 5px; border-radius: 4px; }
+
+  /* 拒答：整条状态栏放大成醒目提示（用户第一眼要能看到"没答"，
+     而不是在 12px 灰字里找"拒答"两个字） */
+  #meta.refused {
+    font-size: 15px;
+    color: #b91c1c;
+    font-weight: 600;
+    background: #fef2f2;
+    border-left: 3px solid #b91c1c;
+    padding: 9px 13px;
+    border-radius: 6px;
+    margin-bottom: 14px;
+    min-height: 0;
+    line-height: 1.5;
+  }
+  #meta.refused strong { font-size: 17px; letter-spacing: 0.5px; }
   .card {
     background: var(--card); border: 1px solid var(--border);
     border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
@@ -147,6 +163,15 @@ function escapeRegExp(s) {
 }
 function fmt(v) {
   return (v === null || v === undefined) ? '—' : v.toFixed(3);
+}
+
+/* 统一设置顶部状态栏。每次重置 className：否则拒答的红色大号样式
+   会残留到后续的"加载文档""检索失败"等提示上。
+   注意用 innerHTML —— 调用方传的是 HTML 片段（含 <strong> / <code>）。 */
+function setMeta(html, refused = false) {
+  const meta = $('meta');
+  meta.className = refused ? 'refused' : '';
+  meta.innerHTML = html;
 }
 function extractTerms(q) {
   const cjk = q.match(/[\u4e00-\u9fa5]{2,}/g) || [];
@@ -224,7 +249,7 @@ function applyFilter() {
     totalHit += visible;
   });
   if (kw && totalHit === 0) {
-    $('meta').textContent = `没有匹配「${kw}」的文档`;
+    setMeta(`没有匹配「${escapeHtml(kw)}」的文档`);
   }
 }
 
@@ -232,10 +257,10 @@ async function showChunks(docId) {
   document.querySelectorAll('.doc').forEach((el) => {
     el.classList.toggle('active', el.dataset.doc === docId);
   });
-  $('meta').innerHTML = `加载 <code>${escapeHtml(docId)}</code> …`;
+  setMeta(`加载 <code>${escapeHtml(docId)}</code> …`);
   try {
     const data = await (await fetch('/api/chunks?doc=' + encodeURIComponent(docId))).json();
-    $('meta').innerHTML = `<code>${escapeHtml(data.doc_id)}</code> · ${data.chunks.length} 块`;
+    setMeta(`<code>${escapeHtml(data.doc_id)}</code> · ${data.chunks.length} 块`);
     $('results').innerHTML = data.chunks.map((c) => `
       <article class="card">
         <div class="card-head">
@@ -245,7 +270,7 @@ async function showChunks(docId) {
         <p>${escapeHtml(c.text)}</p>
       </article>`).join('') || '<div class="empty">该文档没有块</div>';
   } catch (err) {
-    $('meta').textContent = '加载失败：' + err.message;
+    setMeta('加载失败：' + escapeHtml(err.message));
   }
 }
 
@@ -263,7 +288,7 @@ async function doSearch() {
     if (!resp.ok) throw new Error('HTTP ' + resp.status);
     renderResults(await resp.json());
   } catch (err) {
-    $('meta').textContent = '检索失败：' + err.message;
+    setMeta('检索失败：' + escapeHtml(err.message));
     $('results').innerHTML = '';
   } finally {
     $('search-btn').disabled = false;
@@ -272,11 +297,19 @@ async function doSearch() {
 }
 
 function renderResults(data) {
-  const head = data.refused
-    ? `<span class="warn">拒答</span>（语料未覆盖）`
-    : `${data.results.length} 个结果`;
-  $('meta').textContent =
-    `${head} · 覆盖率 ${fmt(data.match_score)} · 耗时 ${data.latency_ms} ms`;
+  // 拒答时整条状态栏变成大号红色提示（见 CSS #meta.refused）
+  if (data.refused) {
+    setMeta(
+      `<strong>拒答</strong> · 语料未覆盖 · 覆盖率 ${fmt(data.match_score)}` +
+      ` · 耗时 ${data.latency_ms} ms`,
+      true,
+    );
+  } else {
+    setMeta(
+      `${data.results.length} 个结果 · 覆盖率 ${fmt(data.match_score)}` +
+      ` · 耗时 ${data.latency_ms} ms`,
+    );
+  }
 
   if (!data.results.length) {
     $('results').innerHTML = '<div class="empty">没有检索到任何块</div>';
