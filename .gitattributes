@@ -1,0 +1,4 @@
+# 归档产物必须逐字节可复现：ARCHIVE_MANIFEST.json 记录的是归档时文件的 SHA-256。
+# 上游产物混用换行（qrels.test.json / review.jsonl 是 CRLF，sections.jsonl 是 LF），
+# 因此这里禁止任何转换（-text = 按二进制原样存取），否则 checkout 后哈希对不上。
+experiments/holdout-v1/** -text
