@@ -140,4 +140,7 @@ def test_request_logged(serving, caplog):
     caplog.set_level(logging.INFO, logger="ragkit.api")
     _ask(serving(), {"query": "容器冷启动"})
 
-    assert any("POST /ask | 200" in r.message for r in caplog.records)
+    # 用 getMessage() 而不是 .message：后者只在 Formatter.format() 之后才有值，
+    # 而请求是在 ThreadingHTTPServer 的线程里记的日志，format 时机不确定——
+    # 实测同一个测试连跑 3 次会偶发 1 次失败（message 为空串）。
+    assert any("POST /ask | 200" in r.getMessage() for r in caplog.records)
