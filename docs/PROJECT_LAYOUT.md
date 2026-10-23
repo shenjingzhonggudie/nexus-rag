@@ -951,7 +951,7 @@ Select-String -Path (Get-ChildItem -Recurse -Include *.py -Path src,tests).FullN
 | 4 | 尚无静态检查（ruff / mypy） | `ids.py` 函数内 import、`chunking/__init__.py` 借道导入、行尾空格这类问题只能靠人工 | 第 15 阶段进 CI；也可提前加 ruff |
 | 5 | `.gitignore` 缺少 `!.env.example` 例外 | 将来 `.env.example` 无法提交 | 建立该文件时 |
 | 6 | 仓库提交滞后 | 已有 4 次提交（最后 `586d549` / 2026-10-09），当前 **14 个条目未提交**（loaders/、chunking/、9 个测试文件与文档） | 本轮结束提交一次，之后每轮一次 |
-| 7 | `configs/default.yaml` 与模型默认值靠人工保持一致 | 改默认值时可能漏改 YAML | 可写成测试（`load_config(...) == AppConfig()`） |
+| 7 | ~~`configs/default.yaml` 与模型默认值靠人工保持一致~~ **已消化（2026-10-23）**：`tests/test_config.py::test_default_yaml_matches_model_defaults` 逐字段比对 YAML 与 `AppConfig()`；`EvalReport.to_dict()` 落盘 `config` 快照（`embedding.provider` 记**实际生效**值、`provider_configured` 保留声明值），消融每组的 `config` 记该组开关组合 | 改默认值时漏改 YAML 会被测试挡住；报告可回溯跑的是哪个配置 | —— |
 | 8 | `tokenize()` 内部重复规范化 | 同一输入被 `normalize_text` 处理 3 次（自身 + 两个子函数各一次）；幂等故无功能影响 | 数据量大时改为内部函数接收已规范化文本 |
 | 9 | ~~jieba 向 stderr 打印自述噪声~~ **已消化（第 16 轮决策 3）**：`text/tokenize` 模块加载时 `jieba.setLogLevel(WARNING)`，源头一次治理所有入口（实测子进程 stderr 完全干净） | —— | **剩余（第 18 轮部分落实）**：检索各阶段热耗时已由 `evaluate` 汇总成 P50/P95；jieba ~1.8s 冷启动归 build/load_index 层，不混入检索耗时统计 |
 | 10 | 根目录残留 `.test-tmp-loaders-20261009-a` / `-b` | 未进 `.gitignore`，会出现在 `git status` 里 | 确认无用后删除，或加进 `.gitignore` |

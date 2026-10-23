@@ -16,6 +16,34 @@ def test_default_config():
     assert cfg.llm.provider == "none"
 
 
+def test_default_yaml_matches_model_defaults():
+    """configs/default.yaml 必须与模型默认值逐字段一致。
+
+    守的是「不传 --config」与「传 configs/default.yaml」必须等价。此前
+    `retrieval.rerank_enabled` 模型默认 True、YAML 写 false，两种跑法给出
+    不同排序（加权 α=0.7 vs 等权 RRF），而所有测试全绿——因为没有一条
+    测试真正读过 YAML 再和模型默认值比。PROJECT_LAYOUT 的已知风险第 7 条
+    早就写了「可写成测试（load_config(...) == AppConfig()）」，这里落地。
+    """
+    root = Path(__file__).resolve().parents[1]
+    from_yaml = config.load_config(root / "configs" / "default.yaml", environ={})
+    defaults = config.AppConfig()
+
+    a = from_yaml.model_dump()
+    b = defaults.model_dump()
+    diff: dict[str, tuple] = {}
+    for section, values in b.items():
+        if isinstance(values, dict):
+            for key, expected in values.items():
+                actual = a.get(section, {}).get(key)
+                if actual != expected:
+                    diff[f"{section}.{key}"] = (actual, expected)
+        elif a.get(section) != values:
+            diff[section] = (a.get(section), values)
+
+    assert not diff, f"default.yaml 与模型默认值不一致（实际, 期望）：{diff}"
+
+
 def test_load_from_missing_path_raises(tmp_path: Path):
     missing = tmp_path / "missing.yaml"
     with pytest.raises(FileNotFoundError) as exc:

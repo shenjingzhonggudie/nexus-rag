@@ -43,7 +43,9 @@ def run_ablation(
 
     Returns:
         dict[str, dict]: 组名（baseline / with_rerank / bm25_only / dense_only）
-            -> {"recall_at": {k: float}, "mrr": float}。键顺序即 VARIANTS 顺序。
+            -> {"recall_at": {k: float}, "mrr": float, "config": dict}。
+            键顺序即 VARIANTS 顺序；``config`` 是该组实际生效的检索配置，
+            没有它就无法从落盘结果回溯"这一行是哪个开关组合跑出来的"。
     """
     results: dict[str, dict] = {}
     for name, overrides in VARIANTS.items():
@@ -51,5 +53,9 @@ def run_ablation(
         report = evaluate(
             built, AppConfig(retrieval=RetrievalConfig(**overrides)), qrels, ks=ks
         )
-        results[name] = {"recall_at": report.recall_at, "mrr": report.mrr}
+        results[name] = {
+            "recall_at": report.recall_at,
+            "mrr": report.mrr,
+            "config": report.config.get("retrieval", {}),
+        }
     return results

@@ -27,6 +27,20 @@ def configure(*, provider: str = "hashing", model_name: str = "") -> None:
     _model_name = model_name
 
 
+def active() -> tuple[str, str]:
+    """返回当前**实际生效**的 ``(provider, model_name)``。
+
+    与配置里的 ``embedding.provider`` 不一定相同：``load_index`` 会按索引
+    manifest 的自描述 provider 调 ``configure()`` 覆盖它。两者不一致时
+    （配置写 ``hashing``、索引实际是 ``bge``），报告必须记实际值——否则
+    "这组数字是哪个 embedding 跑的"就成了假的。
+
+    Returns:
+        tuple[str, str]: (provider, model_name)；hashing 时 model_name 为空串。
+    """
+    return _provider, _model_name
+
+
 def embed_text(text: str, *, dim: int) -> list[float]:
     """把文本转换为 dim 维、L2 归一化的向量（实现由 ``configure`` 决定）。
 

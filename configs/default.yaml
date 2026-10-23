@@ -8,14 +8,15 @@ retrieval:
   fusion_alpha: 0.7    # 加权排名融合里 BM25 腿权重（0~1）；0.7 在 218 条标注上最优，0.9 偏保守
   sparse_enabled: true # 是否启用 BM25 稀疏召回
   dense_enabled: true  # 是否启用向量稠密召回
-  rerank_enabled: false # 是否启用重排（默认关：dense 余弦精排负贡献，见消融结论）
+  rerank_enabled: true # 是否启用加权排名融合 S=α·S1+(1−α)·S2；关掉则退化为等权 RRF
+                       # （注意：不是 dense 内积重排——那种做法与 dense 腿同函数，已移除）
   refuse_threshold: 0.05 # 拒答阈值：查询实词覆盖率低于它则拒答；0 = 不启用
 
 # 分块参数
 chunking:
   strategy: heading    # 分块策略：heading（按 ## 标题，块级标注用）| fixed
-  chunk_size: 300      # 每块目标字符数
-  overlap: 50          # 相邻块重叠字符数（必须 < chunk_size）
+  chunk_size: 300      # 每块目标有效长度（汉字 1 字、英文字母 3 个算 1 字、空白不计）
+  overlap: 50          # 相邻块重叠**字符数**（注意单位与 chunk_size 不同，必须 < chunk_size）
 
 # 向量化参数
 embedding:

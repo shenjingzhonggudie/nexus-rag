@@ -29,6 +29,9 @@
 | 拒答 | 语料外英文技术名 → 直接拒；否则实词覆盖率 < 0.05 → 拒 |
 | 生成 | 抽取式（`llm.provider=none`），取最高分块的原文 |
 | 索引 | `data/index`（bge，1553 块）／ `data/index.hashing`（同批块、字面哈希，仅用于消融对照） |
+| 配置 | 不传 `--config` 即用模型默认值；`configs/default.yaml` 与之一致（有测试逐字段保证），两者等价 |
+
+> `embedding.provider` 以**索引 manifest 的自描述**为准：配置默认写 `hashing`，加载 bge 索引时会自动切到 `bge`，因此报告里的 `config` 同时记录 `provider`（实际）与 `provider_configured`（声明）。
 
 **开发集**（248 条：`internal` 100 / `external` 100 / `no_answer` 48）：
 

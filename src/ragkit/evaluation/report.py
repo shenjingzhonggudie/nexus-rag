@@ -99,10 +99,14 @@ class EvalReport:
     false_refusal_rate: float = 0.0  # 有答案 query 上的误拒率
     n_no_answer: int = 0             # 无答案 query 数
     by_source: dict[str, SourceStats] = field(default_factory=dict)  # 按来源分组
+    # 本次评测实际生效的配置（AppConfig.snapshot()，api_key 已脱敏）。
+    # 不记录的话，报告只能说明"这组数字是多少"，无法回答"它是用哪个配置跑出来的"。
+    config: dict = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         """序列化为 JSON 兼容的字典（落盘 / API 输出用）。"""
         return {
+            "config": self.config,
             "recall_at": self.recall_at,
             "mrr": self.mrr,
             "refusal": {
@@ -136,6 +140,32 @@ class EvalReport:
                 "warm_p95_ms": self.latency.warm_p95_ms,
             },
         }
+
+
+def _effective_snapshot(cfg: AppConfig) -> dict:
+    """配置快照，但把 embedding 段换成**实际生效**的 provider。
+
+    ``cfg.embedding.provider`` 是配置声明值；``load_index`` 会按索引 manifest
+    的 provider 再调一次 ``configure()``。配置默认 ``hashing`` 而索引是 ``bge``
+    时，若只记声明值，报告会写着 hashing 却实际跑 bge —— 可追溯性变成误导。
+
+    Args:
+        cfg: 本次评测使用的应用配置。
+
+    Returns:
+        dict: JSON 兼容快照；``embedding.provider`` 为实际值，
+            ``embedding.provider_configured`` 保留配置声明值以便对照。
+    """
+    from ragkit.embeddings import active
+
+    snapshot = cfg.snapshot()
+    provider, model_name = active()
+    embedding = snapshot.setdefault("embedding", {})
+    embedding["provider_configured"] = embedding.get("provider")
+    embedding["provider"] = provider
+    if model_name:
+        embedding["model_name"] = model_name
+    return snapshot
 
 
 def _percentile(data: list[float], p: float) -> float:
@@ -234,6 +264,7 @@ def evaluate(
             mrr=0.0,
             per_query=[],
             latency=LatencyStats(0.0, 0.0, 0.0, 0.0),
+            config=_effective_snapshot(cfg),
         )
 
     no_answer = [q for q in per_query if q.is_no_answer]
@@ -286,4 +317,5 @@ def evaluate(
         false_refusal_rate=false_refusal_rate,
         n_no_answer=len(no_answer),
         by_source=by_source,
+        config=_effective_snapshot(cfg),
     )
