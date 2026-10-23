@@ -36,7 +36,7 @@ cd path/to/nexus-rag                             # 换成你 clone 下来的目�
 |---|---|---|
 | 加载 | `loaders/` | `.txt/.md/.markdown`，UTF-8 + GBK 回退，坏文件隔离 |
 | 分块 | `chunking/` | heading（按 `##`，超长小节 fixed 再切）+ fixed，稳定 chunk_id（内容哈希） |
-| 向量化 | `embeddings/` | hashing 字面级（默认）/ bge 本地语义模型（可选依赖组 `.[embedding]`） |
+| 向量化 | `embeddings/` | hashing 字面级（配置默认）/ bge 本地语义模型（当前索引实际使用，可选依赖组 `.[embedding]`） |
 | 存储 | `stores/` | NumPy 向量库，五文件落盘（manifest 最后写，内含 provider 自描述） |
 | 检索 | `retrieval/` | BM25 → dense → 融合（RRF/加权）→ rerank；`match_score` 供拒答 |
 | 建库 | `index/` | `build` / `load_index`，chunks.jsonl + id 一致性校验 |
@@ -46,7 +46,7 @@ cd path/to/nexus-rag                             # 换成你 clone 下来的目�
 
 ## 关键结论（**不要轻易推翻**）
 
-1. **融合 = 加权排名融合，在 `rerank()` 里实现**：`S(d) = α·S1(d) + (1−α)·S2(d)`，`S_i = 1/(60 + rank_i)`，`fusion_alpha = 0.7`（BM25 权重 0.7 / dense 权重 0.3）。**`weighted_fuse` 已删除**——加权融合属于精排阶段职责，与等权 `rrf_fuse` 分开，避免两份几乎相同的实现。默认值 0.7 是在 221 条上调出来的（见第 2 条）。
+1. **融合 = 加权排名融合，在 `rerank()` 里实现**：`S(d) = α·S1(d) + (1−α)·S2(d)`，`S_i = 1/(60 + rank_i)`，`fusion_alpha = 0.7`（BM25 权重 0.7 / dense 权重 0.3）。**`weighted_fuse` 已删除**——加权融合属于精排阶段职责，与等权 `rrf_fuse` 分开，避免两份几乎相同的实现。默认值 0.7 是在 218 条上调出来的（见第 2 条）。
 2. **`rerank_enabled` 默认 `True`（加权融合）**：1553 块索引上 MRR **0.458**（α=0.7）vs **0.454**（等权 RRF），加权略优；`@5` 则是等权更高（0.549 vs 0.539）。α 的敏感度不大（MRR 0.436~0.458），**真正的瓶颈是 embedding**：`dense_only` 的 MRR 从 hashing 0.300 升到 bge 0.438。
 3. **hashing dense 是字面级替身，不懂语义**：1553 块索引上它是**负资产**（`bm25_only` MRR **0.503** 高于任何融合组）——字面哈希会把"词面像但无关"的块排上来。**已接入 BGE**（`embeddings/bge.py`，可选依赖组 `.[embedding]`）：dense 腿从 **−0.007 转正到 +0.054**，`dense_only` 的 MRR 从 **0.300 升到 0.438**。
 4. **标注绝不绑切分**（本轮最重要的约定）：答案标「文档 + 小节字符区间」，评测用**区间重叠**判定。千万不要改成标 `chunk_id`——切分策略一改就全废。
