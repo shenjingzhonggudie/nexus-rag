@@ -44,6 +44,7 @@ _*.log
 _*.err
 _*.ps1
 _*.bat
+_*.py
 
 # 标注核对表：由 scripts/export_qrels_for_review.py 生成，可随时重跑
 _qrels_review.md
