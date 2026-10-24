@@ -7,3 +7,6 @@ experiments/holdout-v1/** -text
 data/eval/qrels.json text eol=lf
 data/eval/annotation_manifest.json text eol=lf
 data/eval/evidence_review.jsonl text eol=lf
+
+# 新版历史盲测重评的冻结清单使用字节哈希。
+experiments/holdout-evidence-v2/** text eol=lf
