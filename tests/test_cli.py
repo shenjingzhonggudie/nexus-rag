@@ -115,7 +115,17 @@ def test_eval_runs_and_writes_report(tmp_path, capsys):
     env = _env(tmp_path)
     assert main(["build"], env) == 0
     qrels = tmp_path / "qrels.json"
-    qrels.write_text('[{"query": "容器冷启动", "relevant": ["a.txt"]}]', encoding="utf-8")
+    from ragkit.loaders import load_file
+    from ragkit.text import normalize_text
+    normalized = normalize_text(load_file(tmp_path / "raw" / "a.txt").text)
+    quote = "冷启动是指容器首次启动时明显变慢的现象。"
+    start = normalized.index(quote)
+    qrels.write_text(json.dumps([{
+        "query": "容器冷启动", "annotation_version": 2,
+        "answers": [{"point": "首次启动时明显变慢", "evidence": [
+            {"doc": "a.txt", "section": "", "start": start,
+             "end": start + len(quote), "quote": quote}]}],
+    }], ensure_ascii=False), encoding="utf-8")
     out = tmp_path / "report.json"
 
     rc = main(["eval", "--qrels", str(qrels), "--out", str(out)], env)
@@ -124,6 +134,10 @@ def test_eval_runs_and_writes_report(tmp_path, capsys):
     assert out.exists()
     data = json.loads(out.read_text(encoding="utf-8"))
     assert set(data) >= {"recall_at", "mrr", "per_query", "latency"}
+    assert data["recall_at"]["1"] == 1.0
+    assert data["n_answerable"] == 1
+    assert data["refusal"]["n_no_answer"] == 0
+    assert data["scoring"]["mode"] == "answer_point_evidence"
     assert "recall@1" in capsys.readouterr().out
 
 

@@ -2,7 +2,7 @@
 
 from ragkit.evaluation.ablation import VARIANTS, run_ablation
 from ragkit.evaluation.metrics import coverage_recall, first_hit_mrr
-from ragkit.evaluation.qrels import QUERY_TYPES, AnswerSection, Qrel, load_qrels
+from ragkit.evaluation.qrels import QUERY_TYPES, AnswerPoint, AnswerSection, Qrel, load_qrels
 from ragkit.evaluation.report import (
     EvalReport,
     LatencyStats,
@@ -13,6 +13,7 @@ from ragkit.evaluation.report import (
 
 __all__ = [
     "AnswerSection",
+    "AnswerPoint",
     "Qrel",
     "QUERY_TYPES",
     "load_qrels",

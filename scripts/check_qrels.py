@@ -1,11 +1,11 @@
-"""校验评测标注 qrels.json：格式、区间合法性、小节对齐、类型配比。
+"""机械校验qrels：格式、精确原文、区间合法性及类型配比。
 
-这是「LLM 生成候选 + 人工筛选」之后的质检关。它做四件事：
+检查通过不代表回答要点充分，也不代表已完成人工审核。检查内容：
 
 1. **格式**：借 ``load_qrels`` 校验（query 非空、type 合法、区间 start<end）；
 2. **文档存在**：每个答案的 ``doc`` 必须能在 ``data/raw`` 下找到；
-3. **区间合法**：``end`` 不能超出规范化后文档长度；区间必须与文档的某个
-   ``##`` 小节有重叠（完全落在小节之外通常是手误或复制错了偏移）；
+3. **证据与区间**：v2的quote须与原文切片完全一致；``end`` 不得超出文档长度。
+   只有v1继续检查小节对齐；v2允许使用导语、标题附近的充分证据。
 4. **配比**：统计五类 query 的占比，与建议配比对比（direct 30% /
    paraphrase 30% / multi_block 15% / cross_doc 10% / no_answer 15%）。
 
@@ -60,6 +60,8 @@ def main() -> None:
 
     errors: list[str] = []
     warnings: list[str] = []
+    if len({q.annotation_version for q in qrels}) > 1:
+        errors.append("不可混合v1与v2标注；evaluate无法按同一口径汇总")
 
     # query 唯一性：重复的题会被算两次，直接虚高指标（实测曾混进 20 条重复，
     # 221 条里只有 201 个不同 query，而当时的质检完全没有发现）
@@ -88,6 +90,9 @@ def main() -> None:
 
     for i, qrel in enumerate(qrels):
         tag = f"[{i}] {qrel.query[:24]}"
+        if not qrel.is_evaluable:
+            warnings.append(f"{tag}: 证据标注仍需复核，不计入评测分母")
+            continue
         if qrel.is_no_answer:
             if qrel.type != "no_answer":
                 errors.append(f"{tag}: 无答案 query 的 type 应为 no_answer，实际 {qrel.type}")
@@ -106,6 +111,10 @@ def main() -> None:
                     f"{tag}: 区间 end={ans.end} 超出文档长度 {len(normalized)}（{ans.doc}）"
                 )
                 continue
+            if qrel.annotation_version == 2 and normalized[ans.start:ans.end] != ans.quote:
+                errors.append(f"{tag}: quote 与规范化原文区间不一致（{ans.doc}）")
+            if qrel.annotation_version == 2:
+                continue  # 精确证据不必等于小节，也允许位于首个##标题之前
             # 区间必须与至少一个小节有重叠
             overlaps = [s for s in sections if ans.start < s[1] and ans.end > s[0]]
             if not overlaps:
@@ -121,6 +130,11 @@ def main() -> None:
     counts = Counter(q.type for q in qrels)
     total = len(qrels) or 1
     print(f"\n总条数 {len(qrels)}（有答案 {sum(1 for q in qrels if not q.is_no_answer)}）")
+    v2 = [q for q in qrels if q.annotation_version == 2]
+    if v2:
+        print(f"v2回答要点 {sum(len(q.answer_points) for q in v2)}；"
+              f"证据片段 {sum(len(q.answers) for q in v2)}；"
+              f"待复核 {sum(not q.is_evaluable for q in v2)}")
     print(f"{'类型':<14}{'数量':<7}{'占比':<9}{'建议':<8}")
     print("-" * 40)
     for qtype in QUERY_TYPES:

@@ -11,7 +11,7 @@
 查询：load_index → BuiltIndex → search（BM25 / dense → 排名融合）
        → RetrievalResult → answer_question → Answer → CLI 文本 / HTTP JSON
 
-评测：load_qrels + BuiltIndex → search → 区间命中与拒答统计 → EvalReport
+评测：load_qrels + BuiltIndex → search → 要点证据联合覆盖与拒答统计 → EvalReport
 ```
 
 | 模块 | 职责与主要接口 |
@@ -126,7 +126,11 @@ index_dir/
 
 ## 评测与测试边界
 
-`evaluate(built, cfg, qrels, *, ks=...)` 只调用 search，不调用回答层。标准答案是 doc_id 加字符区间；同文档且区间有任何交集就算命中。Recall@k 是前 k 个候选命中的答案区间数占该题答案区间总数的比例；MRR 是首次命中任一答案区间的倒数排名。无答案题不进入两者的平均。
+`evaluate(built, cfg, qrels, *, ks=...)` 只调用 search，不调用回答层。开发集 v2 的每题包含具体回答要点，每个要点包含一组必要证据；证据保存 doc_id、原文 quote 和规范化后的字符区间。`qrels.py` 负责格式和状态，`evidence.py` 计算同文档区间并集的覆盖，`report.py` 汇总指标。
+
+前 k 个候选在每份文档中的区间取并集，避免重复块重复计数，也不填补中间空缺。每段证据的分母是该段证据长度；同一要点的所有必要证据都严格覆盖超过50%才算命中，恰好50%不算。Recall@k 是各题已命中要点占必要要点的比例，再按题平均；complete_at[k] 是全部要点均命中的题目比例。MRR 是前缀首次支持任一要点时的排名倒数，不要求该前缀覆盖全部要点。
+
+无答案题用显式 type=no_answer 及缺失信息说明表示；needs_review 标注不进入检索或拒答指标分母，报告列出待复核数。v1旧格式保留任意小节相交口径；同一份报告禁止混合两个版本，不能直接比较新旧分数。
 
 报告同时统计无答案题的正确拒答率和有答案题的误拒率，并按 source 分别汇总有答案题。命中不能证明证据完整或答案正确；source 不等于 dev/test 划分。默认 final_k=5 时，报告中的 @6～10 没有新增候选，不能作为更深召回的成绩。
 
@@ -134,4 +138,4 @@ index_dir/
 
 `run_ablation` 固定六组：baseline、alpha_09、alpha_05、no_rerank、bm25_only、dense_only。各组复用一个索引，仅覆盖 RetrievalConfig；它会从模型默认配置构造各组，不继承任意调用方的完整配置。消融结论需要同时记录代码、标注、语料/索引版本和有效配置。
 
-现有 pytest 覆盖基础实现和接口，未包含真实 BGE 模型的自动回归；当前 CLI eval 测试还存在旧格式夹具，不能仅凭全绿认定评测语义或回答质量已验证。具体待办见 [SUMMARY](SUMMARY.md)。
+现有 pytest 覆盖基础实现、接口及v2覆盖边界、区间去重和必要证据组合；CLI eval 测试使用有效v2证据并断言有答案分类及命中。CI未包含真实 BGE 模型的自动回归，也未验证最终回答正确性。具体待办见 [SUMMARY](SUMMARY.md)。

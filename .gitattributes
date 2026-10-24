@@ -2,3 +2,8 @@
 # 上游产物混用换行（qrels.test.json / review.jsonl 是 CRLF，sections.jsonl 是 LF），
 # 因此这里禁止任何转换（-text = 按二进制原样存取），否则 checkout 后哈希对不上。
 experiments/holdout-v1/** -text
+
+# v2 manifest记录qrels字节哈希；Windows checkout也固定LF。
+data/eval/qrels.json text eol=lf
+data/eval/annotation_manifest.json text eol=lf
+data/eval/evidence_review.jsonl text eol=lf

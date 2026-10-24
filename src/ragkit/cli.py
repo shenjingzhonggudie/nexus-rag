@@ -268,6 +268,10 @@ def _cmd_eval(args, environ: Mapping[str, str] | None) -> int:
     # 合计会被两组的题目比例左右（external 占比一高，整体就掉），
     # 它不是系统能力，放在报告里容易被误读成"一个数字"。
     print(f"评测集 {len(report.per_query)} 条")
+    if report.scoring.get("annotation_version") == 2:
+        print("判分：回答要点的每段必要证据，前k块联合覆盖严格超过50%（去重）")
+        print("MRR：首次由前k块联合支持至少一个要点的排名倒数，不要求全要点")
+        print(f"已评有答案 {report.n_answerable} 条；待复核 {report.n_pending} 条")
     if len(report.by_source) > 1:
         labels = {"internal": "内部组（读正文出题）", "external": "外部组（只看标题）"}
         print("按来源（两组必须分开看，合计会随两组比例变化）：")
@@ -278,10 +282,14 @@ def _cmd_eval(args, environ: Mapping[str, str] | None) -> int:
                 f"@3={stats.recall_at[3]:.3f}  "
                 f"@5={stats.recall_at[5]:.3f}  MRR={stats.mrr:.3f}"
             )
+            if report.scoring.get("annotation_version") == 2:
+                print(f"    全部要点命中@5={stats.complete_at[5]:.3f}")
     else:
         for k, v in report.recall_at.items():
             print(f"recall@{k} = {v:.3f}")
         print(f"MRR      = {report.mrr:.3f}")
+        if report.scoring.get("annotation_version") == 2:
+            print(f"全部要点命中@5={report.complete_at[5]:.3f}")
     if report.n_no_answer:
         print(
             f"拒答    准确率 {report.refusal_accuracy:.3f}"

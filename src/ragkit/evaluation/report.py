@@ -1,11 +1,7 @@
-"""评测编排：跑评测集、汇总指标、拒答表现与耗时（冷/热分开）。
+"""检索评测：v2按必要证据联合覆盖>50%判要点；v1保留旧小节相交口径。
 
-判定口径（第 25 轮起）：
-- **答案不绑切分**：qrels 标的是"文档 + 小节字符区间"，评测时只判断召回的
-  块与答案区间**是否重叠**（同文档且区间相交）。换 chunk_size 或分块策略
-  都不需要重标，也不会因为块边界挪动而误判。
-- **无答案 query 不进 recall 平均**：它们没有标准答案，算 0 会把整体分数
-  稀释成假低分；它们只参与拒答指标。
+Recall/MRR仅统计已完成标注的有答案题，无答案题只参与拒答指标。
+证据覆盖仍是检索指标，不等于实际回答正确。
 """
 
 import statistics
@@ -13,6 +9,7 @@ from dataclasses import dataclass, field
 
 from ragkit.config import AppConfig
 from ragkit.evaluation.metrics import coverage_recall, first_hit_mrr
+from ragkit.evaluation.evidence import prefix_point_coverage
 from ragkit.evaluation.qrels import AnswerSection, Qrel
 from ragkit.index.assets import BuiltIndex
 from ragkit.retrieval.pipeline import search
@@ -25,10 +22,9 @@ def _extract_chunk_ids(results) -> list[str]:
 
 
 def _hit_indices(chunk: Chunk, answers: tuple[AnswerSection, ...]) -> set[int]:
-    """块命中了哪些答案小节：同文档、且字符区间相交。
+    """兼容v1：块命中了哪些答案小节，同文档且字符区间相交。
 
-    用"区间相交"而不是"区间包含"：块边界随切分策略变化，只要块与答案小节
-    有任何重叠就算命中，避免因为切分把答案切开而误判为未命中。
+    仅兼容历史格式；开发集v2使用prefix_point_coverage。
 
     Args:
         chunk: 检索召回的块。
@@ -58,7 +54,7 @@ class QueryResult:
     query: str
     query_type: str               # direct / paraphrase / multi_block / cross_doc / no_answer
     retrieved: list[str]          # 检索返回的 chunk_id 序列
-    hits_per_rank: list[list[int]]  # 每个结果命中的答案小节下标（便于核对）
+    hits_per_rank: list[list[int]]  # 单块独立命中的标注单元；联合命中见hits_by_prefix
     recall_at: dict[int, float]   # k -> 覆盖率
     mrr: float
     total_ms: float               # 检索 trace 总耗时
@@ -66,6 +62,13 @@ class QueryResult:
     is_no_answer: bool = False    # 是否为无答案 query
     match_score: float | None = None  # 查询实词被检索结果覆盖的比例
     source: str = "internal"      # internal（读正文出题）/ external（只看标题出题）
+    id: str = ""
+    annotation_version: int = 1
+    evaluated: bool = True
+    hits_by_prefix: list[list[int]] = field(default_factory=list)
+    point_coverage_by_prefix: list[list[float]] = field(default_factory=list)
+    complete_at: dict[int, float] = field(default_factory=dict)
+    point_labels: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -75,6 +78,7 @@ class SourceStats:
     n: int                        # 有答案 query 数
     recall_at: dict[int, float]   # k -> 覆盖率
     mrr: float
+    complete_at: dict[int, float] = field(default_factory=dict)
 
 
 @dataclass
@@ -102,11 +106,19 @@ class EvalReport:
     # 本次评测实际生效的配置（AppConfig.snapshot()，api_key 已脱敏）。
     # 不记录的话，报告只能说明"这组数字是多少"，无法回答"它是用哪个配置跑出来的"。
     config: dict = field(default_factory=dict)
+    complete_at: dict[int, float] = field(default_factory=dict)
+    n_answerable: int = 0
+    n_pending: int = 0
+    scoring: dict = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         """序列化为 JSON 兼容的字典（落盘 / API 输出用）。"""
         return {
             "config": self.config,
+            "scoring": self.scoring,
+            "n_answerable": self.n_answerable,
+            "n_pending": self.n_pending,
+            "complete_at": self.complete_at,
             "recall_at": self.recall_at,
             "mrr": self.mrr,
             "refusal": {
@@ -115,15 +127,24 @@ class EvalReport:
                 "n_no_answer": self.n_no_answer,
             },
             "by_source": {
-                name: {"n": stats.n, "recall_at": stats.recall_at, "mrr": stats.mrr}
+                name: {"n": stats.n, "recall_at": stats.recall_at, "mrr": stats.mrr,
+                       "complete_at": stats.complete_at}
                 for name, stats in self.by_source.items()
             },
             "per_query": [
                 {
                     "query": q.query,
+                    "id": q.id,
+                    "source": q.source,
+                    "annotation_version": q.annotation_version,
+                    "evaluated": q.evaluated,
                     "type": q.query_type,
                     "retrieved": q.retrieved,
                     "hits_per_rank": q.hits_per_rank,
+                    "hits_by_prefix": q.hits_by_prefix,
+                    "point_coverage_by_prefix": q.point_coverage_by_prefix,
+                    "point_labels": q.point_labels,
+                    "complete_at": q.complete_at,
                     "recall_at": q.recall_at,
                     "mrr": q.mrr,
                     "total_ms": q.total_ms,
@@ -205,7 +226,7 @@ def evaluate(
     Args:
         built: 已建好的索引。
         cfg: 应用配置（retrieval 开关、top_k/final_k 与拒答阈值）。
-        qrels: 评测样例；``answers`` 为空表示无答案 query。
+        qrels: 同一标注版本的评测样例；v2无答案由type显式指定。
         ks: 要统计的 recall 截断位置。
 
     Returns:
@@ -214,6 +235,21 @@ def evaluate(
             qrels 为空时返回全 0 报告（不除零）。
     """
     per_query: list[QueryResult] = []
+    versions = {q.annotation_version for q in qrels}
+    if len(versions) > 1:
+        raise ValueError("不可在一份汇总中混合v1小节相交与v2证据覆盖口径")
+    version = next(iter(versions), 2)
+    scoring = {"annotation_version": version,
+               "mode": "answer_point_evidence" if version == 2 else "section_overlap_legacy",
+               "coverage_threshold": 0.5 if version == 2 else 0.0,
+               "comparison": ">",
+               "coverage_denominator": "evidence_characters" if version == 2 else "not_applicable_any_overlap",
+               "union_by_document": version == 2,
+               "necessary_supports": "all" if version == 2 else "not_applicable",
+               "recall_unit": "answer_points" if version == 2 else "sections",
+               "averaging": "macro_by_query",
+               "mrr_target": "first_supported_point_prefix" if version == 2 else "first_section_hit",
+               "scope": "retrieval_evidence_not_answer_correctness"}
     warm_ms: list[float] = []
     cold_ms = 0.0
     threshold = cfg.retrieval.refuse_threshold
@@ -235,21 +271,40 @@ def evaluate(
         else:
             warm_ms.append(total)
 
-        hits_per_rank = [
-            sorted(_hit_indices(sc.chunk, qrel.answers)) for sc in result.results
-        ]
-        total_answers = len(qrel.answers)
+        if qrel.annotation_version == 2:
+            chunks = [sc.chunk for sc in result.results]
+            prefixes, point_coverage = prefix_point_coverage(chunks, qrel.answer_points)
+            hits_per_rank = [sorted(prefix_point_coverage([c], qrel.answer_points)[0][0])
+                             for c in chunks]
+            total_answers = len(qrel.answer_points)
+        else:
+            hits_per_rank = [sorted(_hit_indices(sc.chunk, qrel.answers))
+                             for sc in result.results]
+            prefixes = []
+            seen: set[int] = set()
+            for hits in hits_per_rank:
+                seen = seen | set(hits)
+                prefixes.append(seen)
+            point_coverage = []
+            total_answers = len(qrel.answers)
+        recall_at = {k: coverage_recall(prefixes, total_answers, k) for k in ks}
+        complete_at = {k: float(total_answers > 0 and recall_at[k] == 1.0) for k in ks}
 
         per_query.append(
             QueryResult(
                 query=qrel.query,
+                id=qrel.id,
+                annotation_version=qrel.annotation_version,
+                evaluated=qrel.is_evaluable,
                 query_type=qrel.type,
                 retrieved=_extract_chunk_ids(result.results),
                 hits_per_rank=hits_per_rank,
-                recall_at={
-                    k: coverage_recall(hits_per_rank, total_answers, k) for k in ks
-                },
-                mrr=first_hit_mrr(hits_per_rank),
+                recall_at=recall_at,
+                mrr=first_hit_mrr(prefixes),
+                hits_by_prefix=[sorted(h) for h in prefixes],
+                point_coverage_by_prefix=point_coverage,
+                complete_at=complete_at,
+                point_labels=[p.point for p in qrel.answer_points],
                 total_ms=total,
                 refused=_is_refused(result.results, result.match_score, threshold),
                 is_no_answer=qrel.is_no_answer,
@@ -265,10 +320,12 @@ def evaluate(
             per_query=[],
             latency=LatencyStats(0.0, 0.0, 0.0, 0.0),
             config=_effective_snapshot(cfg),
+            scoring=scoring,
+            complete_at={k: 0.0 for k in ks},
         )
 
-    no_answer = [q for q in per_query if q.is_no_answer]
-    answerable = [q for q in per_query if not q.is_no_answer]
+    no_answer = [q for q in per_query if q.is_no_answer and q.evaluated]
+    answerable = [q for q in per_query if not q.is_no_answer and q.evaluated]
 
     # 检索质量只在有答案 query 上平均：无答案 query 没有标准答案，算 0 会稀释
     n_answerable = len(answerable)
@@ -281,6 +338,8 @@ def evaluate(
         for k in ks
     }
     mrr_avg = sum(q.mrr for q in answerable) / n_answerable if n_answerable else 0.0
+    complete_at = {k: sum(q.complete_at[k] for q in answerable) / n_answerable
+                   if n_answerable else 0.0 for k in ks}
 
     refusal_accuracy = (
         sum(1 for q in no_answer if q.refused) / len(no_answer) if no_answer else 0.0
@@ -293,7 +352,7 @@ def evaluate(
     by_source: dict[str, SourceStats] = {}
     # internal 排在最前（它是主基准），其余按字母序
     for source in sorted({q.source for q in per_query}, key=lambda s: (s != "internal", s)):
-        rows = [q for q in per_query if q.source == source and not q.is_no_answer]
+        rows = [q for q in answerable if q.source == source]
         if not rows:
             continue
         n_source = len(rows)
@@ -301,6 +360,7 @@ def evaluate(
             n=n_source,
             recall_at={k: sum(r.recall_at[k] for r in rows) / n_source for k in ks},
             mrr=sum(r.mrr for r in rows) / n_source,
+            complete_at={k: sum(r.complete_at[k] for r in rows) / n_source for k in ks},
         )
 
     return EvalReport(
@@ -318,4 +378,8 @@ def evaluate(
         n_no_answer=len(no_answer),
         by_source=by_source,
         config=_effective_snapshot(cfg),
+        complete_at=complete_at,
+        n_answerable=n_answerable,
+        n_pending=sum(not q.evaluated for q in per_query),
+        scoring=scoring,
     )
