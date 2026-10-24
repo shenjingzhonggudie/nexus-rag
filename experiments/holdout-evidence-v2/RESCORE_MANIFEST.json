@@ -1,0 +1,101 @@
+{
+  "rescored_at": "2026-10-24T20:26:15.826160+08:00",
+  "annotation_freeze_commit": "b63d485ab21a882093433e0d62021acb33e28c35",
+  "original_experiment_code": "80b6aea3da638057db4e531f05e5bedde14f956c",
+  "qrels_sha256": "331be19cb621e971506f1d4d38ac8bab390d94026781ff76d1401f08e0b953a6",
+  "output_access_sha256": "acd6b10d70e1e3a8bfcfb89afb58c6f4d9cb106e7dbc30addcb81bc65ce068a6",
+  "source_pipeline_diff_empty": true,
+  "normalized_documents_verified": 100,
+  "model_rerun": false,
+  "actual_answer_text_available": false,
+  "score_scope": "saved_retrieval_evidence_coverage_not_final_answer_correctness",
+  "scorer_canonical_lf_sha256": "e1e41f506aaded7a69f7ed1d664de2b6aaecaeab59cbc6b11bc4aeae3c7e0e8c",
+  "script_canonical_lf_sha256": "39fcbcfa2431b1f4a895262b6834ad7120f3d231207c581c0583c8ce3713b633",
+  "configs": {
+    "A": {
+      "annotation_freeze_commit": "b63d485ab21a882093433e0d62021acb33e28c35",
+      "qrels_sha256": "331be19cb621e971506f1d4d38ac8bab390d94026781ff76d1401f08e0b953a6",
+      "saved_report": "experiments/holdout-v1/audit/eval.configA.bge.weighted.json",
+      "saved_report_sha256": "4fd970ffe21ceb78363bc3cd32b9b54138fb34aec61ecf504e490898e03c79a5",
+      "chunk_table_sha256": "c372aba06886d2fa875abfec8663e164585a64f0af929fef02e50e7fe7f997a0",
+      "config_declared_in_archive": {
+        "retrieval": {
+          "top_k": 20,
+          "final_k": 5,
+          "fusion_alpha": 0.7,
+          "sparse_enabled": true,
+          "dense_enabled": true,
+          "rerank_enabled": true,
+          "refuse_threshold": 0.05
+        },
+        "chunking": {
+          "strategy": "heading",
+          "chunk_size": 300,
+          "overlap": 50
+        },
+        "embedding": {
+          "provider": "bge",
+          "dim": 512,
+          "model_name": "BAAI/bge-small-zh-v1.5"
+        },
+        "llm": {
+          "provider": "none",
+          "model": "",
+          "api_key": "",
+          "base_url": ""
+        },
+        "data_dir": "data/raw",
+        "index_dir": "data/index"
+      },
+      "config_limit": "Original report has no embedded effective-config snapshot; configuration label comes from archived YAML.",
+      "model_rerun": false,
+      "actual_answer_text_available": false,
+      "result": "rescore.configA.json",
+      "result_sha256": "9d5ab899fd0d9af2e2f0c7f6fdcb67d814453b3d874c0d4606c5f78945c375b8",
+      "retrieved_unique_chunks_verified": 198
+    },
+    "B": {
+      "annotation_freeze_commit": "b63d485ab21a882093433e0d62021acb33e28c35",
+      "qrels_sha256": "331be19cb621e971506f1d4d38ac8bab390d94026781ff76d1401f08e0b953a6",
+      "saved_report": "experiments/holdout-v1/audit/eval.configB.hashing.rrf.json",
+      "saved_report_sha256": "3f3fe7f20e69cbfaab6090131abc064a7b76064cb5f7c7e6fc5de92fa505a129",
+      "chunk_table_sha256": "c372aba06886d2fa875abfec8663e164585a64f0af929fef02e50e7fe7f997a0",
+      "config_declared_in_archive": {
+        "retrieval": {
+          "top_k": 20,
+          "final_k": 5,
+          "fusion_alpha": 0.7,
+          "sparse_enabled": true,
+          "dense_enabled": true,
+          "rerank_enabled": false,
+          "refuse_threshold": 0.05
+        },
+        "chunking": {
+          "strategy": "heading",
+          "chunk_size": 300,
+          "overlap": 50
+        },
+        "embedding": {
+          "provider": "hashing",
+          "dim": 512,
+          "model_name": "BAAI/bge-small-zh-v1.5"
+        },
+        "llm": {
+          "provider": "none",
+          "model": "",
+          "api_key": "",
+          "base_url": ""
+        },
+        "data_dir": "data/raw",
+        "index_dir": "data/index.hashing"
+      },
+      "config_limit": "Original report has no embedded effective-config snapshot; configuration label comes from archived YAML.",
+      "model_rerun": false,
+      "actual_answer_text_available": false,
+      "result": "rescore.configB.json",
+      "result_sha256": "cb7cc05e402eafaf3871f7d0012463607e44292fd444bcce3b49d4be1fd52599",
+      "retrieved_unique_chunks_verified": 204
+    }
+  },
+  "retrieved_intervals_sha256": "b314f642d0649ad8c8590b65fd3e45bfb7eec7a57949ad22885ba2a6b7e12be6"
+}

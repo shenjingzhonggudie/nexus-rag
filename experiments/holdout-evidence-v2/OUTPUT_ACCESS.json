@@ -1,0 +1,16 @@
+{
+  "first_output_access_at": "2026-10-24T20:15:48.453372+08:00",
+  "annotation_freeze_commit": "b63d485ab21a882093433e0d62021acb33e28c35",
+  "qrels_sha256": "331be19cb621e971506f1d4d38ac8bab390d94026781ff76d1401f08e0b953a6",
+  "phase": "saved_outputs_first_opened_after_freeze_commit_was_pushed",
+  "files": [
+    {
+      "path": "experiments\\holdout-v1\\audit\\eval.configA.bge.weighted.json",
+      "sha256": "4fd970ffe21ceb78363bc3cd32b9b54138fb34aec61ecf504e490898e03c79a5"
+    },
+    {
+      "path": "experiments\\holdout-v1\\audit\\eval.configB.hashing.rrf.json",
+      "sha256": "3f3fe7f20e69cbfaab6090131abc064a7b76064cb5f7c7e6fc5de92fa505a129"
+    }
+  ]
+}

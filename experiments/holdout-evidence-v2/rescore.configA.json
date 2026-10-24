@@ -1,0 +1,3928 @@
+{
+  "scoring": {
+    "mode": "saved_retrieval_evidence_regrade",
+    "annotation_version": 2,
+    "threshold": 0.5,
+    "comparison": ">",
+    "denominator": "evidence_characters",
+    "union_by_document": true,
+    "necessary_supports": "all",
+    "recall_unit": "answer_points",
+    "averaging": "macro_by_query",
+    "mrr_target": "first_supported_point_prefix",
+    "pending_policy": "excluded_from_primary_metrics_and_always_incomplete",
+    "scope": "retrieval_evidence_not_answer_correctness",
+    "latency_measured": false,
+    "answer_text_verified": false
+  },
+  "n_queries": 62,
+  "n_answerable": 43,
+  "n_no_answer": 17,
+  "n_pending": 2,
+  "recall_at": {
+    "1": 0.6608527131782946,
+    "3": 0.8895348837209303,
+    "5": 0.9127906976744186
+  },
+  "mrr": 0.8604651162790697,
+  "complete_at": {
+    "1": 0.5581395348837209,
+    "3": 0.813953488372093,
+    "5": 0.8372093023255814
+  },
+  "refusal": {
+    "correct": 0,
+    "total": 17,
+    "accuracy": 0.0,
+    "false_refusals": 0,
+    "answerable_total": 43,
+    "false_rate": 0.0
+  },
+  "conservative_complete": {
+    "denominator": 45,
+    "complete_at": {
+      "1": 0.5333333333333333,
+      "3": 0.7777777777777778,
+      "5": 0.8
+    }
+  },
+  "per_query": [
+    {
+      "id": "h_0001",
+      "query": "kubelet 的节点心跳到底更新的是什么对象的什么字段？控制面靠它判断节点是否可用吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__leases.md#2c5d839e@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#922e50a2@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#75940b7a@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#57b52897@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32b7d709@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "每个 Node 在 kube-node-lease 命名空间都有同名的 Lease 对象，节点心跳更新的是这个 Lease。",
+        "每次 kubelet 心跳是对 Lease 的 update 请求，更新 spec.renewTime 字段。",
+        "控制面确实利用 spec.renewTime 中的时间戳判断对应 Node 的可用性。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0002",
+      "query": "一个节点向集群表明自己仍然可用，有哪两种心跳形式？各自的载体是什么？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#922e50a2@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__leases.md#2c5d839e@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#fc03c4ff@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md#5586831f@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#e3b1a6df@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "一种是更新 Node 对象的 .status。",
+        "另一种是 kube-node-lease 命名空间中的 Lease 对象，每个节点关联一个 Lease。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0003",
+      "query": "节点联系不上被标记成未知状态后，控制面大概多久才会真正开始动手赶走上面的 Pod？平时又多久巡检一次节点状态？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6db4f21d@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#1b35dd53@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32ff949c@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#e56b4a81@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#6c8be308@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "默认在节点标记为 Unknown 后等待 5 分钟，才提交第一个 Pod 驱逐请求。",
+        "节点控制器默认每 5 秒检查一次节点状态，周期可通过 kube-controller-manager 的 --node-monitor-period 配置。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.5,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0004",
+      "query": "要把 Kubernetes 节点切到 CGroup v2，需要满足哪些硬性前提？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#7a3592e2@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#b255fd41@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#fd4902bd@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#5ef232c6@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#312bcf3f@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "操作系统发行版必须启用 CGroup v2。",
+        "Linux 内核版本必须为 5.8 或更高。",
+        "容器运行时必须支持 CGroup v2。",
+        "kubelet 和容器运行时必须都配置为使用 systemd CGroup 驱动。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.5,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0005",
+      "query": "云控制器管理器里负责配置路由的那个控制器，为了干活至少得拿到 Node 对象的什么权限？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#06e42dcd@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#126d6b59@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#0116ddcc@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#01d81c0d@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#78969b64@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "路由控制器至少需要读取 v1/Node 对象的 get 权限。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0006",
+      "query": "开启混合版本代理后，如果请求被转给对等 API 服务器而对方没能应答，客户端会收到什么响应？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#3235c726@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#f990bd31@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#fee0d9e7@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#5d504922@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#4ff62473@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "被选中的对等 API 服务器无法响应时，源 API 服务器向客户端返回 HTTP 503 Service Unavailable。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0007",
+      "query": "用动态资源分配时，DeviceClass 和 ResourceSlice 应该开放给谁？申领相关的 API 又是什么作用范围？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#c9cd48c0@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#54416cd3@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#581aa531@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#f990bd31@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#8bf2317a@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "通常 DeviceClass 和 ResourceSlice 应仅允许管理员与 DRA 驱动访问。",
+        "通过申领部署 Pod 的集群运维人员需要访问 ResourceClaim 与 ResourceClaimTemplate API，这两个 API 都是命名空间作用域。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0008",
+      "query": "文档给出的 100 节点 DRA 集群规模测试中，kube-controller-manager 的 QPS 与 Burst 建议设成多少？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#e76b5555@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#54416cd3@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#5da1829c@1",
+        "k8s/content__zh-cn__docs__concepts__architecture___index.md#2f4592a5@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#8ffc90a7@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.6693877551020408
+        ],
+        [
+          0.6693877551020408
+        ],
+        [
+          0.6693877551020408
+        ],
+        [
+          0.6693877551020408
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "该 100 节点 DRA 规模测试中，kube-controller-manager 的 QPS 建议以 75、Burst 以 150 作为起点。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0009",
+      "query": "节点关机宽限总共设了 30 秒、其中关键 Pod 占 10 秒，那么普通 Pod 能分到多长的体面终止时间？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6db4f21d@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#1dbebac4@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#d2877482@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#e616d619@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#56ad0ec7@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "常规 Pod 获得前 20 秒，即 30 秒总宽限减去关键 Pod 的 10 秒。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0010",
+      "query": "kubelet 对未使用的镜像和未使用的容器，分别多久做一次垃圾收集？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c8d9619f@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#9115d7af@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c61bb61b@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#cc30dbde@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#518ae6da@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "kubelet 每 5 分钟对未使用镜像进行一次垃圾收集，每 1 分钟对未使用容器进行一次垃圾收集。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0011",
+      "query": "容器日志的单个文件大小与文件数上限由哪两个 kubelet 项控制、默认是多少？kubelet 自身日志在 Linux 与 Windows 节点上默认又写到哪里？",
+      "annotation_status": "needs_review",
+      "evaluated": false,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#cd7b29c9@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#5530dde7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#e43cc967@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6eaa9b0b@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ],
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "单个容器日志文件最大大小由 containerLogMaxSize 控制，默认 10Mi；每个容器最大日志文件数由 containerLogMaxFiles 控制，默认 5。",
+        "使用 systemd 的 Linux 节点上，kubelet 默认写入 journald。",
+        "没有 systemd 时，Linux 上 kubelet 写入 /var/log 目录中的 .log 文件。",
+        "Windows 的默认目录无法由给定原文唯一确定：第一句明确说 C:\\var\\logs，下一段又将 C:\\var\\log 称作默认位置，两句矛盾。"
+      ],
+      "recall_at": {
+        "1": 0.25,
+        "3": 0.75,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0012",
+      "query": "除了节点心跳，Lease 在集群里还承担什么角色？要让控制面组件用上协调领导者选举，需要同时打开哪两项开关？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#43788b79@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#0223a45b@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__leases.md#7e8a8940@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#20bfdf62@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__leases.md#2c5d839e@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "point_labels": [
+        "Lease 还用于组件领导者选举，确保高可用部署中同一组件任意时刻只有一个实例激活，其他实例待机。",
+        "协调领导者选举需要同时启用 CoordinatedLeaderElection 特性门控与 coordination.k8s.io/v1beta1 API 组；对应标志为 --feature-gates=\"CoordinatedLeaderElection=true\" 和 --runtime-config=\"coordination.k8s.io/v1beta1=true\"。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.5,
+        "5": 0.5
+      },
+      "mrr": 0.3333333333333333,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0013",
+      "query": "kubelet 的 --node-status-update-frequency 参数默认是多少秒？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#074593d4@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#1b35dd53@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#34d18973@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#4dcec36f@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0014",
+      "query": "kubelet 做镜像垃圾收集时，HighThresholdPercent 与 LowThresholdPercent 默认分别是多少百分比？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c61bb61b@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#9115d7af@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c8d9619f@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#79de22bf@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#cc30dbde@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0015",
+      "query": "kube-state-metrics 默认把指标暴露在哪个端口、哪个 HTTP 路径上？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md#5fabf937@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md#b2d14381@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md#25cd9f10@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md#7e35599e@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md#3f3d5a12@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0016",
+      "query": "kubelet 的 imageMaximumGCAge 默认设成多久？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#9115d7af@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#5530dde7@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#3613e5f3@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#cd7b29c9@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0017",
+      "query": "按 Pod 优先级分阶段关闭节点时，kubelet 默认给每个优先级阶段分配多少秒？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#d2877482@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6c3208c1@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#62206cf8@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#fbf828a9@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6db4f21d@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0056",
+      "query": "React 编译器碰到疑似违反 React 规则的代码时，会怎么处理？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__index.md#ecfa5de2@1",
+        "react/src__content__learn__react-compiler__index.md#c480441e@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "编译器遇到疑似违反 React 规则的代码时，会安全地跳过优化，以避免改变应用行为。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0057",
+      "query": "怀疑某个组件被编译器优化出问题，调试的第一步是什么？修完之后怎么确认它已经被编译了？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#b51cfaa7@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "point_labels": [
+        "第一步用 \"use no memo\" 临时禁用疑似组件的编译，确认问题是否与编译器有关；问题消失则很可能与违反 React 规则有关。",
+        "修复后移除 \"use no memo\"，并在 React DevTools 检查组件是否显示 ✨ 徽章，以验证已被编译。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.5,
+        "5": 0.5
+      },
+      "mrr": 0.3333333333333333,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0058",
+      "query": "控制编译器作用范围的两个指令分别是什么？各自用在什么场景？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#e3983c4c@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#2321db72@1",
+        "react/src__content__learn__react-compiler__index.md#1aa54d0b@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#b8b09380@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "point_labels": [
+        "\"use memo\" 用于显式选择加入编译；配合 compilationMode: 'annotation'，只编译明确标注的组件和 Hook，适合只对特定组件试用编译器时进行细粒度控制。",
+        "\"use no memo\" 用于临时排除有问题的组件，跳过其编译，以调试问题。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 0.5,
+        "5": 0.5
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0059",
+      "query": "想按目录一批一批接入 React 编译器，应该借助 Babel 的什么机制？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#96f1e7da@1",
+        "react/src__content__learn__react-compiler__index.md#9de42f6f@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "借助 Babel 的 overrides 覆盖机制，对不同目录匹配并应用不同插件，逐目录启用 React 编译器。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.5,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0060",
+      "query": "想用功能开关在运行时决定要不要走编译器优化，该配什么？它背后的工作方式是什么？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#2321db72@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1",
+        "react/src__content__learn__react-compiler__index.md#fd7eca4e@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "配置React编译器的gating选项，在运行时用功能标志控制是否使用编译优化。",
+        "编译器在优化代码周围添加运行时检查；开关返回 true 时运行优化版本，否则运行原始代码。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0061",
+      "query": "现在开始一个新的 React 项目，还应该用 Create React App 吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__installation.md#56d23237@1",
+        "react/src__content__learn__installation.md#8153ec93@1",
+        "react/src__content__learn__creating-a-react-app.md#cd268af0@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#3eda5a00@1",
+        "react/src__content__learn__creating-a-react-app.md#5a3369f8@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "新的 React 项目不应继续采用 Create React App，文档已明确不建议使用。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0062",
+      "query": "React 文档首推的全栈框架有哪些？用这些框架写的应用一定要配服务器吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__creating-a-react-app.md#341e2df6@1",
+        "react/src__content__learn__creating-a-react-app.md#691b5f0d@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#30b1721c@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#74362b11@1",
+        "react/src__content__learn__creating-a-react-app.md#e3e1ec2d@1"
+      ],
+      "hits_by_prefix": [
+        [
+          3
+        ],
+        [
+          3
+        ],
+        [
+          3
+        ],
+        [
+          3
+        ],
+        [
+          0,
+          1,
+          3
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "主要推荐包括Next.js的App Router。",
+        "主要推荐包括React Router v7。",
+        "主要推荐清单还列出面向原生应用的Expo。",
+        "不一定要有服务器：这些框架支持 CSR、SPA 和 SSG，可部署到 CDN 或静态托管服务。"
+      ],
+      "recall_at": {
+        "1": 0.25,
+        "3": 0.25,
+        "5": 0.75
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0063",
+      "query": "React 项目里文档要求务必启用的是哪个 ESLint 插件规则？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#45a710af@1",
+        "react/src__content__learn__editor-setup.md#0a951ebf@1",
+        "react/src__content__learn__editor-setup.md#dd91aaf6@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#5ef232c6@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "务必在 React 项目启用 eslint-plugin-react-hooks 的规则。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.5,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0064",
+      "query": "不用框架、从零搭一个 React 项目时，文档举例的构建工具有哪些？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__installation.md#ee7107db@1",
+        "react/src__content__learn__creating-a-react-app.md#5a3369f8@1",
+        "react/src__content__learn__build-a-react-app-from-scratch.md#d5b5c5bd@1",
+        "react/src__content__learn__creating-a-react-app.md#691b5f0d@1",
+        "react/src__content__learn__react-compiler__index.md#c480441e@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0
+        ],
+        [
+          0.0
+        ],
+        [
+          0.0
+        ],
+        [
+          0.0
+        ],
+        [
+          0.0
+        ]
+      ],
+      "point_labels": [
+        "从零搭建普通 React 应用时，举例的构建工具是 Vite、Parcel 和 Rsbuild。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0065",
+      "query": "React 编译器要求的最低 React 版本是多少？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__react-compiler__index.md#1aa54d0b@1",
+        "react/src__content__learn__react-compiler__index.md#9de42f6f@1",
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0066",
+      "query": "项目用 Vite 构建、并没有 Babel 配置时，React 编译器该怎么接进去？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__index.md#c480441e@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1",
+        "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1",
+        "react/src__content__learn__add-react-to-an-existing-project.md#ae47c449@1",
+        "react/src__content__learn__build-a-react-app-from-scratch.md#001ca4d3@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0067",
+      "query": "React 编译器默认会编译 node_modules 里的第三方库吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__index.md#1aa54d0b@1",
+        "vue/src__guide__built-ins__transition.md#34d81c36@1",
+        "react/src__content__learn__react-compiler__debugging.md#a2be366f@1",
+        "react/src__content__learn__react-compiler__debugging.md#735e535b@1",
+        "react/src__content__learn__react-compiler__index.md#9de42f6f@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0068",
+      "query": "推广 React 编译器时，文档说的“监控采用进度”具体该怎么做？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1",
+        "react/src__content__learn__react-compiler__index.md#9de42f6f@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1",
+        "react/src__content__learn__react-compiler__index.md#4baf8b32@1",
+        "react/src__content__learn__react-compiler__incremental-adoption.md#96f1e7da@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0069",
+      "query": "从 Create React App 迁到官方推荐的框架，具体要按哪几步做？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "react/src__content__learn__installation.md#8153ec93@1",
+        "react/src__content__learn__creating-a-react-app.md#5a3369f8@1",
+        "react/src__content__learn__installation.md#56d23237@1",
+        "react/src__content__learn__build-a-react-app-from-scratch.md#d5b5c5bd@1",
+        "react/src__content__learn__creating-a-react-app.md#691b5f0d@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0021",
+      "query": "完全不知道数据库连接池该配多大时，文档给的初始经验公式是什么？CPU 核数该怎么数？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#57a3511a@1",
+        "tidb/develop__dev-guide-connection-parameters.md#53f8fdda@1",
+        "tidb/develop__dev-guide-connection-parameters.md#ce3e6583@1",
+        "tidb/develop__dev-guide-connection-parameters.md#62dfe34d@1",
+        "tidb/develop__dev-guide-connection-parameters.md#61a29d8f@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "不知道连接池大小时，初始经验公式是 connections = ((core_count * 2) + effective_spindle_count)。",
+        "core_count 要数物理核心，不把超线程线程计入。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 0.5,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0022",
+      "query": "TiDB 会在连接空闲多久之后主动把客户端连接关掉？这个默认行为从哪个版本开始、由哪个变量控制？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d85f89c6@1",
+        "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1",
+        "tidb/develop__dev-guide-connection-parameters.md#127b1dd0@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "从 TiDB v5.4 起，默认连接空闲超过 28800 秒（8小时）会自动关闭；由 wait_timeout 控制。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0023",
+      "query": "Java 应用想让 TiDB 服务端真正执行预处理语句并复用，需要在 JDBC 上配哪些参数？默认值是多少？",
+      "annotation_status": "needs_review",
+      "evaluated": false,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#87ebc822@1",
+        "tidb/develop__dev-guide-insert-data.md#fe083b37@1",
+        "tidb/develop__dev-guide-connection-parameters.md#7369870d@1",
+        "tidb/develop__dev-guide-connection-parameters.md#86078155@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d4a79b16@1"
+      ],
+      "hits_by_prefix": [
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "使用 Prepare API，并配置 useServerPrepStmts=true 才会在 TiDB 服务端预处理；useServerPrepStmts 默认值为 false，默认仅在客户端 prepare。",
+        "同时设置 cachePrepStmts=true，让客户端缓存并复用服务端预处理语句；原文描述的默认行为是每次执行完会 close，不复用。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 0.5,
+        "5": 0.5
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0024",
+      "query": "开启批量改写后，什么样的插入语句才能被合并成一条 SQL 发给 TiDB？批量更新又是怎么处理的？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#d97c276c@1",
+        "tidb/develop__dev-guide-connection-parameters.md#86078155@1",
+        "tidb/develop__dev-guide-connection-parameters.md#1d4c9d0c@1",
+        "tidb/develop__dev-guide-insert-data.md#fe083b37@1",
+        "tidb/develop__dev-guide-optimize-sql-best-practices.md#54d46624@1"
+      ],
+      "hits_by_prefix": [
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "rewriteBatchedStatements=true 后，插入语句只能在 VALUES 后的取值不同、其他 SQL 部分一致时拼成一条；若其他部分也不同则不能合并。",
+        "批量更新达到3处或以上时，SQL 改写成 multiple-queries 后发送，以减少请求开销。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 0.5,
+        "5": 0.5
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0025",
+      "query": "在 (title, published_at) 上建了组合索引后，只按 published_at 过滤的查询还能用上这个索引吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#b469a882@1",
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "tidb/develop__dev-guide-index-best-practice.md#178b1899@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#e46e9339@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "按原文的最左前缀原则，只按 published_at 过滤而不提供最左列 title 条件时，无法使用 (title, published_at) 组合索引。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0026",
+      "query": "为什么 WHERE YEAR(published_at)=2022 用不上 published_at 上的索引？文档给了哪两种改写思路？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#070c5c7c@1",
+        "tidb/develop__dev-guide-index-best-practice.md#b469a882@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#e46e9339@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "YEAR(published_at) 在索引列上做了函数计算，因此优化器不能使用 published_at 的普通索引。",
+        "第一种改写是直接用时间范围：published_at >= '2022-01-01' AND published_at < '2023-01-01'，避免在列上计算。",
+        "第二种思路是为 YEAR(published_at) 创建表达式索引，再保留 YEAR(published_at)=2022 的查询；原文提示表达式索引是需在配置中开启的实验特性。"
+      ],
+      "recall_at": {
+        "1": 0.6666666666666666,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0027",
+      "query": "什么叫覆盖索引优化？查询要怎么写才能吃到这个优化？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#9798f266@1",
+        "tidb/develop__dev-guide-optimize-sql.md#4f15897c@1",
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-index-best-practice.md#9432c58a@1",
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "覆盖索引优化是把查询所需所有列包含进索引，使 TiDB 直接在索引上取到全部所需数据，省去回表读取非索引列。",
+        "查询应仅选择索引包含的列，避免总是 SELECT *；例如 (title, published_at) 索引可覆盖 SELECT title, published_at FROM books WHERE title = 'database'。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0028",
+      "query": "查询里用 IN 做条件时，文档建议后面的匹配值最多不要超过多少个？还有哪种写法是用不上索引的？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#34cc7b5b@1",
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "tidb/develop__dev-guide-index-best-practice.md#9432c58a@1",
+        "tidb/develop__dev-guide-index-best-practice.md#b469a882@1",
+        "tidb/develop__dev-guide-index-best-practice.md#178b1899@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "IN 后匹配条件数量建议不超过300个，更多时执行效率较差。",
+        "文档指出使用 NOT IN 的条件无法使用索引。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0029",
+      "query": "文档为什么说二级索引并不是越多越好？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-create-secondary-indexes.md#d51daabb@1",
+        "tidb/develop__dev-guide-index-best-practice.md#9798f266@1",
+        "tidb/develop__dev-guide-create-table.md#47f8074a@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#3f5a0c57@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#a576e894@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "每新增一个二级索引，插入数据就要额外新增一个 Key-Value，因此写入更慢且占用更多空间。",
+        "索引过多会影响优化器运行时间，不合适的索引还会误导优化器，所以只应建需要的二级索引。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.5,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0030",
+      "query": "表里的 account_id 是 varchar 类型的主键，写成 WHERE account_id=6010000000009801 时为什么会退化成全表扫描？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-optimize-sql.md#f108d550@1",
+        "tidb/develop__dev-guide-implicit-type-conversion.md#0f746c28@1",
+        "tidb/develop__dev-guide-optimize-sql.md#fb46cf5b@1",
+        "tidb/develop__dev-guide-create-secondary-indexes.md#e46e9339@1",
+        "tidb/develop__dev-guide-optimize-sql.md#66bd9551@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ],
+        [
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.5393258426966292
+        ],
+        [
+          0.0,
+          0.5393258426966292
+        ],
+        [
+          0.0,
+          0.5393258426966292
+        ],
+        [
+          0.0,
+          0.5393258426966292
+        ]
+      ],
+      "point_labels": [
+        "varchar 主键与未加引号的数字常量比较，谓词两侧类型不一致，触发隐式类型转换；这类比较按 DOUBLE 进行。",
+        "转换作用在 account_id 列上，执行计划出现 cast 和 TableFullScan，因而索引失效并退化成全表扫描。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.5,
+        "5": 0.5
+      },
+      "mrr": 0.5,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0031",
+      "query": "按对象命名规范，唯一索引和普通索引各用什么前缀？字段名长度和字段个数又有什么上限建议？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-object-naming-guidelines.md#4945eb76@1",
+        "tidb/develop__dev-guide-index-best-practice.md#178b1899@1",
+        "tidb/develop__dev-guide-object-naming-guidelines.md#f14b719f@1",
+        "tidb/develop__dev-guide-create-table.md#e42c802b@1",
+        "tidb/develop__dev-guide-create-table.md#dd172a63@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "唯一索引用 uk_ 前缀，格式为 uk_{表名称简写}_{字段名简写}；普通索引用 idx_ 前缀，格式为 idx_{表名称简写}_{字段名简写}。",
+        "字段名建议不超过30个字符，字段个数建议不大于60。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0032",
+      "query": "TiDB 的 tidb_idle_transaction_timeout 默认是多少秒？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1",
+        "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "tidb/develop__dev-guide-connection-parameters.md#07d45bd9@1",
+        "tidb/develop__dev-guide-choose-driver-or-orm.md#33fda688@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0033",
+      "query": "HikariCP 的 minimumIdle 在连 TiDB 时应该配成多少？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#6c1ae434@1",
+        "tidb/develop__dev-guide-connection-parameters.md#9bcb64b6@1",
+        "tidb/develop__dev-guide-connection-parameters.md#57a3511a@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d85f89c6@1",
+        "tidb/develop__dev-guide-optimize-sql-best-practices.md#f501a9d7@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "minimumIdle是最小空闲连接数，用于空闲时保留连接以应对突发请求；应按业务情况配置，原文没有统一推荐数值。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0034",
+      "query": "TiDB 服务端允许的最大连接数（如 max_connections 之类）默认是多少？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#53f8fdda@1",
+        "tidb/develop__dev-guide-connection-parameters.md#9bcb64b6@1",
+        "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d85f89c6@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0035",
+      "query": "要在 TiDB 里启用表达式索引，需要在配置文件中设置哪个配置项（开关名）？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1",
+        "tidb/develop__dev-guide-create-table.md#eb200e15@1",
+        "tidb/develop__dev-guide-choose-driver-or-orm.md#f9a955a8@1",
+        "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1",
+        "tidb/develop__dev-guide-aws-appflow-integration.md#6fa82f0c@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0036",
+      "query": "用 Cursor Fetch 方式流式取结果时，FetchSize 建议设成多少？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#4b5f7b11@1",
+        "tidb/develop__dev-guide-connection-parameters.md#127b1dd0@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1",
+        "tidb/develop__dev-guide-connection-parameters.md#d4a79b16@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#e40b21ff@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "Cursor Fetch的FetchSize应设为正整数，并在JDBC URL中配置useCursorFetch=true；原文未进一步指定固定批量大小。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0039",
+      "query": "模板有多个根节点的组件，如果不显式绑定 $attrs 会发生什么？怎么避免？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__components__attrs.md#f4825106@1",
+        "vue/src__guide__essentials__class-and-style.md#9179e76b@1",
+        "vue/src__guide__essentials__class-and-style.md#f1393468@1",
+        "vue/src__guide__components__attrs.md#589ca04d@1",
+        "vue/src__guide__components__attrs.md#e7cf67a0@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "多根节点组件没有自动 attribute 透传行为；未显式绑定 $attrs 会产生运行时警告。",
+        "在选定的目标根节点上显式用 v-bind=\"$attrs\" 绑定透传 attributes，即可避免警告。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0040",
+      "query": "能用 watch 去监听组件透传 attribute 的变化吗？不能的话有什么替代办法？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__components__attrs.md#ed6c0483@1",
+        "vue/src__guide__components__attrs.md#eb245112@1",
+        "vue/src__guide__components__attrs.md#d5dd4c2d@1",
+        "vue/src__guide__components__events.md#30cd6c1b@1",
+        "vue/src__guide__components__attrs.md#a922dc1b@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          0,
+          1,
+          2
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "不能通过 watch 侦听 attrs 的变化：它虽保持最新透传值，但并不是响应式的。",
+        "需要响应性时，改用 prop。",
+        "也可用 onUpdated() 在每次更新时结合最新 attrs 执行副作用。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0041",
+      "query": "孙子组件触发的事件，爷爷组件能直接监听吗？跨多层级的组件通信该怎么办？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__components__events.md#8735f14e@1",
+        "vue/src__guide__components__events.md#c9618b34@1",
+        "vue/src__guide__components__provide-inject.md#3a452588@1",
+        "vue/src__guide__essentials__event-handling.md#f6c6522e@1",
+        "vue/src__guide__essentials__component-basics.md#0d94d457@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "爷爷组件不能直接监听孙子组件触发的组件事件：组件事件不冒泡，只能监听直接子组件触发的事件。",
+        "跨多层嵌套或平级组件通信可使用外部事件总线，或全局状态管理方案。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0042",
+      "query": "把 click 这个原生事件名写进组件的 emits 声明后，父组件上的 @click 还会响应原生点击吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__components__events.md#30cd6c1b@1",
+        "vue/src__guide__components__attrs.md#e7cf67a0@1",
+        "vue/src__guide__essentials__component-basics.md#0d94d457@1",
+        "react/src__content__learn__index.md#d059b03d@1",
+        "vue/src__guide__essentials__component-basics.md#fa4f0573@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "click 写入 emits 后，父组件的 @click 只监听组件触发的 click，不再响应原生 click。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0044",
+      "query": "defineAsyncComponent 配了 loadingComponent 之后，它默认要等多久才显示？不配 timeout 时默认值是多少？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__components__async.md#540c14de@1",
+        "vue/src__guide__built-ins__suspense.md#c7a0aa95@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "react/src__content__learn__passing-props-to-a-component.md#c9edc9dd@1",
+        "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "loadingComponent 默认在延迟200毫秒后显示。",
+        "未配置 timeout 时，默认值是 Infinity。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0045",
+      "query": "Suspense 初次渲染没碰到异步依赖会怎样？进入完成状态后，更深层新冒出来的异步依赖会让它重新挂起吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__built-ins__suspense.md#c7a0aa95@1",
+        "vue/src__guide__built-ins__suspense.md#e3faab5a@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1",
+        "vue/src__guide__built-ins__suspense.md#ff8fb9b7@1",
+        "vue/src__guide__built-ins__suspense.md#f46aa256@1"
+      ],
+      "hits_by_prefix": [
+        [
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "初次渲染未遇到异步依赖时，Suspense 直接进入完成状态。",
+        "完成后更深层的新异步依赖不会令其重新挂起；只有默认插槽根节点被替换才会回到挂起状态。"
+      ],
+      "recall_at": {
+        "1": 0.5,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0046",
+      "query": "异步组件放进 Suspense 之后，它自己配置的加载组件和超时还有效吗？想让它自己管加载状态要怎么设？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__built-ins__suspense.md#f46aa256@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1",
+        "vue/src__guide__components__async.md#4a37f2ab@1",
+        "vue/src__guide__components__async.md#540c14de@1",
+        "vue/src__guide__built-ins__suspense.md#ff8fb9b7@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "异步组件默认可挂起；作为祖先 Suspense 的异步依赖时，加载状态归 Suspense 控制，它自身的加载、报错、延时和超时选项均被忽略。",
+        "想让异步组件自行管理加载状态，应在选项中设置 suspensible: false。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0047",
+      "query": "KeepAlive 的 include/exclude 是按什么来匹配组件的？3.2.34 之后用 script setup 还得手写 name 吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__built-ins__keep-alive.md#1f69182c@1",
+        "vue/src__guide__essentials__component-basics.md#fa4f0573@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#a2174d0b@1",
+        "vue/src__guide__components__v-model.md#b9e18d56@1",
+        "vue/src__guide__built-ins__suspense.md#1ed8d614@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "include/exclude 根据组件的 name 选项匹配。",
+        "Vue 3.2.34及以上，使用 script setup 的单文件组件会由文件名自动生成 name，无需手写。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0048",
+      "query": "给 KeepAlive 传了 max 之后，缓存实例数量超了会怎样？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__built-ins__keep-alive.md#e6af4ac9@1",
+        "vue/src__guide__built-ins__keep-alive.md#1f69182c@1",
+        "vue/src__guide__built-ins__keep-alive.md#79d23d31@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#9cd21a7b@1",
+        "vue/src__guide__essentials__computed.md#cc0615f8@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "缓存实例数量即将超过 max 时，销毁最久未访问的缓存实例，为新实例腾出空间，行为类似LRU缓存。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0049",
+      "query": "在 setTimeout 回调里调用 onMounted 会怎么样？有没有可以放在外部函数里的情况？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__essentials__lifecycle.md#2b6ccfe2@1",
+        "vue/src__guide__built-ins__transition.md#31c7219e@1",
+        "react/src__content__learn__manipulating-the-dom-with-refs.md#f9fbcec2@1",
+        "react/src__content__learn__index.md#d059b03d@1",
+        "react/src__content__learn__queueing-a-series-of-state-updates.md#fe6f1014@1"
+      ],
+      "hits_by_prefix": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ],
+        [
+          1.0,
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "在 setTimeout 回调里调用 onMounted 是异步注册，当前组件实例已丢失，不能正常工作；钩子应在组件初始化时同步注册。",
+        "onMounted 可以放在外部函数中，只要调用栈同步，且最终起源于 setup()。"
+      ],
+      "recall_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 1.0,
+      "complete_at": {
+        "1": 1.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0050",
+      "query": "KeepAlive 不传 max 的时候，默认最多能缓存多少个组件实例？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": false,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__built-ins__keep-alive.md#e6af4ac9@1",
+        "vue/src__guide__built-ins__keep-alive.md#79d23d31@1",
+        "vue/src__guide__built-ins__keep-alive.md#1f69182c@1",
+        "vue/src__guide__built-ins__keep-alive.md#dc3879ff@1",
+        "vue/src__guide__built-ins__keep-alive.md#1d0cd55d@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0
+        ]
+      ],
+      "point_coverage_by_prefix": [
+        [
+          0.0
+        ],
+        [
+          0.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ],
+        [
+          1.0
+        ]
+      ],
+      "point_labels": [
+        "不传max时默认缓存内部所有组件实例，缓存数量取决于内部实例集合，原文没有给出一个固定默认数量。"
+      ],
+      "recall_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      },
+      "mrr": 0.3333333333333333,
+      "complete_at": {
+        "1": 0.0,
+        "3": 1.0,
+        "5": 1.0
+      }
+    },
+    {
+      "id": "h_0051",
+      "query": "Suspense 的 timeout prop 默认是多少毫秒？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__built-ins__suspense.md#c7a0aa95@1",
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1",
+        "react/src__content__learn__passing-props-to-a-component.md#c9edc9dd@1",
+        "vue/src__guide__components__props.md#c002938c@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0052",
+      "query": "异步组件加载失败后，Vue 默认会重试几次？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__components__async.md#540c14de@1",
+        "vue/src__guide__built-ins__suspense.md#f46aa256@1",
+        "vue/src__guide__built-ins__suspense.md#de8c1aba@1",
+        "vue/src__guide__best-practices__performance.md#d383b503@1",
+        "vue/src__guide__components__async.md#368f00d0@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0053",
+      "query": "组件用 kebab-case 名字注册后，在模板里能写成 PascalCase 标签来引用吗？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "vue/src__guide__components__registration.md#4c9c5250@1",
+        "vue/src__guide__essentials__component-basics.md#b312940f@1",
+        "vue/src__guide__essentials__component-basics.md#f0e89256@1",
+        "vue/src__guide__essentials__component-basics.md#a803bc56@1",
+        "vue/src__guide__components__events.md#8735f14e@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    },
+    {
+      "id": "h_0054",
+      "query": "hydrateOnIdle 不传参数时，默认的最大超时是多少？",
+      "annotation_status": "complete",
+      "evaluated": true,
+      "is_no_answer": true,
+      "refused": false,
+      "retrieved": [
+        "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1",
+        "vue/src__guide__components__async.md#540c14de@1",
+        "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#b13f3ce1@1",
+        "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1",
+        "vue/src__guide__built-ins__keep-alive.md#e6af4ac9@1"
+      ],
+      "hits_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_coverage_by_prefix": [
+        [],
+        [],
+        [],
+        [],
+        []
+      ],
+      "point_labels": [],
+      "recall_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      },
+      "mrr": 0.0,
+      "complete_at": {
+        "1": 0.0,
+        "3": 0.0,
+        "5": 0.0
+      }
+    }
+  ],
+  "provenance": {
+    "annotation_freeze_commit": "b63d485ab21a882093433e0d62021acb33e28c35",
+    "qrels_sha256": "331be19cb621e971506f1d4d38ac8bab390d94026781ff76d1401f08e0b953a6",
+    "saved_report": "experiments/holdout-v1/audit/eval.configA.bge.weighted.json",
+    "saved_report_sha256": "4fd970ffe21ceb78363bc3cd32b9b54138fb34aec61ecf504e490898e03c79a5",
+    "chunk_table_sha256": "c372aba06886d2fa875abfec8663e164585a64f0af929fef02e50e7fe7f997a0",
+    "config_declared_in_archive": {
+      "retrieval": {
+        "top_k": 20,
+        "final_k": 5,
+        "fusion_alpha": 0.7,
+        "sparse_enabled": true,
+        "dense_enabled": true,
+        "rerank_enabled": true,
+        "refuse_threshold": 0.05
+      },
+      "chunking": {
+        "strategy": "heading",
+        "chunk_size": 300,
+        "overlap": 50
+      },
+      "embedding": {
+        "provider": "bge",
+        "dim": 512,
+        "model_name": "BAAI/bge-small-zh-v1.5"
+      },
+      "llm": {
+        "provider": "none",
+        "model": "",
+        "api_key": "",
+        "base_url": ""
+      },
+      "data_dir": "data/raw",
+      "index_dir": "data/index"
+    },
+    "config_limit": "Original report has no embedded effective-config snapshot; configuration label comes from archived YAML.",
+    "model_rerun": false,
+    "actual_answer_text_available": false
+  }
+}

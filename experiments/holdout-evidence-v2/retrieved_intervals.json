@@ -1,0 +1,1574 @@
+{
+  "k8s/content__zh-cn__docs__concepts__architecture___index.md#2f4592a5@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture___index.md",
+    "start": 5019,
+    "end": 5718,
+    "text_sha256": "2f4592a509816c9827ec0521a1f1220959a0a4ff1a844c788cc3175ff1ba8027"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture___index.md#be1740cb@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture___index.md",
+    "start": 1353,
+    "end": 1969,
+    "text_sha256": "be1740cb72fef0d22b6b74d9cb362c5c8cc08af40daed116241e4425018fe06b"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#312bcf3f@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "start": 346,
+    "end": 935,
+    "text_sha256": "312bcf3fc6e909539378f298dd7f4888390e7ec0204912a30edb2ada2d731b3c"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#5ef232c6@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "start": 3367,
+    "end": 3638,
+    "text_sha256": "5ef232c6017dd12a162364b18af4e35b06fe15a3f6193745587decdd3333b99b"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#7a3592e2@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "start": 2237,
+    "end": 2811,
+    "text_sha256": "7a3592e2990564b229ffe9b59dcd51c336fab551e7e8d95beb831248ec8569d3"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#82918354@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "start": 1624,
+    "end": 2237,
+    "text_sha256": "82918354f2c5bcc2bfbe0ca5f6f39a7d83a85c7860a12f7c4937ac2370bb3673"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#b255fd41@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "start": 935,
+    "end": 1624,
+    "text_sha256": "b255fd41851341ed323a92fde917fd841c2b5298f920ebe16a295449dc5d92b8"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md#fd4902bd@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cgroups.md",
+    "start": 3638,
+    "end": 3980,
+    "text_sha256": "fd4902bd934869fcda37988e54caf6f91ca309c2983f57522a1262c012507563"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#0116ddcc@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+    "start": 765,
+    "end": 1208,
+    "text_sha256": "0116ddccab916233d0bdc9f6c80b62df7ad731100404434ea1093020688682d3"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#01d81c0d@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+    "start": 2224,
+    "end": 3161,
+    "text_sha256": "01d81c0de3b0c6eb5d4cab744240a3312b92ce21504c2df64d75736c72cbaa1c"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#06e42dcd@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+    "start": 1581,
+    "end": 2224,
+    "text_sha256": "06e42dcd5badac41b352ccfd54fed2d8556b1d677987254edb1808d539fa63b9"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#126d6b59@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+    "start": 3161,
+    "end": 3746,
+    "text_sha256": "126d6b597954b20952b07e4ef372a8b240fed697859ba41f8eaffadd200573b1"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#52dadf72@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+    "start": 1208,
+    "end": 1581,
+    "text_sha256": "52dadf720714aeefcd2ea6786de726f3105561eebb422dd8a69c486b7b23b31a"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md#78969b64@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__cloud-controller.md",
+    "start": 358,
+    "end": 765,
+    "text_sha256": "78969b64c21fb4b6c26f4f994edb7e53e41f2c579fab1bf75909fce07550e237"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md#3f3d5a12@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md",
+    "start": 1410,
+    "end": 1938,
+    "text_sha256": "3f3d5a12620bc88ad18ab556422470533876533547a3895529837faaf490b695"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md#7e35599e@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md",
+    "start": 2431,
+    "end": 2859,
+    "text_sha256": "7e35599edf9b8e76a9e342048bd6871a99ddab9192f4783387470d6cb2a5d7c6"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md#9868d1e2@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__control-plane-node-communication.md",
+    "start": 1322,
+    "end": 1410,
+    "text_sha256": "9868d1e2c0157b4a6a292cc47c3fead5032aa16f7d3cfa6d290fd83b5a1a1fe7"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__controller.md#536382c5@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
+    "start": 253,
+    "end": 790,
+    "text_sha256": "536382c53688bfc9dcb58690d8251b616a2b74af1a68caee36b3d0d3f03f1564"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__controller.md#5d8aa015@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__controller.md",
+    "start": 2637,
+    "end": 3013,
+    "text_sha256": "5d8aa0150b322c862194c639544e3ae606ed6f5cf65bfbde4de9287f8b88e04b"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#518ae6da@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "start": 5197,
+    "end": 5518,
+    "text_sha256": "518ae6dad9bdd1d4f63b0e536ba3cd8f9ce77c75e102b2e88f9ae7cc2662c17e"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#6c8be308@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "start": 2378,
+    "end": 2667,
+    "text_sha256": "6c8be3086b9b639cfbe7ea16f378841d662e352298268d948c7f166178b0be2e"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#79de22bf@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "start": 5518,
+    "end": 5772,
+    "text_sha256": "79de22bfc2d3755a11affa0283881bb55387f3710831d9a7bd5ca583da142896"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#9115d7af@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "start": 4424,
+    "end": 4948,
+    "text_sha256": "9115d7afb2f3dc260362ea6b1928c442c0057d90c45721aa3db968b09c8bc7a9"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c61bb61b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "start": 3953,
+    "end": 4424,
+    "text_sha256": "c61bb61b5005487d297bafdacd38817911c1984c045a792eca2a72b501aaa37a"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#c8d9619f@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "start": 3504,
+    "end": 3953,
+    "text_sha256": "c8d9619f7be0402d68e8739b4f82b4ef34b5c320ef445d92dbf5de958ddd6f57"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md#cc30dbde@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__garbage-collection.md",
+    "start": 4948,
+    "end": 5197,
+    "text_sha256": "cc30dbde5a8fad285c990ac6eb7441861c74a78a8e9847020479c3cc48b9ee4b"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__leases.md#2c5d839e@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+    "start": 266,
+    "end": 629,
+    "text_sha256": "2c5d839e3ad7b529db50647b56eed1642e81c927761a7e1ce9c594d907558f1e"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__leases.md#7e8a8940@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__leases.md",
+    "start": 629,
+    "end": 1200,
+    "text_sha256": "7e8a894019262e4c0f268faaeabf54bcaebbf56b717865525c579fff2295250f"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#3235c726@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+    "start": 2568,
+    "end": 3038,
+    "text_sha256": "3235c726800d4de23161b2180935de1f620b046c1dfc1fadeaaddcbca3034d9a"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#4ff62473@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+    "start": 1812,
+    "end": 2101,
+    "text_sha256": "4ff62473f567c7bc619d05127f13c3b01aa81cc5ad16c6e98c8941194fd694c7"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#5d504922@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+    "start": 3533,
+    "end": 3831,
+    "text_sha256": "5d504922e296a4205d4d274e41e075009bb38176bd402dde04b9bb4e3ab2a5c0"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#f30b2a8e@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+    "start": 1228,
+    "end": 1812,
+    "text_sha256": "f30b2a8ef6cb908233ad1f64e570c6140759b272b562fb3a67bbc6dc4071960d"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#f990bd31@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+    "start": 3038,
+    "end": 3533,
+    "text_sha256": "f990bd31cd18532f376baeea8d4bc2e9009faeedd884731cd7784bd07de7edd5"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md#fee0d9e7@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__mixed-version-proxy.md",
+    "start": 594,
+    "end": 1228,
+    "text_sha256": "fee0d9e7e2745b5c1a798d60f0ff908f65dd88f4820159303c2266349e2fb879"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#074593d4@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 2594,
+    "end": 3177,
+    "text_sha256": "074593d43949713c6d1a5653be3a5951f648b964307467f56ff442d44295d0f4"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#1b35dd53@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 5645,
+    "end": 6113,
+    "text_sha256": "1b35dd53de4d2cfd852b53ae3cffb7f58095eee81182901c576a0f1bdb1e0f65"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32b7d709@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 5329,
+    "end": 5645,
+    "text_sha256": "32b7d709f34147d098f77e316b80e73a6ece6506783e44ea3de1fa66426f722a"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#32ff949c@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 6523,
+    "end": 6759,
+    "text_sha256": "32ff949c385da9cbd1f58b05332cca72b1f74e6ab53fed2fd8c159d226b66983"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#34d18973@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 4565,
+    "end": 5011,
+    "text_sha256": "34d18973fb956311afd29637d6e0b5e4228265d6826dfabc954e4417f8e11d08"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#57b52897@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 625,
+    "end": 1092,
+    "text_sha256": "57b5289740e246b6f25bc698f800db0b08803451294f66a46a8dde32b98d2885"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#75940b7a@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 1092,
+    "end": 1574,
+    "text_sha256": "75940b7a680e427b8a228060e703a1e35dda1a07e1757858197b8f78a7717002"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#922e50a2@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 5011,
+    "end": 5329,
+    "text_sha256": "922e50a2a36a91b18104777361937ad9d745872a8946de7788e9ebe20a7a7768"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#c9356bc7@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 7763,
+    "end": 8414,
+    "text_sha256": "c9356bc7de9927c18e3825e547e4e849ae9003e661774c648f2bf6cc7518be8b"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#e56b4a81@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 4151,
+    "end": 4565,
+    "text_sha256": "e56b4a81d1115f779c01acf730d2d71a104a48224643f4d846516cf0223c9b55"
+  },
+  "k8s/content__zh-cn__docs__concepts__architecture__nodes.md#fc03c4ff@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__architecture__nodes.md",
+    "start": 6113,
+    "end": 6523,
+    "text_sha256": "fc03c4ffa79be55003acc7fa0c70122858db019a6152183cef1e81180ab0b78a"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md#5586831f@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration___index.md",
+    "start": 94,
+    "end": 627,
+    "text_sha256": "5586831f2e6590cf5ca9a371f14f353124edefa8d9a12ed2406b364e13711cf9"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md#5f862bed@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md",
+    "start": 604,
+    "end": 1054,
+    "text_sha256": "5f862bedfed683575cf5ed9657a072a34ff20a57dce3cbbe60a5b8c3bc50ec0a"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md#6590e953@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__addons.md",
+    "start": 1054,
+    "end": 1475,
+    "text_sha256": "6590e95336c1cd542f2722ea0612ceb062ba4b3f731b9a460ae8bd2b3185f4bc"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#16eba59b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "start": 3320,
+    "end": 3764,
+    "text_sha256": "16eba59b47f701813cf57f0fa2ba326c25131b9e445b2af704f8edce9de952e5"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#3a05a111@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "start": 15058,
+    "end": 15550,
+    "text_sha256": "3a05a11128c046c81a1dead17b49e552665270d4890124954494fa775ca7c6e7"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#3ff4871f@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "start": 8979,
+    "end": 9498,
+    "text_sha256": "3ff4871f957f86db1e6a23055e5602207596bdf75c6c280fd79da339b243309b"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#40960d93@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "start": 7837,
+    "end": 8178,
+    "text_sha256": "40960d937f3dcb3355b9b10ca976251f28bed4581c6b009aec63272f9e3b43ff"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#48a6c213@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "start": 13061,
+    "end": 13546,
+    "text_sha256": "48a6c213d575c86f60ad4485c4fa9781989a57996bc7b9e07e2bbff98e10c180"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md#8bf2317a@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__admission-webhooks-good-practices.md",
+    "start": 5570,
+    "end": 5882,
+    "text_sha256": "8bf2317a85146929ecd07661d9510e6a84ccc4d28ec17821b34e95c321ac81a6"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__compatibility-version.md#2acd0ed4@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__compatibility-version.md",
+    "start": 93,
+    "end": 447,
+    "text_sha256": "2acd0ed4971299507fb1341b90b742e6192be058315d4761379a63d88144bc63"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#0223a45b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md",
+    "start": 745,
+    "end": 1050,
+    "text_sha256": "0223a45bffe87bf6ce61705925337baa6dc52cf5d427e15891ff62977fd52981"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#20bfdf62@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md",
+    "start": 1050,
+    "end": 1680,
+    "text_sha256": "20bfdf62807f3344f999e83bb70224d046a642708514ce66bd3352c0d7f678cb"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md#43788b79@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md",
+    "start": 2040,
+    "end": 2582,
+    "text_sha256": "43788b79c488feb763ac1faddd7a2dfaff27be6a5995d0fc0d9d2149419da549"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#54416cd3@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+    "start": 1668,
+    "end": 2182,
+    "text_sha256": "54416cd3eb7cc3bb9fe1a4d29b76b5cc59ab7e5da762d92478210a77fd4a4a71"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#5da1829c@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+    "start": 3742,
+    "end": 4056,
+    "text_sha256": "5da1829cfff5f3c8aa7ba81ac1e426a4e1a6ef94b5feb147185a066b0b73e9bb"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#8ffc90a7@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+    "start": 2738,
+    "end": 3093,
+    "text_sha256": "8ffc90a77e6610697db9d3e96d8fb99318df4826b8d6ef8e963df3031cb01556"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#c33ab52b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+    "start": 345,
+    "end": 829,
+    "text_sha256": "c33ab52b174ef6088e955c03b66177544502d2ff193423d3615560755ab75833"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#c9cd48c0@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+    "start": 60,
+    "end": 345,
+    "text_sha256": "c9cd48c0e9b8c8ac39bcca903725e90b9e925deef332b4fb46354b5b58cccd34"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md#e76b5555@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__dra.md",
+    "start": 2182,
+    "end": 2738,
+    "text_sha256": "e76b5555f0045ef7d71f8bb8527aaf11577ff88669aa2205bd6d0fc42841189b"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#0731b4b2@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 15029,
+    "end": 15515,
+    "text_sha256": "0731b4b291fac9605c179ced64a567d4b53f9c44838852a348c1cf1fccddab1f"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#280be166@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 12835,
+    "end": 13387,
+    "text_sha256": "280be166ee837a9e0e62dd676e79d8aa4d00c7721ec2827aeb952b7d9b06bbef"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#581aa531@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 5472,
+    "end": 5830,
+    "text_sha256": "581aa531778a579c19d54ca8593f3b685afcd51659298c928d2e4085084fc43f"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#9cd21a7b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 4716,
+    "end": 5200,
+    "text_sha256": "9cd21a7babd15fe02897e13fa4181ebd2366956209ad9000fcea82df957c7b29"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#a2174d0b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 7947,
+    "end": 8302,
+    "text_sha256": "a2174d0b24e6a184aac790d1265c7a0eeb0a2c0e097c124afa2cd3f448641863"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#b13f3ce1@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 13387,
+    "end": 13744,
+    "text_sha256": "b13f3ce1d25b7b60625e6db4a64fa0b0c27a836c553e0224e5a3b4ecd869026b"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#e3b1a6df@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 4188,
+    "end": 4716,
+    "text_sha256": "e3b1a6df99fe81a61190cd5bb76aebba4b2b40681fdb5c3d6c138aa761976842"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md#e40b21ff@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__flow-control.md",
+    "start": 2654,
+    "end": 2956,
+    "text_sha256": "e40b21ff13ee6c56ae58cf414fc5c7f1298d043b1f58c1002743f8a03bd13e53"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md#25cd9f10@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md",
+    "start": 803,
+    "end": 1382,
+    "text_sha256": "25cd9f10f0f466ed999f30f130bb267dd941a6e222f9f595333c7e3e1c626cd4"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md#b2d14381@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__kube-state-metrics.md",
+    "start": 530,
+    "end": 803,
+    "text_sha256": "b2d14381631a2c1d3d7256d11b4316313e78c7f42c15f13f0c874a9e7504ffc8"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#3613e5f3@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+    "start": 4640,
+    "end": 5162,
+    "text_sha256": "3613e5f3053dbac8067aad6e23c493bd82b5b85435cf3d821dda4598718e6da3"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#5530dde7@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+    "start": 4139,
+    "end": 4640,
+    "text_sha256": "5530dde71b030fb7c1839bfa0618fee25ce94c53d4b33aa909c3887262a0d72c"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#67d3d7c7@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+    "start": 5737,
+    "end": 6176,
+    "text_sha256": "67d3d7c7c08e5cfb9418ff7241a041a28d1fa456f680cf8e4857fdb526e12e9a"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6a5250dd@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+    "start": 2604,
+    "end": 3221,
+    "text_sha256": "6a5250dd801af07e5a04125b6ea2bce56d385ec99e698de142f4efd0c4250037"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#6eaa9b0b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+    "start": 6564,
+    "end": 6988,
+    "text_sha256": "6eaa9b0bb8dbc0a271b49cf2c828ad2f085e5fb2b7993fb57283043aee70bff2"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#cd7b29c9@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+    "start": 2290,
+    "end": 2604,
+    "text_sha256": "cd7b29c9841f31884f6802d184f7a1cf40f5de6f5103a66eb9cb457cc2ce0622"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md#e43cc967@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md",
+    "start": 3519,
+    "end": 4139,
+    "text_sha256": "e43cc9676a711838cb8fb47e079373500036049e24bd5fa2f475193f766387b5"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md#8af2273c@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__networking.md",
+    "start": 618,
+    "end": 997,
+    "text_sha256": "8af2273c0a1a06f8b1a434e049415dbb49ecf4912f438aba079e8d7f899d076e"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#1dbebac4@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 2765,
+    "end": 3426,
+    "text_sha256": "1dbebac4b8108a0ee88d3935453549ace834de44d3b7a18602670c246ef7a23c"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#3cb675c0@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 7622,
+    "end": 7952,
+    "text_sha256": "3cb675c0dbd76ddf96ca3c5b06af3b9f0bbbeb86abb387f4421711b7072e6e0c"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#4dcec36f@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 1760,
+    "end": 2303,
+    "text_sha256": "4dcec36fa1a2e2f029b165106c9568f2cc39d0a29e8515faf26b0f6a5b8f4999"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#56ad0ec7@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 2303,
+    "end": 2765,
+    "text_sha256": "56ad0ec7161410bca868f6ae40b20f1003b7ae03136752aea368e1104169a723"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#62206cf8@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 6654,
+    "end": 6901,
+    "text_sha256": "62206cf8ab8a5b42343b794a442ebed1e5934e6e23efd3f4d36e8be2b09a18ff"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6c3208c1@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 5989,
+    "end": 6654,
+    "text_sha256": "6c3208c1cbdca037cfe21602f051e5a1f5e14ff5fc4c0b72861c12d4ccbf308f"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#6db4f21d@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 3426,
+    "end": 4079,
+    "text_sha256": "6db4f21dc95510a794a3714bf1a5cb4de0ca6555607044ab4efe1c99e063072f"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#d2877482@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 4471,
+    "end": 5137,
+    "text_sha256": "d2877482da9456f79a3007f815f9d64372daf909a7eba410a4b44c98e2c1dc86"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#e616d619@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 619,
+    "end": 1170,
+    "text_sha256": "e616d619eb70725350b592e4aaa209fcdc5f3d74ffc761b9dce4b6b58663511d"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md#fbf828a9@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md",
+    "start": 5137,
+    "end": 5989,
+    "text_sha256": "fbf828a941a0ca4b3a12acf290715242a3e29f01a0b76229611f5d3ad444b9f2"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md#5fabf937@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md",
+    "start": 1658,
+    "end": 2531,
+    "text_sha256": "5fabf9370d7f05869b40d5dc2b207adaf14b77320f9244253810151a87542328"
+  },
+  "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md#9155a78b@1": {
+    "doc": "k8s/content__zh-cn__docs__concepts__cluster-administration__observability.md",
+    "start": 6095,
+    "end": 6682,
+    "text_sha256": "9155a78b8a9c4f6af9bd89ccdac0b55144d0d671948e332726c5f1bd2da426e4"
+  },
+  "react/src__content__learn__add-react-to-an-existing-project.md#30b1721c@1": {
+    "doc": "react/src__content__learn__add-react-to-an-existing-project.md",
+    "start": 792,
+    "end": 1137,
+    "text_sha256": "30b1721c42e107dfaeb92c42e271a4affe313bc7805e1a274c0045c876f86caa"
+  },
+  "react/src__content__learn__add-react-to-an-existing-project.md#3eda5a00@1": {
+    "doc": "react/src__content__learn__add-react-to-an-existing-project.md",
+    "start": 4333,
+    "end": 4936,
+    "text_sha256": "3eda5a0019e5485445560eefed54b8227e8510f93100e9009b3af667484adf0f"
+  },
+  "react/src__content__learn__add-react-to-an-existing-project.md#74362b11@1": {
+    "doc": "react/src__content__learn__add-react-to-an-existing-project.md",
+    "start": 244,
+    "end": 792,
+    "text_sha256": "74362b1146569e398c7541245f392bb2a7c1e3dc9f785fee92ab79fb31ed91f6"
+  },
+  "react/src__content__learn__add-react-to-an-existing-project.md#ae47c449@1": {
+    "doc": "react/src__content__learn__add-react-to-an-existing-project.md",
+    "start": 2226,
+    "end": 2871,
+    "text_sha256": "ae47c449ba50ab939d3aae0d1f501b273b2344720e5d9671079784ae2b9a24fd"
+  },
+  "react/src__content__learn__build-a-react-app-from-scratch.md#001ca4d3@1": {
+    "doc": "react/src__content__learn__build-a-react-app-from-scratch.md",
+    "start": 589,
+    "end": 1151,
+    "text_sha256": "001ca4d32740032c64210d74017c365ad21634c4efe53d55bc2dfd7c9059f86d"
+  },
+  "react/src__content__learn__build-a-react-app-from-scratch.md#d5b5c5bd@1": {
+    "doc": "react/src__content__learn__build-a-react-app-from-scratch.md",
+    "start": 1151,
+    "end": 1709,
+    "text_sha256": "d5b5c5bd6fe1fb1d987a690334f1906cc3dc98bfb524492adc13e396b7be19a0"
+  },
+  "react/src__content__learn__creating-a-react-app.md#341e2df6@1": {
+    "doc": "react/src__content__learn__creating-a-react-app.md",
+    "start": 163,
+    "end": 669,
+    "text_sha256": "341e2df64eedec38c7b8871b986710ab40a31b85df43c4dc364c5cb6e7227886"
+  },
+  "react/src__content__learn__creating-a-react-app.md#5a3369f8@1": {
+    "doc": "react/src__content__learn__creating-a-react-app.md",
+    "start": 3395,
+    "end": 4040,
+    "text_sha256": "5a3369f8b51045bab892e9a6459441bbef59c2995ee3a565be9db23168d73e95"
+  },
+  "react/src__content__learn__creating-a-react-app.md#691b5f0d@1": {
+    "doc": "react/src__content__learn__creating-a-react-app.md",
+    "start": 2023,
+    "end": 2613,
+    "text_sha256": "691b5f0d9348f38adb7155c68a1de6bf3dc3c696c5c6056b4277846de9811073"
+  },
+  "react/src__content__learn__creating-a-react-app.md#cd268af0@1": {
+    "doc": "react/src__content__learn__creating-a-react-app.md",
+    "start": 1248,
+    "end": 1906,
+    "text_sha256": "cd268af0185830f3a07a051d093c381badf0ffedfe657f6d6af3feb04523d58e"
+  },
+  "react/src__content__learn__creating-a-react-app.md#e3e1ec2d@1": {
+    "doc": "react/src__content__learn__creating-a-react-app.md",
+    "start": 669,
+    "end": 1248,
+    "text_sha256": "e3e1ec2df438f48dd13df8cfb48b5df031dc04eb874455b7556bdd9e625f44a1"
+  },
+  "react/src__content__learn__editor-setup.md#0a951ebf@1": {
+    "doc": "react/src__content__learn__editor-setup.md",
+    "start": 1095,
+    "end": 1617,
+    "text_sha256": "0a951ebf9dd8aa7c3cd2197834822f0cd7c3be01580f3e0ca52a043acf375aa5"
+  },
+  "react/src__content__learn__editor-setup.md#7b764a9b@1": {
+    "doc": "react/src__content__learn__editor-setup.md",
+    "start": 1617,
+    "end": 2036,
+    "text_sha256": "7b764a9bb4026cc245f105544bd628d6236c735e286b50712772fcfb3aa46fcc"
+  },
+  "react/src__content__learn__editor-setup.md#dd91aaf6@1": {
+    "doc": "react/src__content__learn__editor-setup.md",
+    "start": 2036,
+    "end": 2316,
+    "text_sha256": "dd91aaf62a39089a19ac763011241ee508ea67e22428307e8270b4f0e60458c9"
+  },
+  "react/src__content__learn__index.md#d059b03d@1": {
+    "doc": "react/src__content__learn__index.md",
+    "start": 5197,
+    "end": 5547,
+    "text_sha256": "d059b03db3ca3f293acbcf6b91ca01b642f2b370cba5882becf41c5c4889c427"
+  },
+  "react/src__content__learn__installation.md#34b8712e@1": {
+    "doc": "react/src__content__learn__installation.md",
+    "start": 119,
+    "end": 761,
+    "text_sha256": "34b8712e0fe8b70e37a5d0b4948ed3c8639a43a1359ab6741d8a07bb8edc4ea3"
+  },
+  "react/src__content__learn__installation.md#56d23237@1": {
+    "doc": "react/src__content__learn__installation.md",
+    "start": 1058,
+    "end": 1381,
+    "text_sha256": "56d23237ea347a3bbcd453fba381717f8ac99a82f0f94fe152860362b929f33d"
+  },
+  "react/src__content__learn__installation.md#8153ec93@1": {
+    "doc": "react/src__content__learn__installation.md",
+    "start": 761,
+    "end": 885,
+    "text_sha256": "8153ec93c650fa93808c3721b5063bcc96a2a5f83bc7bbfb3f4abab436ffb9e6"
+  },
+  "react/src__content__learn__installation.md#ee7107db@1": {
+    "doc": "react/src__content__learn__installation.md",
+    "start": 885,
+    "end": 1058,
+    "text_sha256": "ee7107db372a4e21b805fbd6c0cb121dfe0f2e7b5f5e49e49b4970a06edd2b9a"
+  },
+  "react/src__content__learn__keeping-components-pure.md#32914c6e@1": {
+    "doc": "react/src__content__learn__keeping-components-pure.md",
+    "start": 2889,
+    "end": 3386,
+    "text_sha256": "32914c6e4d5c3caf53a2e0483b3206b7d7f32e50ca52a31a32a06a61c84a2b3c"
+  },
+  "react/src__content__learn__keeping-components-pure.md#d48b8067@1": {
+    "doc": "react/src__content__learn__keeping-components-pure.md",
+    "start": 5050,
+    "end": 5324,
+    "text_sha256": "d48b80674f368023de1303dc3d01736d235de5b371d59721e3abd8a19f2e88b6"
+  },
+  "react/src__content__learn__manipulating-the-dom-with-refs.md#05c1f8c6@1": {
+    "doc": "react/src__content__learn__manipulating-the-dom-with-refs.md",
+    "start": 2349,
+    "end": 3825,
+    "text_sha256": "05c1f8c656158edf1886435a188d0570a881b8395c84f259146890c5ea93e5bd"
+  },
+  "react/src__content__learn__manipulating-the-dom-with-refs.md#f9fbcec2@1": {
+    "doc": "react/src__content__learn__manipulating-the-dom-with-refs.md",
+    "start": 4493,
+    "end": 5188,
+    "text_sha256": "f9fbcec2f561b752c496ba813f3914bc9a03ce6bc07fb375495175ddcae34570"
+  },
+  "react/src__content__learn__passing-data-deeply-with-context.md#3dd962c1@1": {
+    "doc": "react/src__content__learn__passing-data-deeply-with-context.md",
+    "start": 12992,
+    "end": 13763,
+    "text_sha256": "3dd962c1160d0444549ea2529a7162054c239bbb712cdabd702d683df523a1b9"
+  },
+  "react/src__content__learn__passing-props-to-a-component.md#c9edc9dd@1": {
+    "doc": "react/src__content__learn__passing-props-to-a-component.md",
+    "start": 3760,
+    "end": 4115,
+    "text_sha256": "c9edc9ddf55be4ab43f216672e8910808200aeec12b91a2fa71ce060ef1dfb50"
+  },
+  "react/src__content__learn__queueing-a-series-of-state-updates.md#fe6f1014@1": {
+    "doc": "react/src__content__learn__queueing-a-series-of-state-updates.md",
+    "start": 2775,
+    "end": 3428,
+    "text_sha256": "fe6f1014d14747c48e835a5a1650d4d6eb8f8917646e1b07a6154776f1ce882e"
+  },
+  "react/src__content__learn__react-compiler__debugging.md#735e535b@1": {
+    "doc": "react/src__content__learn__react-compiler__debugging.md",
+    "start": 94,
+    "end": 586,
+    "text_sha256": "735e535b72197e13d81cb8f459b99b5db1505fe841946c18432db75298b44216"
+  },
+  "react/src__content__learn__react-compiler__debugging.md#a2be366f@1": {
+    "doc": "react/src__content__learn__react-compiler__debugging.md",
+    "start": 1722,
+    "end": 2046,
+    "text_sha256": "a2be366f8db52cd14fd1915a41b30933190f6b37402bc0042f0fafbad282748d"
+  },
+  "react/src__content__learn__react-compiler__debugging.md#e2965bc9@1": {
+    "doc": "react/src__content__learn__react-compiler__debugging.md",
+    "start": 930,
+    "end": 1424,
+    "text_sha256": "e2965bc97f503f2b5ad4770989800682c0080d62a2732747a8757aa7cedd9d9e"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#2321db72@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 3083,
+    "end": 3776,
+    "text_sha256": "2321db72d88ec5589e3157be7ace1df1708a712324ce56f6aacf5c07e9cfd15a"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#45a710af@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 3776,
+    "end": 4000,
+    "text_sha256": "45a710afdb29315262acfcbd8e1bc7f613aea920916386dedf44ab148cdf37f9"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#5b47e047@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 187,
+    "end": 603,
+    "text_sha256": "5b47e047126807ecdc901edb5c8236b85f80397cfaee5607b3b4b93474deab34"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#7620beac@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 603,
+    "end": 817,
+    "text_sha256": "7620beac925d7e22536a802177ab171e5b0663216ccf55693ec00c919586bb00"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#96f1e7da@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 817,
+    "end": 1684,
+    "text_sha256": "96f1e7dab5f281c9952ef9f7b23f9ad7eb2c94d7dac172870e18d132194e4c2b"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#b51cfaa7@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 4000,
+    "end": 4198,
+    "text_sha256": "b51cfaa7f852797ad2d02d0891fc2d15baf8d0cdcf5a0f80ce64c59509cf0754"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#b8b09380@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 1684,
+    "end": 2162,
+    "text_sha256": "b8b09380aaa9c2468b12b5a5c5e55e9b2ba9761110a5f7b048f9210f90f4f775"
+  },
+  "react/src__content__learn__react-compiler__incremental-adoption.md#e3983c4c@1": {
+    "doc": "react/src__content__learn__react-compiler__incremental-adoption.md",
+    "start": 2162,
+    "end": 3083,
+    "text_sha256": "e3983c4c32c6460a97f4e36769c6593289848ff8d1259f5c5ccc8794e490f1aa"
+  },
+  "react/src__content__learn__react-compiler__index.md#1aa54d0b@1": {
+    "doc": "react/src__content__learn__react-compiler__index.md",
+    "start": 563,
+    "end": 831,
+    "text_sha256": "1aa54d0b6d17cd4aec7a8294f3d7424e467b9bde179cb5c93aaa36a0b1dd9f43"
+  },
+  "react/src__content__learn__react-compiler__index.md#4baf8b32@1": {
+    "doc": "react/src__content__learn__react-compiler__index.md",
+    "start": 278,
+    "end": 415,
+    "text_sha256": "4baf8b324e6b206e9664d2be6cd1aa8433f03969f55b8ad573cb1b938461f385"
+  },
+  "react/src__content__learn__react-compiler__index.md#9de42f6f@1": {
+    "doc": "react/src__content__learn__react-compiler__index.md",
+    "start": 831,
+    "end": 961,
+    "text_sha256": "9de42f6f3a41a96e47bf7004bb326358a762f62e1a93a253a77224932a29a48d"
+  },
+  "react/src__content__learn__react-compiler__index.md#c480441e@1": {
+    "doc": "react/src__content__learn__react-compiler__index.md",
+    "start": 175,
+    "end": 278,
+    "text_sha256": "c480441e57ee7222686df9a131fe6428700c1561a46dd26904f517138932c329"
+  },
+  "react/src__content__learn__react-compiler__index.md#ecfa5de2@1": {
+    "doc": "react/src__content__learn__react-compiler__index.md",
+    "start": 1,
+    "end": 175,
+    "text_sha256": "ecfa5de29fc7b941dc7d0d66146ced9335e979a76ad7953001cd8cd75898c7ed"
+  },
+  "react/src__content__learn__react-compiler__index.md#fd7eca4e@1": {
+    "doc": "react/src__content__learn__react-compiler__index.md",
+    "start": 415,
+    "end": 563,
+    "text_sha256": "fd7eca4ee5e9624bb21fcd52256dbe521855630d5502e07d0031baae6c3a9621"
+  },
+  "tidb/develop__dev-guide-aws-appflow-integration.md#6fa82f0c@1": {
+    "doc": "tidb/develop__dev-guide-aws-appflow-integration.md",
+    "start": 2318,
+    "end": 2998,
+    "text_sha256": "6fa82f0cf17fbae16666744293c0b92ebf8fd4f03840094571413812c0fea5b2"
+  },
+  "tidb/develop__dev-guide-aws-appflow-integration.md#89c380e4@1": {
+    "doc": "tidb/develop__dev-guide-aws-appflow-integration.md",
+    "start": 535,
+    "end": 1223,
+    "text_sha256": "89c380e4fa548fffb48edd166bef6021c029ffde8d0999ba210332bae153e865"
+  },
+  "tidb/develop__dev-guide-bookshop-schema-design.md#01f4b4f7@1": {
+    "doc": "tidb/develop__dev-guide-bookshop-schema-design.md",
+    "start": 186,
+    "end": 686,
+    "text_sha256": "01f4b4f79be10105adcf9b7dd3ad64e9124f98080bc1b496264419e9a015accb"
+  },
+  "tidb/develop__dev-guide-choose-driver-or-orm.md#33fda688@1": {
+    "doc": "tidb/develop__dev-guide-choose-driver-or-orm.md",
+    "start": 5095,
+    "end": 5780,
+    "text_sha256": "33fda6881fe85fa8bd7ade9e82132c2d6440bb8ed470d5fb785279be46102dec"
+  },
+  "tidb/develop__dev-guide-choose-driver-or-orm.md#f9a955a8@1": {
+    "doc": "tidb/develop__dev-guide-choose-driver-or-orm.md",
+    "start": 3892,
+    "end": 4479,
+    "text_sha256": "f9a955a8c058766eea3d24e4c1337db9e3c814806d45374a1a4cf8de79d795bf"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#07d45bd9@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 8455,
+    "end": 9161,
+    "text_sha256": "07d45bd913393a9f3e0cf2cf7d47f27c46ae94abbe5384d2a546f53b29e58803"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#127b1dd0@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 6410,
+    "end": 6902,
+    "text_sha256": "127b1dd059fc7b8fa1436b36d61b10bfe79f9897909b6eaf49ed309fdca3018d"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#1d4c9d0c@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 9161,
+    "end": 9862,
+    "text_sha256": "1d4c9d0ccadcb7faa893faeb63d40d1235f651335895e4434e3b41b1540abe20"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#2ffeb33e@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 10892,
+    "end": 11326,
+    "text_sha256": "2ffeb33e079e3549f83ed6761ee7b8d3a4fb0c8a9d6f6ee6f76b8105d66ff739"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#31e5eed5@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 11326,
+    "end": 11771,
+    "text_sha256": "31e5eed5f8c891b4ff12b51f565d261b1bb0aa606a900adb85f608b33c59cb69"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#4b5f7b11@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 5957,
+    "end": 6410,
+    "text_sha256": "4b5f7b11ba318c60713e83ff72a748c302a3b618a816d2d4504317ed91e8c5eb"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#53f8fdda@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 4069,
+    "end": 4438,
+    "text_sha256": "53f8fdda76287feefdadd0f8cd350415039af469f2df8f050f704484c91f1e93"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#57a3511a@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 2505,
+    "end": 2897,
+    "text_sha256": "57a3511a645130a43a59baed90e8f26fee79f2ed96ec62bff07e944502d60bf0"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#61a29d8f@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 3284,
+    "end": 4069,
+    "text_sha256": "61a29d8fbdd1d76f8fdcc6f2e6d5600c510fa1128083281872d62b480b34a0d7"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#62dfe34d@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 2897,
+    "end": 3284,
+    "text_sha256": "62dfe34de9d7e42464bfa79cec0e5ba08e37f0b2eceacb7a1c3dafda9351bb34"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#6c1ae434@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 710,
+    "end": 1044,
+    "text_sha256": "6c1ae4344f6973e1a79b4ac83a7215f05ad15ae97c233ce44fc38bba3ddd397e"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#7369870d@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 4553,
+    "end": 5112,
+    "text_sha256": "7369870db0ce0d8d78b598aa028dc41400922749af2e31958ca8f2ab3912e0e0"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#86078155@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 5112,
+    "end": 5565,
+    "text_sha256": "86078155d2f406ce7e1e25c8f88317c1431e5bd7c79d6d4191f5fce9263544b9"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#87ebc822@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 7437,
+    "end": 8006,
+    "text_sha256": "87ebc8227e125f75a9d12b472a230b5cb538a589b5fd6a90c49995579a3b9a0e"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#91ac7be4@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 1513,
+    "end": 1963,
+    "text_sha256": "91ac7be4363554fdc823a49ac83c61a0d88264206c641c8d34e4fe0b2296195a"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#9bcb64b6@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 212,
+    "end": 710,
+    "text_sha256": "9bcb64b6a8c7d6e63f47471ed8f45fd3742b6c01a2953cf202e96d78e7551409"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#a90fa1a1@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 4438,
+    "end": 4553,
+    "text_sha256": "a90fa1a1adda5bc272bf2f82f4ea514c2c9e17c93755e720c5657c6a4d760caf"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#ce3e6583@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 1963,
+    "end": 2505,
+    "text_sha256": "ce3e6583b8f7f916217bdae3727de7e2158a5980a2f65600f874da02ef018c39"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#d06e826a@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 8006,
+    "end": 8455,
+    "text_sha256": "d06e826a0728e06132e54b16c6c3ee6a830a8c5c4e587fac89b699bb8fecb879"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#d4a79b16@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 5565,
+    "end": 5957,
+    "text_sha256": "d4a79b162e362bc5cd5a7e0163409d4c78a57f70251575e0dc08fa87e65c9def"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#d85f89c6@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 1044,
+    "end": 1513,
+    "text_sha256": "d85f89c605837fcc09c70226e9458b36839758bf8095b37d0dcec95b18f6de87"
+  },
+  "tidb/develop__dev-guide-connection-parameters.md#d97c276c@1": {
+    "doc": "tidb/develop__dev-guide-connection-parameters.md",
+    "start": 9862,
+    "end": 10481,
+    "text_sha256": "d97c276c869623057536b57c749a44fcfdd08709f5e9afad43bd441d5aab6c70"
+  },
+  "tidb/develop__dev-guide-create-secondary-indexes.md#070c5c7c@1": {
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "start": 2429,
+    "end": 2846,
+    "text_sha256": "070c5c7cfa5d6295e9290d526549f0602adac818241d12b1edece5dfd17e2160"
+  },
+  "tidb/develop__dev-guide-create-secondary-indexes.md#294d4457@1": {
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "start": 6062,
+    "end": 6625,
+    "text_sha256": "294d44572a4da97f4435e1ce12899a2501fd3f6f88fad5bbdb4fd410b61cc694"
+  },
+  "tidb/develop__dev-guide-create-secondary-indexes.md#3f5a0c57@1": {
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "start": 1291,
+    "end": 1365,
+    "text_sha256": "3f5a0c5720eadfa24aca3f6f3c71c153c1d9b86fa45728c717003cfa0767bfb7"
+  },
+  "tidb/develop__dev-guide-create-secondary-indexes.md#a576e894@1": {
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "start": 702,
+    "end": 1031,
+    "text_sha256": "a576e894afd31ce643094027f097d289a94276562f2ec39c85e1dbcbb4a5e650"
+  },
+  "tidb/develop__dev-guide-create-secondary-indexes.md#d51daabb@1": {
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "start": 425,
+    "end": 702,
+    "text_sha256": "d51daabb90d054ffab56d39b34b43b10b5f6f634857fc5bf0eef237986c2c7a0"
+  },
+  "tidb/develop__dev-guide-create-secondary-indexes.md#de4724b0@1": {
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "start": 1031,
+    "end": 1291,
+    "text_sha256": "de4724b0d765b0076522998511516e838b92650455f44e677deb3a2fe71427b7"
+  },
+  "tidb/develop__dev-guide-create-secondary-indexes.md#e46e9339@1": {
+    "doc": "tidb/develop__dev-guide-create-secondary-indexes.md",
+    "start": 4210,
+    "end": 5279,
+    "text_sha256": "e46e93391a1421dbd2208a5a436733c99c20179bac20090c459d36db66878afa"
+  },
+  "tidb/develop__dev-guide-create-table.md#113ea727@1": {
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "start": 3683,
+    "end": 4218,
+    "text_sha256": "113ea727eaeb56a689039f454a682d00dd0650063fb7f246fd6cf7f71882f737"
+  },
+  "tidb/develop__dev-guide-create-table.md#1ec6075b@1": {
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "start": 1065,
+    "end": 1664,
+    "text_sha256": "1ec6075bb52313b2ee406e2fc741aa32621da21825c2e491eac56f50625bec33"
+  },
+  "tidb/develop__dev-guide-create-table.md#47f8074a@1": {
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "start": 17371,
+    "end": 17476,
+    "text_sha256": "47f8074a4771f86f1f2e26d0ef6fbf295c049c42ce3cdb8b1000fef2f7c5d5f8"
+  },
+  "tidb/develop__dev-guide-create-table.md#77d6b351@1": {
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "start": 3127,
+    "end": 3683,
+    "text_sha256": "77d6b35101a9f72a1b96378a64a650479005a394cd29487eb0d0a18a1a46445e"
+  },
+  "tidb/develop__dev-guide-create-table.md#dd172a63@1": {
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "start": 15944,
+    "end": 16234,
+    "text_sha256": "dd172a637710fe60ae587b734c76c55ed9b14c60d18a5da48a4e3eed08f7f377"
+  },
+  "tidb/develop__dev-guide-create-table.md#e42c802b@1": {
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "start": 1664,
+    "end": 2162,
+    "text_sha256": "e42c802bfbf5cec16495c687a4a83fb2f1de9c0c84bc24455c8ea3be115a1569"
+  },
+  "tidb/develop__dev-guide-create-table.md#eb200e15@1": {
+    "doc": "tidb/develop__dev-guide-create-table.md",
+    "start": 4909,
+    "end": 5294,
+    "text_sha256": "eb200e15d6166804285779a333d62c9a35a96f0f8dfc0071dbdbd5c3c0924962"
+  },
+  "tidb/develop__dev-guide-delete-data.md#3f94d7b8@1": {
+    "doc": "tidb/develop__dev-guide-delete-data.md",
+    "start": 9807,
+    "end": 10387,
+    "text_sha256": "3f94d7b8cc2c01f65964099743d661fbd27e675dbc77f6ed928e4d444efea1f2"
+  },
+  "tidb/develop__dev-guide-gui-mysql-workbench.md#34e8a8e7@1": {
+    "doc": "tidb/develop__dev-guide-gui-mysql-workbench.md",
+    "start": 3452,
+    "end": 4115,
+    "text_sha256": "34e8a8e70af36b6526b47ce15cf5af1f9b9bc687a32a00386ad09c19f93b0423"
+  },
+  "tidb/develop__dev-guide-implicit-type-conversion.md#0f746c28@1": {
+    "doc": "tidb/develop__dev-guide-implicit-type-conversion.md",
+    "start": 516,
+    "end": 1437,
+    "text_sha256": "0f746c28ca04ab0b442b12155ed1eb463d97833d38a656fb4ddffd18cb7be3ea"
+  },
+  "tidb/develop__dev-guide-index-best-practice.md#178b1899@1": {
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "start": 972,
+    "end": 1350,
+    "text_sha256": "178b1899d809707692b471654faf6b3bd660c03f58c05197ed000d3c0144e258"
+  },
+  "tidb/develop__dev-guide-index-best-practice.md#34cc7b5b@1": {
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "start": 3880,
+    "end": 4027,
+    "text_sha256": "34cc7b5b68ec9f14045d3fd82cd8accf010d9710e37c110ba5f3fa799929862e"
+  },
+  "tidb/develop__dev-guide-index-best-practice.md#9432c58a@1": {
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "start": 3227,
+    "end": 3880,
+    "text_sha256": "9432c58a61e7a9cec94044cb952311ddcea7787784f0e028d71dfeed26a4f420"
+  },
+  "tidb/develop__dev-guide-index-best-practice.md#9798f266@1": {
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "start": 590,
+    "end": 972,
+    "text_sha256": "9798f266af8c74b66278d6b87a230c2733c6286bbc799417d44dce6acb2d1a1d"
+  },
+  "tidb/develop__dev-guide-index-best-practice.md#a7535e97@1": {
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "start": 2628,
+    "end": 3227,
+    "text_sha256": "a7535e977d602cbd7834ea349984137da15a9544a059a82adf496e2cdc6f933f"
+  },
+  "tidb/develop__dev-guide-index-best-practice.md#b469a882@1": {
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "start": 1350,
+    "end": 1910,
+    "text_sha256": "b469a882057aef2d0a9478ed97b7428abb1a98f801558dab3a1e6402f17d8b54"
+  },
+  "tidb/develop__dev-guide-index-best-practice.md#f33e577e@1": {
+    "doc": "tidb/develop__dev-guide-index-best-practice.md",
+    "start": 1910,
+    "end": 2628,
+    "text_sha256": "f33e577eb43db4d25a505878610fdc5e3d92ff90572fea19419f8d2947129c83"
+  },
+  "tidb/develop__dev-guide-insert-data.md#0cdb293e@1": {
+    "doc": "tidb/develop__dev-guide-insert-data.md",
+    "start": 9348,
+    "end": 10028,
+    "text_sha256": "0cdb293eb98159f39d834f793043acfb14772e3a1f4516fb9adb469ea75d7a0e"
+  },
+  "tidb/develop__dev-guide-insert-data.md#fe083b37@1": {
+    "doc": "tidb/develop__dev-guide-insert-data.md",
+    "start": 1916,
+    "end": 3340,
+    "text_sha256": "fe083b37108a221e9353434e3c2a558194062475864057db5ea876bb426c6882"
+  },
+  "tidb/develop__dev-guide-object-naming-guidelines.md#20069ea6@1": {
+    "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
+    "start": 75,
+    "end": 192,
+    "text_sha256": "20069ea69d24c16aaaf8295e54a254ef2f693c8f74aa92f4cdb9fa7d2d854fb0"
+  },
+  "tidb/develop__dev-guide-object-naming-guidelines.md#4945eb76@1": {
+    "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
+    "start": 847,
+    "end": 977,
+    "text_sha256": "4945eb76965dd6115e840fbf5aace777d75ed5a6f699fa22454ea291fbbc97d1"
+  },
+  "tidb/develop__dev-guide-object-naming-guidelines.md#f14b719f@1": {
+    "doc": "tidb/develop__dev-guide-object-naming-guidelines.md",
+    "start": 595,
+    "end": 847,
+    "text_sha256": "f14b719f64e099c1aa54190ca704f4cf2f7d293264872bf78e2f5ef9d7b8c7c5"
+  },
+  "tidb/develop__dev-guide-optimize-sql-best-practices.md#54d46624@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
+    "start": 1698,
+    "end": 1998,
+    "text_sha256": "54d46624183c576aa221541932158a8fd504ae7ec7e3e75259f676b0606af60d"
+  },
+  "tidb/develop__dev-guide-optimize-sql-best-practices.md#f501a9d7@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql-best-practices.md",
+    "start": 1998,
+    "end": 2123,
+    "text_sha256": "f501a9d7282bdd26fa8f2d3111754c6bc26b7ff0c8ba06858a8cd79c20780ddb"
+  },
+  "tidb/develop__dev-guide-optimize-sql-overview.md#702bde17@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql-overview.md",
+    "start": 134,
+    "end": 529,
+    "text_sha256": "702bde17c93590e5dea8611104b788c99aad2879451005e8abc7b7cafb705308"
+  },
+  "tidb/develop__dev-guide-optimize-sql.md#4f15897c@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql.md",
+    "start": 6859,
+    "end": 7919,
+    "text_sha256": "4f15897c5116b7c39c6fb423d433c58849afdc0c6b24c0ef1c18f586e9982bb8"
+  },
+  "tidb/develop__dev-guide-optimize-sql.md#5cac7a53@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql.md",
+    "start": 4706,
+    "end": 5171,
+    "text_sha256": "5cac7a53bea6a12051ecf5dd29d3a2ee3e9a8e9e15538fcb44557ca35c282318"
+  },
+  "tidb/develop__dev-guide-optimize-sql.md#66bd9551@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql.md",
+    "start": 1354,
+    "end": 2268,
+    "text_sha256": "66bd9551afe96784fc71e958a32ba2b27aad6109d3964bfacd3c50a4df457fa3"
+  },
+  "tidb/develop__dev-guide-optimize-sql.md#f108d550@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql.md",
+    "start": 371,
+    "end": 1354,
+    "text_sha256": "f108d550bda750a2af12523dc45ef747e3cfd79078eeb5a88463050dd7b37293"
+  },
+  "tidb/develop__dev-guide-optimize-sql.md#fb46cf5b@1": {
+    "doc": "tidb/develop__dev-guide-optimize-sql.md",
+    "start": 2268,
+    "end": 2695,
+    "text_sha256": "fb46cf5bf3a45bacaf4b9a374aa595b7f5108bcafa0c0cd714dbe4f9ec1ff3bf"
+  },
+  "vue/src__guide__best-practices__performance.md#2a4b3005@1": {
+    "doc": "vue/src__guide__best-practices__performance.md",
+    "start": 2633,
+    "end": 3066,
+    "text_sha256": "2a4b3005f1eef51dcee92c87abae438f9c93ea3c48949dcb7a93a9daa65ba371"
+  },
+  "vue/src__guide__best-practices__performance.md#b9218bc8@1": {
+    "doc": "vue/src__guide__best-practices__performance.md",
+    "start": 24,
+    "end": 411,
+    "text_sha256": "b9218bc8c566e29bbfd95bdd604cc9194898c64184362ab04f7c61d6caecf370"
+  },
+  "vue/src__guide__best-practices__performance.md#cceea549@1": {
+    "doc": "vue/src__guide__best-practices__performance.md",
+    "start": 2239,
+    "end": 2633,
+    "text_sha256": "cceea5494ba38929e4ea289612a47ebd0e9f959e4cd02407ccb7a39f33fceb56"
+  },
+  "vue/src__guide__best-practices__performance.md#d383b503@1": {
+    "doc": "vue/src__guide__best-practices__performance.md",
+    "start": 3066,
+    "end": 3521,
+    "text_sha256": "d383b5033a168a721814e6989075a872913d157cb18f7a266473cf231abbbc8b"
+  },
+  "vue/src__guide__best-practices__performance.md#fac8f726@1": {
+    "doc": "vue/src__guide__best-practices__performance.md",
+    "start": 7482,
+    "end": 7864,
+    "text_sha256": "fac8f72628da9a0da126becd3ae22cbfdf61a4fd1a9523ee525c2c3d0de945e2"
+  },
+  "vue/src__guide__best-practices__production-deployment.md#b9de5746@1": {
+    "doc": "vue/src__guide__best-practices__production-deployment.md",
+    "start": 672,
+    "end": 1141,
+    "text_sha256": "b9de57460e7ff7fca8b1d03a27132f07478ba7c3ed6a14a5df06ab8bfc3930e4"
+  },
+  "vue/src__guide__built-ins__keep-alive.md#1d0cd55d@1": {
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "start": 558,
+    "end": 1275,
+    "text_sha256": "1d0cd55d553e7a57b8896997571331e9e467f6e31fe42be59d4e3f8e74bd2280"
+  },
+  "vue/src__guide__built-ins__keep-alive.md#1f69182c@1": {
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "start": 1981,
+    "end": 2424,
+    "text_sha256": "1f69182cb73aa6fc235f8e367f4c57e4710b8dea346386dc73ca8f2dd6294635"
+  },
+  "vue/src__guide__built-ins__keep-alive.md#79d23d31@1": {
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "start": 2737,
+    "end": 3329,
+    "text_sha256": "79d23d31f65c233bf4fd1bd79971a79f3099acd2ab41e5d9820718dddeda7380"
+  },
+  "vue/src__guide__built-ins__keep-alive.md#dc3879ff@1": {
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "start": 3329,
+    "end": 3981,
+    "text_sha256": "dc3879fff8b61aeefea2f7bf8b45e1051319b7519a708242ff10e236e3dceaac"
+  },
+  "vue/src__guide__built-ins__keep-alive.md#e6af4ac9@1": {
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "start": 2424,
+    "end": 2737,
+    "text_sha256": "e6af4ac92e1e47711b0a1ec6bec575d3646a6d11d84c0a3bc58efc2fa511d4b5"
+  },
+  "vue/src__guide__built-ins__keep-alive.md#ea08b986@1": {
+    "doc": "vue/src__guide__built-ins__keep-alive.md",
+    "start": 172,
+    "end": 558,
+    "text_sha256": "ea08b9866793474953a208585ddac8a99826591ffa523c95b935bbeddb206a08"
+  },
+  "vue/src__guide__built-ins__suspense.md#1ed8d614@1": {
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "start": 653,
+    "end": 1203,
+    "text_sha256": "1ed8d61496145df50e7cf56a39d36ea8c889d626f4d799ba3ea38c917bcfe374"
+  },
+  "vue/src__guide__built-ins__suspense.md#32485914@1": {
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "start": 2562,
+    "end": 3226,
+    "text_sha256": "3248591445371f61d85e4d48fc47e85093095905c904cdded1a40fda35a69a60"
+  },
+  "vue/src__guide__built-ins__suspense.md#c7a0aa95@1": {
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "start": 1821,
+    "end": 2112,
+    "text_sha256": "c7a0aa958f3fdd12c5fa53128b25c3d849e42ccb64b883d5c1f6d0c3176ed1a5"
+  },
+  "vue/src__guide__built-ins__suspense.md#de8c1aba@1": {
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "start": 195,
+    "end": 653,
+    "text_sha256": "de8c1aba4f8b7d441015a567045108c9a2d92f68b5a91ab3238d56efe3574001"
+  },
+  "vue/src__guide__built-ins__suspense.md#e3faab5a@1": {
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "start": 1442,
+    "end": 1821,
+    "text_sha256": "e3faab5a1abf3cb5213001d743949264df20893812ad318b00edafa003c0ebc1"
+  },
+  "vue/src__guide__built-ins__suspense.md#f46aa256@1": {
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "start": 1203,
+    "end": 1442,
+    "text_sha256": "f46aa2565ef1d8493ceb885348ae660b8236712b8b9fea238ae83ba4812b0599"
+  },
+  "vue/src__guide__built-ins__suspense.md#ff8fb9b7@1": {
+    "doc": "vue/src__guide__built-ins__suspense.md",
+    "start": 3758,
+    "end": 4071,
+    "text_sha256": "ff8fb9b7a2022ce025878f2745b3428db15bbabf0c7e92d838e486ed51726f28"
+  },
+  "vue/src__guide__built-ins__teleport.md#42ec9a99@1": {
+    "doc": "vue/src__guide__built-ins__teleport.md",
+    "start": 582,
+    "end": 1521,
+    "text_sha256": "42ec9a9917950f3537c672ffccb48e6ead826abbb0d5a7972fb9ac59cc20ed56"
+  },
+  "vue/src__guide__built-ins__teleport.md#b3a0a7e1@1": {
+    "doc": "vue/src__guide__built-ins__teleport.md",
+    "start": 3137,
+    "end": 3379,
+    "text_sha256": "b3a0a7e1e92e9cd3fa9e7b51c64da59b55c1b771f21f3476705f960e757cf363"
+  },
+  "vue/src__guide__built-ins__transition.md#31c7219e@1": {
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "start": 11943,
+    "end": 12621,
+    "text_sha256": "31c7219edd686622e6d497d90f7076a5922aff2b7e6c4ea38aeaf22209114025"
+  },
+  "vue/src__guide__built-ins__transition.md#34d81c36@1": {
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "start": 7179,
+    "end": 7986,
+    "text_sha256": "34d81c36701699f9d1d722dc84ab0d6ad7ddd0c03ae70d6a6235588b2f145940"
+  },
+  "vue/src__guide__built-ins__transition.md#a1b804fc@1": {
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "start": 2070,
+    "end": 2417,
+    "text_sha256": "a1b804fcd6b90bcc30688c2fdb6f1e69865fa0ab9a3e2509de4a89a266ac52d3"
+  },
+  "vue/src__guide__built-ins__transition.md#d6f6ab83@1": {
+    "doc": "vue/src__guide__built-ins__transition.md",
+    "start": 11240,
+    "end": 11943,
+    "text_sha256": "d6f6ab8301dac2f5d3d79295717c59cff85c717a841291858d74f36ca877af47"
+  },
+  "vue/src__guide__components__async.md#368f00d0@1": {
+    "doc": "vue/src__guide__components__async.md",
+    "start": 28,
+    "end": 532,
+    "text_sha256": "368f00d0524fe2b0f34c0339603131efa97ca7d7f4df551815f0550d220c4752"
+  },
+  "vue/src__guide__components__async.md#3e9590ee@1": {
+    "doc": "vue/src__guide__components__async.md",
+    "start": 2475,
+    "end": 3088,
+    "text_sha256": "3e9590eec979fb9c97f2cacd350084ad385acab310fdf43766bd4d96fb682e7a"
+  },
+  "vue/src__guide__components__async.md#4a37f2ab@1": {
+    "doc": "vue/src__guide__components__async.md",
+    "start": 4481,
+    "end": 4633,
+    "text_sha256": "4a37f2ab8fa055457a92880f7d1f0026ec0f1bc6e77b295b5435111dc4e2841b"
+  },
+  "vue/src__guide__components__async.md#540c14de@1": {
+    "doc": "vue/src__guide__components__async.md",
+    "start": 1852,
+    "end": 2475,
+    "text_sha256": "540c14dea5fa4fd193666676b446aabe0389b218fa98aec76071a70cb6989e71"
+  },
+  "vue/src__guide__components__attrs.md#589ca04d@1": {
+    "doc": "vue/src__guide__components__attrs.md",
+    "start": 1252,
+    "end": 1582,
+    "text_sha256": "589ca04d63317c7ada6bd4036061317f068758ae0b407f84a0f626c6e0745a5a"
+  },
+  "vue/src__guide__components__attrs.md#a922dc1b@1": {
+    "doc": "vue/src__guide__components__attrs.md",
+    "start": 1582,
+    "end": 2161,
+    "text_sha256": "a922dc1b318f5d14d837197f9efb52868207676d882ded02b56a44d777855a0e"
+  },
+  "vue/src__guide__components__attrs.md#d5dd4c2d@1": {
+    "doc": "vue/src__guide__components__attrs.md",
+    "start": 2161,
+    "end": 2644,
+    "text_sha256": "d5dd4c2d6f929dab4e7c7025c3dc220c689901da353aac9341f903f3b94b172d"
+  },
+  "vue/src__guide__components__attrs.md#e7cf67a0@1": {
+    "doc": "vue/src__guide__components__attrs.md",
+    "start": 724,
+    "end": 1252,
+    "text_sha256": "e7cf67a0b475325b5d1282e854895348caeeb62c52e9bb060415a518fd377a68"
+  },
+  "vue/src__guide__components__attrs.md#eb245112@1": {
+    "doc": "vue/src__guide__components__attrs.md",
+    "start": 122,
+    "end": 724,
+    "text_sha256": "eb2451125e7c4fa3774e18f4d921ef0037408a901d3f5d51abcabf05af5f27ac"
+  },
+  "vue/src__guide__components__attrs.md#ed6c0483@1": {
+    "doc": "vue/src__guide__components__attrs.md",
+    "start": 3463,
+    "end": 4244,
+    "text_sha256": "ed6c04838cb5bd96433303bc0cef3dbc1600e153a14ee3d8046d2fe03aefdb41"
+  },
+  "vue/src__guide__components__attrs.md#f4825106@1": {
+    "doc": "vue/src__guide__components__attrs.md",
+    "start": 3025,
+    "end": 3463,
+    "text_sha256": "f48251068a61981f39d5812e540eeb567dab0e6c4778ac9f0850a0e24dad33f4"
+  },
+  "vue/src__guide__components__events.md#30cd6c1b@1": {
+    "doc": "vue/src__guide__components__events.md",
+    "start": 4124,
+    "end": 4402,
+    "text_sha256": "30cd6c1ba9f5b0002dd6ec48dabd4d2d47378487005c51939d6c3126a74853dd"
+  },
+  "vue/src__guide__components__events.md#8735f14e@1": {
+    "doc": "vue/src__guide__components__events.md",
+    "start": 565,
+    "end": 1349,
+    "text_sha256": "8735f14e5e59a5b9d00f949d3c2daf13bc22cb2849563bfa221858b2a7af1d7c"
+  },
+  "vue/src__guide__components__events.md#c9618b34@1": {
+    "doc": "vue/src__guide__components__events.md",
+    "start": 2028,
+    "end": 2670,
+    "text_sha256": "c9618b34f80a9dfc2f5205c8b62445375bd152ebde87eb3588b5226a550a3a79"
+  },
+  "vue/src__guide__components__props.md#0cf63dd7@1": {
+    "doc": "vue/src__guide__components__props.md",
+    "start": 3216,
+    "end": 3459,
+    "text_sha256": "0cf63dd74467f7f413396fdad68809947cdfca15e21b194bcdb52736a754d939"
+  },
+  "vue/src__guide__components__props.md#c002938c@1": {
+    "doc": "vue/src__guide__components__props.md",
+    "start": 9932,
+    "end": 10640,
+    "text_sha256": "c002938c28c86824d39530ce41237f24644bad8abefdb41e7b066d72495d59b6"
+  },
+  "vue/src__guide__components__provide-inject.md#178e6d5a@1": {
+    "doc": "vue/src__guide__components__provide-inject.md",
+    "start": 510,
+    "end": 741,
+    "text_sha256": "178e6d5a5692897752b9028da7dd1087f2c2691fa6fd867f87863b54d4e65d5f"
+  },
+  "vue/src__guide__components__provide-inject.md#3a452588@1": {
+    "doc": "vue/src__guide__components__provide-inject.md",
+    "start": 104,
+    "end": 510,
+    "text_sha256": "3a452588904d48d7291a91630e4dff4c639a46aee611aaeec729939532dabb68"
+  },
+  "vue/src__guide__components__registration.md#16e05c6a@1": {
+    "doc": "vue/src__guide__components__registration.md",
+    "start": 180,
+    "end": 862,
+    "text_sha256": "16e05c6ab8b16cf774f3a8dae8e33460af1d0af5d774b2cb92a9cba5a255a337"
+  },
+  "vue/src__guide__components__registration.md#2a1e7fc3@1": {
+    "doc": "vue/src__guide__components__registration.md",
+    "start": 1949,
+    "end": 2037,
+    "text_sha256": "2a1e7fc33b86a50f13421eed9cf16fefbd458feffde3fe7deb52830a3fb62a05"
+  },
+  "vue/src__guide__components__registration.md#4c9c5250@1": {
+    "doc": "vue/src__guide__components__registration.md",
+    "start": 2037,
+    "end": 2644,
+    "text_sha256": "4c9c52503feb0d58c469f3861a7dc34bc22ec44c487b6f15b869885c33d22745"
+  },
+  "vue/src__guide__components__registration.md#a509e6f3@1": {
+    "doc": "vue/src__guide__components__registration.md",
+    "start": 1264,
+    "end": 1949,
+    "text_sha256": "a509e6f364873540798f8ef4c40daed17397184a3d8e0dc490266423d1effd31"
+  },
+  "vue/src__guide__components__slots.md#d104d1dc@1": {
+    "doc": "vue/src__guide__components__slots.md",
+    "start": 3809,
+    "end": 4431,
+    "text_sha256": "d104d1dcc923faff2db1696d087ed026a0be37af0fe08e4e2916859663659154"
+  },
+  "vue/src__guide__components__v-model.md#b9e18d56@1": {
+    "doc": "vue/src__guide__components__v-model.md",
+    "start": 2129,
+    "end": 2769,
+    "text_sha256": "b9e18d56ad9af36c1a997972d5109d09a6cf6abe287bbed133f5d2368394ccb1"
+  },
+  "vue/src__guide__essentials__application.md#8b49dc25@1": {
+    "doc": "vue/src__guide__essentials__application.md",
+    "start": 243,
+    "end": 779,
+    "text_sha256": "8b49dc259b22cdbfef0220aa805d913c0661af44eac0355cd02443b07ea50d04"
+  },
+  "vue/src__guide__essentials__class-and-style.md#9179e76b@1": {
+    "doc": "vue/src__guide__essentials__class-and-style.md",
+    "start": 3430,
+    "end": 3762,
+    "text_sha256": "9179e76bb9880bdfdaf2bf3c5cdd90be0a413481c87afc0bfad695dae6ec3d3d"
+  },
+  "vue/src__guide__essentials__class-and-style.md#f1393468@1": {
+    "doc": "vue/src__guide__essentials__class-and-style.md",
+    "start": 2810,
+    "end": 3430,
+    "text_sha256": "f1393468aba94734268b3f481d5cea295754c1679f9a885cd05191a25449bf60"
+  },
+  "vue/src__guide__essentials__component-basics.md#0d94d457@1": {
+    "doc": "vue/src__guide__essentials__component-basics.md",
+    "start": 7780,
+    "end": 8446,
+    "text_sha256": "0d94d45710f35d102c558aa3870725ef51b1b3b6b6de880eb8741bfbf021b623"
+  },
+  "vue/src__guide__essentials__component-basics.md#a803bc56@1": {
+    "doc": "vue/src__guide__essentials__component-basics.md",
+    "start": 1673,
+    "end": 2251,
+    "text_sha256": "a803bc562a4663dd5f9f2ec41d0b5e7f2b99fdbc0f1cdce7a4fa03c0206df118"
+  },
+  "vue/src__guide__essentials__component-basics.md#b312940f@1": {
+    "doc": "vue/src__guide__essentials__component-basics.md",
+    "start": 3400,
+    "end": 3895,
+    "text_sha256": "b312940f95a3eba82f80f8718c88eeecdaa564936608cb8758bbbf36d654bacc"
+  },
+  "vue/src__guide__essentials__component-basics.md#f0e89256@1": {
+    "doc": "vue/src__guide__essentials__component-basics.md",
+    "start": 14761,
+    "end": 15229,
+    "text_sha256": "f0e89256112cde4440b877a33b32b163290b01da3f3e7d68c365cd7b088f7366"
+  },
+  "vue/src__guide__essentials__component-basics.md#fa4f0573@1": {
+    "doc": "vue/src__guide__essentials__component-basics.md",
+    "start": 9888,
+    "end": 10562,
+    "text_sha256": "fa4f0573feeeb269e9743a7b75b6ba67b31cbe0047baf70663f8abf601562923"
+  },
+  "vue/src__guide__essentials__computed.md#cc0615f8@1": {
+    "doc": "vue/src__guide__essentials__computed.md",
+    "start": 4306,
+    "end": 4724,
+    "text_sha256": "cc0615f8cc1d96f2f0e7e8aca8124846d57a40923d599a1633bcceeae5f9272a"
+  },
+  "vue/src__guide__essentials__computed.md#f0555d8c@1": {
+    "doc": "vue/src__guide__essentials__computed.md",
+    "start": 3682,
+    "end": 4306,
+    "text_sha256": "f0555d8c742aed7526378c17dd5171d2533650009151a1ef1e928ecc4e8f553d"
+  },
+  "vue/src__guide__essentials__event-handling.md#f6c6522e@1": {
+    "doc": "vue/src__guide__essentials__event-handling.md",
+    "start": 26,
+    "end": 291,
+    "text_sha256": "f6c6522e6b90fb0a711ac4e78494835d5dbfbd3629a772be0781c12c6edbe0a3"
+  },
+  "vue/src__guide__essentials__lifecycle.md#2b6ccfe2@1": {
+    "doc": "vue/src__guide__essentials__lifecycle.md",
+    "start": 1267,
+    "end": 1591,
+    "text_sha256": "2b6ccfe2d26a2152afbc542267a80a5fffe8fe6e8e5f33a086503e0ba52dfdcc"
+  }
+}

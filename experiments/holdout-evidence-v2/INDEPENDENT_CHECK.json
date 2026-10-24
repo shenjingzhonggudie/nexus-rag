@@ -1,0 +1,22 @@
+{
+  "method": "independent_character_position_sets",
+  "production_coverage_imported": false,
+  "qrels_sha256": "331be19cb621e971506f1d4d38ac8bab390d94026781ff76d1401f08e0b953a6",
+  "retrieved_intervals_sha256": "b314f642d0649ad8c8590b65fd3e45bfb7eec7a57949ad22885ba2a6b7e12be6",
+  "checker_canonical_lf_sha256": "e733d3a1ededdcba70f67f2e9eb71f648ba8a0603b06690da8c9df1c74b88df1",
+  "configs": {
+    "A": {
+      "query_rows_checked": 62,
+      "saved_report_sha256": "4fd970ffe21ceb78363bc3cd32b9b54138fb34aec61ecf504e490898e03c79a5",
+      "regrade_sha256": "9d5ab899fd0d9af2e2f0c7f6fdcb67d814453b3d874c0d4606c5f78945c375b8",
+      "all_prefixes_and_metrics_agree": true
+    },
+    "B": {
+      "query_rows_checked": 62,
+      "saved_report_sha256": "3f3fe7f20e69cbfaab6090131abc064a7b76064cb5f7c7e6fc5de92fa505a129",
+      "regrade_sha256": "cb7cc05e402eafaf3871f7d0012463607e44292fd444bcce3b49d4be1fd52599",
+      "all_prefixes_and_metrics_agree": true
+    }
+  },
+  "coverage_audit_sha256": "1493bde88b69042063f7b85b8aba540ac2dc9c9602217e2293b51dc2ac7103ce"
+}
