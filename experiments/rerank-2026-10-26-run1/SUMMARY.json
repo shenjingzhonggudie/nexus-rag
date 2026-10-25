@@ -1,0 +1,442 @@
+{
+  "dev.fusion_only": {
+    "config": {
+      "retrieval": {
+        "top_k": 20,
+        "final_k": 5,
+        "fusion_method": "weighted_rrf",
+        "fusion_alpha": 0.7,
+        "sparse_enabled": true,
+        "dense_enabled": true,
+        "refuse_threshold": 0.05
+      },
+      "rerank": {
+        "enabled": false,
+        "model_name": "BAAI/bge-reranker-base",
+        "batch_size": 16,
+        "max_length": 512,
+        "device": "cpu",
+        "local_files_only": true
+      },
+      "chunking": {
+        "strategy": "heading",
+        "chunk_size": 300,
+        "overlap": 50
+      },
+      "embedding": {
+        "provider": "bge",
+        "dim": 512,
+        "model_name": "BAAI/bge-small-zh-v1.5",
+        "provider_configured": "bge"
+      },
+      "llm": {
+        "provider": "none",
+        "model": "",
+        "api_key": "",
+        "base_url": ""
+      },
+      "data_dir": "data\\raw",
+      "index_dir": "data\\index"
+    },
+    "scoring": {
+      "annotation_version": 2,
+      "mode": "answer_point_evidence",
+      "coverage_threshold": 0.5,
+      "comparison": ">",
+      "coverage_denominator": "evidence_characters",
+      "union_by_document": true,
+      "necessary_supports": "all",
+      "recall_unit": "answer_points",
+      "averaging": "macro_by_query",
+      "mrr_target": "first_supported_point_prefix",
+      "scope": "retrieval_evidence_not_answer_correctness"
+    },
+    "n_answerable": 203,
+    "n_pending": 0,
+    "complete_at": {
+      "1": 0.31527093596059114,
+      "3": 0.4482758620689655,
+      "5": 0.5073891625615764
+    },
+    "recall_at": {
+      "1": 0.3786535303776683,
+      "3": 0.5147783251231527,
+      "5": 0.5743021346469622
+    },
+    "mrr": 0.5213464696223317,
+    "refusal": {
+      "accuracy": 0.4,
+      "false_rate": 0.009852216748768473,
+      "n_no_answer": 45
+    },
+    "by_source": {
+      "internal": {
+        "n": 103,
+        "recall_at": {
+          "1": 0.4598705501618123,
+          "3": 0.6453074433656958,
+          "5": 0.7043689320388349
+        },
+        "mrr": 0.6425566343042072,
+        "complete_at": {
+          "1": 0.36893203883495146,
+          "3": 0.5631067961165048,
+          "5": 0.6310679611650486
+        }
+      },
+      "external": {
+        "n": 100,
+        "recall_at": {
+          "1": 0.295,
+          "3": 0.3803333333333333,
+          "5": 0.4403333333333333
+        },
+        "mrr": 0.39649999999999996,
+        "complete_at": {
+          "1": 0.26,
+          "3": 0.33,
+          "5": 0.38
+        }
+      }
+    },
+    "latency": {
+      "cold_ms": 57617.28999996558,
+      "warm_mean_ms": 26.76804899049523,
+      "warm_p50_ms": 24.544000043533742,
+      "warm_p95_ms": 38.71433003805578
+    },
+    "experiment": {
+      "dataset": "dev",
+      "variant": "fusion_only",
+      "source_commit": "0e191f7ed8c6273143a7a4733c6a03f112ebc846",
+      "wall_seconds": 64.88072879996616,
+      "started_at": "2026-10-26T00:19:18.173494+08:00",
+      "completed_at": "2026-10-26T00:20:37.685179+08:00",
+      "first_query_is_true_cold": true,
+      "note": "Metrics measure retrieved evidence, not semantic answer correctness"
+    }
+  },
+  "holdout_regression.fusion_only": {
+    "config": {
+      "retrieval": {
+        "top_k": 20,
+        "final_k": 5,
+        "fusion_method": "weighted_rrf",
+        "fusion_alpha": 0.7,
+        "sparse_enabled": true,
+        "dense_enabled": true,
+        "refuse_threshold": 0.05
+      },
+      "rerank": {
+        "enabled": false,
+        "model_name": "BAAI/bge-reranker-base",
+        "batch_size": 16,
+        "max_length": 512,
+        "device": "cpu",
+        "local_files_only": true
+      },
+      "chunking": {
+        "strategy": "heading",
+        "chunk_size": 300,
+        "overlap": 50
+      },
+      "embedding": {
+        "provider": "bge",
+        "dim": 512,
+        "model_name": "BAAI/bge-small-zh-v1.5",
+        "provider_configured": "bge"
+      },
+      "llm": {
+        "provider": "none",
+        "model": "",
+        "api_key": "",
+        "base_url": ""
+      },
+      "data_dir": "data\\raw",
+      "index_dir": "data\\index"
+    },
+    "scoring": {
+      "annotation_version": 2,
+      "mode": "answer_point_evidence",
+      "coverage_threshold": 0.5,
+      "comparison": ">",
+      "coverage_denominator": "evidence_characters",
+      "union_by_document": true,
+      "necessary_supports": "all",
+      "recall_unit": "answer_points",
+      "averaging": "macro_by_query",
+      "mrr_target": "first_supported_point_prefix",
+      "scope": "retrieval_evidence_not_answer_correctness"
+    },
+    "n_answerable": 43,
+    "n_pending": 2,
+    "complete_at": {
+      "1": 0.5581395348837209,
+      "3": 0.813953488372093,
+      "5": 0.8372093023255814
+    },
+    "recall_at": {
+      "1": 0.6608527131782946,
+      "3": 0.8895348837209303,
+      "5": 0.9127906976744186
+    },
+    "mrr": 0.8604651162790697,
+    "refusal": {
+      "accuracy": 0.0,
+      "false_rate": 0.0,
+      "n_no_answer": 17
+    },
+    "by_source": {
+      "holdout": {
+        "n": 43,
+        "recall_at": {
+          "1": 0.6608527131782946,
+          "3": 0.8895348837209303,
+          "5": 0.9127906976744186
+        },
+        "mrr": 0.8604651162790697,
+        "complete_at": {
+          "1": 0.5581395348837209,
+          "3": 0.813953488372093,
+          "5": 0.8372093023255814
+        }
+      }
+    },
+    "latency": {
+      "cold_ms": 32.044399878941476,
+      "warm_mean_ms": 31.823309827366934,
+      "warm_p50_ms": 29.471099958755076,
+      "warm_p95_ms": 47.70520003512502
+    },
+    "experiment": {
+      "dataset": "holdout_regression",
+      "variant": "fusion_only",
+      "source_commit": "0e191f7ed8c6273143a7a4733c6a03f112ebc846",
+      "wall_seconds": 2.141419899999164,
+      "started_at": "2026-10-26T00:19:18.173494+08:00",
+      "completed_at": "2026-10-26T00:20:39.845889+08:00",
+      "first_query_is_true_cold": false,
+      "note": "Metrics measure retrieved evidence, not semantic answer correctness"
+    }
+  },
+  "dev.cross_encoder": {
+    "config": {
+      "retrieval": {
+        "top_k": 20,
+        "final_k": 5,
+        "fusion_method": "weighted_rrf",
+        "fusion_alpha": 0.7,
+        "sparse_enabled": true,
+        "dense_enabled": true,
+        "refuse_threshold": 0.05
+      },
+      "rerank": {
+        "enabled": true,
+        "model_name": "BAAI/bge-reranker-base",
+        "batch_size": 16,
+        "max_length": 512,
+        "device": "cpu",
+        "local_files_only": true
+      },
+      "chunking": {
+        "strategy": "heading",
+        "chunk_size": 300,
+        "overlap": 50
+      },
+      "embedding": {
+        "provider": "bge",
+        "dim": 512,
+        "model_name": "BAAI/bge-small-zh-v1.5",
+        "provider_configured": "bge"
+      },
+      "llm": {
+        "provider": "none",
+        "model": "",
+        "api_key": "",
+        "base_url": ""
+      },
+      "data_dir": "data\\raw",
+      "index_dir": "data\\index"
+    },
+    "scoring": {
+      "annotation_version": 2,
+      "mode": "answer_point_evidence",
+      "coverage_threshold": 0.5,
+      "comparison": ">",
+      "coverage_denominator": "evidence_characters",
+      "union_by_document": true,
+      "necessary_supports": "all",
+      "recall_unit": "answer_points",
+      "averaging": "macro_by_query",
+      "mrr_target": "first_supported_point_prefix",
+      "scope": "retrieval_evidence_not_answer_correctness"
+    },
+    "n_answerable": 203,
+    "n_pending": 0,
+    "complete_at": {
+      "1": 0.37438423645320196,
+      "3": 0.5320197044334976,
+      "5": 0.5862068965517241
+    },
+    "recall_at": {
+      "1": 0.44597701149425284,
+      "3": 0.601888341543514,
+      "5": 0.6385057471264368
+    },
+    "mrr": 0.5958128078817734,
+    "refusal": {
+      "accuracy": 0.4,
+      "false_rate": 0.009852216748768473,
+      "n_no_answer": 45
+    },
+    "by_source": {
+      "internal": {
+        "n": 103,
+        "recall_at": {
+          "1": 0.5585760517799353,
+          "3": 0.7441747572815535,
+          "5": 0.7775080906148867
+        },
+        "mrr": 0.7483818770226537,
+        "complete_at": {
+          "1": 0.44660194174757284,
+          "3": 0.6601941747572816,
+          "5": 0.7184466019417476
+        }
+      },
+      "external": {
+        "n": 100,
+        "recall_at": {
+          "1": 0.33,
+          "3": 0.4553333333333333,
+          "5": 0.4953333333333333
+        },
+        "mrr": 0.43866666666666665,
+        "complete_at": {
+          "1": 0.3,
+          "3": 0.4,
+          "5": 0.45
+        }
+      }
+    },
+    "latency": {
+      "cold_ms": 15953.196400310844,
+      "warm_mean_ms": 11455.525597168118,
+      "warm_p50_ms": 11069.290600134991,
+      "warm_p95_ms": 16374.055990099438
+    },
+    "experiment": {
+      "dataset": "dev",
+      "variant": "cross_encoder",
+      "source_commit": "0e191f7ed8c6273143a7a4733c6a03f112ebc846",
+      "wall_seconds": 2846.369935600087,
+      "started_at": "2026-10-26T00:19:18.173494+08:00",
+      "completed_at": "2026-10-26T01:08:06.231201+08:00",
+      "first_query_is_true_cold": true,
+      "note": "Metrics measure retrieved evidence, not semantic answer correctness"
+    }
+  },
+  "holdout_regression.cross_encoder": {
+    "config": {
+      "retrieval": {
+        "top_k": 20,
+        "final_k": 5,
+        "fusion_method": "weighted_rrf",
+        "fusion_alpha": 0.7,
+        "sparse_enabled": true,
+        "dense_enabled": true,
+        "refuse_threshold": 0.05
+      },
+      "rerank": {
+        "enabled": true,
+        "model_name": "BAAI/bge-reranker-base",
+        "batch_size": 16,
+        "max_length": 512,
+        "device": "cpu",
+        "local_files_only": true
+      },
+      "chunking": {
+        "strategy": "heading",
+        "chunk_size": 300,
+        "overlap": 50
+      },
+      "embedding": {
+        "provider": "bge",
+        "dim": 512,
+        "model_name": "BAAI/bge-small-zh-v1.5",
+        "provider_configured": "bge"
+      },
+      "llm": {
+        "provider": "none",
+        "model": "",
+        "api_key": "",
+        "base_url": ""
+      },
+      "data_dir": "data\\raw",
+      "index_dir": "data\\index"
+    },
+    "scoring": {
+      "annotation_version": 2,
+      "mode": "answer_point_evidence",
+      "coverage_threshold": 0.5,
+      "comparison": ">",
+      "coverage_denominator": "evidence_characters",
+      "union_by_document": true,
+      "necessary_supports": "all",
+      "recall_unit": "answer_points",
+      "averaging": "macro_by_query",
+      "mrr_target": "first_supported_point_prefix",
+      "scope": "retrieval_evidence_not_answer_correctness"
+    },
+    "n_answerable": 43,
+    "n_pending": 2,
+    "complete_at": {
+      "1": 0.6511627906976745,
+      "3": 0.813953488372093,
+      "5": 0.8604651162790697
+    },
+    "recall_at": {
+      "1": 0.748062015503876,
+      "3": 0.877906976744186,
+      "5": 0.9186046511627907
+    },
+    "mrr": 0.8922480620155039,
+    "refusal": {
+      "accuracy": 0.0,
+      "false_rate": 0.0,
+      "n_no_answer": 17
+    },
+    "by_source": {
+      "holdout": {
+        "n": 43,
+        "recall_at": {
+          "1": 0.748062015503876,
+          "3": 0.877906976744186,
+          "5": 0.9186046511627907
+        },
+        "mrr": 0.8922480620155039,
+        "complete_at": {
+          "1": 0.6511627906976745,
+          "3": 0.813953488372093,
+          "5": 0.8604651162790697
+        }
+      }
+    },
+    "latency": {
+      "cold_ms": 8634.827899863012,
+      "warm_mean_ms": 11198.530906546082,
+      "warm_p50_ms": 10841.305100009777,
+      "warm_p95_ms": 14003.125399933197
+    },
+    "experiment": {
+      "dataset": "holdout_regression",
+      "variant": "cross_encoder",
+      "source_commit": "0e191f7ed8c6273143a7a4733c6a03f112ebc846",
+      "wall_seconds": 691.9928367999382,
+      "started_at": "2026-10-26T00:19:18.173494+08:00",
+      "completed_at": "2026-10-26T01:19:38.265282+08:00",
+      "first_query_is_true_cold": false,
+      "note": "Metrics measure retrieved evidence, not semantic answer correctness"
+    }
+  }
+}

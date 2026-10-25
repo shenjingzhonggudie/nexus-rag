@@ -1,0 +1,37 @@
+{
+  "retrieval": {
+    "top_k": 20,
+    "final_k": 5,
+    "fusion_method": "weighted_rrf",
+    "fusion_alpha": 0.7,
+    "sparse_enabled": true,
+    "dense_enabled": true,
+    "refuse_threshold": 0.05
+  },
+  "rerank": {
+    "enabled": true,
+    "model_name": "BAAI/bge-reranker-base",
+    "batch_size": 16,
+    "max_length": 512,
+    "device": "cpu",
+    "local_files_only": true
+  },
+  "chunking": {
+    "strategy": "heading",
+    "chunk_size": 300,
+    "overlap": 50
+  },
+  "embedding": {
+    "provider": "bge",
+    "dim": 512,
+    "model_name": "BAAI/bge-small-zh-v1.5"
+  },
+  "llm": {
+    "provider": "none",
+    "model": "",
+    "api_key": "",
+    "base_url": ""
+  },
+  "data_dir": "data\\raw",
+  "index_dir": "data\\index"
+}

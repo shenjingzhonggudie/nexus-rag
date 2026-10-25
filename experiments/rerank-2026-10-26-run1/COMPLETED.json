@@ -1,0 +1,27 @@
+{
+  "completed_at": "2026-10-26T01:19:39.017279+08:00",
+  "inputs_unchanged": true,
+  "paired_candidate_pools_identical": true,
+  "refusal_decisions_identical": true,
+  "files_sha256": {
+    "config.cross_encoder.json": "574a7e6e2310aef0863448c518c4904e6ee0fffb7cd6c6da4a286414672f1205",
+    "config.fusion_only.json": "0e0877bc0d4285655fefb0f68cc7c6b7a709635ad90634ec19d51e4a58ea8a7b",
+    "eval.dev.cross_encoder.json": "83ff8cd9d58b1543e7d2ca96b13c306b49af955cf0736036e53b01ff71be3341",
+    "eval.dev.fusion_only.json": "7c6667c4132ce46168b113d621136aaf340b2e32935d0c697136f29c74a07fb6",
+    "eval.holdout_regression.cross_encoder.json": "ea3d3d5d411f2af0143fdd2b8711dd930e7d0aa24f627e6cafc3e8d0210c332e",
+    "eval.holdout_regression.fusion_only.json": "ac09636ebf892f9a2c1177497a4bb3ee21ecad2c6e5e8ae492910f2470128d8a",
+    "PLAN.json": "faf5768d1c59861472463c27d8fe379568b697a50868d7cdebb07da7b8b1598f",
+    "PROGRESS.json": "c96cff36fba9009f8299344639c1979af26787b9a7f4173b6bbde534c7839367",
+    "retrievals.dev.cross_encoder.jsonl": "3212e8732083c3b48b06a7997c946ca4ff4941434209656d80732f7ef9fe330c",
+    "retrievals.dev.fusion_only.jsonl": "88622adf89be6433345443835a37a4d8c178a69a91529c79100a4f0b94fa28f6",
+    "retrievals.holdout_regression.cross_encoder.jsonl": "11b087d416debfb5304f3dab5c147f0e45c67de82ed96d86120504da32b505a1",
+    "retrievals.holdout_regression.fusion_only.jsonl": "1edb26912ec281bca21942b2b76eb49ca1a3081ad38f8cddcde4dc668b7853df",
+    "SUMMARY.json": "9104497195c219060c45f120d2476121a302d6a22165b0d2ed8fdedb47431826"
+  },
+  "local_answer_files_sha256": {
+    "answers.dev.cross_encoder.jsonl": "7834e57932021306e17468bf3fc4f49dc15ea1294de750b4b804be57d7161e4c",
+    "answers.dev.fusion_only.jsonl": "1b337bf4db76405a93e94aa641e831b344b8815aa6846120cb1d3bb53299e27c",
+    "answers.holdout_regression.cross_encoder.jsonl": "0f70c5a770a0b7847c8b195c4a2d781ad38464a2949919acd4b9c8e87e921f2f",
+    "answers.holdout_regression.fusion_only.jsonl": "35222ace1a032ed486284cc321eb363c26bbcd3f33f6d5ed27ed81b1e9d28bcb"
+  }
+}

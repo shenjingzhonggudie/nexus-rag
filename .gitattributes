@@ -10,3 +10,8 @@ data/eval/evidence_review.jsonl text eol=lf
 
 # 新版历史盲测重评的冻结清单使用字节哈希。
 experiments/holdout-evidence-v2/** text eol=lf
+
+# 本轮实验清单记录实际文件字节，保留Windows运行产物的原始换行。
+experiments/rerank-2026-10-26-run1/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+scripts/run_rerank_experiment.py text eol=lf
+scripts/check_rerank_experiment.py text eol=lf
