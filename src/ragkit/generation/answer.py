@@ -68,7 +68,7 @@ def answer_question(
         for i, sc in enumerate(result.results)
     ]
     # provider="none" 的抽取式回答（第 15 轮决策 1）：answer = 最高分块原文；
-    # confidence 是 rerank 余弦的搬运（决策 2），不是新评分系统
+    # confidence沿用最终排序分：融合排名分或重排logit（可负），不是概率。
     return Answer(
         question=question,
         answer=result.results[0].chunk.text,

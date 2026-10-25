@@ -1,0 +1,20 @@
+# 使用已有索引启用重排，无需为重排重建文档向量。
+# 先准备重排模型文件，或把model_name改为本地目录。
+index_dir: data/index
+
+retrieval:
+  top_k: 20
+  final_k: 5
+  fusion_method: weighted_rrf
+  fusion_alpha: 0.7
+  sparse_enabled: true
+  dense_enabled: true
+  refuse_threshold: 0.05
+
+rerank:
+  enabled: true
+  model_name: BAAI/bge-reranker-base
+  batch_size: 16
+  max_length: 512
+  device: cpu
+  local_files_only: true

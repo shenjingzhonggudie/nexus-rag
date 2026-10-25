@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from ragkit.chunking import iter_heading_sections
-from ragkit.config import AppConfig
+from ragkit.config import AppConfig, RerankConfig
 from ragkit.evaluation import AnswerSection, Qrel, evaluate
 from ragkit.evaluation.report import _hit_indices
 from ragkit.index import build
@@ -68,7 +68,7 @@ def test_hit_indices_without_offsets_returns_empty():
 
 def test_evaluate_end_to_end(tmp_path):
     raw = _make_corpus(tmp_path)
-    cfg = AppConfig(index_dir=tmp_path / "idx")
+    cfg = AppConfig(index_dir=tmp_path / "idx", rerank=RerankConfig(enabled=False))
     built = build(raw, cfg)
 
     text = (raw / "a.md").read_text(encoding="utf-8")
@@ -89,7 +89,8 @@ def test_evaluate_refusal_metrics(tmp_path):
     # 无答案 query 与有答案 query 各一条：验证拒答准确率、误拒率，
     # 以及 recall 只统计有答案 query（不被无答案的 0 分稀释）
     raw = _make_corpus(tmp_path)
-    cfg = AppConfig(index_dir=tmp_path / "idx")  # 默认 refuse_threshold=0.5
+    cfg = AppConfig(index_dir=tmp_path / "idx", rerank=RerankConfig(enabled=False))
+    # 默认 refuse_threshold=0.5
     built = build(raw, cfg)
 
     text = (raw / "a.md").read_text(encoding="utf-8")
@@ -128,7 +129,7 @@ def test_report_to_dict_includes_refusal_and_type():
 
 def test_evaluate_empty_qrels_returns_zero_report(tmp_path):
     raw = _make_corpus(tmp_path)
-    cfg = AppConfig(index_dir=tmp_path / "idx")
+    cfg = AppConfig(index_dir=tmp_path / "idx", rerank=RerankConfig(enabled=False))
     built = build(raw, cfg)
 
     report = evaluate(built, cfg, [])

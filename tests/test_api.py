@@ -9,7 +9,7 @@ import pytest
 
 from ragkit import __version__
 from ragkit.api import create_server
-from ragkit.config import AppConfig
+from ragkit.config import AppConfig, RerankConfig
 from ragkit.index import build
 
 
@@ -21,7 +21,7 @@ def _make_built(tmp_path, empty=False):
             "容器冷启动 优化指南\n\n冷启动是指容器首次启动时明显变慢的现象。",
             encoding="utf-8",
         )
-    cfg = AppConfig(index_dir=tmp_path / "idx")
+    cfg = AppConfig(index_dir=tmp_path / "idx", rerank=RerankConfig(enabled=False))
     return build(root, cfg), cfg
 
 

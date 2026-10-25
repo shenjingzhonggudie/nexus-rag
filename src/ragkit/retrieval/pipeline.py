@@ -1,11 +1,11 @@
-"""检索流水线：稀疏 / 稠密召回 → RRF 融合 → 可选精排，并记录各阶段轨迹。"""
+"""稀疏/稠密召回 → 排名融合 → 可选query-document重排 → 最终候选。"""
 
 import time
 
-from ragkit.config import RetrievalConfig
+from ragkit.config import RerankConfig, RetrievalConfig
 from ragkit.retrieval.bm25 import BM25Index
 from ragkit.retrieval.dense import dense_search
-from ragkit.retrieval.fusion import rrf_fuse
+from ragkit.retrieval.fusion import rrf_fuse, weighted_rrf_fuse
 from ragkit.retrieval.rerank import rerank
 from ragkit.retrieval.result import RetrievalResult
 from ragkit.schemas import Chunk, RetrievalTrace, ScoredChunk, StageTrace
@@ -20,6 +20,7 @@ def search(
     id_to_chunk: dict[str, Chunk],
     dim: int,
     retrieval: RetrievalConfig,
+    rerank_config: RerankConfig | None = None,
 ) -> RetrievalResult:
     """按配置运行完整检索流水线。
 
@@ -30,8 +31,9 @@ def search(
         id_to_chunk: chunk_id 到块对象的映射，供稠密检索还原块。
         dim: query 向量维度，必须与向量库一致。
         retrieval: 检索参数；sparse_enabled / dense_enabled 决定跑哪几路召回，
-            rerank_enabled 决定是否精排，top_k 为召回与融合的候选数，
+            fusion_method决定融合方式，top_k为每路召回与融合后的候选上限，
             final_k 为最终返回数。
+        rerank_config: 独立的模型重排配置；None或enabled=False时只运行融合。
 
     Returns:
         RetrievalResult: results 按最终分数降序、至多 final_k 个；trace 按
@@ -80,18 +82,29 @@ def search(
         else:
             match_score = bm25.key_term_coverage(query, bm25_hits)
 
-    # 融合 / 精排：开启 rerank 走加权排名融合 S(d) = α·S1(d) + (1−α)·S2(d)；
-    # 关闭时退化为等权 RRF（纯召回合并，不给任何一条腿更高权重）。
-    if retrieval.rerank_enabled:
-        results = timed(
-            "rerank",
-            lambda: rerank(
-                legs, alpha=retrieval.fusion_alpha, final_k=retrieval.final_k
+    if retrieval.fusion_method == "weighted_rrf":
+        candidates = timed(
+            "fusion",
+            lambda: weighted_rrf_fuse(
+                legs, alpha=retrieval.fusion_alpha, top_k=retrieval.top_k
             ),
         )
     else:
-        results = timed("fusion", lambda: rrf_fuse(legs, top_k=retrieval.top_k))
-        results = results[: retrieval.final_k]
+        candidates = timed("fusion", lambda: rrf_fuse(legs, top_k=retrieval.top_k))
+
+    # 先保留top_k给独立模型，不能先截成final_k再让模型重新排这几条。
+    if rerank_config is not None and rerank_config.enabled:
+        results = timed(
+            "rerank",
+            lambda: rerank(
+                query, candidates, final_k=retrieval.final_k,
+                model_name=rerank_config.model_name, batch_size=rerank_config.batch_size,
+                max_length=rerank_config.max_length, device=rerank_config.device,
+                local_files_only=rerank_config.local_files_only,
+            ),
+        )
+    else:
+        results = candidates[:retrieval.final_k]
 
     return RetrievalResult(
         results=results,

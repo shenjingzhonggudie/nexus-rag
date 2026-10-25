@@ -15,6 +15,10 @@ class ConfigError(RagkitError):
     """
 
 
+class RerankError(RagkitError):
+    """重排模型加载、推理或输出不符合单分数相关性模型契约。"""
+
+
 class LoadError(RagkitError):
     """单个文件加载失败。
 

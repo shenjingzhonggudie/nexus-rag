@@ -157,14 +157,19 @@ def _cmd_ask(args, environ: Mapping[str, str] | None) -> int:
         return 1
 
     # 第三步：检索，得到按相关度排好序的块
-    result = search(
-        args.query,
-        bm25=built.bm25,
-        store=built.store,
-        id_to_chunk=built.id_to_chunk,
-        dim=built.dim,
-        retrieval=cfg.retrieval,
-    )
+    try:
+        result = search(
+            args.query,
+            bm25=built.bm25,
+            store=built.store,
+            id_to_chunk=built.id_to_chunk,
+            dim=built.dim,
+            retrieval=cfg.retrieval,
+            rerank_config=cfg.rerank,
+        )
+    except (RagkitError, ValueError) as e:
+        print(f"错误：检索或重排失败（{e}）", file=sys.stderr)
+        return 1
     # 第四步：基于检索结果生成答案；结果为空或实词覆盖率低于阈值时拒答
     answer = answer_question(
         args.query, result, llm=cfg.llm, refuse_threshold=cfg.retrieval.refuse_threshold
@@ -262,7 +267,11 @@ def _cmd_eval(args, environ: Mapping[str, str] | None) -> int:
         print(f"错误：评测集加载失败：{e}", file=sys.stderr)
         return 1
 
-    report = evaluate(built, cfg, qrels)
+    try:
+        report = evaluate(built, cfg, qrels)
+    except (RagkitError, ValueError) as e:
+        print(f"错误：评测失败（{e}）", file=sys.stderr)
+        return 1
 
     # 打印摘要：有多个来源时**只报分组**，不报合计。
     # 合计会被两组的题目比例左右（external 占比一高，整体就掉），

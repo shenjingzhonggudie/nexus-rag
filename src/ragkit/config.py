@@ -1,18 +1,46 @@
 """应用配置：定义各阶段的 Pydantic 模型，并合并 YAML 与环境变量后加载。"""
 
 import os
+import warnings
 from collections.abc import Mapping 
 from copy import deepcopy
 from pathlib import Path
 from typing import Any, Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
+from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, ValidationError, model_validator
 
 from ragkit.errors import ConfigError
 
 ENV_PREFIX = "RAG__"
 MASK = "******"
+
+
+def _migrate_legacy_retrieval(value: Any) -> Any:
+    """旧rerank_enabled只映射融合方式，不修改独立的rerank.enabled。"""
+    if not isinstance(value, dict) or "rerank_enabled" not in value:
+        return value
+    migrated = dict(value)
+    try:
+        enabled = TypeAdapter(bool).validate_python(migrated.pop("rerank_enabled"))
+    except ValidationError as exc:
+        raise ValueError("旧 retrieval.rerank_enabled 必须是布尔值") from exc
+    method = "weighted_rrf" if enabled else "rrf"
+    if "fusion_method" in migrated and migrated["fusion_method"] != method:
+        raise ValueError("旧 rerank_enabled 与 fusion_method 冲突；请删除旧字段并明确融合方式")
+    migrated["fusion_method"] = method
+    warnings.warn(
+        "retrieval.rerank_enabled 已弃用，仅按旧含义映射到 "
+        f"retrieval.fusion_method={method!r}；真正模型重排请设置 rerank.enabled。",
+        FutureWarning, stacklevel=3,
+    )
+    return migrated
+
+
+def _migrate_config_layer(value: dict) -> dict:
+    if "retrieval" not in value:
+        return value
+    return {**value, "retrieval": _migrate_legacy_retrieval(value["retrieval"])}
 
 
 class RetrievalConfig(BaseModel):
@@ -21,27 +49,28 @@ class RetrievalConfig(BaseModel):
     Attributes:
         top_k: 初步召回的候选数量。
         final_k: 融合或重排后最终保留的条数。
-        fusion_alpha: 加权排名融合里第一条腿（BM25）的权重，取值 0~1；
-            只在 ``rerank_enabled=True`` 时生效。
+        fusion_method: weighted_rrf为加权排名融合，rrf为等权RRF。
+        fusion_alpha: 双路加权融合中BM25的权重，取值0~1；单路或等权RRF不使用。
         sparse_enabled: 是否启用关键词或 BM25 等稀疏检索。
         dense_enabled: 是否启用向量相似度等稠密检索。
-        rerank_enabled: 是否启用**加权排名融合**
-            ``S(d) = α·S1(d) + (1−α)·S2(d)``；关闭时退化为等权 RRF。
-            默认开：221 条上 α=0.7 实测最优（MRR 0.431），α=0.9 偏保守（0.419），
-            α=0.5（等权）持平（0.431）——新增的口语化 external 题需要 dense 更多话语权。
         refuse_threshold: 拒答阈值——查询实词被检索结果覆盖的比例低于它时
             拒答；0 表示不启用（只靠"结果为空"拒答）。
     """
 
     model_config = ConfigDict(extra="forbid")
 
-    top_k: int = Field(default=20, gt=0)  # 初步召回的候选数量。
+    top_k: int = Field(default=20, gt=0)  # 每路召回上限及融合后的重排候选上限。
     final_k: int = Field(default=5, gt=0)  # 经过融合/重排后最终保留的条数。
-    fusion_alpha: float = Field(default=0.7, ge=0.0, le=1.0)  # 加权排名融合里 BM25 腿的权重；0.7 在 221 条上最优。
+    fusion_method: Literal["weighted_rrf", "rrf"] = "weighted_rrf"
+    fusion_alpha: float = Field(default=0.7, ge=0.0, le=1.0)
     sparse_enabled: bool = True  # 是否启用关键词/BM25 等稀疏检索。
     dense_enabled: bool = True  # 是否启用向量相似度等稠密检索。
-    rerank_enabled: bool = True  # 是否启用加权排名融合（S = α·S1 + (1−α)·S2）；关则退化为等权 RRF。
     refuse_threshold: float = Field(default=0.05, ge=0.0, le=1.0)  # 拒答阈值：实词覆盖率低于它则拒答（0 = 不启用阈值）。
+
+    @model_validator(mode="before")
+    @classmethod
+    def migrate_legacy_fusion_flag(cls, value: Any) -> Any:
+        return _migrate_legacy_retrieval(value)
 
     @model_validator(mode="after")
     def validate_top_k(self) -> "RetrievalConfig":
@@ -56,6 +85,19 @@ class RetrievalConfig(BaseModel):
         if self.top_k < self.final_k:
             raise ValueError(f"final_k ({self.final_k}) 不能大于 top_k ({self.top_k})")
         return self
+
+
+class RerankConfig(BaseModel):
+    """独立的query-document重排；默认启用且仅使用本地已有模型文件。"""
+
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+
+    enabled: bool = True
+    model_name: str = Field(default="BAAI/bge-reranker-base", min_length=1)
+    batch_size: int = Field(default=16, gt=0)
+    max_length: int = Field(default=512, gt=0)  # query/document合计token上限，会截断。
+    device: str = Field(default="cpu", min_length=1)
+    local_files_only: bool = True
 
 
 class ChunkingConfig(BaseModel):
@@ -137,6 +179,7 @@ class AppConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     retrieval: RetrievalConfig = Field(default_factory=RetrievalConfig)  # 检索阶段配置。
+    rerank: RerankConfig = Field(default_factory=RerankConfig)
     chunking: ChunkingConfig = Field(default_factory=ChunkingConfig)  # 文档切分配置。
     embedding: EmbeddingConfig = Field(default_factory=EmbeddingConfig)  # 向量化配置。
     llm: LLMConfig = Field(default_factory=LLMConfig)  # 回答生成模型配置。
@@ -256,10 +299,11 @@ def load_config(
     if environ is None:
         environ = os.environ
 
-    overrides = _collect_env_overrides(environ)
-    merged = _deep_merge(base, overrides)
-
     try:
+        # 每层先迁移再合并，保留环境变量对YAML的优先级。
+        base = _migrate_config_layer(base)
+        overrides = _migrate_config_layer(_collect_env_overrides(environ))
+        merged = _deep_merge(base, overrides)
         return AppConfig.model_validate(merged)
-    except ValidationError as exc:
+    except (ValidationError, ValueError) as exc:
         raise ConfigError(f"配置校验失败：{path or '<无配置文件，仅环境变量覆盖>'}\n{exc}") from exc

@@ -13,6 +13,7 @@ def _env(tmp_path):
     return {
         "RAG__DATA_DIR": str(tmp_path / "raw"),
         "RAG__INDEX_DIR": str(tmp_path / "idx"),
+        "RAG__RERANK__ENABLED": "false",
     }
 
 

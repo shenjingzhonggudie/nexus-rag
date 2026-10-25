@@ -1,32 +1,28 @@
 """消融实验的契约测试：对照组开关契约、跑通结构与指标范围。"""
 
-from pathlib import Path
-
 from ragkit.chunking import iter_heading_sections
-from ragkit.config import AppConfig
+from ragkit.config import AppConfig, RerankConfig
 from ragkit.evaluation import AnswerSection, Qrel, VARIANTS, run_ablation
 from ragkit.index import build
 from ragkit.text.normalize import normalize_text
 
 
 def test_variants_contract():
-    # 锁定 6 组单变量对照设计：对照组必须与默认值相反——
-    # rerank_enabled 默认 True（加权排名融合），所以对照是"关掉它"（等权 RRF）；
-    # 单腿组同时关 rerank，隔离变量；alpha_* 组只改融合权重，观察 α 敏感度。
+    # 这六组只比较召回与融合。rrf名称不可暗示运行过真实模型重排。
     assert list(VARIANTS) == [
         "baseline",
         "alpha_09",
         "alpha_05",
-        "no_rerank",
+        "rrf",
         "bm25_only",
         "dense_only",
     ]
     assert VARIANTS["baseline"] == {}
     assert VARIANTS["alpha_09"] == {"fusion_alpha": 0.9}
     assert VARIANTS["alpha_05"] == {"fusion_alpha": 0.5}
-    assert VARIANTS["no_rerank"] == {"rerank_enabled": False}
-    assert VARIANTS["bm25_only"] == {"dense_enabled": False, "rerank_enabled": False}
-    assert VARIANTS["dense_only"] == {"sparse_enabled": False, "rerank_enabled": False}
+    assert VARIANTS["rrf"] == {"fusion_method": "rrf"}
+    assert VARIANTS["bm25_only"] == {"dense_enabled": False, "fusion_method": "rrf"}
+    assert VARIANTS["dense_only"] == {"sparse_enabled": False, "fusion_method": "rrf"}
 
 
 def test_run_ablation_structure(tmp_path):
@@ -46,7 +42,7 @@ def test_run_ablation_structure(tmp_path):
         "baseline",
         "alpha_09",
         "alpha_05",
-        "no_rerank",
+        "rrf",
         "bm25_only",
         "dense_only",
     ]
@@ -54,3 +50,11 @@ def test_run_ablation_structure(tmp_path):
         assert set(r["recall_at"]) == set(range(1, 11))
         assert 0.0 <= r["mrr"] <= 1.0
         assert all(0.0 <= v <= 1.0 for v in r["recall_at"].values())
+        assert r["rerank_config"] == RerankConfig(enabled=False).model_dump(mode="json")
+        assert "rerank_enabled" not in r["config"]
+        expected_method = (
+            "weighted_rrf" if name in {"baseline", "alpha_09", "alpha_05"} else "rrf"
+        )
+        assert r["config"]["fusion_method"] == expected_method
+        assert set(r["complete_at"]) == set(range(1, 11))
+        assert r["scoring"]["mode"] == "section_overlap_legacy"

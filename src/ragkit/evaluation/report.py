@@ -262,6 +262,7 @@ def evaluate(
             id_to_chunk=built.id_to_chunk,
             dim=built.dim,
             retrieval=cfg.retrieval,
+            rerank_config=cfg.rerank,
         )
         total = result.trace.total_latency_ms()
         if i == 0:

@@ -70,6 +70,7 @@ def _answer_payload(query: str, built: BuiltIndex, cfg: AppConfig) -> dict:
         id_to_chunk=built.id_to_chunk,
         dim=built.dim,
         retrieval=cfg.retrieval,
+        rerank_config=cfg.rerank,
     )
     answer = answer_question(
         query, result, llm=cfg.llm, refuse_threshold=cfg.retrieval.refuse_threshold
@@ -90,6 +91,7 @@ def _search_payload(query: str, built: BuiltIndex, cfg: AppConfig) -> dict:
         id_to_chunk=built.id_to_chunk,
         dim=built.dim,
         retrieval=cfg.retrieval,
+        rerank_config=cfg.rerank,
     )
     return {
         "query": query,

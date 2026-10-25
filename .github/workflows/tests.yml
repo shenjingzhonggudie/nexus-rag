@@ -18,9 +18,9 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
 
-      # 只装 dev 组，**不装 .[embedding]**（torch 约 200MB+，会显著拖慢 CI）。
+      # 只装dev组，不装embedding/rerank模型依赖。
       # 这是可行的，因为：
-      #   1. bge.py 里 `from sentence_transformers import ...` 在函数内部（懒加载）；
+      #   1. embedding与rerank的模型依赖都在调用时懒加载；
       #   2. 自动测试不加载真实模型；
       #   3. 测试使用临时语料及已跟踪的标注，不依赖本地 data/raw 与 data/index。
       - name: Install

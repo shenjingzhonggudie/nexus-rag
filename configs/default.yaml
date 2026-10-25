@@ -3,14 +3,22 @@
 
 # 检索参数
 retrieval:
-  top_k: 20            # 粗排召回候选数
+  top_k: 20            # 每路召回数量上限，以及融合后的重排候选池上限
   final_k: 5           # 最终返回给生成阶段的证据条数（必须 <= top_k）
-  fusion_alpha: 0.7    # 加权排名融合里 BM25 腿权重（0~1）；0.7 在 218 条标注上最优，0.9 偏保守
+  fusion_method: weighted_rrf # weighted_rrf（加权排名融合）或 rrf（等权RRF）
+  fusion_alpha: 0.7    # 双路加权融合的BM25权重；不表示已证明的最优参数
   sparse_enabled: true # 是否启用 BM25 稀疏召回
   dense_enabled: true  # 是否启用向量稠密召回
-  rerank_enabled: true # 是否启用加权排名融合 S=α·S1+(1−α)·S2；关掉则退化为等权 RRF
-                       # （注意：不是 dense 内积重排——那种做法与 dense 腿同函数，已移除）
   refuse_threshold: 0.05 # 拒答阈值：查询实词覆盖率低于它则拒答；0 = 不启用
+
+# 独立的query-document CrossEncoder重排，默认启用并仅加载本地模型
+rerank:
+  enabled: true
+  model_name: BAAI/bge-reranker-base # 可用已下载的本地路径
+  batch_size: 16
+  max_length: 512 # 问题与候选正文的总token上限；超过会截断
+  device: cpu
+  local_files_only: true # 仅使用本地文件；缺文件时明确失败，不回退为融合
 
 # 分块参数
 chunking:

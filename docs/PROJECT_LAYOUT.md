@@ -8,7 +8,7 @@
 建库：load_dir → Document → chunk_document → Chunk → embed_text
        → 向量库四文件 + chunks.jsonl → BuiltIndex
 
-查询：load_index → BuiltIndex → search（BM25 / dense → 排名融合）
+查询：load_index → BuiltIndex → search（两路各top_k → 融合去重取top_k → 可选模型重排 → final_k）
        → RetrievalResult → answer_question → Answer → CLI 文本 / HTTP JSON
 
 评测：load_qrels + BuiltIndex → search → 要点证据联合覆盖与拒答统计 → EvalReport
@@ -24,7 +24,7 @@
 | `embeddings/` | `configure(*, provider="hashing", model_name="")`；`embed_text(text, *, dim) -> list[float]` |
 | `stores/` | `VectorStore`；`write(...)` 与 `load(directory)` 读写向量文件 |
 | `index/` | `build(root, cfg) -> BuiltIndex`；`load_index(index_dir, *, provider="hashing", model_name="") -> BuiltIndex` |
-| `retrieval/` | BM25、向量点积、等权 RRF 和加权排名融合；`search(...) -> RetrievalResult` |
+| `retrieval/` | BM25、向量点积；`fusion.py` 汇总通道名次，`rerank.py` 独立给 query-document 对打分；`pipeline.search(...) -> RetrievalResult` 编排流程 |
 | `generation/` | `answer_question(question, result, *, llm, refuse_threshold=0.0) -> Answer` |
 | `api/`、`cli.py` | 参数/请求解析、调用领域函数、输出转换；HTTP 服务附带静态检索页面 |
 | `evaluation/` | 标注加载、检索指标、拒答统计及六组消融 |
@@ -37,7 +37,9 @@
 
 - 环境变量使用 `RAG__DATA_DIR` 或 `RAG__RETRIEVAL__TOP_K` 这类格式，支持顶层和一层嵌套字段。合法格式中的未知字段会报 `ConfigError`；更深层、空段等不支持的命名被忽略。
 - CLI 仅为已暴露的参数提供额外覆盖，例如 `build --root`；并非每个配置项都有命令行开关。
-- 检索默认值为 top_k=20、final_k=5、α=0.7，两路召回及加权融合开启，拒答阈值=0.05。要求 `0 < final_k <= top_k`。
+- 检索默认值为 top_k=20、final_k=5、fusion_method=weighted_rrf、fusion_alpha=0.7，两路召回开启，拒答阈值=0.05。top_k 同时限制每路召回和融合后的模型候选预算；要求 `0 < final_k <= top_k`。
+- 顶层 `rerank: RerankConfig` 与 retrieval 独立。默认 enabled=true、model_name=BAAI/bge-reranker-base、batch_size=16、max_length=512、device=cpu、local_files_only=true；model_name 可为本地路径。公开仓库不包含权重，安装 `[rerank]` 依赖也不会准备模型；新机器须下载模型或显式关闭重排，启用但本地模型缺失时会报错。
+- 旧 `retrieval.rerank_enabled` 只作为弃用别名：True→weighted_rrf、False→rrf，发出 FutureWarning；新快照只有 fusion_method，不含旧字段。与同层显式 fusion_method 冲突时拒绝加载。YAML 与环境变量先各自迁移再按优先级合并；旧别名不影响真正的 rerank.enabled。
 - 应用配置默认分块为 heading；`chunk_document` 函数直接调用的默认策略为 fixed。`overlap < chunk_size` 由配置模型校验。
 - embedding 默认 hashing、512 维；LLM 默认 none。`snapshot()` 对非空 API key 掩码，其他字段按配置输出。
 
@@ -95,21 +97,24 @@ index_dir/
 
 ## 检索、融合与拒答
 
-`search(query, *, bm25, store, id_to_chunk, dim, retrieval)` 分别运行启用的 BM25 和 dense 通道，各取 top_k；随后直接选择一种排名融合，最多返回 final_k 个块：
+`search(query, *, bm25, store, id_to_chunk, dim, retrieval, rerank_config)` 接收领域配置；CLI、HTTP 和 evaluate 传入 `cfg.retrieval` 与 `cfg.rerank`。流程为：
 
-- `rerank_enabled=True`：`Σ w_i/(60+rank_i)`；双路的 BM25 权重为配置 α、dense 为 1−α。
-- `rerank_enabled=False`：等权 RRF，再截取 final_k。
-- 单路加权归一为1；双路都关闭时返回空结果。
+1. 分别运行启用的 BM25 和 dense 通道，各取 top_k。
+2. `fusion_method=weighted_rrf` 使用 `Σ w_i/(60+rank_i)`，双路权重为 BM25 的 α 和 dense 的 1−α；`rrf` 使用等权 RRF。按 chunk_id 去重后取 top_k 个候选。
+3. 当 `rerank.enabled=true` 时，`rerank(query, candidates, ...)` 只给这些候选的 query-document 对打分，再按分数排序；关闭时保留融合顺序。
+4. 最后截取 final_k。单路加权归一为1；双路都关闭或候选为空时返回空结果，不加载重排模型。
 
-`rerank` 没有调用额外模型，也没有在 RRF 之后运行 cross-encoder。直接调用 `rerank` 的 alpha 默认值为0.9；主流水线显式传配置值，默认0.7。
+`fusion.py` 仅依赖通道排名和融合参数，不加载模型；`rerank.py` 使用可选 sentence-transformers CrossEncoder，不重新读取索引或运行向量召回。默认模型支持中英，默认在 CPU 上仅加载本地文件。缺依赖、加载失败或打分失败均明确报错，不静默降级；模型按配置懒加载并缓存，batch_size 控制批量大小，max_length 控制 query 与 document 合计 token 上限，长输入会截断。重排无法挽回融合候选预算外的证据。
 
-`RetrievalResult` 包含候选、各阶段轨迹和 match_score。match_score 仅在 sparse 通道启用时计算：查询中符合规则且语料未出现的首字母大写英文标识符使其为0；否则计算查询实词在前3个 BM25 结果中的 IDF 加权覆盖率。实词来自 terms、长度至少2、剔除停用词；没有实词时返回 None。
+融合轨迹的 `StageTrace.name` 为 `fusion`，候选的 `ScoredChunk.stage` 为 `weighted_rrf` 或 `rrf`；真实模型重排的轨迹名称和候选 stage 均为 `rerank`。融合分来自名次，重排分为未经 sigmoid 的原始相关性 logit，可负且未经概率校准。两者不直接比较，也不能当作拒答阈值。
+
+`RetrievalResult` 包含候选、各阶段轨迹和 match_score。match_score 保持独立的 BM25 信号，不使用模型 logit，也不随最终重排顺序改算。仅在 sparse 通道启用时计算：查询中符合规则且语料未出现的首字母大写英文标识符使其为0；否则计算查询实词在前3个 BM25 结果中的 IDF 加权覆盖率。实词来自 terms、长度至少2、剔除停用词；没有实词时返回 None。
 
 `answer_question` 在结果为空，或阈值大于0且有效 match_score 低于阈值时拒答。关闭 BM25 或没有覆盖率信号时，阈值不能判断是否有答案。覆盖率和英文实体规则不能证明证据足以回答问题。
 
 ## 回答与 HTTP
 
-`llm.provider=none` 返回最高分块原文；citations 和 contexts 包含全部最终候选。confidence 搬运第一名的排名融合分数，未经概率校准。拒答时 answer 为空、引用与上下文为空，trace 保留。`openai_compatible` 会抛 NotImplementedError，当前没有远程生成实现。
+`llm.provider=none` 返回最高分块原文；citations 和 contexts 包含全部最终候选。confidence 搬运第一名的最终分数：重排关闭时为融合分，开启时为模型原始 logit，可负且不是概率。拒答时 answer 为空、引用与上下文为空，trace 保留。`openai_compatible` 会抛 NotImplementedError，当前没有远程生成实现。
 
 `create_server(host, port, built, cfg)` 尝试预热 embedding 后构造 ThreadingHTTPServer，由调用方启动 serve_forever。预热失败记录日志，不阻止服务创建。CLI serve 负责加载一次索引，后续请求复用该对象。
 
@@ -120,7 +125,7 @@ index_dir/
 | `GET /api/knowledge` | 文档列表及每篇块数 |
 | `GET /api/chunks?doc=...` | 指定 doc_id 的全部块，按 ordinal 排序 |
 | `POST /ask` | 请求 JSON 含字符串 query，返回 Answer |
-| `POST /api/search` | 返回候选原文、排名分、match_score、refused 和检索耗时；不调用回答层 |
+| `POST /api/search` | 返回候选原文、最终分数及 stage、match_score、refused 和检索耗时；不调用回答层 |
 
 合法请求处理成功及拒答都返回200；请求格式错误返回400，未知路径返回404，处理异常记录日志并返回500。PUT、DELETE、PATCH 被显式拒绝为405；其他方法按标准库行为处理。
 
@@ -136,8 +141,8 @@ index_dir/
 
 报告同时统计无答案题的正确拒答率和有答案题的误拒率，并按 source 分别汇总有答案题。命中不能证明证据完整或答案正确；source 不等于 dev/test 划分。默认 final_k=5 时，报告中的 @6～10 没有新增候选，不能作为更深召回的成绩。
 
-耗时为检索轨迹各阶段之和。cold_ms 是首个查询的检索阶段耗时，可能包含 BGE 首次加载；不包含进程启动、此前的索引读取及 BM25 重建。warm 统计后续查询，不是 HTTP 端到端延迟。
+耗时为检索轨迹各阶段之和。cold_ms 是首个查询的检索阶段耗时，可能包含 BGE embedding 或 cross-encoder 首次加载；不包含进程启动、此前的索引读取及 BM25 重建。warm 统计后续查询，不是 HTTP 端到端延迟。
 
-`run_ablation` 固定六组：baseline、alpha_09、alpha_05、no_rerank、bm25_only、dense_only。各组复用一个索引，仅覆盖 RetrievalConfig；它会从模型默认配置构造各组，不继承任意调用方的完整配置。消融结论需要同时记录代码、标注、语料/索引版本和有效配置。
+`run_ablation` 固定六组：baseline、alpha_09、alpha_05、rrf、bm25_only、dense_only。各组复用一个索引，从检索默认配置构造并覆盖 RetrievalConfig，不继承任意调用方的完整配置；同时显式传入 `RerankConfig(enabled=False)`，不受应用默认重排启用设置影响，也不加载重排模型。旧 no_rerank 改名 rrf，表示等权融合；六组不构成 cross-encoder 效果对照。每组保留指标、检索 config、独立 rerank_config 和 scoring。消融结论需要同时记录代码、标注、语料/索引版本和有效配置。
 
-现有 pytest 覆盖基础实现、接口及v2覆盖边界、区间去重和必要证据组合；CLI eval 测试使用有效v2证据并断言有答案分类及命中。CI未包含真实 BGE 模型的自动回归，也未验证最终回答正确性。具体待办见 [SUMMARY](SUMMARY.md)。
+现有 pytest 覆盖基础实现、接口及v2覆盖边界、区间去重和必要证据组合；CLI eval 测试使用有效v2证据并断言有答案分类及命中。模型加载与打分可用替身验证契约；CI未包含预训练 BGE embedding 或 reranker 的质量回归，也未验证最终回答正确性。具体待办见 [SUMMARY](SUMMARY.md)。

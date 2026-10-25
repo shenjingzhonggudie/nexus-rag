@@ -11,19 +11,17 @@ def test_default_config():
     cfg = config.load_config(environ={})
     assert cfg.retrieval.top_k == 20
     assert cfg.retrieval.final_k == 5
-    assert cfg.retrieval.fusion_alpha == 0.7  # 221 条上实测最优
-    assert cfg.retrieval.rerank_enabled is True  # 加权排名融合默认开
+    assert cfg.retrieval.fusion_alpha == 0.7
+    assert cfg.retrieval.fusion_method == "weighted_rrf"
+    assert cfg.rerank.enabled is True
+    assert cfg.rerank.local_files_only is True
     assert cfg.llm.provider == "none"
 
 
 def test_default_yaml_matches_model_defaults():
     """configs/default.yaml 必须与模型默认值逐字段一致。
 
-    守的是「不传 --config」与「传 configs/default.yaml」必须等价。此前
-    `retrieval.rerank_enabled` 模型默认 True、YAML 写 false，两种跑法给出
-    不同排序（加权 α=0.7 vs 等权 RRF），而所有测试全绿——因为没有一条
-    测试真正读过 YAML 再和模型默认值比。PROJECT_LAYOUT 的已知风险第 7 条
-    早就写了「可写成测试（load_config(...) == AppConfig()）」，这里落地。
+    不传--config与传configs/default.yaml应相等，包括新的独立重排配置。
     """
     root = Path(__file__).resolve().parents[1]
     from_yaml = config.load_config(root / "configs" / "default.yaml", environ={})
@@ -289,6 +287,62 @@ def test_snapshot_keeps_other_fields(tmp_path: Path):
     snapshot = appconfig.snapshot()
     assert snapshot["retrieval"]["top_k"] == 40
     assert snapshot["chunking"]["chunk_size"] == 300  # default value
+
+
+@pytest.mark.parametrize("legacy,method", [(True,"weighted_rrf"),(False,"rrf"),("false","rrf")])
+def test_legacy_fusion_flag_warns_without_enabling_model(legacy, method):
+    with pytest.warns(FutureWarning, match="rerank_enabled.*弃用"):
+        app = config.AppConfig.model_validate({
+            "retrieval": {"rerank_enabled": legacy},
+            "rerank": {"enabled": False},
+        })
+    assert app.retrieval.fusion_method == method
+    assert not app.rerank.enabled
+    assert "rerank_enabled" not in app.snapshot()["retrieval"]
+
+
+def test_legacy_and_new_fusion_conflict_is_rejected():
+    with pytest.raises(ValueError, match="冲突"):
+        config.RetrievalConfig(rerank_enabled=True, fusion_method="rrf")
+
+
+@pytest.mark.parametrize("yaml,env,expected", [
+    ("retrieval: {rerank_enabled: true}",{"RAG__RETRIEVAL__FUSION_METHOD":"rrf"},"rrf"),
+    ("retrieval: {fusion_method: rrf}",{"RAG__RETRIEVAL__RERANK_ENABLED":"true"},"weighted_rrf"),
+    ("retrieval: {rerank_enabled: true}",{"RAG__RETRIEVAL__RERANK_ENABLED":"false"},"rrf"),
+])
+def test_legacy_migration_preserves_env_precedence(tmp_path, yaml, env, expected):
+    path = tmp_path / "old.yaml"
+    path.write_text(yaml,encoding="utf-8")
+    with pytest.warns(FutureWarning, match="rerank_enabled"):
+        app = config.load_config(path, environ={**env, "RAG__RERANK__ENABLED": "false"})
+    assert app.retrieval.fusion_method == expected
+    assert not app.rerank.enabled
+
+
+def test_explicit_model_rerank_is_independent_of_fusion_and_roundtrips():
+    app = config.load_config(environ={
+        "RAG__RETRIEVAL__FUSION_METHOD":"rrf",
+        "RAG__RERANK__ENABLED":"true",
+        "RAG__RERANK__MODEL_NAME":"local/reranker",
+        "RAG__RERANK__BATCH_SIZE":"4",
+        "RAG__RERANK__LOCAL_FILES_ONLY":"true",
+    })
+    assert app.retrieval.fusion_method == "rrf"
+    assert app.rerank.enabled and app.rerank.batch_size == 4
+    assert app.rerank.model_name == "local/reranker"
+    assert config.AppConfig.model_validate(app.snapshot()) == app
+
+
+@pytest.mark.parametrize("rerank", [{"model_name":"  "},{"batch_size":0},{"max_length":0},{"device":" "}])
+def test_invalid_model_rerank_configuration_is_rejected(rerank):
+    with pytest.raises(ValueError):
+        config.AppConfig(rerank=rerank)
+
+
+def test_bad_legacy_boolean_is_a_config_error():
+    with pytest.raises(ConfigError, match="rerank_enabled"):
+        config.load_config(environ={"RAG__RETRIEVAL__RERANK_ENABLED":"not-a-boolean"})
 
 
 def test_repr_does_not_leak_api_key(tmp_path: Path):

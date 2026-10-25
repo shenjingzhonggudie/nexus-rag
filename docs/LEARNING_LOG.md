@@ -68,3 +68,9 @@
 ```
 
 当前参数、完整指标和待办分别维护在对应说明文档中，日志只记录变化及原因。
+
+## 2026-10-25 / 融合与模型重排分开
+
+变化与原因：把加权排名融合迁入 fusion.py，由 retrieval.fusion_method 选择；rerank.py 改为独立 query-document CrossEncoder，始终默认仅加载本地模型。初次接入阶段 rerank.enabled 默认关闭；本轮按用户直接安装使用的要求改为默认启用。两路各召回 top_k，融合去重取 top_k，重排后才取 final_k；拒答仍使用原有 BM25 match_score。旧 rerank_enabled 只警告并迁移融合方式，不改变独立模型开关；消融 no_rerank 更名 rrf，六组显式设置 RerankConfig(enabled=False)，保持只比较召回与融合。
+
+验证：初次接入且默认关闭阶段全量自动测试通过（453 passed），当时另用完全离线的小型随机模型核验真实CrossEncoder推理与fusion→rerank轨迹；本轮安装权重并改为默认启用后，按用户要求未再运行测试、测速、模型推理或评测。未重跑开发集或盲测，原数字保留为历史仅融合成绩。此前已刷新editable安装元数据至源码版本1.0.0。遗留：预训练重排模型质量与耗时尚无本轮实测，后续比较须绑定模型版本、候选预算和独立评测配置，见 SUMMARY。

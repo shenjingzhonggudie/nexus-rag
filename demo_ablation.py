@@ -1,4 +1,4 @@
-"""跑消融对照（6 组单变量），打印对比表 + 边际贡献，落盘 JSON。
+"""跑六组召回与融合对照，打印指标差异，落盘 JSON；真实模型重排均关闭。
 
 前置条件：
 1. 已有语料并建过库：``scripts/fetch_docs.py`` → ``ragkit build``；
@@ -6,7 +6,7 @@
 
 用法::
 
-    # 默认索引（当前配置的 embedding，通常是 bge）
+    # 默认索引（embedding以索引manifest为准）
     python demo_ablation.py
 
     # 换用另一套索引对比（例如切回 hashing）
@@ -26,23 +26,14 @@ from ragkit.index import load_index
 
 QRELS = Path("data/eval/qrels.json")
 
-# 组名 -> 展示标签 / rerank 状态。
-# baseline 是"默认全开"，不是"无处理基线"，表里必须标出来，否则容易被误读。
+# 组名 -> 展示标签。融合方式与真实模型重排状态由实际配置分别展示。
 LABELS = {
     "baseline": "baseline (a=0.7)",
     "alpha_09": "a=0.9",
     "alpha_05": "a=0.5",
-    "no_rerank": "no_rerank (RRF)",
+    "rrf": "rrf",
     "bm25_only": "bm25_only",
     "dense_only": "dense_only",
-}
-RERANK_STATE = {
-    "baseline": "on(weighted)",
-    "alpha_09": "on(weighted)",
-    "alpha_05": "on(weighted)",
-    "no_rerank": "off(even)",
-    "bm25_only": "off",
-    "dense_only": "off",
 }
 
 
@@ -80,29 +71,30 @@ def main() -> None:
     print("\n对照组对比（recall@1~10 + MRR）：")
     ks = list(results["baseline"]["recall_at"].keys())
     print(
-        f"{'组':<20}{'rerank':<13}"
+        f"{'组':<20}{'fusion':<15}{'model rerank':<15}"
         + "".join(f"{('@' + str(k)):>6}" for k in ks)
         + f"{'MRR':>7}"
     )
     for name, stats in results.items():
         row = "".join(f"{stats['recall_at'][k]:>6.2f}" for k in ks)
         print(
-            f"{LABELS.get(name, name):<20}{RERANK_STATE.get(name, '?'):<13}"
+            f"{LABELS.get(name, name):<20}{stats['config']['fusion_method']:<15}"
+            f"{('on' if stats['rerank_config']['enabled'] else 'off'):<15}"
             f"{row}{stats['mrr']:>7.3f}"
         )
 
     base = results["baseline"]
-    print("\n各组件边际贡献（按 recall@1；正 = 有帮助，负 = 帮倒忙）：")
+    print("\n召回与融合配置差异（按 recall@1；真实模型重排均关闭）：")
     print(
         f"  dense 腿  = {base['recall_at'][1] - results['bm25_only']['recall_at'][1]:+.3f}"
-        f"（关掉 dense 的损失）"
+        f"（默认双路加权融合 vs BM25单路）"
     )
     print(
         f"  BM25 腿   = {base['recall_at'][1] - results['dense_only']['recall_at'][1]:+.3f}"
-        f"（关掉 BM25 的损失）"
+        f"（默认双路加权融合 vs dense单路）"
     )
     print(
-        f"  rerank    = {base['recall_at'][1] - results['no_rerank']['recall_at'][1]:+.3f}"
+        f"  fusion    = {base['recall_at'][1] - results['rrf']['recall_at'][1]:+.3f}"
         f"（加权 vs 等权 RRF）"
     )
     print(

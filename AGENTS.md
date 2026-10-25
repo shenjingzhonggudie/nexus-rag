@@ -8,9 +8,12 @@ RAGKit 是中文文档检索与抽取式问答项目，未使用 LangChain 或 L
 
 - 配置默认使用 hashing 向量；BGE 已接入，需要可选依赖和模型文件。
 - 加载索引时，manifest 中的 embedding provider 优先于配置声明。不要只看默认配置判断实际模型。
-- `rerank_enabled=True` 表示加权排名融合；关闭时用等权 RRF。当前没有 cross-encoder。
+- `retrieval.fusion_method` 选择 `weighted_rrf`（默认）或 `rrf`；`rerank.enabled` 独立控制真实 cross-encoder，默认启用并仅加载本地模型。
+- 旧 `retrieval.rerank_enabled` 仅作为弃用别名迁移到融合方式（True→weighted_rrf、False→rrf），发出警告并从新配置快照移除；不得修改独立的 `rerank.enabled`，模型开关跟随该配置（当前默认 true）。
+- 每路召回 top_k，融合去重后最多保留 top_k 个候选，再可选重排，最后取 final_k。模型只对这批候选打分，无法补回未入选的证据。
+- 真实重排使用可选 `[rerank]` 依赖，默认启用并仅加载本地模型。公开仓库不包含权重，新机器须安装依赖并下载模型，或显式设置 `rerank.enabled=false`。启用时缺依赖、缺模型或推理失败应明确报错，不静默回退；模型原始 logit 可为负，不是概率，也不代替拒答 match_score。
 - `llm.provider=none` 返回最高分块原文；`openai_compatible` 尚未实现。
-- 依赖和语料已就绪时，hashing 路径可离线运行。BGE 离线运行还需要本地模型缓存或模型路径。
+- 基础依赖和语料已就绪、且模型重排关闭时，hashing 路径可离线运行；保留默认重排时还需 `[rerank]` 依赖和本地重排权重。BGE 离线运行还需要对应 embedding 依赖、本地模型缓存或模型路径。
 
 ## 修改与验证
 
@@ -40,7 +43,7 @@ RAGKit 是中文文档检索与抽取式问答项目，未使用 LangChain 或 L
 - `data/eval/qrels.json` 已用于开发反馈，应作为开发集。按来源分别报告有答案题的 Recall/MRR；无答案题报告正确拒答率，有答案题报告误拒率。
 - `internal/external` 表示出题来源，`no_answer` 表示题型，两者不是同一分类维度；source 也不表示 dev/test 划分。
 - 开发集使用 v2 回答要点和最小充分证据。前 k 个块在同文档中的区间取并集，每段必要证据的覆盖字符数须严格超过其长度的50%，要点才算命中；恰好50%不算。该指标不代表回答正确率。v1只供旧格式兼容，不与v2混合汇总。默认 final_k 为5。
-- 消融结论应绑定代码、题集、索引及有效配置；未复跑的旧数字只作历史记录，不宣称某模型或参数普遍最优。
+- 消融结论应绑定代码、题集、索引及有效配置。默认六组为 baseline/alpha_09/alpha_05/rrf/bm25_only/dense_only，均关闭真实模型重排；旧 no_rerank 是等权融合对照，不能当作 cross-encoder 消融。未复跑的旧数字只作历史记录，不宣称某模型或参数普遍最优。
 - `experiments/holdout-v1/` 是历史实验归档。保留其字节和清单哈希；继续开发时不读取封存题目、答案或逐题反馈。需要再次验收时先明确版本、配置和是否已使用过该集反馈。
 - 用户已授权的历史题集重标与固定输出重评见 `experiments/holdout-evidence-v2/`：先独立标注并提交冻结版本，再读取旧输出。原档不覆盖，重评不称为新的独立盲测；未保存最终回答正文时，只报告检索证据覆盖。
 

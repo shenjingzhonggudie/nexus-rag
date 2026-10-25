@@ -16,9 +16,11 @@ dependencies = ["pyyaml", "pydantic", "jieba", "numpy"]
 # 可选依赖组：
 # - dev：pytest（跑测试）
 # - embedding：sentence-transformers（本地 BGE 语义模型，体积较大，默认不装）
+# - rerank：sentence-transformers 6.1+（本地CrossEncoder接口，默认不装、不下载权重）
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 embedding = ["sentence-transformers>=2.2"]
+rerank = ["sentence-transformers>=6.1,<7"]
 
 # 告诉 setuptools：包不在根目录，而在 src/ 下面
 [tool.setuptools.packages.find]
