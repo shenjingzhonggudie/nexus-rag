@@ -92,11 +92,11 @@
     background: var(--accent); color: #fff; font-size: 14px; cursor: pointer;
   }
   button:disabled { opacity: .55; cursor: default; }
-  #meta { color: var(--muted); font-size: 12px; margin-bottom: 10px; min-height: 18px; }
+  #meta { color: var(--muted); font-size: 14px; margin-bottom: 10px; min-height: 18px; }
   #meta code { background: var(--hover); padding: 1px 5px; border-radius: 4px; }
 
   /* 拒答：整条状态栏放大成醒目提示（用户第一眼要能看到"没答"，
-     而不是在 12px 灰字里找"拒答"两个字） */
+     而不是在状态栏灰字里找"拒答"两个字） */
   #meta.refused {
     font-size: 15px;
     color: #b91c1c;
@@ -300,13 +300,13 @@ function renderResults(data) {
   // 拒答时整条状态栏变成大号红色提示（见 CSS #meta.refused）
   if (data.refused) {
     setMeta(
-      `<strong>拒答</strong> · 语料未覆盖 · 覆盖率 ${fmt(data.match_score)}` +
+      `<strong>拒答</strong> · 语料未覆盖 · BM25关键词覆盖率 ${fmt(data.match_score)}` +
       ` · 耗时 ${data.latency_ms} ms`,
       true,
     );
   } else {
     setMeta(
-      `${data.results.length} 个结果 · 覆盖率 ${fmt(data.match_score)}` +
+      `${data.results.length} 个结果 · BM25关键词覆盖率 ${fmt(data.match_score)}` +
       ` · 耗时 ${data.latency_ms} ms`,
     );
   }
