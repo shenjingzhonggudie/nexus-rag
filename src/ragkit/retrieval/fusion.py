@@ -2,7 +2,7 @@
 
 from ragkit.schemas import Chunk, ScoredChunk
 
-DEFAULT_ALPHA = 0.9
+DEFAULT_ALPHA = 0.7
 DEFAULT_RRF_K = 60
 
 
@@ -50,7 +50,8 @@ def weighted_rrf_fuse(
 
     Args:
         legs: 各路召回结果，双路时顺序为 [BM25, dense]；各路列表顺序即名次。
-        alpha: 双路时第一路（BM25）的权重，第二路权重为 1-alpha。
+        alpha: 双路时第一路（BM25）的权重，默认0.7，与项目检索配置一致；
+            第二路权重为 1-alpha。
             0.5 时与等权 RRF 排序一致，分数为其一半。
         k: 倒数排名分常数，默认 60。
         top_k: 融合后最多保留的候选数，供后续可选重排或最终截取使用。

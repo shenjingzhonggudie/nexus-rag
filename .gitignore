@@ -36,6 +36,10 @@ data/raw/
 data/index*/
 reports/
 
+# README快速开始生成的本地演示语料与配置
+data/demo/
+configs/demo.yaml
+
 # 标注骨架：由 scripts/build_skeleton.py 按固定种子生成，可复现，不必入库
 data/eval/qrels.skeleton.json
 

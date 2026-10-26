@@ -68,7 +68,8 @@ def main() -> None:
 
     results = run_ablation(built, qrels)
 
-    print("\n对照组对比（recall@1~10 + MRR）：")
+    n_answerable = sum(q.is_evaluable and not q.is_no_answer for q in qrels)
+    print(f"\n对照组对比（全部{n_answerable}道定稿可答题按题宏平均，非source分组；recall@1~10 + MRR）：")
     ks = list(results["baseline"]["recall_at"].keys())
     print(
         f"{'组':<20}{'fusion':<15}{'model rerank':<15}"

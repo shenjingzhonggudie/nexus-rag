@@ -126,6 +126,8 @@ CLI 拒答退出码为 0；用法错误通常为 2，已处理的配置或索引
 
 在生产代码 `0e191f7` 上实际运行 BM25＋BGE 召回 → 加权融合 → `BAAI/bge-reranker-base` 重排。同版本关闭重排作对照，唯一配置差异为 `rerank.enabled`；保留现有题目、答案与索引，不据结果调参。共310题、两组620次查询，已用独立字符集合算法复算全部逐题覆盖及汇总指标。
 
+**本表两组均使用v2证据覆盖口径，只比较同版本的重排开关。不得与v1“任意小节相交”的旧Recall数值比较涨跌。**
+
 固定索引为100篇文档、1553块，embedding为 `BAAI/bge-small-zh-v1.5`（512维）；每路召回20块、加权融合 α=0.7 后保留20个候选，最终取5块，拒答阈值0.05。
 
 | 题集/来源（可答题数） | 配置 | 要点Recall@1 | @3 | @5 | 前缀MRR | 全部要点命中@5 |
@@ -147,6 +149,8 @@ CLI 拒答退出码为 0；用法错误通常为 2，已处理的配置或索引
 
 `internal`为读正文出题（103道可答），`external`为只看标题出题（100道可答）。留出集重标后的62题含43道完整可答、17道无答案和2道待复核；待复核题不进入主指标和拒答分母。
 
+开发集45道无答案题全部来自 `internal`（该来源共148题）；`external`共100题，全部可答。因此开发集的拒答结论只覆盖internal来源，尚未评估external来源的无答案拒答。题型中multi_block为16/248（6.5%，建议15%），cross_doc为5/248（2.0%，建议10%）；题型不均衡限制了对多块和跨文档问题的判断。
+
 指标定义与限制：
 
 - 前k块在同文档内取字符区间并集，每段必要证据的覆盖字符数须**严格超过证据长度的50%**；恰好50%不算。重复块不重复累计，中间空隙不计覆盖，同一要点的所有必要证据均须达标。
@@ -157,14 +161,14 @@ CLI 拒答退出码为 0；用法错误通常为 2，已处理的配置或索引
 - 248 道题已参与开发反馈；两种出题来源也不是训练/测试划分，均不能据此宣称独立泛化表现。
 - 重排输入最多512 token，超长时截断；覆盖评分针对整个返回块，不证明模型读取了块中全部证据。
 
-自动测试历史记录：2026-10-25在重排默认关闭阶段为 **453 passed in 16.55s**，另用本地随机小模型跑通过推理接口。后续默认启用后未重跑完整测试套件；2026-10-26完成的是上述真实模型质量评测及620条输出的独立复核，不能将453当成本轮测试数量。
+自动测试（2026-10-26）：本轮修正后完整套件 **458 passed in 15.36s**，默认配置仍为 `rerank.enabled=true`。模型相关用例显式关闭重排或使用替身，不加载预训练权重；CI仅安装 `[dev]` 并跑自动测试，绿灯不证明默认查询的语料、索引和本地模型已就绪。预训练模型的质量验证来自上述单独运行的对照实验。
 
 ## 复现评测与消融
 
 先准备与标注匹配的语料和索引，再运行：
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/check_qrels.py data/eval/qrels.json --strict
+.\.venv\Scripts\python.exe scripts/check_qrels.py data/eval/qrels.json
 .\.venv\Scripts\python.exe scripts/run_rerank_experiment.py --out experiments/rerank-reproduction --threads 6
 .\.venv\Scripts\python.exe scripts/check_rerank_experiment.py --path experiments/rerank-reproduction
 .\.venv\Scripts\python.exe demo_ablation.py --index-dir data/index --out reports/ablation.json
@@ -172,7 +176,11 @@ CLI 拒答退出码为 0；用法错误通常为 2，已处理的配置或索引
 
 对照实验的输出目录必须不存在，配置固定且忽略外部 `RAG__` 覆盖；需要与归档匹配的本地语料、索引、模型缓存和依赖。只跑新流程开发集时可用 `ragkit eval --config experiments/rerank-2026-10-26-run1/config.cross_encoder.json --qrels data/eval/qrels.json --out reports/eval.cross_encoder.json`；重现融合对照须改用 `config.fusion_only.json`，不能用当前默认流程代表历史配置。
 
+`check_qrels.py`默认将建议配比偏差列为警告，格式或证据错误才返回非零；加 `--strict` 后警告也返回非零。当前题型配比超出建议容差，严格检查会失败；不能把普通模式通过理解为样本分布均衡。
+
 `demo_ablation.py` 的六组为 baseline、alpha_09、alpha_05、rrf、bm25_only、dense_only，比较默认加权融合、α=0.9、α=0.5、等权 RRF 和两种单路，使用检索默认配置加各组覆盖项，并显式设置 `rerank.enabled=false`。六组不加载重排模型，不受应用默认启用设置影响；输出分别展示 fusion 与 model rerank 状态，并保存检索 config、rerank_config 和 scoring。旧组名 no_rerank 改名为 rrf；这里没有 cross-encoder 开关的质量对照。报告应随代码、题集、索引与有效配置一起解释；本次未重跑消融，不沿用旧数字断言某组件或参数最优。
+
+消融表的Recall/MRR是全部定稿可答题的按题宏平均：当前分母为203，45道无答案题不计入。它不是internal或external分组成绩，例如全局Recall@1约0.379不能直接与上表的0.460或0.295比较；需使用同一统计范围。质量评测由显式命令运行，普通CI不覆盖约60.1分钟的这轮四块实验，也不证明默认模型链路可启动。
 
 ## 历史盲测结果（2026-10-23，2026-10-24重评）
 

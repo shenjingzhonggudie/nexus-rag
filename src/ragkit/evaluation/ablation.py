@@ -37,6 +37,8 @@ def run_ablation(
         dict[str, dict]: VARIANTS组名到指标、config、rerank_config及scoring的映射。
             键顺序即 VARIANTS 顺序；``config`` 是该组实际生效的检索配置，
             ``rerank_config`` 单独记录真实模型重排配置。这六组不评估其效果。
+            Recall/MRR为全部定稿可答题的按题宏平均，不按source分组；
+            无答案与待复核题不进入该分母。
     """
     results: dict[str, dict] = {}
     for name, overrides in VARIANTS.items():

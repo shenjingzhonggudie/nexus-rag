@@ -2,6 +2,7 @@
 
 import pytest
 
+from ragkit.config import RetrievalConfig
 from ragkit.retrieval.fusion import rrf_fuse, weighted_rrf_fuse
 from ragkit.schemas import Chunk, ScoredChunk
 
@@ -108,6 +109,20 @@ def test_hand_calculated_weighted_score():
     scores = {r.chunk.chunk_id: r.score for r in out}
     assert scores["c1"] == pytest.approx(0.9 / 61 + 0.1 / 62)
     assert scores["c2"] == pytest.approx(0.9 / 62 + 0.1 / 61)
+
+
+def test_omitted_alpha_matches_project_default():
+    legs = [_leg("c1", "c2"), _leg("c2", "c1")]
+
+    direct = weighted_rrf_fuse(legs)
+    configured = weighted_rrf_fuse(legs, alpha=RetrievalConfig().fusion_alpha)
+
+    assert [r.chunk.chunk_id for r in direct] == [r.chunk.chunk_id for r in configured] == ["c1", "c2"]
+    assert [r.score for r in direct] == pytest.approx([
+        0.7 / 61 + 0.3 / 62,
+        0.7 / 62 + 0.3 / 61,
+    ])
+    assert [r.score for r in direct] == [r.score for r in configured]
 
 
 def test_alpha_flips_ranking():

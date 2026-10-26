@@ -74,11 +74,13 @@ v2把每个问题拆成必要回答要点，每个要点绑定足以支持该要
 | `external` | 100 | 0 | 100 |
 | 合计 | 203 | 45 | 248 |
 
+无答案题全部来自internal，external没有无答案样本；现有开发集的拒答表现不能推广为external来源上的拒答能力。
+
 3道原无答案题由正文更正为direct：`q_0225`明确说明Skip link应是第一个可聚焦元素；`q_0227`说明KeepAlive默认缓存全部内部实例、可用max设上限；`q_0245`明确说明宽主键可能增加存储开销，足以否定“越宽越好”的前提。其余45题经定向查找相关语料后保留无答案标签并补充缺失信息说明，这不等于独立的全库无答案证明。题型为direct 94、paraphrase 88、multi_block 16、cross_doc 5、no_answer 45；外部组仅direct/paraphrase，两组构成不同。
 
 有答案题由AI辅助逐题阅读题干与规范化原文，标注要点及证据；精确引用、坐标和文档哈希另做机械核验。尚无独立人工验收，不能把机器校验通过写成语义质量认证。修订前区间及范围说明保留在 `evidence_review.jsonl`，不覆盖v1历史复核日志。
 
-当前实测和指标定义统一见 [项目 README](../README.md#当前实测)。题集结构检查通过，只说明格式和区间等检查未报错，不证明答案充分性或无答案标签已逐题成立。
+当前实测和指标定义统一见 [项目 README](../README.md#新流程实测2026-10-26)。题集结构检查通过，只说明格式和区间等检查未报错，不证明答案充分性或无答案标签已逐题成立。
 
 ## 准备数据与运行
 
@@ -96,7 +98,7 @@ v2把每个问题拆成必要回答要点，每个要点绑定足以支持该要
 .\.venv\Scripts\python.exe scripts/gen_queries.py --prompt 3 --type paraphrase
 
 # 校验题集后，使用与语料匹配的配置建库和评测
-.\.venv\Scripts\python.exe scripts/check_qrels.py data/eval/qrels.json --strict
+.\.venv\Scripts\python.exe scripts/check_qrels.py data/eval/qrels.json
 .\.venv\Scripts\ragkit.exe build
 .\.venv\Scripts\ragkit.exe eval
 ```
@@ -105,7 +107,7 @@ v2把每个问题拆成必要回答要点，每个要点绑定足以支持该要
 
 建库默认写 `data/index` 并使用 hashing。需要保留已有 BGE 或实验索引时，先用 YAML 指定另一个 `index_dir`，并对 build/eval 传入同一配置。
 
-出题后应核对题干的对象、条件和范围，确认全部回答要点都有证据；无答案题要检查全库相关文档及可能的跨段推导，不能仅凭关键词未命中下结论。`check_qrels.py` 检查格式、重复query、文档存在、精确原文与区间范围，v1另查小节相交，并打印题型配比；配比建议不构成标签质量保证。
+出题后应核对题干的对象、条件和范围，确认全部回答要点都有证据；无答案题要检查全库相关文档及可能的跨段推导，不能仅凭关键词未命中下结论。`check_qrels.py` 检查格式、重复query、文档存在、精确原文与区间范围，v1另查小节相交，并打印题型配比。与建议配比相差超过8个百分点会记录警告；普通模式仅因错误失败，`--strict`会同时因警告失败。当前multi_block比例偏离建议，因此严格模式会失败；配比建议本身也不构成标签质量保证。
 
 ## v1历史复核日志
 

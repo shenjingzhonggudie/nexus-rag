@@ -7,7 +7,8 @@
 3. **证据与区间**：v2的quote须与原文切片完全一致；``end`` 不得超出文档长度。
    只有v1继续检查小节对齐；v2允许使用导语、标题附近的充分证据。
 4. **配比**：统计五类 query 的占比，与建议配比对比（direct 30% /
-   paraphrase 30% / multi_block 15% / cross_doc 10% / no_answer 15%）。
+   paraphrase 30% / multi_block 15% / cross_doc 10% / no_answer 15%）；
+   绝对偏离超过8个百分点记为警告，恰好8个百分点不警告。
 
 用法
 ----
@@ -141,8 +142,15 @@ def main() -> None:
         count = counts.get(qtype, 0)
         ratio = count / total
         target = TARGET_RATIO[qtype]
-        flag = "" if abs(ratio - target) <= 0.08 else "  ← 偏离较大"
+        # 建议值均为整数百分数；交叉相乘避免8个百分点边界的浮点误差。
+        deviates = abs(count * 100 - round(target * 100) * total) > 8 * total
+        flag = "  ← 偏离较大" if deviates else ""
         print(f"{qtype:<14}{count:<7}{ratio:<9.1%}{target:<8.0%}{flag}")
+        if deviates:
+            warnings.append(
+                f"题型配比 {qtype}: 实际 {ratio:.1%}，建议 {target:.0%}，"
+                "偏离超过8个百分点"
+            )
 
     if errors:
         print(f"\n❌ {len(errors)} 个错误：")
