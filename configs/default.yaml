@@ -22,9 +22,11 @@ rerank:
 
 # 分块参数
 chunking:
-  strategy: heading    # 分块策略：heading（按 ## 标题，块级标注用）| fixed
-  chunk_size: 300      # 每块目标有效长度（汉字 1 字、英文字母 3 个算 1 字、空白不计）
-  overlap: 50          # 相邻块重叠**字符数**（注意单位与 chunk_size 不同，必须 < chunk_size）
+  strategy: heading    # heading（按行首 ## 切分，当前默认）| fixed（按长度切）| recursive（暂等同 fixed）
+  chunk_size: 300      # 仅 fixed 生效：目标有效长度（汉字 1 字、英文字母 3 个算 1 字、空白不计）
+  overlap: 50          # 仅 fixed 生效：相邻块重叠**字符数**（单位与 chunk_size 不同，必须 < chunk_size）
+                       # ⚠️ heading 不使用上面两个值：超长阈值 400、再切目标 300、overlap 0
+                       #    都是 heading.py 的内部常量，改这里不影响 heading 的结果
 
 # 向量化参数
 embedding:

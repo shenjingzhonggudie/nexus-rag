@@ -280,6 +280,10 @@ def check_aggregate(report, rows, label):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--path", required=True, help="Completed archive directory")
+    parser.add_argument("--write-check", action="store_true",
+                        help="Rewrite coverage.independent.jsonl and INDEPENDENT_CHECK.json "
+                             "inside the archive (default: read-only; the archive is frozen "
+                             "evidence and both files are listed in ARCHIVE_MANIFEST)")
     args = parser.parse_args()
     archive = Path(args.path).resolve()
     plan = load(archive / "PLAN.json")
@@ -288,8 +292,28 @@ def main():
             and completed["refusal_decisions_identical"], "Runner did not complete invariant checks")
     for name, digest in completed["files_sha256"].items():
         require(sha(archive / name) == digest, f"Completed archive hash changed: {name}")
+    # Data inputs (corpus, index, labels) decide the result, so they must match byte
+    # for byte. Two other groups may legitimately drift after the experiment:
+    #   - src/**: this checker never imports the production scorer (it recomputes
+    #     every prefix from the saved retrieval order), so source changes cannot
+    #     alter the conclusion;
+    #   - configs/*.yaml: the templates are not the experiment configuration, which
+    #     is archived alongside the run and verified via completed["files_sha256"].
+    # The exact source version stays recorded as plan["source_commit"].
+    strict_prefixes = ("data/", "experiments/")
+    code_drift = []
     for name, digest in plan["input_sha256"].items():
-        require(sha(ROOT / name) == digest, f"Frozen local input hash changed: {name}")
+        if sha(ROOT / name) == digest:
+            continue
+        if name.startswith(strict_prefixes):
+            require(False, f"Frozen data input hash changed: {name}")
+        code_drift.append(name)
+    for name in code_drift:
+        print(f"NOTE: source drifted from {plan['source_commit'][:7]}: {name}")
+    if code_drift:
+        print(f"NOTE: {len(code_drift)} source file(s) differ from the experiment commit; "
+              f"data/config/runner checks remain strict. Checkout "
+              f"{plan['source_commit'][:7]} for an exact environment.")
     require(sha(ROOT / "scripts/run_rerank_experiment.py") == plan["runner_sha256"],
             "Runner differs from frozen copy")
     require(plan["protocol"]["ks"] == list(KS) and plan["protocol"]["variants"] == list(VARIANTS),
@@ -379,13 +403,23 @@ def main():
             require(summary[label] == {k: v for k, v in report.items() if k != "per_query"},
                     f"Summary differs from detailed report: {label}")
     audit_path = archive / "coverage.independent.jsonl"
-    audit_path.write_text("\n".join(json.dumps(row, ensure_ascii=False, allow_nan=False) for row in audit_rows)
-                          + "\n", encoding="utf-8", newline="\n")
-    check["coverage_audit_sha256"] = sha(audit_path)
-    check["all_checks_passed"] = True
-    (archive / "INDEPENDENT_CHECK.json").write_text(json.dumps(check, ensure_ascii=False, indent=2,
-                                                            allow_nan=False) + "\n",
-                                                   encoding="utf-8", newline="\n")
+    if args.write_check:
+        audit_path.write_text("\n".join(json.dumps(row, ensure_ascii=False, allow_nan=False) for row in audit_rows)
+                              + "\n", encoding="utf-8", newline="\n")
+        check["coverage_audit_sha256"] = sha(audit_path)
+        check["all_checks_passed"] = True
+        (archive / "INDEPENDENT_CHECK.json").write_text(json.dumps(check, ensure_ascii=False, indent=2,
+                                                                allow_nan=False) + "\n",
+                                                       encoding="utf-8", newline="\n")
+        print("NOTE: rewrote coverage.independent.jsonl and INDEPENDENT_CHECK.json "
+              "(--write-check); ARCHIVE_MANIFEST hashes now need regenerating")
+    else:
+        # Read-only by default: the archive is frozen evidence and both files are
+        # listed in ARCHIVE_MANIFEST.files_sha256, so verifying must not rewrite them.
+        recorded = load(archive / "INDEPENDENT_CHECK.json").get("coverage_audit_sha256")
+        if recorded:
+            require(sha(audit_path) == recorded,
+                    "coverage.independent.jsonl differs from its recorded hash")
     print(f"Independent character-set check passed: {len(audit_rows)} rows, "
           f"{check['paired_query_count']} on/off pairs; all prefixes and aggregate metrics agree")
 

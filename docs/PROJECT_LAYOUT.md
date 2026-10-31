@@ -145,6 +145,6 @@ index_dir/
 
 `run_ablation` 固定六组：baseline、alpha_09、alpha_05、rrf、bm25_only、dense_only。各组复用一个索引，从检索默认配置构造并覆盖 RetrievalConfig，不继承任意调用方的完整配置；同时显式传入 `RerankConfig(enabled=False)`，不受应用默认重排启用设置影响，也不加载重排模型。旧 no_rerank 改名 rrf，表示等权融合；六组不构成 cross-encoder 效果对照。每组保留指标、检索 config、独立 rerank_config 和 scoring。消融结论需要同时记录代码、标注、语料/索引版本和有效配置。
 
-`scripts/run_rerank_experiment.py`另做真实模型开关对照：固定配置、题集及索引，仅切换rerank.enabled，调用生产evaluate并透传记录候选、最终分数、阶段耗时及实际回答。`scripts/check_rerank_experiment.py`不导入生产判分器，以字符位置集合独立复算全部证据覆盖，并核对配对输入、配置和哈希。2026-10-26结果见[实验归档](../experiments/rerank-2026-10-26-run1/README.md)；复核判分不等于验证标注或回答的语义正确性。
+`scripts/run_rerank_experiment.py`另做真实模型开关对照：固定配置、题集及索引，仅切换rerank.enabled，调用生产evaluate并透传记录候选、最终分数、阶段耗时及实际回答。`scripts/check_rerank_experiment.py`不导入生产判分器，以字符位置集合独立复算全部证据覆盖，并核对配对输入、配置和哈希。**语料/索引/标注逐字节严格校验；`src/**` 与 `configs/*.yaml` 的变动只打印 NOTE 不失败**——复算不依赖生产判分器，配置模板也不是实验配置（实验配置随归档保存并经 `completed.files_sha256` 校验），实验代码版本由 `PLAN.source_commit` 记录，需要完全复现时 checkout 该提交。2026-10-26结果见[实验归档](../experiments/rerank-2026-10-26-run1/README.md)；复核判分不等于验证标注或回答的语义正确性。
 
 现有 pytest 覆盖基础实现、接口及v2覆盖边界、区间去重和必要证据组合；CLI eval 测试使用有效v2证据并断言有答案分类及命中。模型加载与打分可用替身验证契约；CI未包含预训练 BGE embedding 或 reranker 的质量回归，也未验证最终回答正确性。具体待办见 [SUMMARY](SUMMARY.md)。
