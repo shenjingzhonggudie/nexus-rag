@@ -24,7 +24,10 @@ def configure(*, provider: str = "hashing", model_name: str = "") -> None:
     """
     global _provider, _model_name
     _provider = provider
-    _model_name = model_name
+    # hashing 没有模型，model_name 对它无意义。若原样保存，active() 会返回
+    # ("hashing", "BAAI/bge-...") 这种自相矛盾的值，进而污染报告快照。
+    # 这里清空也顺带纠正了旧索引 manifest 里残留的模型名。
+    _model_name = model_name if provider == "bge" else ""
 
 
 def active() -> tuple[str, str]:

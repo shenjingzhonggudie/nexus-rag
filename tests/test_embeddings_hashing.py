@@ -80,3 +80,21 @@ def test_empty_tokens_yield_zero_vector(text):
 def test_non_positive_dim_raises(dim):
     with pytest.raises(ValueError):
         embed_text("容器", dim=dim)
+
+
+def test_configure_hashing_clears_model_name():
+    """hashing 没有模型，configure 必须把 model_name 清空。
+
+    旧实现无条件保存，active() 会返回 ("hashing", "BAAI/bge-...")，
+    报告快照里就出现「provider=hashing + model_name=bge」的矛盾组合。
+    """
+    from ragkit.embeddings import active, configure
+
+    try:
+        configure(provider="hashing", model_name="BAAI/bge-small-zh-v1.5")
+        assert active() == ("hashing", "")
+
+        configure(provider="bge", model_name="BAAI/bge-small-zh-v1.5")
+        assert active() == ("bge", "BAAI/bge-small-zh-v1.5")
+    finally:
+        configure()  # 复位为默认，避免污染其他测试

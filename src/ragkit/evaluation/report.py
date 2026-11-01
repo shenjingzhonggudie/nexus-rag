@@ -184,8 +184,9 @@ def _effective_snapshot(cfg: AppConfig) -> dict:
     embedding = snapshot.setdefault("embedding", {})
     embedding["provider_configured"] = embedding.get("provider")
     embedding["provider"] = provider
-    if model_name:
-        embedding["model_name"] = model_name
+    # 无条件覆盖：hashing 时 model_name 是空串，也必须覆盖掉配置里声明的 bge 名，
+    # 否则报告会写成 "provider=hashing + model_name=BAAI/bge-..."，自相矛盾。
+    embedding["model_name"] = model_name
     return snapshot
 
 

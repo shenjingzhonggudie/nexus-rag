@@ -1,5 +1,7 @@
 """建库流水线的契约测试：五文件产物、id 一致性、坏文件隔离、空目录、可直接检索、可复现。"""
 
+import json
+
 import pytest
 
 from ragkit.config import AppConfig
@@ -124,3 +126,26 @@ def test_build_reproducible(tmp_path):
     j1 = (tmp_path / "one" / "chunks.jsonl").read_bytes()
     j2 = (tmp_path / "two" / "chunks.jsonl").read_bytes()
     assert j1 == j2
+
+
+def test_hashing_index_does_not_record_model_name(tmp_path):
+    """hashing 索引的 manifest 不能写 bge 模型名。
+
+    配置模板里 provider=hashing、model_name 仍填着 bge 名。旧版 build 会
+    无条件把它写进 manifest，得到
+    {"provider": "hashing", "model_name": "BAAI/bge-..."} 这种自相矛盾，
+    报告读者会误以为这个索引是 bge 生成的。
+    """
+    root = tmp_path / "raw"
+    root.mkdir()
+    _corpus(root)
+
+    cfg = _cfg(tmp_path)
+    assert cfg.embedding.provider == "hashing"
+    assert cfg.embedding.model_name  # 配置声明里确实带着 bge 名
+
+    build(root, cfg)
+
+    manifest = json.loads((cfg.index_dir / "manifest.json").read_text(encoding="utf-8"))
+    assert manifest["provider"] == "hashing"
+    assert manifest["model_name"] == ""

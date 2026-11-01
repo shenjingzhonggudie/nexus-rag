@@ -57,7 +57,8 @@ def build(root: Path, cfg: AppConfig) -> BuiltIndex:
         vectors=vectors,
         metadata=metadata,
         provider=cfg.embedding.provider,
-        model_name=cfg.embedding.model_name,
+        # 与 stores.write 的契约一致：hashing 没有模型，manifest 里写空串
+        model_name=cfg.embedding.model_name if cfg.embedding.provider == "bge" else "",
     )
     write_chunks(cfg.index_dir / "chunks.jsonl", all_chunks)
     # 以下直接用本次结果构造内存对象，不重新读盘

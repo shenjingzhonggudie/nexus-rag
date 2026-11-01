@@ -82,6 +82,8 @@ hashing 将 token 的 SHA-256 映射到向量维度并累加带符号词频；�
 
 embedding provider/model_name 保存在模块全局状态，`build` 与 `load_index` 会调用 configure。`load_index` 优先采用 manifest 中的 provider/model_name，维度取自已加载的向量库。进程中切换另一套索引会改变后续查询的 embedding 实现；当前接口没有按索引隔离模型状态。
 
+`model_name` 只在 provider 为 `bge` 时有意义：`configure()` 对它做清空（hashing 时置空串），`build` 写 manifest 时同样按 provider 置空。因此旧索引 manifest 里残留的模型名会在加载时被纠正，`active()` 不会返回「hashing + bge 模型名」这种组合；报告快照的 `embedding.model_name` 记实际值（hashing 时为空串），配置声明值另由 `provider_configured` 体现。
+
 ```text
 index_dir/
 ├── vectors.npy      float32，形状 (N, dim)
