@@ -1,0 +1,28 @@
+# 对照配置：曾用于 heading 再切 overlap=50 的实验。
+#
+# 注意：src/ragkit/chunking/heading.py 的 _SPLIT_OVERLAP 已回退为 0，
+# 用此配置重新 build 会得到 1553 块，而不是当时实验的 1632 块。
+# 要复现那次实验，先把 _SPLIT_OVERLAP 改成 50。
+# data/index.overlap50/ 里仍是当时建好的 1632 块索引，可直接评测。
+#
+# 索引写到独立目录，不覆盖 data/index（归档校验依赖后者）。
+
+data_dir: data/raw
+index_dir: data/index.overlap50
+
+embedding:
+  provider: bge
+  dim: 512
+  model_name: BAAI/bge-small-zh-v1.5
+
+rerank:
+  enabled: false
+
+retrieval:
+  top_k: 20
+  final_k: 5
+  fusion_method: weighted_rrf
+  fusion_alpha: 0.7
+  sparse_enabled: true
+  dense_enabled: true
+  refuse_threshold: 0.05

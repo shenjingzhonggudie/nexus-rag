@@ -9,6 +9,10 @@ _HEADING_RE = re.compile(r"^##[ \t]+", re.MULTILINE)
 # 超长小节再切参数（长度单位：字 = 汉字 1 个 / 英文字母 3 个）
 _SPLIT_THRESHOLD = 400  # 小节超过该有效长度则启用 fixed 再切
 _SPLIT_CHUNK_SIZE = 300  # 再切时的目标块长（有效长度）
+# 再切时的相邻块重叠（原始字符数，必须 < _SPLIT_CHUNK_SIZE）。
+# 默认 0；改成 50 做过对照：块数 1553→1632（+5.1%），internal @1/@3/MRR 同向下降，
+# external @5 +0.030 但落在 n=100 的噪声内，整体没有可确认收益，故保持 0。
+_SPLIT_OVERLAP = 0
 
 
 def iter_heading_sections(text: str) -> list[tuple[int, int]]:
@@ -42,8 +46,8 @@ def iter_heading_spans(text: str) -> list[tuple[int, int]]:
     """按 ## 标题切分，超长小节用 fixed 再切，返回最终块区间。
 
     单个小节长度超过 ``_SPLIT_THRESHOLD`` 时，用 fixed 策略（目标块长
-    ``_SPLIT_CHUNK_SIZE``、无重叠）再切成多个块，避免产生过长的块。其余
-    小节原样保留为一个块。
+    ``_SPLIT_CHUNK_SIZE``、重叠 ``_SPLIT_OVERLAP`` 个字符）再切成多个块，
+    避免产生过长的块。其余小节原样保留为一个块。
 
     Args:
         text: 待切分的原始文本（应为 normalize_text 之后的文本）。
@@ -68,6 +72,6 @@ def _split_long(start: int, end: int, text: str) -> list[tuple[int, int]]:
     if effective_len(text[start:end]) <= _SPLIT_THRESHOLD:
         return [(start, end)]
     sub_spans = iter_spans(
-        text[start:end], chunk_size=_SPLIT_CHUNK_SIZE, overlap=0
+        text[start:end], chunk_size=_SPLIT_CHUNK_SIZE, overlap=_SPLIT_OVERLAP
     )
     return [(start + s, start + e) for s, e in sub_spans]
