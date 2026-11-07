@@ -5,8 +5,8 @@ experiments/holdout-v1/** -text
 
 # v2 manifest记录qrels字节哈希；Windows checkout也固定LF。
 data/eval/qrels.json text eol=lf
-# 310 题回归集由 scripts/build_regression_suite.py 确定性生成，同样固定 LF。
-data/eval/qrels.regression.json text eol=lf
+# 历史快照按原始字节保留，固定 LF 才能复现 manifest 记录的哈希。
+experiments/dev-248-archive/** text eol=lf
 data/eval/annotation_manifest.json text eol=lf
 data/eval/evidence_review.jsonl text eol=lf
 
