@@ -105,8 +105,12 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\n[--check] 磁盘文件 {len(on_disk)} 条，与重新构建一致: {same}")
         return 0 if same else 1
 
+    # newline="\n" 是必须的：Windows 上默认会把 \n 写成 \r\n，
+    # 而 .gitattributes 要求 data/eval/*.json 为 LF，否则每次 checkout 都会显示已修改。
     OUT.write_text(
-        json.dumps(merged, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(merged, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+        newline="\n",
     )
     print(f"\n已写出 {OUT.relative_to(ROOT).as_posix()}（{OUT.stat().st_size / 1024:.0f} KB）")
     return 0
