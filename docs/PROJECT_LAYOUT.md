@@ -139,6 +139,10 @@ index_dir/
 
 无答案题用显式 type=no_answer 及缺失信息说明表示；needs_review 标注不进入检索或拒答指标分母，报告列出待复核数。v1旧格式保留任意小节相交口径；同一份报告禁止混合两个版本，不能直接比较新旧分数。
 
+`Qrel.origin` 标记数据批次（`original_248` / `original_62`），与 `source`（出题视角：internal / external / holdout）是两个独立维度。`EvalReport.by_origin` 按 origin 分组汇总有答案题，`by_source` 仍按出题视角分组；两个维度都不报跨组「合计」，因为合计会随两组条数比例变化。`to_dict()` 的 `per_query` 每条也带 `origin`，可按批次筛出 PASS/FAIL 明细。
+
+310 题回归集由 `scripts/build_regression_suite.py` 从 `data/eval/qrels.json`（248）与 `experiments/holdout-evidence-v2/qrels.v2.json`（62，v2 重标）确定性合并：只给每条加 `origin`，其余字段逐条保持原样，输出 `data/eval/qrels.regression.json`。脚本内置校验（310 条、id 唯一、全为 v2、origin 取值、query 不重复），`--check` 可只校验不写盘。独立盲测集接口在 `data/eval/blind/`，`qrels.blind.json` 当前为空数组，隔离要求见该目录 README；空集不等于已拥有盲测数据。
+
 `replay.rescore_saved_results`对已经保存的query、检索顺序和refused重评分，按题干精确匹配冻结的v2标注，不使用旧命中或旧标签。待复核题保留已知要点的诊断覆盖，并在另报的保守整题指标中按未完整覆盖计入分母。`scripts/rescore_holdout.py`先验证冻结提交、原档字节、语料及块坐标，再重评；不调用模型或生成层，不把检索覆盖写成最终回答正确率。
 
 报告同时统计无答案题的正确拒答率和有答案题的误拒率，并按 source 分别汇总有答案题。命中不能证明证据完整或答案正确；source 不等于 dev/test 划分。默认 final_k=5 时，报告中的 @6～10 没有新增候选，不能作为更深召回的成绩。

@@ -6,6 +6,8 @@
 |---|---|
 | `raw/` | 第三方文档正文，未跟踪；来源见 [SOURCES.md](SOURCES.md) |
 | `eval/qrels.json` | 248道开发题，v2回答要点与最小充分证据 |
+| `eval/qrels.regression.json` | **310 道回归题**（248 + 62），每条带 `origin`；由 `scripts/build_regression_suite.py` 确定性生成 |
+| `eval/blind/qrels.blind.json` | 独立盲测集接口，**当前为空数组**；隔离要求见 `eval/blind/README.md` |
 | `eval/qrels.example.json` | 标注格式示例 |
 | `eval/evidence_review.jsonl` | 本轮248题的旧标签、修订理由与复核范围 |
 | `eval/annotation_manifest.json` | 标注版本、题集与规范化正文哈希、判分定义 |
@@ -15,6 +17,23 @@
 | `index*/` | 本地索引产物，未跟踪，可由匹配的语料与配置重建 |
 
 `raw/` 正文按各来源许可证使用。下载脚本访问上游文档，重拉可能改变内容和字符坐标，不能保证复现既有语料快照。
+
+## 回归集（310 题）
+
+`eval/qrels.regression.json` = 原开发集 248 + 原留出集 62（后者取 `experiments/holdout-evidence-v2/qrels.v2.json` 的 v2 重标）。两份口径统一为 v2，可直接合并。
+
+| origin | 条数 | 可答 | 无答案 | 待复核 |
+|---|---:|---:|---:|---:|
+| `original_248` | 248 | 203 | 45 | 0 |
+| `original_62` | 62 | 43 | 17 | 2 |
+| **合计** | **310** | **246** | **62** | **2** |
+
+- 主指标分母 **246**（不含待复核）；拒答分母 **62**
+- 合并只加 `origin`，`query` / `answers` / `type` / `source` / `annotation_*` 与源文件逐条相同（有测试保证）
+- 重新生成：`scripts/build_regression_suite.py`；`--check` 只校验、不写文件
+- 报告按 `origin` 与 `source` 两个维度分别汇总：`origin` 是数据批次，`source` 是出题视角
+
+**这两批都已参与开发反馈，只能作为回归集，不能称为独立盲测。**
 
 ## 标注格式
 
