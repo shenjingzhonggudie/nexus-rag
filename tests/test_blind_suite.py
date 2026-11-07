@@ -1,4 +1,4 @@
-"""盲测集接口：当前为空；一旦有数据，必须与回归集完全隔离。"""
+"""盲测集接口：当前为空；一旦有数据，必须与开发集完全隔离。"""
 
 import json
 from pathlib import Path
@@ -7,7 +7,7 @@ from ragkit.evaluation import load_qrels
 
 ROOT = Path(__file__).resolve().parents[1]
 BLIND = ROOT / "data" / "eval" / "blind" / "qrels.blind.json"
-REG = ROOT / "data" / "eval" / "qrels.regression.json"
+REG = ROOT / "data" / "eval" / "qrels.json"
 
 
 def test_blind_file_exists_and_parses():
@@ -26,7 +26,7 @@ def test_blind_cases_follow_naming_and_origin():
 
 
 def test_blind_does_not_overlap_regression():
-    """盲测集不能复用回归集的任何一条（id 和 query 文本都不能重复）。"""
+    """盲测集不能复用开发集的任何一条（id 和 query 文本都不能重复）。"""
     blind_raw = json.loads(BLIND.read_text(encoding="utf-8"))
     reg_raw = json.loads(REG.read_text(encoding="utf-8"))
 

@@ -2,8 +2,8 @@
   "annotation_version": 2,
   "created_at": "2026-10-24T19:35:32.269032+08:00",
   "source_commit": "345c4e723f3b152865aa3b8f1ef846fed5363e96",
-  "previous_qrels_sha256": "0aba9fa01eaa647a441eaaa4bcd1864e98efb7bd0781926a2aa49d6043893fbb",
-  "qrels_sha256": "1a59c135425bbdf73386f417a787b05c85829d397f57db517d1ce2d25d06dc8f",
+  "previous_qrels_sha256": "1a59c135425bbdf73386f417a787b05c85829d397f57db517d1ce2d25d06dc8f",
+  "qrels_sha256": "28d8a600e0be0fcd4e37c7468e76b48f9b47f17afbac421dca8d384d074f0dc3",
   "normalization": "normalize_text(load_file(path).text)",
   "scoring": {
     "threshold": 0.5,
@@ -13,12 +13,12 @@
     "necessary_supports": "all"
   },
   "counts": {
-    "queries": 248,
-    "answerable": 203,
-    "no_answer": 45,
-    "needs_review": 0,
-    "answer_points": 320,
-    "evidence_spans": 504
+    "queries": 310,
+    "answerable": 248,
+    "no_answer": 62,
+    "needs_review": 2,
+    "answer_points": 402,
+    "evidence_spans": 596
   },
   "label_changes": [
     {
@@ -116,7 +116,11 @@
     "vue/src__guide__essentials__conditional.md": "4cf8dbc4e95cc5b7d2e90382f78e0443253671a9b929644edba48f0ba58f9943",
     "vue/src__guide__essentials__event-handling.md": "5ebd18d2eb24654bd995d5af35522fe5da32ea88913fd2544201b8798f3c0e54",
     "vue/src__guide__essentials__forms.md": "358e19acd9e6830012231b39eb48e5a42b6e3f0a0526541747b5c5be27f1e8a1",
-    "vue/src__guide__essentials__lifecycle.md": "a3b33f70eaabded88d7d9dcf2f01f0c4896c8d2beaf2f31488d4900df73f76df"
+    "vue/src__guide__essentials__lifecycle.md": "a3b33f70eaabded88d7d9dcf2f01f0c4896c8d2beaf2f31488d4900df73f76df",
+    "k8s/content__zh-cn__docs__concepts__cluster-administration__node-shutdown.md": "8a18ba8af8e864e826f9208db714ebcefdc4baefab76be116f206c36ee3f656c",
+    "k8s/content__zh-cn__docs__concepts__cluster-administration__logging.md": "60c159c256781961b8aae8322efd3d0cb1a7d5a694a462f5a56202a5f5ac7c39",
+    "k8s/content__zh-cn__docs__concepts__cluster-administration__coordinated-leader-election.md": "41aa2d13afb50efe6bf6a5bb90e8451af12dee3a125496a129be02b3e4a07cb4",
+    "tidb/develop__dev-guide-connection-parameters.md": "52537297228cf65087b0b68d155bf6ec0ef3e98186090feb82a3e24bf706a6c6"
   },
   "review_scope": "Source-based AI reannotation of answerable items; quote/offset checks are mechanical, not a human correctness certification. Original no-answer items also received a targeted topic/source audit, not an exhaustive proof of unanswerability. Retained labels include missing-information notes."
 }

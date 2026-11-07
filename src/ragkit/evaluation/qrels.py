@@ -72,9 +72,6 @@ class Qrel:
         id: 稳定标识（如 ``q_0042``），用于复核日志 ``review_log.jsonl`` 的关联。
             **改了 query / 答案也保留同一个 id**：id 标识的是"这道题"，不是"这版标注"。
             允许为空（旧文件没有这个字段），为空时无法与复核日志关联。
-        origin: 数据批次（``original_248`` / ``original_62``），用于回归集分组。
-            与 ``source`` 是两个维度：``source`` 指出题视角（internal/external/holdout），
-            ``origin`` 指这份案例最早来自哪一批。旧文件没有该字段时为空串。
     """
 
     query: str
@@ -86,7 +83,6 @@ class Qrel:
     answer_points: tuple[AnswerPoint, ...] = ()
     annotation_status: str = "complete"
     unanswerable_reason: str = ""
-    origin: str = ""
 
     def __post_init__(self) -> None:
         """校验问题与类型。
@@ -187,7 +183,6 @@ def load_qrels(path: Path) -> list[Qrel]:
                 answer_points=points,
                 annotation_status=str(item.get("annotation_status", "complete")),
                 unanswerable_reason=str(item.get("unanswerable_reason", "")),
-                origin=str(item.get("origin", "")),
             )
         )
     return qrels

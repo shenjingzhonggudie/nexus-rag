@@ -299,22 +299,6 @@ def _cmd_eval(args, environ: Mapping[str, str] | None) -> int:
         print(f"MRR      = {report.mrr:.3f}")
         if report.scoring.get("annotation_version") == 2:
             print(f"全部要点命中@5={report.complete_at[5]:.3f}")
-    if report.by_origin:
-        # 只有回归集（带 origin 的文件）才会走到这里；旧 qrels.json 没有该字段。
-        origin_labels = {
-            "original_248": "原开发集",
-            "original_62": "原留出集（已参与开发反馈，按回归集对待）",
-        }
-        print("按数据批次：")
-        for name, stats in report.by_origin.items():
-            print(f"  {name}｜{origin_labels.get(name, name)}  n={stats.n}")
-            print(
-                f"    recall@1={stats.recall_at[1]:.3f}  "
-                f"@3={stats.recall_at[3]:.3f}  "
-                f"@5={stats.recall_at[5]:.3f}  MRR={stats.mrr:.3f}"
-            )
-            if report.scoring.get("annotation_version") == 2:
-                print(f"    全部要点命中@5={stats.complete_at[5]:.3f}")
     if report.n_no_answer:
         print(
             f"拒答    准确率 {report.refusal_accuracy:.3f}"

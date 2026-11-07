@@ -62,7 +62,6 @@ class QueryResult:
     is_no_answer: bool = False    # 是否为无答案 query
     match_score: float | None = None  # 查询实词被检索结果覆盖的比例
     source: str = "internal"      # internal（读正文出题）/ external（只看标题出题）
-    origin: str = ""              # 数据批次：original_248 / original_62
     id: str = ""
     annotation_version: int = 1
     evaluated: bool = True
@@ -104,7 +103,6 @@ class EvalReport:
     false_refusal_rate: float = 0.0  # 有答案 query 上的误拒率
     n_no_answer: int = 0             # 无答案 query 数
     by_source: dict[str, SourceStats] = field(default_factory=dict)  # 按来源分组
-    by_origin: dict[str, SourceStats] = field(default_factory=dict)  # 按数据批次分组
     # 本次评测实际生效的配置（AppConfig.snapshot()，api_key 已脱敏）。
     # 不记录的话，报告只能说明"这组数字是多少"，无法回答"它是用哪个配置跑出来的"。
     config: dict = field(default_factory=dict)
@@ -133,17 +131,11 @@ class EvalReport:
                        "complete_at": stats.complete_at}
                 for name, stats in self.by_source.items()
             },
-            "by_origin": {
-                name: {"n": stats.n, "recall_at": stats.recall_at, "mrr": stats.mrr,
-                       "complete_at": stats.complete_at}
-                for name, stats in self.by_origin.items()
-            },
             "per_query": [
                 {
                     "query": q.query,
                     "id": q.id,
                     "source": q.source,
-                    "origin": q.origin,
                     "annotation_version": q.annotation_version,
                     "evaluated": q.evaluated,
                     "type": q.query_type,
@@ -320,7 +312,6 @@ def evaluate(
                 is_no_answer=qrel.is_no_answer,
                 match_score=result.match_score,
                 source=qrel.source,
-                origin=qrel.origin,
             )
         )
 
@@ -374,21 +365,6 @@ def evaluate(
             complete_at={k: sum(r.complete_at[k] for r in rows) / n_source for k in ks},
         )
 
-    # 按数据批次分组：回归集由 original_248 + original_62 组成，分开报可以看清
-    # 两批题的差异。origin 为空（旧格式文件）时该组不出现，不影响原有报告。
-    by_origin: dict[str, SourceStats] = {}
-    for origin in sorted({q.origin for q in per_query if q.origin}):
-        rows = [q for q in answerable if q.origin == origin]
-        if not rows:
-            continue
-        n_origin = len(rows)
-        by_origin[origin] = SourceStats(
-            n=n_origin,
-            recall_at={k: sum(r.recall_at[k] for r in rows) / n_origin for k in ks},
-            mrr=sum(r.mrr for r in rows) / n_origin,
-            complete_at={k: sum(r.complete_at[k] for r in rows) / n_origin for k in ks},
-        )
-
     return EvalReport(
         recall_at=recall_at,
         mrr=mrr_avg,
@@ -403,7 +379,6 @@ def evaluate(
         false_refusal_rate=false_refusal_rate,
         n_no_answer=len(no_answer),
         by_source=by_source,
-        by_origin=by_origin,
         config=_effective_snapshot(cfg),
         complete_at=complete_at,
         n_answerable=n_answerable,
