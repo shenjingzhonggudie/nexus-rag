@@ -151,6 +151,24 @@ CLI 拒答退出码为 0；用法错误通常为 2，已处理的配置或索引
 
 开发集45道无答案题全部来自 `internal`（该来源共148题）；`external`共100题，全部可答。因此开发集的拒答结论只覆盖internal来源，尚未评估external来源的无答案拒答。题型中multi_block为16/248（6.5%，建议15%），cross_doc为5/248（2.0%，建议10%）；题型不均衡限制了对多块和跨文档问题的判断。
 
+### 回归集（310 题）
+
+上述两批统一纳入回归评测，合并为 `data/eval/qrels.regression.json`。每条带 `origin` 标记，`query` / `answers` / `type` / `source` / `annotation_*` 与源文件**逐条相同**（有测试保证），由 `scripts/build_regression_suite.py` 确定性合并。
+
+| origin | 条数 | 可答 | 无答案 | 待复核 |
+|---|---:|---:|---:|---:|
+| `original_248` | 248 | 203 | 45 | 0 |
+| `original_62` | 62 | 43 | 17 | 2 |
+| **合计** | **310** | **246** | **62** | **2** |
+
+```powershell
+.\.venv\Scripts\ragkit.exe eval --qrels data/eval/qrels.regression.json --out reports/eval.regression.json
+```
+
+报告按 `by_origin`（数据批次）与 `by_source`（出题视角）两个维度分别汇总，**不报跨组「合计」**——它会随两组条数比例变化。逐题明细在 `per_query`，可按 `origin` 筛出 PASS / FAIL。
+
+**这两批都已参与开发反馈，只能作为回归集，不能称为独立盲测。** 盲测接口在 `data/eval/blind/`，`qrels.blind.json` 当前为空数组；空接口不等于已拥有盲测数据。
+
 指标定义与限制：
 
 - 前k块在同文档内取字符区间并集，每段必要证据的覆盖字符数须**严格超过证据长度的50%**；恰好50%不算。重复块不重复累计，中间空隙不计覆盖，同一要点的所有必要证据均须达标。
