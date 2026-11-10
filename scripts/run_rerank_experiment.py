@@ -97,6 +97,11 @@ def main():
     # Do not use ambient RAG__ overrides. Pin every effective default in files.
     cfg = load_config(ROOT / "configs/default.yaml", environ={})
     cfg.embedding.provider = "bge"
+    # 归档实验固定 20 块召回 / 5 块输出；与仓库当前的默认值解耦，
+    # 否则将来调整默认参数会让 620 条归档无法复现。
+    cfg = cfg.model_copy(
+        update={"retrieval": cfg.retrieval.model_copy(update={"top_k": 20, "final_k": 5})}
+    )
     assert cfg.retrieval.fusion_method == "weighted_rrf"
     assert cfg.retrieval.fusion_alpha == 0.7
     assert cfg.retrieval.top_k == 20 and cfg.retrieval.final_k == 5

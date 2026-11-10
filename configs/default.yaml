@@ -3,7 +3,7 @@
 
 # 检索参数
 retrieval:
-  top_k: 20            # 每路召回数量上限，以及融合后的重排候选池上限
+  top_k: 26            # 每路召回数量上限，以及融合后的重排候选池上限
   final_k: 5           # 最终返回给生成阶段的证据条数（必须 <= top_k）
   fusion_method: weighted_rrf # weighted_rrf（加权排名融合）或 rrf（等权RRF）
   fusion_alpha: 0.7    # 双路加权融合的BM25权重；不表示已证明的最优参数

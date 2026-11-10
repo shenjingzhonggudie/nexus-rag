@@ -37,7 +37,7 @@
 
 - 环境变量使用 `RAG__DATA_DIR` 或 `RAG__RETRIEVAL__TOP_K` 这类格式，支持顶层和一层嵌套字段。合法格式中的未知字段会报 `ConfigError`；更深层、空段等不支持的命名被忽略。
 - CLI 仅为已暴露的参数提供额外覆盖，例如 `build --root`；并非每个配置项都有命令行开关。
-- 检索默认值为 top_k=20、final_k=5、fusion_method=weighted_rrf、fusion_alpha=0.7，两路召回开启，拒答阈值=0.05。top_k 同时限制每路召回和融合后的模型候选预算；要求 `0 < final_k <= top_k`。
+- 检索默认值为 top_k=26、final_k=5、fusion_method=weighted_rrf、fusion_alpha=0.7，两路召回开启，拒答阈值=0.05。top_k 同时限制每路召回和融合后的模型候选预算；要求 `0 < final_k <= top_k`。
 - 顶层 `rerank: RerankConfig` 与 retrieval 独立。默认 enabled=true、model_name=BAAI/bge-reranker-base、batch_size=16、max_length=512、device=cpu、local_files_only=true；model_name 可为本地路径。公开仓库不包含权重，安装 `[rerank]` 依赖也不会准备模型；新机器须下载模型或显式关闭重排，启用但本地模型缺失时会报错。
 - 旧 `retrieval.rerank_enabled` 只作为弃用别名：True→weighted_rrf、False→rrf，发出 FutureWarning；新快照只有 fusion_method，不含旧字段。与同层显式 fusion_method 冲突时拒绝加载。YAML 与环境变量先各自迁移再按优先级合并；旧别名不影响真正的 rerank.enabled。
 - 应用配置默认分块为 heading；`chunk_document` 函数直接调用的默认策略为 fixed。`overlap < chunk_size` 由配置模型校验。

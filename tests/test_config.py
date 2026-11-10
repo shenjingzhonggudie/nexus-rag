@@ -9,7 +9,7 @@ from ragkit.errors import ConfigError
 
 def test_default_config():
     cfg = config.load_config(environ={})
-    assert cfg.retrieval.top_k == 20
+    assert cfg.retrieval.top_k == 26
     assert cfg.retrieval.final_k == 5
     assert cfg.retrieval.fusion_alpha == 0.7
     assert cfg.retrieval.fusion_method == "weighted_rrf"
@@ -66,7 +66,7 @@ def test_empty_file_uses_defaults(tmp_path: Path):
     empty_file = tmp_path / "empty.yaml"
     empty_file.write_text("")
     cfg = config.load_config(empty_file, environ={})
-    assert cfg.retrieval.top_k == 20
+    assert cfg.retrieval.top_k == 26
     assert cfg.chunking.chunk_size == 300
 
 

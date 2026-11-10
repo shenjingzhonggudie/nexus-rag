@@ -59,7 +59,7 @@ class RetrievalConfig(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
-    top_k: int = Field(default=20, gt=0)  # 每路召回上限及融合后的重排候选上限。
+    top_k: int = Field(default=26, gt=0)  # 每路召回上限及融合后的重排候选上限。
     final_k: int = Field(default=5, gt=0)  # 经过融合/重排后最终保留的条数。
     fusion_method: Literal["weighted_rrf", "rrf"] = "weighted_rrf"
     fusion_alpha: float = Field(default=0.7, ge=0.0, le=1.0)

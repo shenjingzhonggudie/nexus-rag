@@ -76,7 +76,7 @@ embedding:
 
 ```yaml
 retrieval:
-  top_k: 20
+  top_k: 26
   final_k: 5
   fusion_method: weighted_rrf
   fusion_alpha: 0.7
